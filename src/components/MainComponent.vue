@@ -1,7 +1,14 @@
 <template>
-  <div class="w-full h-screen relative bg-gray-100">
-    <div class="w-full lg:w-96 h-screen bg-white absolute top-0 right-0">
-      <div class="p-5 relative">
+  <div class="max-w-[1440px] h-screen flex flex-row-reverse bg-gray-100">
+    <div class="w-full lg:w-96 h-screen bg-white shadow-xl translate-x-full">
+      <!-- 行程 toggle -->
+      <label for="schedule-list-toggle" class="schedule flex items-center text-white w-[56px] hover:w-[86px] h-10 py-2 ps-3 pe-5 bg-yellow-500 rounded-s-full shadow-lg absolute top-4 left-[-56px] hover:left-[-86px] hover:cursor-pointer">
+        <span class="inline-block w-6 h-6"><GlobeAsiaAustraliaIcon/></span>
+        <p class="text-sm pl-0.5 font-medium hidden">行程</p>
+      </label>
+      <input type="checkbox" id="schedule-list-toggle" class="hidden">
+      <!-- schedule list -->
+      <div class="schedule-list p-5 relative">
         <!-- header -->
         <div class="pb-3 relative bg-white z-10">
           <button class="bg-gray-200 w-8 h-8 rounded-full absolute top-0 right-0 p-1.5">
@@ -233,12 +240,20 @@
 
 <script setup>
 import { ChevronDownIcon, EllipsisHorizontalIcon } from '@heroicons/vue/16/solid'
-import { XMarkIcon, UserPlusIcon, ShareIcon, DocumentDuplicateIcon, TrashIcon } from '@heroicons/vue/24/outline'
+import { XMarkIcon, UserPlusIcon, ShareIcon, DocumentDuplicateIcon, TrashIcon, BriefcaseIcon, GlobeAsiaAustraliaIcon } from '@heroicons/vue/24/outline'
 
 </script>
 
 <style>
 .bg-gray-transparent{
   background-color: #2d4057cc;
+}
+.schedule:hover > p{
+  display: block;
+}
+#schedule-list-toggle:checked {
+  .schedule-list{
+    transform: translateX(0);
+  }
 }
 </style>
