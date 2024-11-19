@@ -4,20 +4,20 @@ import { GlobeAsiaAustraliaIcon } from '@heroicons/vue/24/solid'
 </script>
 
 <template>
-  <header class=" w-80 mx-auto flex flex-col gap-10 mt-10 text-center">
-    <nav class=" flex gap-6 underline text-orange-800 font-bold text-xl">
+  <header class="w-80 mx-auto flex flex-col gap-10 mt-10 text-center">
+    <nav class="flex gap-6 underline text-orange-800 font-bold text-xl">
       <RouterLink to="/">HOME</RouterLink>
       <RouterLink to="/planner">PLANNER</RouterLink>
       <RouterLink to="/member">MEMBER</RouterLink>
     </nav>
     <!-- tailwindcss test -->
-    <h1 class="text-3xl font-bold underline text-blue-300">
-      Tailwindcss test
-    </h1>
+    <h1 class="text-3xl font-bold underline text-blue-300">Tailwindcss test</h1>
 
     <!-- daisyUi test -->
     <!-- Open the modal using ID.showModal() method -->
-    <button class="btn" onclick="my_modal_1.showModal()">DaisyUi test Modal</button>
+    <button class="btn" onclick="my_modal_1.showModal()">
+      DaisyUi test Modal
+    </button>
     <dialog id="my_modal_1" class="modal">
       <div class="modal-box">
         <h3 class="text-lg font-bold">Hello!</h3>
@@ -32,10 +32,8 @@ import { GlobeAsiaAustraliaIcon } from '@heroicons/vue/24/solid'
     </dialog>
 
     <!-- heroicon rest -->
-    Heroicon test : 
+    Heroicon test :
     <GlobeAsiaAustraliaIcon class="size-10 text-green-700" />
   </header>
   <RouterView />
 </template>
-
-
