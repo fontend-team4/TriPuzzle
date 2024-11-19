@@ -5,6 +5,7 @@ import NewScheduleModal from '@/components/NewScheduleModal.vue';
 
 <template>
   <main>
+    <NewScheduleModal/>
     <TheWelcome />
   </main>
 </template>
