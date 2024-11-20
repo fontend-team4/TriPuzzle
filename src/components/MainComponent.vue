@@ -45,9 +45,7 @@
             </figure>
             <!-- 行程右上設定 icon -->
             <div class="flex gap-2 absolute top-3 right-3">
-              <button class="w-6 h-6 rounded-full bg-gray-transparent text-white p-1">
-                <ShareIcon />
-              </button>
+              <ShareScheduleModal />
               <div class="dropdown">
                 <!-- <div tabindex="0" role="button" class="btn m-1"></div> -->
                 <button role="button" class="w-6 h-6 rounded-full bg-gray-transparent text-white p-1 relative">
@@ -241,6 +239,7 @@
 <script setup>
 import { ChevronDownIcon, EllipsisHorizontalIcon } from '@heroicons/vue/16/solid'
 import { XMarkIcon, UserPlusIcon, ShareIcon, DocumentDuplicateIcon, TrashIcon, BriefcaseIcon, GlobeAsiaAustraliaIcon } from '@heroicons/vue/24/outline'
+import ShareScheduleModal from '@/components/ShareScheduleModal.vue'
 
 </script>
 
