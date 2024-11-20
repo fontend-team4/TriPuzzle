@@ -1,5 +1,5 @@
 <script setup>
-import { AdjustmentsHorizontalIcon, MagnifyingGlassIcon, ChevronDownIcon } from '@heroicons/vue/24/solid'
+import { AdjustmentsHorizontalIcon, MagnifyingGlassIcon, ChevronDownIcon,XCircleIcon } from '@heroicons/vue/24/solid'
 import CategoryFilter from './CategoryFilter.vue';
 import SearchArea from './SearchArea.vue';
 </script>
@@ -11,23 +11,23 @@ import SearchArea from './SearchArea.vue';
       <!-- 搜尋列-分類模式 -->
       <div class="search-category">
         <!-- 選單-選擇區域 -->
-        <div class="block-area">
-          <div data-v-2e6cdc7b class="btn-area">
-            <span data-v-2e6cdc7b>選擇區域</span>
+        <div class="block-area ">
+          <div class="btn-area bg-primary-600">
+            <span>選擇區域</span>
             <!-- <span> {{ selectArea.name }}</span> 預留功能-->
-            <ChevronDownIcon class="IconSelectArea"/>
+            <ChevronDownIcon class="Icon-SelectArea text-primary-800"/>
           </div>
         </div>
         <!-- 搜尋列 -->
         <div class="block-search-mask hidden-md-and-down">
-          <MagnifyingGlassIcon class="IconMagnifyingGlass" />
+          <MagnifyingGlassIcon class="Icon-MagnifyingGlass" />
           <span>搜尋...</span>
         </div>
         <!-- 分類選單 -->
         <div class="block-category">
-          <ul class="category-list">
+          <ul class="category-list text-primary-800">
             <li class="category-item active">景點</li>
-            <li class="category-item">美食</li>
+            <li class="category-item col-primary-800">美食</li>
             <li class="category-item">購物</li>
             <li class="category-item">住宿</li>
             <li class="category-item">租車站</li>
@@ -39,8 +39,23 @@ import SearchArea from './SearchArea.vue';
         <!-- 篩選 -->
         <div class="block-filter">
           <button data-v-filter type="button" class="filter-btn">
-            <AdjustmentsHorizontalIcon data-v-filter class="IconFilter icon" />
+            <AdjustmentsHorizontalIcon data-v-filter class="Icon-Filter icon" />
           </button>
+        </div>
+      </div>
+      <!-- 搜尋列- 關鍵字模式 -->
+      <!-- v-if -->
+      <div class="search-keyword">
+        <div class="block-search-group">
+          <div class="block-search focus">
+            <MagnifyingGlassIcon class="Icon-MagnifyingGlass icon"/>
+            <div class="el-input search-input">
+              <div class="el-input__wrapper">
+                <input class="el-input_inner" type="text" autocomplete="off" tabindex="0" placeholder="輸入關鍵字" id="">
+              </div>
+            </div>
+            <XCircleIcon class="Icon-clear"  aria-hidden="true" />
+          </div>
         </div>
       </div>
     </div>   
@@ -59,7 +74,7 @@ import SearchArea from './SearchArea.vue';
 
   .row-search[data-v-243d8871] {
     display: inline-flex;
-    padding-top: 16px
+    padding-top: 16px;
 }
 
   .container-search{
@@ -79,24 +94,119 @@ import SearchArea from './SearchArea.vue';
     padding:0 16px 0 0;
   }
 
+  .search-keyword {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    height: 40px;
+    width: 100%;
+    animation: fade-in .6s
+}
+
+  .search-keyword .block-search-group {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    height: 40px;
+    width: 100%;
+    /* padding: 4px 0 4px 4px;
+    border: 1px solid rgba(45,64,87,.1); */
+    border-radius: 100px
+  }
+
+
+  .block-search{
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .block-search.focus{
+    width: 100%;
+  }
+
+  .block-search .icon{
+    position: absolute;
+    top: 7px;
+    left: 5px;
+    width: 18px;
+    height: 18px;
+    color: #2d405766;
+    fill:currentColor;
+  }
+
+  .block-search .search-input {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 24px;
+    color: #2d4057
+  }
+
+  .block-search .search-input .el-input__wrapper {
+    position: relative;
+    box-shadow: none;
+    padding: 8px 28px;
+    background: transparent;
+    width: 100%;
+  }
+
+  .el-input{
+    height: 32px;
+    position: relative;
+    display: inline-flex;
+    vertical-align: middle;
+  }
+
+  .el-input__wrapper{
+    display: inline-flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px, 4px;
+  }
+
+  .el-input_inner{
+    height: 22px;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 24px;
+    color: #2d4057;
+    width: 100%;
+    flex-grow: 1;
+    padding: 0;
+    outline: 0;
+    border: none;
+    background: 0 0;
+    box-sizing: border-box;
+  }
+
+  .Icon-clear{
+    width: 1em;
+    min-height: 1em;
+    position: absolute;
+    top: 7px;
+    right: 8px;
+    color: #959ca4;
+    cursor: pointer;
+    
+  }
 
   .block-area{
     padding-right: 16px;
   }
 
-  .IconSelectArea{
+  .Icon-SelectArea{
     width: 16px;
     height: 16px;
     color: white;
   }
 
-  .block-area .btn-area[data-v-2e6cdc7b] {
+  .block-area .btn-area {
     display: inline-flex;
     align-items: center;
     justify-content: space-between;
     height: 32px;
     padding: 4px 8px 4px 12px;
-    background: #369ad9;
     border-radius: 24px;
     cursor: pointer;
     transition: .3s;
@@ -134,7 +244,7 @@ import SearchArea from './SearchArea.vue';
     cursor:text;
 }
 
-  .IconMagnifyingGlass{
+  .Icon-MagnifyingGlass{
     width: 24px;
     height: 24px;
     color:#2d405766;
@@ -163,7 +273,6 @@ import SearchArea from './SearchArea.vue';
     font-weight: 500;
     font-size: 14px;
     line-height: 24px;
-    color: #2d405799;
     padding: 6px 0;
     cursor: pointer;
     transition: .3s;
@@ -172,8 +281,8 @@ import SearchArea from './SearchArea.vue';
 }
   /* 顯示頁面 */
   .block-category .category-item.active {
-    color: #2d4057;
-    border-bottom: 2px solid #369ad9;
+    color: #D23430;
+    border-bottom: 2px solid #D23430;
     pointer-events: none
   }
 
@@ -198,61 +307,75 @@ import SearchArea from './SearchArea.vue';
     padding: 0
   }
 
-  .IconFilter{
+  .Icon-Filter{
     width: 1em;
     height: 1em;
     color: black;
     fill: currentColor;
   }
 
-  @media screen and (min-width: 1200px) {
+@media screen and (min-width: 1200px) {
   .row-search[data-v-243d8871] {
-      align-items:center;
-      padding-top: 0;
-      justify-content: center;
-      width: calc(100% - 124px)
+    align-items:center;
+    padding-top: 0;
+    justify-content: center;
+    width: calc(100% - 124px)
   }
 
-  .container-search[data-v-2e6cdc7b] {
-      border:1px solid rgba(45,64,87,.1);
-      box-shadow: 0 4px 16px #00000014;
-      border-radius: 100px;
-      overflow: hidden
+  .container-search {
+    border:1px solid rgba(45,64,87,.1);
+    box-shadow: 0 4px 16px #00000014;
+    border-radius: 100px;
+    overflow: hidden;
   }
 
-  .search-category[data-v-2e6cdc7b] {
-      padding:0 16px 0 4px;
-      animation: fade-in-up .4s
+  .search-category {
+    padding:0 16px 0 4px;
+    animation: fade-in-up .4s
+  }
+
+  .search-keyword {
+    padding:0 4px;
+    animation: fade-in-down .4s;
+  }
+
+  .search-keyword .block-search-group {
+    padding:0;
+    border: none;
+  }
+
+  .Icon-clear {
+    right: 16px;
   }
 
   .block-area {
-      padding-right:0
+    padding-right:0;
   }
 
-  .block-area .btn-area[data-v-2e6cdc7b] {
-      margin:3px 0
+  .block-area .btn-area {
+    margin:3px 0;
   }
   
   .block-category {
-      border-left:1px solid rgba(45,64,87,.1);
-      width: 100%
+    border-left:1px solid rgba(45,64,87,.1);
+    width: 100%;
   }
   .block-category .category-list {
-      padding:0 0 0 16px
+    padding:0 0 0 16px;
   }
 
   /*顯示滾動條  */
   .block-category .category-list.block-category::-webkit-scrollbar {
-      padding:0 70px 0 16px
+    padding:0 70px 0 16px
   }
 
   .block-category .category-item:hover:not(.active) {
-        color:#2d4057cc;
-        border-bottom: 2px solid rgba(54,154,217,.2)
-    }
+    color:#2d4057cc;
+    border-bottom: 2px solid rgba(54,154,217,.2)
+  }
 
   .block-filter{
-      padding-left:8px
+    padding-left:8px
   }
 }
 </style>

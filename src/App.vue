@@ -1,9 +1,11 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 import { GlobeAsiaAustraliaIcon } from '@heroicons/vue/24/solid'
+import SearchBar from './components/SearchBar.vue';
 </script>
 
 <template>
+  <SearchBar />
   <header class=" w-80 mx-auto flex flex-col gap-10 mt-10 text-center">
     <nav class=" flex gap-6 underline text-orange-800 font-bold text-xl">
       <RouterLink to="/">HOME</RouterLink>
@@ -14,7 +16,7 @@ import { GlobeAsiaAustraliaIcon } from '@heroicons/vue/24/solid'
     <h1 class="text-3xl font-bold underline text-blue-300">
       Tailwindcss test
     </h1>
-
+    
     <!-- daisyUi test -->
     <!-- Open the modal using ID.showModal() method -->
     <button class="btn" onclick="my_modal_1.showModal()">DaisyUi test Modal</button>
