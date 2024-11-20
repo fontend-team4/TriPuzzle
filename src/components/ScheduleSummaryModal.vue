@@ -11,7 +11,7 @@
           <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
         </div>
         <!-- detail -->
-        <div class="h-[600px] overflow-y-scroll">
+        <div class="h-[600px] overflow-y-scroll pb-20">
           <h2 class="text-2xl font-medium text-center mb-4">行程摘要</h2>
           <div>
             <p>行程名稱：香港</p>
@@ -31,6 +31,12 @@
             <p>當天沒有行程</p>
             <br>
             <p>第5天 (2024/11/19)</p>
+            <p>當天沒有行程</p>
+            <br>
+            <p>第6天 (2024/11/18)</p>
+            <p>當天沒有行程</p>
+            <br>
+            <p>第7天 (2024/11/19)</p>
             <p>當天沒有行程</p>
           </div>
         </div>

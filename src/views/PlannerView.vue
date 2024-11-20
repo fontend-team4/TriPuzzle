@@ -2,9 +2,11 @@
   <div>
     MapComponent + SideBar + MainComponent
   </div>
-  <MainComponent />
+  <ScheduleDetail />
+  <!-- <MainComponent /> -->
 </template>
 
 <script setup>
 import MainComponent from '@/components/MainComponent.vue'
+import ScheduleDetail from '@/components/ScheduleDetail.vue'
 </script>

@@ -1,7 +1,5 @@
 <template>
-  <span class="w-6 h-6 rounded-full bg-gray-transparent text-white p-1 hover:cursor-pointer" onclick="shareScheduleModal.showModal()">
-    <ShareIcon />
-  </span>
+
   <dialog id="shareScheduleModal" class="modal">
     <div class="modal-box w-screen md:w-[480px] bg-gray-100">
       <!-- close button -->

@@ -45,6 +45,9 @@
             </figure>
             <!-- 行程右上設定 icon -->
             <div class="flex gap-2 absolute top-3 right-3">
+              <span class="w-6 h-6 rounded-full bg-gray-transparent text-white p-1 hover:cursor-pointer" onclick="shareScheduleModal.showModal()">
+                <ShareIcon />
+              </span>
               <ShareScheduleModal />
               <div class="dropdown">
                 <!-- <div tabindex="0" role="button" class="btn m-1"></div> -->
