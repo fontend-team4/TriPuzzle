@@ -1,20 +1,17 @@
 <script setup>
 import { ChevronDownIcon } from '@heroicons/vue/24/solid'
-
-
-
 </script>
 
 <template>
   <div class="block-area">
-    <div class="btn-area bg-primary-600" onclick="my_modal_2.showModal()">
+    <div class="btn-area bg-primary-600" onclick="SearchArea.showModal()">
         <span class="text-gray">選擇區域</span>
       <!-- <span> {{ selectArea.name }}</span> 預留功能-->
       <ChevronDownIcon class="Icon-SelectArea text-primary-800"/>
     </div>
   </div>
   
-  <dialog id="my_modal_2" class="modal">
+  <dialog id="SearchArea" class="modal">
     <div class="modal-box">
       <form method="dialog">
         <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>

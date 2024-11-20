@@ -1,5 +1,5 @@
 <script setup>
-import { AdjustmentsHorizontalIcon, MagnifyingGlassIcon, ChevronDownIcon,XCircleIcon } from '@heroicons/vue/24/solid'
+import { MagnifyingGlassIcon,XCircleIcon } from '@heroicons/vue/24/solid'
 import CategoryFilter from './CategoryFilter.vue';
 import SearchArea from './SearchArea.vue';
 </script>
@@ -31,11 +31,7 @@ import SearchArea from './SearchArea.vue';
           </ul>
         </div>
         <!-- 篩選 -->
-        <div class="block-filter">
-          <button type="button" class="filter-btn">
-            <AdjustmentsHorizontalIcon  class="Icon-Filter icon text-black" />
-          </button>
-        </div>
+        <CategoryFilter />
       </div>
       <!-- 搜尋列- 關鍵字模式 -->
       <!-- v-if -->
@@ -244,91 +240,62 @@ import SearchArea from './SearchArea.vue';
     pointer-events: none;
   }
 
-  .block-filter {
-    margin-left: auto;
-    padding-top: 3px;
-  }
+  @media screen and (min-width: 1200px) {
+    .row-search {
+      align-items:center;
+      padding-top: 0;
+      justify-content: center;
+      width: calc(100% - 124px)
+    }
 
-  .filter-btn{
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    box-sizing: border-box;
-    border: none;
-    cursor: pointer;
-    transition: .3s;
-    padding: 0
-  }
+    .container-search {
+      border:1px solid rgba(45,64,87,.1);
+      box-shadow: 0 4px 16px #00000014;
+      border-radius: 100px;
+      overflow: hidden;
+    }
 
-  .Icon-Filter{
-    width: 1em;
-    height: 1em;
-    fill: currentColor;
-  }
+    .search-category {
+      padding:0 16px 0 4px;
+      animation: fade-in-up .4s
+    }
 
-@media screen and (min-width: 1200px) {
-  .row-search {
-    align-items:center;
-    padding-top: 0;
-    justify-content: center;
-    width: calc(100% - 124px)
-  }
+    .search-keyword {
+      padding:0 4px;
+      animation: fade-in-down .4s;
+    }
 
-  .container-search {
-    border:1px solid rgba(45,64,87,.1);
-    box-shadow: 0 4px 16px #00000014;
-    border-radius: 100px;
-    overflow: hidden;
-  }
+    .search-keyword .block-search-group {
+      padding:0;
+      border: none;
+    }
 
-  .search-category {
-    padding:0 16px 0 4px;
-    animation: fade-in-up .4s
-  }
+    .Icon-clear {
+      right: 16px;
+    }
 
-  .search-keyword {
-    padding:0 4px;
-    animation: fade-in-down .4s;
-  }
-
-  .search-keyword .block-search-group {
-    padding:0;
-    border: none;
-  }
-
-  .Icon-clear {
-    right: 16px;
-  }
-
-  .block-area {
-    padding-right:0;
-  }
+    .block-area {
+      padding-right:0;
+    }
 
 
-  
-  .block-category {
-    border-left:1px solid rgba(45,64,87,.1);
-    width: 100%;
-  }
-  .block-category .category-list {
-    padding:0 0 0 16px;
-  }
+    
+    .block-category {
+      border-left:1px solid rgba(45,64,87,.1);
+      width: 100%;
+    }
+    .block-category .category-list {
+      padding:0 0 0 16px;
+    }
 
-  /*顯示滾動條  */
-  .block-category .category-list.block-category::-webkit-scrollbar {
-    padding:0 70px 0 16px
-  }
+    /*顯示滾動條  */
+    .block-category .category-list.block-category::-webkit-scrollbar {
+      padding:0 70px 0 16px
+    }
 
-  .category-item:hover:not(.active) {
-    color: gray;
-    border-bottom: 2px solid #D23430
+    .category-item:hover:not(.active) {
+      color: gray;
+      border-bottom: 2px solid #D23430
+    }
   }
-
-  .block-filter{
-    padding-left:8px
-  }
-}
 </style>
