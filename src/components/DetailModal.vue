@@ -1,6 +1,6 @@
 <script setup>
 import DetailCarousel from './DetailCarousel.vue';
-import { MapPinIcon, MagnifyingGlassIcon, HeartIcon, ShareIcon ,PaperAirplaneIcon, XMarkIcon, PhotoIcon } from "@heroicons/vue/24/outline";
+import { CalendarIcon, ClockIcon, PhoneIcon, GlobeAltIcon, MapPinIcon, MagnifyingGlassIcon, HeartIcon, ShareIcon ,PaperAirplaneIcon, XMarkIcon, PhotoIcon } from "@heroicons/vue/24/outline";
 import { StarIcon } from "@heroicons/vue/24/solid";
 </script>
 
@@ -29,17 +29,37 @@ import { StarIcon } from "@heroicons/vue/24/solid";
           <MapPinIcon class="size-5"/>
           <p class="pl-10 text-sm">台灣 北部</p>
         </div>
-        <div class="flex pt-2.5 pb-3.5">
+        <div class="flex pt-2.5 pb-3.5 border-b">
+          <CalendarIcon class="size-5"/>
+          <p class="pl-10 text-sm">簡介</p>
+        </div>
+        <div class="flex pt-2.5 pb-3.5 border-b">
+          <PhoneIcon class="size-5"/>
+          <p class="pl-10 text-sm">09001122233</p>
+        </div>
+        <div class="flex pt-2.5 pb-3.5  border-b">
           <MagnifyingGlassIcon class="size-5"/>
           <div class="inline-flex items-center gap-1 pl-10 text-sm">
             <div class="pr-3.5">Google</div>
-            <div><button class="px-4 py-1 bg-gray-200 rounded-full">評論</button></div>
-            <div><button class="px-4 py-1 bg-gray-200 rounded-full">照片</button></div>
-            <div><button class="px-4 py-1 bg-gray-200 rounded-full">文章</button></div>
+            <div><button class="px-4 py-1 rounded-full bg-gray">評論</button></div>
+            <div><button class="px-4 py-1 rounded-full bg-gray">照片</button></div>
+            <div><button class="px-4 py-1 rounded-full bg-gray">文章</button></div>
           </div>
         </div>
+        <div class="flex pt-2.5 pb-3.5 border-b">
+          <GlobeAltIcon class="size-5"/>
+          <p class="pl-10 text-sm">網址</p>
+        </div>
+        <div class="flex pt-2.5 pb-3.5 flex-wrap">
+          <ClockIcon class="size-5"/>
+          <div class="pl-10 mb-1 text-sm"><span class="mr-2">星期一</span><span class="ml-5">00:00-24:00</span></div>
+          <div class="pl-10 ml-5 text-sm leading-7"><span >星期二</span><span class="ml-7">00:00-24:00</span></div>
+          <div class="pl-10 ml-5 text-sm leading-7"><span >星期三</span><span class="ml-7">00:00-24:00</span></div>
+          <div class="pl-10 ml-5 text-sm leading-7"><span >星期四</span><span class="ml-7">00:00-24:00</span></div>
+          <div class="pl-10 ml-5 text-sm leading-7"><span >星期五</span><span class="ml-7">00:00-24:00</span></div>
+        </div>
       <button class="absolute top-3.5 right-3.5 hidden md:block"><XMarkIcon class="size-6"/></button>
-      <div class="fixed md:absolute bottom-0 left-0 w-full h-[50px] border-t-2 inline-flex items-center justify-between px-2">
+      <div class="fixed md:absolute bottom-0 left-0 w-full h-[50px] border-t-2 border-t-gray inline-flex items-center justify-between px-2">
         <div class="inline-flex items-center gap-2 ">
           <div class="tooltip" data-tip="分享"><ShareIcon class="cursor-pointer size-6"/></div>
           <div class="tooltip" data-tip="加到最愛"><HeartIcon class="cursor-pointer size-6"/></div>

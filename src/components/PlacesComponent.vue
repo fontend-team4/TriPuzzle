@@ -55,6 +55,7 @@ const toggleFavorite = (item) => {
   item.isFavorited = !item.isFavorited;
 };
 
+
 </script>
 
 <template>
@@ -66,8 +67,8 @@ const toggleFavorite = (item) => {
     <details >
       <summary class=" hover:bg-transparent active:bg-transparent active:text-gray-700">熱門景點</summary>
       <ul class="z-50 !p-0 !w-50 ">
-        <li ><a>熱門景點</a></li>
-        <li><a>熱門貼文</a></li>
+        <li ><a class="rounded-none hover:bg-primary-200" >熱門景點</a></li>
+        <li><a class="rounded-none hover:bg-primary-200" >熱門貼文</a></li>
       </ul>
     </details>
   </li>
@@ -93,7 +94,7 @@ const toggleFavorite = (item) => {
                 <!-- 喜歡按鈕和加入景點 -->
                 <div class="absolute bottom-0 z-10 flex items-center justify-between w-full p-4 transition-opacity opacity-0 group-hover:opacity-100">
                   <div
-                    class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full cursor-pointer hover:bg-opacity-75 tooltip " data-tip="加入最愛"
+                    class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer bg-gray hover:bg-opacity-75 tooltip " data-tip="加入最愛"
                     @click.prevent="toggleFavorite(item)"
                   >
                   <component  :is="item.isFavorited ? HeartIcon : OutlineHeartIcon":class="item.isFavorited ? 'text-red-500' : 'text-gray-500'" class="size-6"/>
