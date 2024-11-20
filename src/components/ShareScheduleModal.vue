@@ -46,7 +46,8 @@
       <!-- invite detail -->
       <div class="rounded-xl bg-white w-[432px] pt-10 px-5 pb-6">
         <div class="text-center">
-          <div class="dropdown">
+          <!-- 邀請者視角 -->
+          <!-- <div class="dropdown">
             <div tabindex="0" role="button" class="mb-4 w-32 min-h-7 flex items-center justify-center rounded-full bg-red-100 text-red-700">
               <p class="text-sm font-medium p-1 me-2">僅供檢視</p>
               <span class="inline-block w-4 h-4 p-0.5"><ChevronDownIcon /></span>
@@ -55,7 +56,15 @@
               <li><a class="rounded-none bg-gray-100 text-red-700 font-medium">僅供檢視</a></li>
               <li><a class="rounded-none hover:bg-gray-100 font-medium">可編輯</a></li>
             </ul>
+          </div> -->
+          <!-- 被邀請者視角 -->
+          <div class="tooltip" data-tip="只有主揪可以設定共編權限哦">
+            <div class="mx-auto mb-4 w-32 min-h-7 flex items-center justify-center rounded-full bg-red-100 text-red-700">
+              <p class="text-sm font-medium p-1 me-2">僅供檢視</p>
+              <span class="inline-block w-4 h-4"><ExclamationCircleIcon /></span>
+            </div>
           </div>
+          
           <img class="w-40 h-40 mb-4 mx-auto" src="../assets/qrcode.svg" alt="">
           <p>手機掃描條碼，即可查看此行程</p>
           <p class="text-sm mb-8 text-gray-400">24 小時內有效</p>
@@ -75,7 +84,13 @@
 
 <script setup>
 // import {  } from '@heroicons/vue/16/solid'
-import { LinkIcon, ChatBubbleOvalLeftEllipsisIcon, EnvelopeIcon} from '@heroicons/vue/24/outline'
+import { LinkIcon, ChatBubbleOvalLeftEllipsisIcon, EnvelopeIcon, ExclamationCircleIcon} from '@heroicons/vue/24/outline'
 import { ShareIcon, ChevronDownIcon } from '@heroicons/vue/24/solid';
 
 </script>
+
+<style>
+.tooltip:before{
+  font-size: 12px;
+}
+</style>
