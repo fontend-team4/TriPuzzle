@@ -11,7 +11,7 @@
           <div class="w-5 h-5 text-white" onclick="shareScheduleModal.showModal()"><ArrowUpTrayIcon /></div>
           <ShareScheduleModal />
         </div>
-        <button class="bg-red-100 text-white w-8 h-8 rounded-full absolute top-2.5 right-4 p-1.5">
+        <button class="bg-gray-100 text-gray-400 w-8 h-8 rounded-full absolute top-2.5 right-4 p-1.5">
           <XMarkIcon />
         </button>
       </div>
@@ -101,33 +101,218 @@
         </div>
       </div>
       <!-- places -->
-      <div class="pt-2.5 pm-5 px-5">
-        <div class="w-full bg-gray-100 rounded-xl border">
+      <div class="h-[700px] pt-5 px-5 pb-20 overflow-y-scroll">
+        <!-- no places -->
+        <div class="w-full bg-gray-100 rounded-xl py-10 px-5 mb-5">
+          <p class="text-sm text-center">還沒有排這天的行程喲</p>
+        </div>
+        <!-- place & transportation -->
+        <div class="place w-full bg-gray-100 rounded-xl border">
           <div class="flex p-1">
             <img class="w-[108px] h-[108px] rounded-xl object-cover" src="https://lh3.googleusercontent.com/places/ANJU3Ds3MXRcZf77xt6ejMr5CyGxuySKPa3n9yUWJ5EqShizmd3EPHhQNT8_xFYRuOpksBffhO-lOh21FWclCl_ZQv94ZzST19IrWtM=s1600-w480">
-            <ul class="px-4 flex flex-col gap-0.5 justify-center">
-              <li class="text-sm font-medium text-orange-400">08:00</li>
-              <li class="font-medium">香港迪士尼樂園</li>
-              <li class="text-xs text-gray-400">停留 1 時</li>
-            </ul>
+            <div class="w-cal flex justify-between">
+              <ul class="px-4 flex flex-col gap-0.5 justify-center">
+                <li class="text-sm font-medium text-orange-400">08:00</li>
+                <li class="font-medium">香港迪士尼樂園</li>
+                <li class="text-xs text-gray-400">停留 1 時</li>
+              </ul>
+              <div class="dropdown p-1">
+                <button role="button" class="w-5 h-5 rounded-full bg-gray-300 text-white relative">
+                  <EllipsisHorizontalIcon />
+                </button>
+                <!-- dropdown-content 控制開關-->
+                <ul tabindex="0" class="dropdown-content w-32 bg-white rounded border absolute right-[-12px] top-8 shadow-xl">
+                  <li>
+                    <a class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray-100" href="#">
+                      <span class="inline-block w-6 h-6"><CalendarIcon/></span>
+                      <p>移到別天</p>
+                    </a>  
+                  </li>
+                  <li>
+                    <a class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray-100" href="#">
+                      <span class="inline-block w-6 h-6"><DocumentDuplicateIcon/></span>
+                      <p>複製</p>
+                    </a>  
+                  </li>
+                  <li class="border-t">
+                    <a class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray-100" href="#">
+                      <span class="inline-block w-6 h-6"><TrashIcon/></span>
+                      <p>刪除</p>
+                    </a>  
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
           <!-- hover:relative feature -->
-          <div class="h-10 flex justify-between items-center border-t">
-            <ul class="flex gap-4 p-3">
-              <li class="flex items-center text-gray-500 gap-1 hover:cursor-pointer">
-                <span class="w-3 h-3"><PencilIcon/></span>
-                <p class="text-xs">編輯</p>
-              </li>
-              <li class="flex items-center text-gray-500 gap-1 hover:cursor-pointer">
-                <span class="w-3 h-3"><MagnifyingGlassIcon/></span>
-                <p class="text-xs">周邊</p>
-              </li>
-              <li class="flex items-center text-gray-500 gap-1 hover:cursor-pointer">
-                <span class="w-3 h-3"><BookmarkIcon/></span>
-                <p class="text-xs">筆記</p>
-              </li>
-            </ul>
-            <span class="w-10 h-10 text-gray-500 p-3 border-l"><MapPinIcon/></span>
+          <div class="more hidden">
+            <div class="h-10 flex justify-between items-center border-t">
+              <ul class="flex gap-4 p-3">
+                <li class="flex items-center text-gray-500 gap-1 hover:cursor-pointer" onclick="edit_place.showModal()">
+                  <span class="w-3 h-3"><PencilIcon/></span>
+                  <p class="text-xs">編輯</p>
+                </li>
+                <li class="flex items-center text-gray-500 gap-1 hover:cursor-pointer">
+                  <span class="w-3 h-3"><MagnifyingGlassIcon/></span>
+                  <p class="text-xs">周邊</p>
+                </li>
+                <li class="flex items-center text-gray-500 gap-1 hover:cursor-pointer" onclick="place_note.showModal()">
+                  <span class="w-3 h-3"><BookmarkIcon/></span>
+                  <p class="text-xs">筆記</p>
+                </li>
+                <EditPlaceModal />
+                <!-- place note -->
+                <dialog id="place_note" class="modal">
+                  <div class="modal-box w-screen md:w-[480px]">
+                    <form method="dialog">
+                      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                    </form>
+                    <h2 class="text-2xl font-medium text-center pt-6 mb-4">景點筆記</h2>
+                    <textarea class="w-full h-[500px] textarea textarea-lg focus:border-0 focus:outline-none" placeholder="還沒有寫筆記哦"></textarea>
+                    <div class="w-full flex gap-3 h-20 px-6 py-4 bg-white border-t-2 fixed bottom-0 right-0">
+                      <button class="w-full h-12 px-5 py-3 border border-red-800 text-red-800 text-center rounded-3xl font-medium">
+                        取消
+                      </button>
+                      <button class="w-full h-12 px-5 py-3 bg-red-800 text-white text-center rounded-3xl font-medium">
+                        儲存
+                      </button>
+                    </div>
+                  </div>
+                  <form method="dialog" class="modal-backdrop">
+                    <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                    <button>close</button>
+                  </form>
+                </dialog> 
+              </ul>
+              <span class="w-10 h-10 text-gray-500 p-3 border-l hover:cursor-pointer"><MapPinIcon/></span>
+            </div>
+          </div>
+        
+        </div>
+        <!-- transportation -->
+        <div class="w-full ml-3 py-4 ps-3 border-l border-dashed">
+          <p>自訂交通 0 分</p>
+        </div>
+        <!-- place & transportation -->
+        <div class="w-full bg-gray-100 rounded-xl border">
+          <div class="place flex p-1">
+            <img class="w-[108px] h-[108px] rounded-xl object-cover" src="https://chictirpstorageprod.blob.core.windows.net/poi/8d8b0e7e-b654-4e7f-91b8-096097b84246.jpg">
+            <div class="w-cal flex justify-between">
+              <ul class="px-4 flex flex-col gap-0.5 justify-center">
+                <li class="text-sm font-medium text-orange-400">09:00</li>
+                <li class="font-medium">香港杜莎夫人蠟像館</li>
+                <li class="text-xs text-gray-400">停留 1 時</li>
+              </ul>
+              <div class="dropdown p-1">
+                <button role="button" class="w-5 h-5 rounded-full bg-gray-300 text-white relative">
+                  <EllipsisHorizontalIcon />
+                </button>
+                <!-- dropdown-content 控制開關-->
+                <ul tabindex="0" class="dropdown-content w-32 bg-white rounded border absolute right-[-12px] top-8 shadow-xl">
+                  <li>
+                    <a class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray-100" href="#">
+                      <span class="inline-block w-6 h-6"><CalendarIcon/></span>
+                      <p>移到別天</p>
+                    </a>  
+                  </li>
+                  <li>
+                    <a class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray-100" href="#">
+                      <span class="inline-block w-6 h-6"><DocumentDuplicateIcon/></span>
+                      <p>複製</p>
+                    </a>  
+                  </li>
+                  <li class="border-t">
+                    <a class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray-100" href="#">
+                      <span class="inline-block w-6 h-6"><TrashIcon/></span>
+                      <p>刪除</p>
+                    </a>  
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <!-- hover:relative feature -->
+          <div class="more hidden">
+            <div class="h-10 flex justify-between items-center border-t">
+              <ul class="flex gap-4 p-3">
+                <li class="flex items-center text-gray-500 gap-1 hover:cursor-pointer">
+                  <span class="w-3 h-3"><PencilIcon/></span>
+                  <p class="text-xs">編輯</p>
+                </li>
+                <li class="flex items-center text-gray-500 gap-1 hover:cursor-pointer">
+                  <span class="w-3 h-3"><MagnifyingGlassIcon/></span>
+                  <p class="text-xs">周邊</p>
+                </li>
+                <li class="flex items-center text-gray-500 gap-1 hover:cursor-pointer">
+                  <span class="w-3 h-3"><BookmarkIcon/></span>
+                  <p class="text-xs">筆記</p>
+                </li>
+              </ul>
+              <span class="w-10 h-10 text-gray-500 p-3 border-l"><MapPinIcon/></span>
+            </div>
+          </div>
+        </div>
+        <!-- transportation -->
+        <div class="w-full ml-3 py-4 ps-3 border-l border-dashed">
+          <p>自訂交通 0 分</p>
+        </div>
+        <!-- place -->
+        <div class="w-full bg-gray-100 rounded-xl border">
+          <div class="place flex p-1">
+            <img class="w-[108px] h-[108px] rounded-xl object-cover" src="https://lh3.googleusercontent.com/places/ANJU3DsUY2LM1fuJKUAmH-PF1rJfdcdHY1r2gLmSddnr24aqnSDDkNAG5oMI5BNaQ1xXBbtxiJTyTnixNTKAyl541gqVjZax6o9DbsM=s1600-w480">
+            <div class="w-cal flex justify-between">
+              <ul class="px-4 flex flex-col gap-0.5 justify-center">
+                <li class="text-sm font-medium text-orange-400">10:00</li>
+                <li class="font-medium">天際 100</li>
+                <li class="text-xs text-gray-400">停留 1 時</li>
+              </ul>
+              <div class="dropdown p-1">
+                <button role="button" class="w-5 h-5 rounded-full bg-gray-300 text-white relative">
+                  <EllipsisHorizontalIcon />
+                </button>
+                <!-- dropdown-content 控制開關-->
+                <ul tabindex="0" class="dropdown-content w-32 bg-white rounded border absolute right-[-12px] top-8 shadow-xl">
+                  <li>
+                    <a class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray-100" href="#">
+                      <span class="inline-block w-6 h-6"><CalendarIcon/></span>
+                      <p>移到別天</p>
+                    </a>  
+                  </li>
+                  <li>
+                    <a class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray-100" href="#">
+                      <span class="inline-block w-6 h-6"><DocumentDuplicateIcon/></span>
+                      <p>複製</p>
+                    </a>  
+                  </li>
+                  <li class="border-t">
+                    <a class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray-100" href="#">
+                      <span class="inline-block w-6 h-6"><TrashIcon/></span>
+                      <p>刪除</p>
+                    </a>  
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <!-- hover:relative feature -->
+          <div class="more hidden">
+            <div class="h-10 flex justify-between items-center border-t">
+              <ul class="flex gap-4 p-3">
+                <li class="flex items-center text-gray-500 gap-1 hover:cursor-pointer">
+                  <span class="w-3 h-3"><PencilIcon/></span>
+                  <p class="text-xs">編輯</p>
+                </li>
+                <li class="flex items-center text-gray-500 gap-1 hover:cursor-pointer">
+                  <span class="w-3 h-3"><MagnifyingGlassIcon/></span>
+                  <p class="text-xs">周邊</p>
+                </li>
+                <li class="flex items-center text-gray-500 gap-1 hover:cursor-pointer">
+                  <span class="w-3 h-3"><BookmarkIcon/></span>
+                  <p class="text-xs">筆記</p>
+                </li>
+              </ul>
+              <span class="w-10 h-10 text-gray-500 p-3 border-l"><MapPinIcon/></span>
+            </div>
           </div>
         </div>
       </div>
@@ -136,13 +321,20 @@
 </template>
 
 <script setup>
-import { XMarkIcon, ChevronLeftIcon, ArrowUpTrayIcon, UsersIcon, PencilIcon, TrashIcon, MagnifyingGlassIcon, BookmarkIcon } from '@heroicons/vue/24/outline'
-import ShareScheduleModal from './ShareScheduleModal.vue'
+import { XMarkIcon, ChevronLeftIcon, ArrowUpTrayIcon, UsersIcon, PencilIcon, TrashIcon, MagnifyingGlassIcon, BookmarkIcon, CalendarIcon, DocumentDuplicateIcon } from '@heroicons/vue/24/outline'
 import { EllipsisHorizontalIcon, MapPinIcon } from '@heroicons/vue/24/solid';
+import ShareScheduleModal from './ShareScheduleModal.vue'
+import EditPlaceModal from './EditPlaceModal.vue'
 </script>
 
 <style>
 .date:hover > .dropdown{
   display: inline;
+}
+.place:hover > .more{
+    display: block;
+  }
+.w-cal{
+  width: calc(100% - 108px);
 }
 </style>

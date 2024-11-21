@@ -1,5 +1,4 @@
 <template>
-
   <dialog id="shareScheduleModal" class="modal">
     <div class="modal-box w-screen md:w-[480px] bg-gray-100">
       <!-- close button -->
