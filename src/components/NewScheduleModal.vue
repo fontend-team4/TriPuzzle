@@ -39,7 +39,7 @@ import ScheduleCoverImgModal from "./ScheduleCoverImgModal.vue";
 
       <!-- 主內容區塊，設置 gap-[20px] -->
       <div
-        class="pt-0 px-[20px] pb-[130px] w-[480px] h-[632.75px] flex flex-col gap-[20px] relative"
+        class="pt-0 px-[20px] pb-[50px] w-[480px] h-[552.75px] flex flex-col gap-[20px] relative"
       >
         <!-- 封面照片 -->
         <div class="relative">
@@ -74,17 +74,17 @@ import ScheduleCoverImgModal from "./ScheduleCoverImgModal.vue";
         </div>
 
         <!-- 行程名稱 -->
-        <div>
-          <p class="font-bold">行程名稱</p>
+        <div >
+          <p class="mb-2 font-bold">行程名稱</p>
           <input
             type="text"
             placeholder="幫行程取個名字吧"
-            class="border-solid border border-primary-100 rounded-lg w-[436px] h-[40px] py-2 px-5"
+            class="border-solid border border-primary-100 rounded-lg w-[100%] h-[40px] py-2 px-5"
           />
         </div>
 
         <!-- 行程日期 -->
-        <div class="w-[436px]">
+        <div class="w-[100%]">
           <div>
             <p class="mb-2 font-bold">行程日期</p>
           </div>
@@ -122,7 +122,7 @@ import ScheduleCoverImgModal from "./ScheduleCoverImgModal.vue";
         <div>
           <p class="mb-2 font-bold">主要交通方式</p>
           <div
-            class="relative w-[436px] h-[40px] border border-primary-100 rounded-lg px-[20px] py-[8px] flex items-center justify-between"
+            class="relative w-[100%] h-[40px] border border-primary-100 rounded-lg px-[20px] py-[8px] flex items-center justify-between"
           >
             <span class="text-gray-400">自訂</span>
             <input type="checkbox" id="toggle-transportation" class="hidden" />
@@ -163,12 +163,16 @@ import ScheduleCoverImgModal from "./ScheduleCoverImgModal.vue";
         </div>
       </div>
 
-      <div class="w-[480px] h-[80px] absolute bottom-0 sticky">
+      <div class="w-[100%] h-[80px] absolute bottom-0 sticky border-t-[1px] border-slate-200">
         <form method="dialog">
           <button class="btn">Close</button>
         </form>
+        
       </div>
     </div>
+    <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
   </dialog>
 </template>
 
