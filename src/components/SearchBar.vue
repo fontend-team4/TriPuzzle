@@ -203,12 +203,10 @@ import SearchArea from './SearchArea.vue';
     height: 24px;
   }
 
-
   .block-category{
     position: relative;
     overflow-x: auto;
     -ms-overflow-style: none;
-
     scrollbar-width: none
   }
 
@@ -238,6 +236,42 @@ import SearchArea from './SearchArea.vue';
     color: #D23430;
     border-bottom: 2px solid #D23430;
     pointer-events: none;
+  }
+
+  .block-promo {
+    padding:24px
+  }
+
+  .block-promo .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px
+  }
+
+  .block-promo .tag-item {
+      display: inline-flex;
+      align-items: center;
+      color: #2d4057;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 24px;
+      padding: 4px 12px;
+      background-color: #f2f4f8;
+      border-radius: 100px;
+      cursor: pointer;
+      transition: .3s
+  }
+
+  .block-promo .tag-item:hover {
+      background-color: #ebeef4
+  }
+
+  .block-promo .tag-item.active {
+      padding: 4px 12px 4px 8px;
+      background-color: #369ad91a;
+      color: #369ad9
   }
 
   @media screen and (min-width: 1200px) {
