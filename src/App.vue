@@ -12,8 +12,8 @@ import PlacesModal from './components/PlacesModal.vue'
 <template>
 <!-- <MapToggle /> -->
  <!-- <DetailModal /> -->
-<!-- <PlacesComponent /> -->
- <PlacesModal />
+<PlacesComponent />
+ <!-- <PlacesModal /> -->
   <!-- <RouterView /> -->
 </template>
 

@@ -4,22 +4,10 @@ import fakeLocation from "../../fakeLocation.json";
 import { ref, onMounted, computed } from "vue"
 
 const fakeLocations = ref([]);
-const items = ref([]);
 
-const initializeItems = () => {
-  items.value = fakeLocation.map((location) => ({
-    id: location.id,
-    url: location.image,
-    title: location.name,
-    rating: location.rating.toString(),
-    location: location.city,
-    mapUrl: location.google_map,
-  }));
-};
 
 onMounted(() => {
   fakeLocations.value = fakeLocation;
-  initializeItems(); // 初始化 items
 });
 
 
