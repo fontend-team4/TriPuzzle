@@ -1,10 +1,10 @@
 <template>
   <button class="hover:cursor-pointer" onclick="scheduleSummaryModal.showModal()">
-    <span class="inline-block w-14 h-14 p-3 bg-red-100 rounded-xl text-red-700"><ChatBubbleOvalLeftEllipsisIcon/></span>
+    <span class="inline-block w-14 h-14 p-3 bg-[#FDE4E3] rounded-xl text-[#D23430]"><ChatBubbleOvalLeftEllipsisIcon/></span>
     <p class="text-sm">行程摘要</p>
   </button>
   <dialog id="scheduleSummaryModal" class="modal">
-    <div class="modal-box w-screen md:w-[480px] bg-gray-100 relative">
+    <div class="modal-box w-screen md:w-[480px] relative">
       <form method="dialog">
         <!-- close button -->
         <div class="w-full h-10">
@@ -42,10 +42,10 @@
         </div>
         <!-- bottob btn -->
         <div class="w-full flex gap-3 h-20 px-6 py-4 bg-white border-t-2 fixed bottom-0 right-0">
-          <button class="w-full h-12 px-5 py-3 border border-red-800 text-red-800 text-center rounded-3xl font-medium">
+          <button class="w-full h-12 px-5 py-3 border border-[#D23430] text-[#D23430] hover:bg-[#FDE4E3] text-center rounded-3xl font-medium">
             取消
           </button>
-          <button class="w-full h-12 px-5 py-3 bg-red-800 text-white text-center rounded-3xl font-medium">
+          <button class="w-full h-12 px-5 py-3 bg-[#D23430] hover:bg-[#B12824] text-white text-center rounded-3xl font-medium">
             複製摘要
           </button>
         </div>
