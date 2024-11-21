@@ -60,20 +60,7 @@ const toggleFavorite = (item) => {
 
 <template>
   <div>
-    <!-- 熱門景點 -->
-    <div class="w-full h-full px-10 pb-14 bg-slate-200">
-      <ul class="p-0 text-gray-700 menu menu-horizontal rounded-box hover:bg-transparent">
-        <li>
-    <details >
-      <summary class=" hover:bg-transparent active:bg-transparent active:text-gray-700">熱門景點</summary>
-      <ul class="z-50 !p-0 !w-50 ">
-        <li ><a class="rounded-none hover:bg-primary-200" >熱門景點</a></li>
-        <li><a class="rounded-none hover:bg-primary-200" >熱門貼文</a></li>
-      </ul>
-    </details>
-  </li>
-      </ul>
-
+    <div class="w-full h-full px-10 pt-4 pb-14 bg-gray">
       <!-- 瀑布流 -->
       <div
         class="grid"
@@ -111,7 +98,7 @@ const toggleFavorite = (item) => {
                   {{ item.title }}
                 </h3>
                 <div class="flex justify-between">
-                  <div class="flex text-gray-600">
+                  <div class="flex text-slate-500">
                     <StarIcon class="text-yellow-500 size-6" /><span>{{
                       item.rating
                     }}</span

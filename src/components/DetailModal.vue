@@ -25,19 +25,19 @@ import { StarIcon } from "@heroicons/vue/24/solid";
           </div>
           <div class="inline-flex gap-1 pl-3 pr-3 text-sm align-middle">加入行程<span>45</span>次</div>
         </div>
-        <div class="flex pt-2.5 pb-3.5 border-b">
+        <div class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px]">
           <MapPinIcon class="size-5"/>
           <p class="pl-10 text-sm">台灣 北部</p>
         </div>
-        <div class="flex pt-2.5 pb-3.5 border-b">
+        <div class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px]">
           <CalendarIcon class="size-5"/>
           <p class="pl-10 text-sm">簡介</p>
         </div>
-        <div class="flex pt-2.5 pb-3.5 border-b">
+        <div class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px]">
           <PhoneIcon class="size-5"/>
           <p class="pl-10 text-sm">09001122233</p>
         </div>
-        <div class="flex pt-2.5 pb-3.5  border-b">
+        <div class="flex pt-2.5 pb-3.5  border-b-slate-200 border-b-[1px]">
           <MagnifyingGlassIcon class="size-5"/>
           <div class="inline-flex items-center gap-1 pl-10 text-sm">
             <div class="pr-3.5">Google</div>
@@ -46,7 +46,7 @@ import { StarIcon } from "@heroicons/vue/24/solid";
             <div><button class="px-4 py-1 rounded-full bg-gray">文章</button></div>
           </div>
         </div>
-        <div class="flex pt-2.5 pb-3.5 border-b">
+        <div class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px]">
           <GlobeAltIcon class="size-5"/>
           <p class="pl-10 text-sm">網址</p>
         </div>
