@@ -4,7 +4,7 @@ import {
   HeartIcon,
   PencilIcon,
   Cog8ToothIcon
-} from '@heroicons/vue/24/solid';
+} from '@heroicons/vue/24/solid'; 
 </script>
 
 <template>
@@ -28,13 +28,13 @@ import {
             <div>
               <div class="block mt-2 mr-20 pl-4">
                 <p class="text-xl font-semibold mt-4">XXX</p>
-                <p class="text-gray-500 mt-4">0行程 ・ 0旅遊小書</p>
+                <p class="mt-4">0行程 ・ 0旅遊小書</p>
                 <div class="flex justify-between items-center mt-4 gap-4">
-                  <button class="px-4 py-1 text-gray-500 border rounded-full hover:text-blue-500 transition flex items-center">
+                  <button class="px-4 py-1 text-primary-600 border rounded-full hover:text-primary-700 transition flex items-center">
                     <PencilIcon class="w-4 h-4 mr-2" />
                     <span>編輯</span>
                   </button>
-                  <button class="w-8 h-8 text-gray-500 border rounded-full transition items-center justify-center flex">
+                  <button class="w-8 h-8  border rounded-full transition items-center justify-center flex">
                     <Cog8ToothIcon class="w-4 h-4" />
                   </button>
                 </div>
@@ -55,18 +55,15 @@ import {
             </div>
           </div>
         </div>
-
-        <!-- 想要更多專屬功能區塊 -->
-        <div class="ml-3 p-2 rounded-lg flex items-center bg-gray-100 justify-between w-full sm:max-w-80 sm:w-auto">
+        <div class="ml-3 p-2 rounded-lg flex items-center bg-gray justify-between w-full sm:max-w-80 sm:w-auto">
           <div class="flex flex-col mr-4">
             <p class="mt-2 font-medium mb-1 text-sm">想要更多專屬功能？</p>
             <p class="mb-2 text-sm">快速登入/註冊去趣會員</p>
           </div>
-          <button class="px-6 py-2 bg-yellow-500 text-white rounded-full transition">
+          <button class="px-6 py-2 bg-secondary-500 text-primary-800 rounded-full transition">
             立即升級
           </button>
         </div>
-
         <div class="p-8">
           <h2 class="flex font-semibold text-lg text-gray-800"><HeartIcon class="w-6 h-6"/>收藏</h2>
           <hr>
@@ -78,8 +75,8 @@ import {
             alt="Empty collection"
             class="w-20 h-20 mx-auto mb-4"
           >
-          <p class="text-gray-500 mb-4">「收藏」中還沒有景點哦</p>
-          <button class="px-6 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition">
+          <p class="mb-4">「收藏」中還沒有景點哦</p>
+          <button class="px-6 py-2 bg-primary-600 text-white rounded-full hover:bg-primary-700 transition">
             探索景點
           </button>
         </div>

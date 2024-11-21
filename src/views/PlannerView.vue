@@ -6,6 +6,6 @@ import SideBar from '@/components/SideBar.vue';
     SideBar+ MapComponent + MainComponent
   </div>
   <div>
-    <SideBar />
+    <!-- <SideBar /> -->
   </div>
 </template>
