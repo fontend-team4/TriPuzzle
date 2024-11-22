@@ -6,15 +6,17 @@ import DetailModal from './components/DetailModal.vue'
 import DetailCarousel from './components/DetailCarousel.vue'
 import PlacesComponent from './components/PlacesComponent.vue'
 import PlacesModal from './components/PlacesModal.vue'
+import MapComponent from './components/MapComponent.vue'
 
 </script>
 
 <template>
 <!-- <MapToggle /> -->
  <!-- <DetailModal /> -->
-<PlacesComponent />
+<!-- <PlacesComponent /> -->
  <!-- <PlacesModal /> -->
   <!-- <RouterView /> -->
+  <MapComponent />
 </template>
 
 
