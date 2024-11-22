@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import LoginDialog from './LoginDialog.vue';
 import {
   MagnifyingGlassIcon,
   ShoppingCartIcon,
@@ -22,7 +23,7 @@ const toggleMenu = () => {
       class="lg:hidden fixed top-4 left-20 z-60 bg-white text-black p-2 rounded-lg shadow"
       @click="toggleMenu"
       aria-label="Toggle Menu"
-      :aria-expanded="isMenuOpen"
+      :aria-expanded="isMenuOpen ? 'true' : 'false' "
     >
       <Bars3Icon class="w-6 h-6" />
     </button>
@@ -85,12 +86,13 @@ const toggleMenu = () => {
       </ul>
     </div>
   </div>
+  <!-- <LoginDialog /> -->
 </template>
 
 <style scoped>
 @media (min-width: 1024px) {
   #menu {
-    transform: none !important;
+    transform: none;
   }
 }
 </style>

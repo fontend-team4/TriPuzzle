@@ -1,15 +1,25 @@
 <script setup>
+import { ref } from 'vue';
 import SideBar from '@/components/SideBar.vue';
-import {
-  HeartIcon,
-  PencilIcon,
-  Cog8ToothIcon
-} from '@heroicons/vue/24/solid'; 
+import {  HeartIcon, 
+          PencilIcon, 
+          Cog8ToothIcon, 
+          ShareIcon, 
+          ArrowRightStartOnRectangleIcon, 
+          EnvelopeIcon,
+          ChatBubbleLeftEllipsisIcon,
+} from '@heroicons/vue/24/solid';
+
+const isOpen = ref(false);
+
+const toggleMenu = () => {
+  isOpen.value = !isOpen.value;
+};
 </script>
 
 <template>
+  <!-- <SideBar /> -->
   <div class="flex min-h-screen bg-white">
-    <SideBar />
     <div class="flex-1 p-2 main-content">
       <div class="ml-4">
         <img
@@ -34,9 +44,29 @@ import {
                     <PencilIcon class="w-4 h-4 mr-2" />
                     <span>編輯</span>
                   </button>
-                  <button class="w-8 h-8  border rounded-full transition items-center justify-center flex">
-                    <Cog8ToothIcon class="w-4 h-4" />
-                  </button>
+                  <div class="flex relative"> 
+                    <button @click="toggleMenu" class="w-8 h-8 border rounded-full transition items-center justify-center flex">
+                      <Cog8ToothIcon class="w-4 h-4" />
+                    </button>
+                      <ul v-if="isOpen" class="absolute top-full mt-2 bg-white border border-gray shadow-xl rounded-lg w-52">
+                        <li class="py-2 px-4 hover:bg-gray flex items-center">
+                          <ShareIcon class="h-4 w-4 mr-2" />
+                          分享
+                        </li>
+                        <li class="py-2 px-4 hover:bg-gray flex items-center">
+                          <EnvelopeIcon class="h-4 w-4 mr-2" />
+                          服務條款與隱私聲明
+                        </li>
+                        <li class="py-2 px-4 hover:bg-gray flex items-center">
+                          <ChatBubbleLeftEllipsisIcon class="h-4 w-4 mr-2" />
+                          意見回饋
+                        </li>
+                        <li class="py-2 px-4 hover:bg-gray flex items-center">
+                          <ArrowRightStartOnRectangleIcon class="h-4 w-4 mr-2" />
+                          登出
+                        </li>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
