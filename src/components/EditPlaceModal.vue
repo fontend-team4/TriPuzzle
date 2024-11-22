@@ -1,6 +1,6 @@
 <template>
   <dialog id="edit_place" class="modal">
-    <div class="modal-box min-w-full md:min-w-[480px] min-h-screen md:min-h-[90%] px-0 ">
+    <div class="modal-box min-w-full md:min-w-[480px] min-h-screen md:min-h-[90%] px-0">
       <!-- close button -->
       <form method="dialog">
         <div class="w-full h-10">
@@ -37,38 +37,38 @@
           <div>
             <p class="mb-2">抵達時間</p>
             <div class="px-5 bg-[#EEEEEE] rounded-lg">
-              <div class="py-3 flex justify-between border-b-2 border-dashed">
-                <label for="default" class="w-5/6 flex gap-1 items-center font-medium py-1">
-                  <p class="pl-2">系統規劃</p>
-                  <p class="w-32 px-3 ms-10 text-sm text-[#D23430]">08:00</p>
-                </label>
+              <div class="py-3 flex flex-row-reverse justify-between border-b-2 border-dashed">
                 <input type="radio" name="arrival-time" id="default" checked class="radio bg-white checked:bg-[#D23430]">
+                <label for="default" class="w-5/6 flex gap-1 items-center font-medium py-1 text-gray-400">
+                  <p class="pl-2">系統規劃</p>
+                  <p class="time w-32 px-3 ms-10 text-sm">08:00</p>
+                </label>
               </div>
-              <div class="py-3 flex justify-between border-b-2 border-dashed text-gray-400">
+              <div class="py-3 flex flex-row-reverse justify-between border-b-2 border-dashed text-gray-400">
+                <input type="radio" name="arrival-time" id="user-setting" class="radio bg-white checked:bg-[#D23430]">
                 <label for="user-setting" class="w-5/6 flex gap-1 items-center font-medium">
                   <p class="pl-2">手動設定</p>
-                  <input type="time" name="" id="" value="08:00" class="w-36 text-sm rounded-full border-2 px-4 py-1 ms-2">
+                  <input type="time" name="" id="" value="08:00" class="time w-36 text-sm rounded-full border-2 px-4 py-1 ms-2">
                 </label>
-                <input type="radio" name="arrival-time" id="user-setting" class="radio bg-white checked:bg-[#D23430]">
               </div>
             </div>
           </div>
           <div>
             <p class="mb-2">此景點</p>
             <div class="px-5 bg-[#EEEEEE] rounded-lg">
-              <div class="py-3 flex justify-between items-center border-b-2 border-dashed">
-                <label for="stay" class="w-5/6 flex gap-1 items-center font-medium">
-                  <p class="pl-2">停留時間</p>
-                  <input type="time" name="" id="" value="08:00" class="w-36 text-sm rounded-full border-2 px-4 py-1 ms-2">
-                </label>
+              <div class="py-3 flex flex-row-reverse justify-between border-b-2 border-dashed">
                 <input type="radio" name="during-time" id="stay" checked class="radio bg-white checked:bg-[#D23430]">
+                <label for="stay" class="w-5/6 flex gap-1 items-center font-medium text-gray-400">
+                  <p class="pl-2">停留時間</p>
+                  <input type="time" name="" id="" value="08:00" class="time w-36 text-sm rounded-full border-2 px-4 py-1 ms-2">
+                </label>
               </div>
-              <div class="py-3 flex justify-between border-b-2 border-dashed text-gray-400">
+              <div class="py-3 flex flex-row-reverse justify-between border-b-2 border-dashed text-gray-400">
+                <input type="radio" name="during-time" id="leave" class="radio bg-white checked:bg-[#D23430]">
                 <label for="leave" class="w-5/6 flex gap-1 items-center font-medium">
                   <p class="pl-2">離開時間</p>
-                  <input type="time" name="" id="" value="09:00" class="w-36 text-sm rounded-full border-2 px-4 py-1 ms-2">
+                  <input type="time" name="" id="" value="09:00" class="time w-36 text-sm rounded-full border-2 px-4 py-1 ms-2">
                 </label>
-                <input type="radio" name="during-time" id="leave" class="radio bg-white checked:bg-[#D23430]">
               </div>
             </div>
           </div>
@@ -94,3 +94,12 @@
 <script setup>
 import { ChevronDownIcon, MapPinIcon } from '@heroicons/vue/24/outline';
 </script>
+
+<style>
+input[type='radio']:checked ~ label > p{
+  color: #2d4057
+}
+input[type='radio']:checked ~ label > .time{
+  color: #D23430;
+}
+</style>

@@ -2,7 +2,7 @@
   <div class="min-w-full h-screen flex flex-row-reverse bg-[#EEEEEE] z-10">
     <div class="w-full lg:w-96 h-screen bg-white shadow-xl">
       <!-- header -->
-      <div class="bg-[#D23430] z-10 py-4 ps-4 pe-14 relative">
+      <div class="bg-[#D23430] z-10 py-5 ps-4 pe-14 relative">
         <div class="flex items-center justify-between gap-0.5">
           <div class="flex items-center hover:cursor-pointer">
             <span class="inline-block w-4 h-4 text-white"><ChevronLeftIcon /></span>
@@ -11,7 +11,7 @@
           <div class="w-5 h-5 text-white hover:cursor-pointer" onclick="shareScheduleModal.showModal()"><ArrowUpTrayIcon /></div>
           <ShareScheduleModal />
         </div>
-        <button class="bg-[#EEEEEE] text-gray-600 w-8 h-8 rounded-full absolute top-2.5 right-4 p-1.5">
+        <button class="bg-[#EEEEEE] opacity-80 text-gray-600 w-8 h-8 rounded-full absolute top-3.5 right-4 p-1.5 hover:opacity-90 tooltip tooltip-bottom" data-tip="隱藏行程">
           <XMarkIcon />
         </button>
       </div>
@@ -93,7 +93,7 @@
       <div class="pt-5 px-5 mb-3">
         <div class="date w-28 flex gap-1 cursor-pointer">
           <p class="font-medium">11/15 週五</p>
-          <div class="dropdown hidden">
+          <div class="dropdown lg:hidden">
             <div class="w-6 h-6" tabindex="0" role="button">
               <EllipsisHorizontalIcon/>
             </div>
@@ -131,7 +131,8 @@
                   <li>
                     <a class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-[#EEEEEE]" href="#">
                       <span class="inline-block w-6 h-6"><CalendarIcon/></span>
-                      <p>移到別天</p>
+                      <p onclick="moveDate.showModal()">移到別天</p>
+                      <MoveToOtherDateModal />
                     </a>  
                   </li>
                   <li>
@@ -377,6 +378,7 @@ import { EllipsisHorizontalIcon, MapPinIcon } from '@heroicons/vue/24/solid';
 import ShareScheduleModal from './ShareScheduleModal.vue'
 import EditPlaceModal from './EditPlaceModal.vue'
 import DeletePerDayModal from './DeletePerDayModal.vue';
+import MoveToOtherDateModal from './MoveToOtherDateModal.vue';
 </script>
 
 <style>

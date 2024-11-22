@@ -78,7 +78,7 @@
             <div>
               <div class="flex items-center mb-2">
                 <span class="inline-block px-2 me-1 text-orange-400 bg-orange-200 rounded-md text-[14px]">主揪</span>
-                <p>王小明</p>
+                <p>王先生</p>
               </div>
               <p class="text-gray-400">2 行程</p>
             </div>
@@ -87,8 +87,8 @@
             <img class="w-11 h-11" src="https://web.chictrip.com.tw/assets/waterview_default.f746ada9.svg" alt="">
             <div class="w-full flex justify-between items-center">
               <div>
-                <p class="mb-2">王小明</p>
-                <p class="text-gray-400">2 行程</p>
+                <p class="mb-2">林小姐</p>
+                <p class="text-gray-400">3 行程</p>
               </div>
               <div class="dropdown dropdown-top dropdown-end">
                 <div tabindex="0" role="button" class="hover:cursor-pointer py-2 text-gray-400">可檢視
@@ -96,7 +96,9 @@
                 </div>
                 <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-lg z-[1] w-28 px-0 py-2 shadow-lg">
                   <li><a class="hover:rounded-none hover:bg-[#EEEEEE] font-medium py-3">可檢視</a></li>
-                  <li><a class="hover:rounded-none hover:bg-[#EEEEEE] font-medium py-3">退出共編</a></li>
+                  <li><a class="hover:rounded-none hover:bg-[#EEEEEE] font-medium py-3" onclick="exitToggle.showModal()">退出共編
+                  </a></li>
+                  <ExitCoEditModal />
                 </ul>
               </div>
             </div>
@@ -116,6 +118,7 @@ import { ref } from 'vue'
 import { LinkIcon, ShareIcon, ChevronDownIcon} from '@heroicons/vue/24/outline'
 import ScheduleSummaryModal from './ScheduleSummaryModal.vue';
 import ExportScheduleModal from './ExportScheduleModal.vue';
+import ExitCoEditModal from './ExitCoEditModal.vue';
 
 const activeTab = ref('share')
 </script>
