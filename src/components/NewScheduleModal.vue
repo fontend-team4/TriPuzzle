@@ -1,5 +1,14 @@
 <script setup>
 import ScheduleCoverImgModal from "./ScheduleCoverImgModal.vue";
+import { ref } from "vue";
+
+const isModalVisible = ref(false);
+
+const handleLabelClick = () => {
+  // 點擊收回下拉式選單(再點擊一次)
+  document.getElementById("dropdown-toggle").click();
+
+};
 </script>
 
 <template>
@@ -37,44 +46,115 @@ import ScheduleCoverImgModal from "./ScheduleCoverImgModal.vue";
         </header>
       </div>
 
-      <!-- 主內容區塊，設置 gap-[20px] -->
+      <!-- 主內容區塊 -->
       <div
         class="pt-0 px-[20px] pb-[50px] w-[480px] h-[552.75px] flex flex-col gap-[20px] relative"
       >
         <!-- 封面照片 -->
         <div class="relative">
           <p class="font-bold">封面照片</p>
-          <div class="absolute right-[20px] bottom-[16px] z-10 flex items-center justify-center gap-2">
-            <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="2.5"
-            stroke="currentColor"
-            class="size-5 font-bold text-white "
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
-            />
-          </svg>
-          <p class="font-bold text-sm text-white ">更換</p>
-        </div>
-         
+          <!-- 隱藏的 Checkbox -->
+          <input type="checkbox" id="dropdown-toggle" class="hidden peer" />
 
-        <div class="relative w-full h-auto rounded-xl overflow-hidden">
-      <img
-        src="https://chictirpstorageprod.blob.core.windows.net/system/166b42c7-fc3c-4708-ab2b-f9730bfd1b8a.jpg"
-        alt="封面照片"
-        class="w-full h-full object-cover"
-      />
-      <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent"></div>
-    </div>
+          <!-- 使用 Label 包裹按鈕 -->
+          <label
+            for="dropdown-toggle"
+          
+            class="w-[82px] h-[32px] absolute right-[20px] bottom-[16px] z-10 flex items-center justify-center gap-2 border-[1px] border-white rounded-3xl py-[4px] px-[12px] cursor-pointer"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2.5"
+              stroke="currentColor"
+              class="size-5 font-bold text-white"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
+              />
+            </svg>
+            <p class="font-bold text-sm text-white">更換</p>
+          </label>
+
+          <!-- 下拉選單(插入更換圖片modal) -->
+          <ul
+            class="font-bold replace-img-btn absolute right-0 top-full mt-2 w-[153px] h-[80px] bg-white rounded-lg shadow-lg transition-all duration-300 ease-in-out max-h-0 overflow-hidden opacity-0 peer-checked:max-h-[150px] peer-checked:opacity-100 z-10"
+          >
+            <li
+              class="h-[50%] px-[20px] py-[8px] hover:bg-gray-100 cursor-pointer flex items-center"
+              @click="isModalVisible = true"
+              
+            ><label for="dropdown-toggle"   class="flex items-center cursor-pointer w-full" >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-[24px] h-[24px]"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+                />
+              </svg>
+              <span class="pl-[5px] text-[14px]">從圖庫中挑選</span>
+            </label>
+          
+            </li>
+            <li
+              class="h-[50%] px-[20px] py-[8px] hover:bg-gray-100 cursor-pointer flex items-center border-t-[1px] border-slate-200"
+            >
+              <label
+                for="file-upload"
+                @click="handleLabelClick"
+                class="flex items-center cursor-pointer w-full"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="w-[24px] h-[24px]"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"
+                  />
+                </svg>
+                <span class="pl-[5px] text-[14px]">上傳照片</span>
+              </label>
+
+              <input id="file-upload" type="file" class="hidden" />
+            </li>
+          </ul>
+
+          <!-- ScheduleCoverImgModal 彈窗 -->
+          <ScheduleCoverImgModal
+            v-if="isModalVisible"
+            @close="isModalVisible = false"
+          />
+
+          <div class="relative w-full h-auto rounded-xl overflow-hidden">
+            <img
+              src="https://chictirpstorageprod.blob.core.windows.net/system/166b42c7-fc3c-4708-ab2b-f9730bfd1b8a.jpg"
+              alt="封面照片"
+              class="w-full h-full object-cover"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent"
+            ></div>
+          </div>
         </div>
 
         <!-- 行程名稱 -->
-        <div >
+        <div>
           <p class="mb-2 font-bold">行程名稱</p>
           <input
             type="text"
@@ -124,7 +204,7 @@ import ScheduleCoverImgModal from "./ScheduleCoverImgModal.vue";
           <div
             class="relative w-[100%] h-[40px] border border-primary-100 rounded-lg px-[20px] py-[8px] flex items-center justify-between"
           >
-            <span class="text-gray-400">自訂</span>
+            <span>自訂</span>
             <input type="checkbox" id="toggle-transportation" class="hidden" />
             <label for="toggle-transportation" class="cursor-pointer">
               <svg
@@ -145,16 +225,14 @@ import ScheduleCoverImgModal from "./ScheduleCoverImgModal.vue";
               <!-- hover透過script綁定邏輯 -->
             </label>
             <ul
-              class="transportation-area absolute left-0 bottom-[50px] mb-1 w-full bg-white border-primary-100 rounded-lg shadow-lg hidden transition-all duration-500 opacity-0"
+              class="h-[210px] transportation-area absolute left-0 bottom-[50px] mb-1 w-full bg-white border-primary-100 shadow-lg hidden transition-all duration-500 opacity-0"
             >
-              <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">走路</li>
-              <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">汽車</li>
-              <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                大眾運輸
-              </li>
-              <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">機車</li>
+              <li class="px-4 py-2 cursor-pointer">走路</li>
+              <li class="px-4 py-2 cursor-pointer">汽車</li>
+              <li class="px-4 py-2 cursor-pointer">大眾運輸</li>
+              <li class="px-4 py-2 cursor-pointer">機車</li>
               <li
-                class="px-4 py-2 hover:bg-gray-100 cursor-pointer bg-primary-100"
+                class="px-4 py-2 cursor-pointer bg-primary-300 text-primary-600 font-bold"
               >
                 自訂
               </li>
@@ -163,16 +241,17 @@ import ScheduleCoverImgModal from "./ScheduleCoverImgModal.vue";
         </div>
       </div>
 
-      <div class="w-[100%] h-[80px] absolute bottom-0 sticky border-t-[1px] border-slate-200">
+      <div
+        class="w-[100%] h-[80px] absolute bottom-0 sticky border-t-[1px] border-slate-200"
+      >
         <form method="dialog">
           <button class="btn">Close</button>
         </form>
-        
       </div>
     </div>
     <form method="dialog" class="modal-backdrop">
-    <button>close</button>
-  </form>
+      <button>close</button>
+    </form>
   </dialog>
 </template>
 
@@ -192,5 +271,10 @@ import ScheduleCoverImgModal from "./ScheduleCoverImgModal.vue";
 /* 圖標旋轉 */
 #toggle-transportation:checked + label svg {
   transform: rotate(180deg);
+}
+
+.transportation-area li:hover,
+.replace-img-btn li:hover {
+  background-color: #fffae3;
 }
 </style>
