@@ -1,5 +1,5 @@
 <template>
-  <div class="min-w-full h-screen flex flex-row-reverse bg-[#EEEEEE]">
+  <div class="min-w-full h-screen flex flex-row-reverse bg-[#EEEEEE] z-10">
     <div class="w-full lg:w-96 h-screen bg-white shadow-xl">
       <!-- header -->
       <div class="bg-[#D23430] z-10 py-4 ps-4 pe-14 relative">
@@ -11,14 +11,13 @@
           <div class="w-5 h-5 text-white hover:cursor-pointer" onclick="shareScheduleModal.showModal()"><ArrowUpTrayIcon /></div>
           <ShareScheduleModal />
         </div>
-        <button class="bg-[#EEEEEE] text-gray-400 w-8 h-8 rounded-full absolute top-2.5 right-4 p-1.5">
+        <button class="bg-[#EEEEEE] text-gray-600 w-8 h-8 rounded-full absolute top-2.5 right-4 p-1.5">
           <XMarkIcon />
         </button>
       </div>
       <!-- date tab -->
       <div class="flex border-b ">
         <div class="w-full h-12 flex pt-2 ps-8 pe-3 overflow-x-scroll ">
-          <!-- <p class="me-4 whitespace-nowrap pb-2 text-gray-500 font-medium text-sm">總覽頁</p> -->
           <ul class="flex gap-4">
             <li class="whitespace-nowrap"><a href="" class="pb-2 text-gray-800 font-medium text-sm border-b-2 border-[#D23430]">總覽頁</a></li>
             <li class="whitespace-nowrap"><a href="" class="pb-2 text-gray-500 font-medium text-sm hover:text-gray-800 hover:border-b-2 hover:border-[#D23430]">第1天</a></li>
@@ -53,7 +52,7 @@
             </form>
             <h2 class="text-2xl font-medium text-center pt-6 mb-4">行程筆記</h2>
             <textarea class="w-full h-[500px] textarea textarea-lg focus:border-0 focus:outline-none" placeholder="記下重要的旅行細節吧"></textarea>
-            <div class="w-full flex gap-3 h-20 px-6 py-4 bg-white border-t-2 fixed bottom-0 right-0">
+            <div class="w-full flex gap-3 h-20 px-6 py-4 bg-white border-t fixed bottom-0 right-0">
               <button class="w-full h-12 px-5 py-3 border border-[#D23430] text-[#D23430] text-center rounded-3xl font-medium hover:bg-[#FDE4E3]">
                 取消
               </button>
@@ -159,7 +158,7 @@
                   <span class="w-3 h-3"><PencilIcon/></span>
                   <p class="text-xs">編輯</p>
                 </li>
-                <!-- <EditPlaceModal /> -->
+                <EditPlaceModal />
                 <li class="flex items-center text-gray-500 gap-1 hover:cursor-pointer">
                   <span class="w-3 h-3"><MagnifyingGlassIcon/></span>
                   <p class="text-xs">周邊</p>
@@ -170,13 +169,13 @@
                 </li>
                 <!-- place note -->
                 <dialog id="place_note_1" class="modal">
-                  <div class="modal-box min-w-min-w-full md:min-w-[480px] min-h-screen md:min-h-[90%]">
+                  <div class="modal-box min-w-full md:min-w-[480px] min-h-screen md:min-h-[90%]">
                     <form method="dialog">
                       <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
                     </form>
                     <h2 class="text-2xl font-medium text-center pt-6 mb-4">景點筆記</h2>
                     <textarea class="w-full h-[500px] textarea textarea-lg focus:border-0 focus:outline-none" placeholder="還沒有寫筆記哦"></textarea>
-                    <div class="w-full flex gap-3 h-20 px-6 py-4 bg-white border-t-2 fixed bottom-0 right-0">
+                    <div class="w-full flex gap-3 h-20 px-6 py-4 bg-white border-t fixed bottom-0 right-0">
                       <button class="w-full h-12 px-5 py-3 border border-[#D23430] text-[#D23430] text-center rounded-3xl font-medium hover:bg-[#FDE4E3]">
                         取消
                       </button>
@@ -262,7 +261,7 @@
                     </form>
                     <h2 class="text-2xl font-medium text-center pt-6 mb-4">景點筆記</h2>
                     <textarea class="w-full h-[500px] textarea textarea-lg focus:border-0 focus:outline-none" placeholder="還沒有寫筆記哦"></textarea>
-                    <div class="w-full flex gap-3 h-20 px-6 py-4 bg-white border-t-2 fixed bottom-0 right-0">
+                    <div class="w-full flex gap-3 h-20 px-6 py-4 bg-white border-t fixed bottom-0 right-0">
                       <button class="w-full h-12 px-5 py-3 border border-[#D23430] text-[#D23430] text-center rounded-3xl font-medium hover:bg-[#FDE4E3]">
                         取消
                       </button>
@@ -348,7 +347,7 @@
                     </form>
                     <h2 class="text-2xl font-medium text-center pt-6 mb-4">景點筆記</h2>
                     <textarea class="w-full h-[500px] textarea textarea-lg focus:border-0 focus:outline-none" placeholder="還沒有寫筆記哦"></textarea>
-                    <div class="w-full flex gap-3 h-20 px-6 py-4 bg-white border-t-2 fixed bottom-0 right-0">
+                    <div class="w-full flex gap-3 h-20 px-6 py-4 bg-white border-t fixed bottom-0 right-0">
                       <button class="w-full h-12 px-5 py-3 border border-[#D23430] text-[#D23430] text-center rounded-3xl font-medium hover:bg-[#FDE4E3]">
                         取消
                       </button>

@@ -21,8 +21,8 @@
             <h3 class="text-2xl font-medium text-center mb-4">寄送 Email</h3>
             <input type="text" placeholder="輸入要寄送的 Email" class="input input-bordered w-full px-6 focus:outline-[#D23430]" />
           </div>
-          <!-- bottob btn -->
-          <div class="w-full flex gap-3 h-20 px-6 py-4 bg-white border-t-2 fixed bottom-0 right-0">
+          <!-- bottom btn -->
+          <div class="w-full flex gap-3 h-20 px-6 py-4 bg-white border-t fixed bottom-0 right-0">
             <button class="w-full h-12 px-5 py-3 border border-[#D23430] text-[#D23430] text-center rounded-3xl font-medium hover:bg-[#FDE4E3]">
               取消
             </button>

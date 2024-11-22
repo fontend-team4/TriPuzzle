@@ -40,8 +40,8 @@
             <p>當天沒有行程</p>
           </div>
         </div>
-        <!-- bottob btn -->
-        <div class="w-full flex gap-3 h-20 px-6 py-4 bg-white border-t-2 fixed bottom-0 right-0">
+        <!-- bottom btn -->
+        <div class="w-full flex gap-3 h-20 px-6 py-4 bg-white border-t fixed bottom-0 right-0">
           <button class="w-full h-12 px-5 py-3 border border-[#D23430] text-[#D23430] hover:bg-[#FDE4E3] text-center rounded-3xl font-medium">
             取消
           </button>

@@ -1,10 +1,6 @@
 <template>
-  <li class="flex items-center text-gray-500 gap-1 hover:cursor-pointer" onclick="edit_place.showModal()">
-    <span class="w-3 h-3"><PencilIcon/></span>
-    <p class="text-xs">編輯</p>
-  </li>
   <dialog id="edit_place" class="modal">
-    <div class="modal-box w-screen md:w-[480px]">
+    <div class="modal-box min-w-full md:min-w-[480px] min-h-screen md:min-h-[90%] px-0 ">
       <!-- close button -->
       <form method="dialog">
         <div class="w-full h-10">
@@ -14,13 +10,13 @@
       <div class="h-[400px]">
         <h2 class="text-2xl font-medium text-center mb-6">編輯</h2>
         <!-- place title -->
-        <div class="flex flex-col gap-2.5 px-5 pb-5">
+        <div class="flex flex-col gap-2.5 px-5 pb-5 border-b-4">
           <input type="text" value="香港杜莎夫人蠟像館" class="w-full text-2xl font-medium p-1 focus:border-0 focus:border-b focus:outline-none">
-          <div class="flex ">
-            <span></span>
-            <p>Shop P101, The Peak Tower, No, 128 Peak Rd, The Pea</p>
+          <div class="flex items-center">
+            <span class="w-6 h-6"><MapPinIcon /></span>
+            <p class="p-0.5">Shop P101, The Peak Tower, No, 128 Peak Rd, The Pea</p>
           </div>
-          <div class="dropdown">
+          <!-- <div class="dropdown">
           <div tabindex="0" role="button" class="mb-4 w-32 min-h-7 flex items-center justify-center">
             <p class="text-sm font-medium p-1 me-2">景點</p>
             <span class="inline-block w-4 h-4 p-0.5"><ChevronDownIcon /></span>
@@ -34,7 +30,57 @@
             <li><a class="rounded-none hover:bg-[#EEEEEE] font-medium">購物</a></li>
             <li><a class="rounded-none hover:bg-[#EEEEEE] font-medium">住宿</a></li>
           </ul>
+          </div> -->
+        </div>
+        <!-- details -->
+        <div class="h-[60vh] flex flex-col gap-3 p-5 pb-40 overflow-y-auto relative">
+          <div>
+            <p class="mb-2">抵達時間</p>
+            <div class="px-5 bg-[#EEEEEE] rounded-lg">
+              <div class="py-3 flex justify-between border-b-2 border-dashed">
+                <label for="default" class="w-5/6 flex gap-1 items-center font-medium py-1">
+                  <p class="pl-2">系統規劃</p>
+                  <p class="w-32 px-3 ms-10 text-sm text-[#D23430]">08:00</p>
+                </label>
+                <input type="radio" name="arrival-time" id="default" checked class="radio bg-white checked:bg-[#D23430]">
+              </div>
+              <div class="py-3 flex justify-between border-b-2 border-dashed text-gray-400">
+                <label for="user-setting" class="w-5/6 flex gap-1 items-center font-medium">
+                  <p class="pl-2">手動設定</p>
+                  <input type="time" name="" id="" value="08:00" class="w-36 text-sm rounded-full border-2 px-4 py-1 ms-2">
+                </label>
+                <input type="radio" name="arrival-time" id="user-setting" class="radio bg-white checked:bg-[#D23430]">
+              </div>
+            </div>
           </div>
+          <div>
+            <p class="mb-2">此景點</p>
+            <div class="px-5 bg-[#EEEEEE] rounded-lg">
+              <div class="py-3 flex justify-between items-center border-b-2 border-dashed">
+                <label for="stay" class="w-5/6 flex gap-1 items-center font-medium">
+                  <p class="pl-2">停留時間</p>
+                  <input type="time" name="" id="" value="08:00" class="w-36 text-sm rounded-full border-2 px-4 py-1 ms-2">
+                </label>
+                <input type="radio" name="during-time" id="stay" checked class="radio bg-white checked:bg-[#D23430]">
+              </div>
+              <div class="py-3 flex justify-between border-b-2 border-dashed text-gray-400">
+                <label for="leave" class="w-5/6 flex gap-1 items-center font-medium">
+                  <p class="pl-2">離開時間</p>
+                  <input type="time" name="" id="" value="09:00" class="w-36 text-sm rounded-full border-2 px-4 py-1 ms-2">
+                </label>
+                <input type="radio" name="during-time" id="leave" class="radio bg-white checked:bg-[#D23430]">
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- bottob btn -->
+        <div class="w-full flex gap-3 h-20 px-6 py-4 bg-white border-t fixed bottom-0 right-0">
+          <button class="w-full h-12 px-5 py-3 border border-[#D23430] text-[#D23430] hover:bg-[#FDE4E3] text-center rounded-3xl font-medium">
+            取消
+          </button>
+          <button class="w-full h-12 px-5 py-3 bg-[#D23430] hover:bg-[#B12824] text-white text-center rounded-3xl font-medium">
+            儲存
+          </button>
         </div>
       </div>
     </div>
@@ -46,5 +92,5 @@
 </template>
 
 <script setup>
-import { ChevronDownIcon } from '@heroicons/vue/24/outline';
+import { ChevronDownIcon, MapPinIcon } from '@heroicons/vue/24/outline';
 </script>

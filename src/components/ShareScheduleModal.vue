@@ -1,6 +1,6 @@
 <template>
   <dialog id="shareScheduleModal" class="modal">
-    <div class="modal-box w-screen md:w-[480px] bg-[#EEEEEE]">
+    <div class="modal-box min-w-full md:min-w-[480px]  bg-[#EEEEEE]">
       <!-- close button -->
       <form method="dialog">
         <div class="w-full h-10">
@@ -9,13 +9,13 @@
       </form>
       <!-- share & invite toggle -->
       <div class="w-full h-10 flex gap-1 mb-5 p-1 rounded-xl bg-gray-200">
-        <input id="share" type="radio" name="toggle" v-model="activeTab" value="share" class="hidden">
+        <input id="share" type="radio" name="tab" v-model="activeTab" value="share" class="hidden">
         <label for="share" class="share-toggle w-1/2 text-center py-1 px-2 rounded-lg hover:bg-primary-600 hover:text-white hover:cursor-pointer">分享行程</label>
-        <input id="invite" type="radio" name="toggle" v-model="activeTab" value="invite" class="hidden">
+        <input id="invite" type="radio" name="tab" v-model="activeTab" value="invite" class="hidden">
         <label for="invite" class="invite-toggle w-1/2 text-center py-1 px-2 rounded-lg hover:bg-primary-600 hover:text-white hover:cursor-pointer">邀請共編</label>
       </div>
       <!-- share detail -->
-      <div v-if="activeTab === 'share'" class="share-detail rounded-xl bg-white w-[432px] pt-10 px-5 pb-6">
+      <div v-if="activeTab === 'share'" class="share-detail rounded-xl bg-white w-full pt-10 px-5 pb-6">
         <div>
           <img class="w-40 h-40 mb-4 mx-auto" src="../assets/qrcode.svg" alt="schedule share QRcode">
           <p class="mb-8 text-center">手機掃描條碼，即可查看此行程</p>
@@ -39,7 +39,7 @@
         </div>
       </div>
       <!-- invite detail -->
-      <div v-else class="invite-detail rounded-xl bg-white w-[432px] pt-10 px-5 pb-6">
+      <div v-else class="invite-detail rounded-xl bg-white w-full pt-10 px-5 pb-6">
         <div class="text-center"> 
           <!-- 邀請者視角 -->
           <div class="dropdown">

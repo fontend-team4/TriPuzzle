@@ -15,10 +15,12 @@
             <XMarkIcon />
           </button>
           <h2 class="text-2xl font-medium pt-10 pb-2.5">行程</h2>
-          <ul class="w-full h-10 flex gap-1 mb-5 p-1 rounded-xl bg-[#EEEEEE]">
-            <li class="w-1/2 text-center py-1 px-2 rounded-lg bg-white">我的行程</li>
-            <li class="w-1/2 text-center py-1 px-2 rounded-lg hover:bg-white">與我共編</li>
-          </ul>
+          <div class="w-full h-10 flex gap-1 mb-5 p-1 rounded-xl bg-[#EEEEEE]">
+            <input id="mine" type="radio" name="toggle" v-model="checkedSchedule" value="mine" class="hidden" checked>
+            <label for="mine" class="mine-toggle w-1/2 text-center py-1 px-2 rounded-lg hover:bg-white hover:cursor-pointer">我的行程</label>
+            <input id="coedit" type="radio" name="toggle" v-model="checkedSchedule" value="coedit" class="hidden">
+            <label for="coedit" class="coedit-toggle w-1/2 text-center py-1 px-2 rounded-lg hover:bg-white hover:cursor-pointer">與我共編</label>
+          </div>
           <div class="dropdown">
             <div tabindex="0" role="button" class="flex items-center relative">
               <p class="text-sm font-medium">
@@ -35,9 +37,10 @@
         </div>
         <!-- schedules list 行程列表-->
         <div class="h-[70vh] overflow-y-scroll pb-12">
+          <!-- 我的行程 -->
           <!-- v-if 有行程 -->
-          <div class="flex flex-wrap gap-4 justify-center">
-            <div class="card card-compact bg-base-100 sm:w-full md:w-[30%] lg:w-full h-[176px] lg:h-auto border mb-4 relative">
+          <div class="flex flex-wrap gap-4 justify-center" v-if="checkedSchedule === 'mine'">
+            <div class="card card-compact bg-base-100 sm:w-full md:w-[30%] lg:w-full h-[176px] lg:h-auto border mb-4 relative hover:cursor-pointer">
             <figure>
               <img
                 src="https://chictirpstorageprod.blob.core.windows.net/system/2bf62bfd-5bbd-47f1-9174-492c7218dcdf.jpg"
@@ -90,7 +93,7 @@
               </div>
             </div>
             </div>
-            <div class="card card-compact bg-base-100 sm:w-full md:w-[30%] lg:w-full h-[176px] lg:h-auto border mb-4 relative">
+            <div class="card card-compact bg-base-100 sm:w-full md:w-[30%] lg:w-full h-[176px] lg:h-auto border mb-4 relative hover:cursor-pointer">
               <figure>
                 <img
                   src="https://chictirpstorageprod.blob.core.windows.net/travelschedule/1c4209ff-a961-49a1-bb2f-b21435a8c8b4.jpg"
@@ -141,7 +144,7 @@
                 </div>
               </div>
             </div>
-            <div class="card card-compact bg-base-100 sm:w-full md:w-[30%] lg:w-full h-[176px] lg:h-auto border mb-4 relative">
+            <div class="card card-compact bg-base-100 sm:w-full md:w-[30%] lg:w-full h-[176px] lg:h-auto border mb-4 relative hover:cursor-pointer">
             <figure>
               <img
                 src="https://chictirpstorageprod.blob.core.windows.net/system/166b42c7-fc3c-4708-ab2b-f9730bfd1b8a.jpg"
@@ -196,41 +199,41 @@
           <!-- <div class="w-full h-52 text-center mt-7">
             <img class="w-[180px] h-[90] mx-auto" src="https://web.chictrip.com.tw/assets/monster_empty.3a44f172.png" alt="">
             <p class="mb-6">還沒有安排新行程哦</p>
-            <button class=" font-medium text-white bg-[#D23430] w-44 rounded-3xl px-5 py-3">建立新行程</button>
+            <button class=" font-medium text-white bg-[#D23430] hover:bg-[#B12824] w-44 rounded-3xl px-5 py-3">建立新行程</button>
           </div> -->
-        <!-- edit together 共編-->
-          <!-- v-if 已登入 -->
-          <!-- <div class="w-full h-52 text-center mt-7">
+        <!-- 與我共編-->
+          <!--已登入 -->
+          <div class="w-full h-52 text-center mt-7" v-else>
             <img class="w-[180px] h-[103px] mx-auto" src="https://web.chictrip.com.tw/assets/master-unlock.990b2501.png" alt="">
             <p class="mb-6">還沒有 <spna class="text-[#D23430]">與我共編</spna> 的行程哦</p>
-          </div>  -->
-          <!-- v-else 未登入 -->
-          <!-- <div class="w-full lg:w-96 h-38 px-2.5 py-5 bg-white border-t-2 fixed bottom-0 right-0">
+          </div>
+          <!-- 未登入 -->
+          <!-- <div class="w-full lg:w-96 h-38 px-2.5 py-5 bg-white border-t fixed bottom-0 right-0">
             <p class="mb-3 text-center font-medium">
               嗨，新朋友！
               <br>
               登入就能查看共編行程囉 
             </p>
-            <button class="w-full h-12 px-5 py-3 bg-[#D23430] text-white text-center rounded-3xl">
+            <button class="w-full h-12 px-5 py-3 bg-[#D23430] hover:bg-[#B12824] text-white text-center rounded-3xl">
               登入 / 註冊
             </button>
           </div> -->
         </div>
         <!-- add schedule btn 建立新行程按鈕-->
-        <!-- v-if 已登入 -->
-        <div class="w-full lg:w-96 h-20 px-2.5 py-5 bg-white border-t-2 fixed bottom-0 right-0">
-          <button class="w-full h-12 px-5 py-3 bg-[#D23430] text-white text-center rounded-3xl">
+        <!--已登入 -->
+        <div class="w-full lg:w-96 h-20 px-2.5 py-5 bg-white border-t fixed bottom-0 right-0">
+          <button class="w-full h-12 px-5 py-3 bg-[#D23430] hover:bg-[#B12824] text-white text-center rounded-3xl">
             建立新行程
           </button>
         </div>
-        <!-- v-else 未登入 -->
-        <!-- <div class="w-full lg:w-96 h-38 px-2.5 py-5 bg-white border-t-2 fixed bottom-0 right-0">
+        <!-- 未登入 -->
+        <!-- <div class="w-full lg:w-96 h-38 px-2.5 py-5 bg-white border-t fixed bottom-0 right-0">
           <p class="mb-3 text-center font-medium">
             嗨，新朋友！
             <br>
             登入就能開始規劃你的專屬行程囉 
           </p>
-          <button class="w-full h-12 px-5 py-3 bg-[#D23430] text-white text-center rounded-3xl">
+          <button class="w-full h-12 px-5 py-3 bg-[#D23430] hover:bg-[#B12824] text-white text-center rounded-3xl">
             登入 / 註冊，建立新行程
           </button>
         </div> -->
@@ -240,10 +243,12 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { ChevronDownIcon, EllipsisHorizontalIcon } from '@heroicons/vue/16/solid'
 import { XMarkIcon, UserPlusIcon, ShareIcon, DocumentDuplicateIcon, TrashIcon, BriefcaseIcon, GlobeAsiaAustraliaIcon } from '@heroicons/vue/24/outline'
 import ShareScheduleModal from '@/components/ShareScheduleModal.vue'
 
+const checkedSchedule = ref('mine')
 </script>
 
 <style>
@@ -260,5 +265,19 @@ import ShareScheduleModal from '@/components/ShareScheduleModal.vue'
   /* .schedule{
     display: none;
   } */
+}
+.card > figure > img {
+  transform: scale(1);
+  transition: all 1s;
+}
+.card:hover > figure > img {
+  transform: scale(1.25);
+  transition: all 1s;
+}
+#mine:checked ~ .mine-toggle {
+  background-color: #fff;
+}
+#coedit:checked ~ .coedit-toggle {
+  background-color: #fff;
 }
 </style>
