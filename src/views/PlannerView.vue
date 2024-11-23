@@ -3,8 +3,8 @@
     MapComponent + SideBar + MainComponent
   </div>
   <!-- <TransportationWay /> -->
-  <ScheduleDetail />
-  <!-- <MainComponent /> -->
+  <!-- <ScheduleDetail /> -->
+  <MainComponent />
 </template>
 
 <script setup>

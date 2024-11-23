@@ -11,10 +11,10 @@
       <p class="text-xl font-medium">確定要退出嗎？</p>
       <!-- bottom btn -->
         <div class="w-full flex gap-3 px-5 py-6">
-          <button class="w-full h-12 px-5 py-3 border border-[#D23430] text-[#D23430] hover:bg-[#FDE4E3] text-center rounded-3xl font-medium">
+          <button class="w-full h-12 px-5 py-3 border border-primary-600 text-primary-600 hover:bg-primary-100 text-center rounded-3xl font-medium">
             取消
           </button>
-          <button class="w-full h-12 px-5 py-3 bg-[#D23430] hover:bg-[#B12824] text-white text-center rounded-3xl font-medium">
+          <button class="w-full h-12 px-5 py-3 bg-primary-600 hover:bg-primary-700 text-white text-center rounded-3xl font-medium">
             退出
           </button>
         </div>

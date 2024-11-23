@@ -1,6 +1,6 @@
 <template>
   <dialog id="shareScheduleModal" class="modal">
-    <div class="modal-box min-w-full md:min-w-[480px]  bg-[#EEEEEE]">
+    <div class="modal-box min-w-full md:min-w-[480px]  bg-gray">
       <!-- close button -->
       <form method="dialog">
         <div class="w-full h-10">
@@ -25,7 +25,7 @@
           <ul class="w-[310px] m-auto flex justify-around">
             <li>
               <button class="hover:cursor-pointer">
-                <span class="inline-block w-14 h-14 p-3 bg-[#FDE4E3] rounded-xl text-[#D23430]"><LinkIcon/></span>
+                <span class="inline-block w-14 h-14 p-3 bg-primary-100 rounded-xl text-primary-600"><LinkIcon/></span>
                 <p class="text-sm">複製連結</p>
               </button>
             </li>
@@ -43,18 +43,18 @@
         <div class="text-center"> 
           <!-- 邀請者視角 -->
           <div class="dropdown">
-            <div tabindex="0" role="button" class="mb-4 w-32 min-h-7 flex items-center justify-center rounded-full bg-[#FDE4E3] text-[#D23430]">
+            <div tabindex="0" role="button" class="mb-4 w-32 min-h-7 flex items-center justify-center rounded-full bg-primary-100 text-primary-600">
               <p class="text-sm font-medium p-1 me-2">僅供檢視</p>
               <span class="inline-block w-4 h-4 p-0.5"><ChevronDownIcon /></span>
             </div>
             <ul tabindex="0" class="dropdown-content menu w-32 bg-base-100 rounded-sm border z-[1] py-2 px-0">
-              <li><a class="rounded-none bg-[#EEEEEE] text-[#D23430] font-medium">僅供檢視</a></li>
-              <li><a class="rounded-none font-medium hover:bg-[#EEEEEE] focus:bg-transparent active:bg-white">可編輯</a></li>
+              <li><a class="rounded-none bg-gray text-primary-600 font-medium">僅供檢視</a></li>
+              <li><a class="rounded-none font-medium hover:bg-gray focus:bg-transparent active:bg-white">可編輯</a></li>
             </ul>
           </div> 
           <!-- 被邀請者視角 -->
           <!-- <div class="tooltip" data-tip="只有主揪可以設定共編權限哦">
-            <div class="mx-auto mb-4 w-32 min-h-7 flex items-center justify-center rounded-full bg-[#FDE4E3] text-[#D23430]">
+            <div class="mx-auto mb-4 w-32 min-h-7 flex items-center justify-center rounded-full bg-primary-100 text-primary-600">
               <p class="text-sm font-medium p-1 me-2">僅供檢視</p>
               <span class="inline-block w-4 h-4"><ExclamationCircleIcon /></span>
             </div>
@@ -63,7 +63,7 @@
           <img class="w-40 h-40 mb-4 mx-auto" src="../assets/qrcode.svg" alt="">
           <p>手機掃描條碼，即可查看此行程</p>
           <p class="text-sm mb-8 text-gray-400">24 小時內有效</p>
-          <button class="w-full flex justify-center items-center text-[#D23430] border border-[#D23430] rounded-full py-2 px-4">
+          <button class="w-full flex justify-center items-center text-primary-600 border border-primary-600 rounded-full py-2 px-4">
             <span class="inline-block w-6 h-6 me-1"><LinkIcon/></span>
             <p class="text-sm">複製連結</p>
           </button> 
@@ -95,8 +95,8 @@
                   <span class="inline-block w-4 h-4 p-0.5"><ChevronDownIcon /></span>
                 </div>
                 <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-lg z-[1] w-28 px-0 py-2 shadow-lg">
-                  <li><a class="hover:rounded-none hover:bg-[#EEEEEE] font-medium py-3">可檢視</a></li>
-                  <li><a class="hover:rounded-none hover:bg-[#EEEEEE] font-medium py-3" onclick="exitToggle.showModal()">退出共編
+                  <li><a class="hover:rounded-none hover:bg-gray font-medium py-3">可檢視</a></li>
+                  <li><a class="hover:rounded-none hover:bg-gray font-medium py-3" onclick="exitToggle.showModal()">退出共編
                   </a></li>
                   <ExitCoEditModal />
                 </ul>

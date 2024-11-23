@@ -22,13 +22,13 @@
             <span class="inline-block w-4 h-4 p-0.5"><ChevronDownIcon /></span>
           </div>
           <ul tabindex="0" class="dropdown-content menu w-24 h-28 flex-nowrap bg-base-100 rounded-sm border z-[1] py-2 px-0 shadow-lg overflow-y-scroll">
-            <li><a class="rounded-none bg-[#EEEEEE] text-[#D23430] font-medium">景點</a></li>
-            <li><a class="rounded-none hover:bg-[#EEEEEE] font-medium">美食</a></li>
-            <li><a class="rounded-none hover:bg-[#EEEEEE] font-medium">購物</a></li>
-            <li><a class="rounded-none hover:bg-[#EEEEEE] font-medium">住宿</a></li>
-            <li><a class="rounded-none hover:bg-[#EEEEEE] font-medium">美食</a></li>
-            <li><a class="rounded-none hover:bg-[#EEEEEE] font-medium">購物</a></li>
-            <li><a class="rounded-none hover:bg-[#EEEEEE] font-medium">住宿</a></li>
+            <li><a class="rounded-none bg-gray text-primary-600 font-medium">景點</a></li>
+            <li><a class="rounded-none hover:bg-gray font-medium">美食</a></li>
+            <li><a class="rounded-none hover:bg-gray font-medium">購物</a></li>
+            <li><a class="rounded-none hover:bg-gray font-medium">住宿</a></li>
+            <li><a class="rounded-none hover:bg-gray font-medium">美食</a></li>
+            <li><a class="rounded-none hover:bg-gray font-medium">購物</a></li>
+            <li><a class="rounded-none hover:bg-gray font-medium">住宿</a></li>
           </ul>
           </div> -->
         </div>
@@ -36,16 +36,16 @@
         <div class="h-[60vh] flex flex-col gap-3 p-5 pb-40 overflow-y-auto relative">
           <div>
             <p class="mb-2">抵達時間</p>
-            <div class="px-5 bg-[#EEEEEE] rounded-lg">
+            <div class="px-5 bg-gray rounded-lg">
               <div class="py-3 flex flex-row-reverse justify-between border-b-2 border-dashed">
-                <input type="radio" name="arrival-time" id="default" checked class="radio bg-white checked:bg-[#D23430]">
+                <input type="radio" name="arrival-time" id="default" checked class="radio bg-white checked:bg-primary-600">
                 <label for="default" class="w-5/6 flex gap-1 items-center font-medium py-1 text-gray-400">
                   <p class="pl-2">系統規劃</p>
                   <p class="time w-32 px-3 ms-10 text-sm">08:00</p>
                 </label>
               </div>
               <div class="py-3 flex flex-row-reverse justify-between border-b-2 border-dashed text-gray-400">
-                <input type="radio" name="arrival-time" id="user-setting" class="radio bg-white checked:bg-[#D23430]">
+                <input type="radio" name="arrival-time" id="user-setting" class="radio bg-white checked:bg-primary-600">
                 <label for="user-setting" class="w-5/6 flex gap-1 items-center font-medium">
                   <p class="pl-2">手動設定</p>
                   <input type="time" name="" id="" value="08:00" class="time w-36 text-sm rounded-full border-2 px-4 py-1 ms-2">
@@ -55,16 +55,16 @@
           </div>
           <div>
             <p class="mb-2">此景點</p>
-            <div class="px-5 bg-[#EEEEEE] rounded-lg">
+            <div class="px-5 bg-gray rounded-lg">
               <div class="py-3 flex flex-row-reverse justify-between border-b-2 border-dashed">
-                <input type="radio" name="during-time" id="stay" checked class="radio bg-white checked:bg-[#D23430]">
+                <input type="radio" name="during-time" id="stay" checked class="radio bg-white checked:bg-primary-600">
                 <label for="stay" class="w-5/6 flex gap-1 items-center font-medium text-gray-400">
                   <p class="pl-2">停留時間</p>
                   <input type="time" name="" id="" value="08:00" class="time w-36 text-sm rounded-full border-2 px-4 py-1 ms-2">
                 </label>
               </div>
               <div class="py-3 flex flex-row-reverse justify-between border-b-2 border-dashed text-gray-400">
-                <input type="radio" name="during-time" id="leave" class="radio bg-white checked:bg-[#D23430]">
+                <input type="radio" name="during-time" id="leave" class="radio bg-white checked:bg-primary-600">
                 <label for="leave" class="w-5/6 flex gap-1 items-center font-medium">
                   <p class="pl-2">離開時間</p>
                   <input type="time" name="" id="" value="09:00" class="time w-36 text-sm rounded-full border-2 px-4 py-1 ms-2">
@@ -75,10 +75,10 @@
         </div>
         <!-- bottob btn -->
         <div class="w-full flex gap-3 h-20 px-6 py-4 bg-white border-t fixed bottom-0 right-0">
-          <button class="w-full h-12 px-5 py-3 border border-[#D23430] text-[#D23430] hover:bg-[#FDE4E3] text-center rounded-3xl font-medium">
+          <button class="w-full h-12 px-5 py-3 border border-primary-600 text-primary-600 hover:bg-primary-100 text-center rounded-3xl font-medium">
             取消
           </button>
-          <button class="w-full h-12 px-5 py-3 bg-[#D23430] hover:bg-[#B12824] text-white text-center rounded-3xl font-medium">
+          <button class="w-full h-12 px-5 py-3 bg-primary-600 hover:bg-primary-700 text-white text-center rounded-3xl font-medium">
             儲存
           </button>
         </div>

@@ -1,6 +1,6 @@
 <template>
   <button class="hover:cursor-pointer" onclick="exportSchedule.showModal()">
-    <span class="inline-block w-14 h-14 p-3 bg-[#FDE4E3] rounded-xl text-[#D23430]"><DocumentArrowDownIcon/></span>
+    <span class="inline-block w-14 h-14 p-3 bg-primary-100 rounded-xl text-primary-600"><DocumentArrowDownIcon/></span>
     <p class="text-sm">匯出 PDF</p>
   </button>
   <dialog id="exportSchedule" class="modal">
@@ -19,14 +19,14 @@
           </button>
           <div class="border-t pt-4">
             <h3 class="text-2xl font-medium text-center mb-4">寄送 Email</h3>
-            <input type="text" placeholder="輸入要寄送的 Email" class="input input-bordered w-full px-6 focus:outline-[#D23430]" />
+            <input type="text" placeholder="輸入要寄送的 Email" class="input input-bordered w-full px-6 focus:outline-primary-600" />
           </div>
           <!-- bottom btn -->
           <div class="w-full flex gap-3 h-20 px-6 py-4 bg-white border-t fixed bottom-0 right-0">
-            <button class="w-full h-12 px-5 py-3 border border-[#D23430] text-[#D23430] text-center rounded-3xl font-medium hover:bg-[#FDE4E3]">
+            <button class="w-full h-12 px-5 py-3 border border-primary-600 text-primary-600 text-center rounded-3xl font-medium hover:bg-primary-100">
               取消
             </button>
-            <button class="w-full h-12 px-5 py-3 bg-[#D23430] hover:bg-[#B12824] text-white text-center rounded-3xl font-medium">
+            <button class="w-full h-12 px-5 py-3 bg-primary-600 hover:bg-primary-700 text-white text-center rounded-3xl font-medium">
               寄送
             </button>
           </div>

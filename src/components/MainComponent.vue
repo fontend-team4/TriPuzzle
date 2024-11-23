@@ -1,5 +1,5 @@
 <template>
-  <div class="min-w-full h-screen flex flex-row-reverse bg-[#EEEEEE] overflow-x-hidden">
+  <div class="min-w-full h-screen flex flex-row-reverse bg-gray overflow-x-hidden">
     <input type="checkbox" id="schedule-list-toggle" class="hidden">
     <div class="schedule-list w-full lg:w-96 h-screen bg-white shadow-xl translate-x-full">
       <!-- 行程 toggle -->
@@ -15,7 +15,7 @@
             <XMarkIcon />
           </button>
           <h2 class="text-2xl font-medium pt-10 pb-2.5">行程</h2>
-          <div class="w-full h-10 flex gap-1 mb-5 p-1 rounded-xl bg-[#EEEEEE]">
+          <div class="w-full h-10 flex gap-1 mb-5 p-1 rounded-xl bg-gray">
             <input id="mine" type="radio" name="toggle" v-model="checkedSchedule" value="mine" class="hidden" checked>
             <label for="mine" class="mine-toggle w-1/2 text-center py-1 px-2 rounded-lg hover:bg-white hover:cursor-pointer">我的行程</label>
             <input id="coedit" type="radio" name="toggle" v-model="checkedSchedule" value="coedit" class="hidden">
@@ -60,19 +60,19 @@
                 <!-- dropdown-content 控制開關-->
                 <ul tabindex="0" class="dropdown-content w-32 bg-white rounded border absolute right-0 top-10">
                   <li>
-                    <a class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-[#EEEEEE]" href="#">
+                    <a class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray" href="#">
                       <span class="inline-block w-6 h-6"><DocumentDuplicateIcon/></span>
                       <p>複製行程</p>
                     </a>  
                   </li>
                   <li>
-                    <a class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-[#EEEEEE]" href="#">
+                    <a class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray" href="#">
                       <span class="inline-block w-6 h-6"><UserPlusIcon/></span>
                       <p>邀請共編</p>
                     </a>  
                   </li>
                   <li class="border-t">
-                    <a class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-[#EEEEEE]" href="#">
+                    <a class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray" href="#">
                       <span class="inline-block w-6 h-6"><TrashIcon/></span>
                       <p>刪除行程</p>
                     </a>  
@@ -112,19 +112,19 @@
                   <!-- dropdown-content 控制開關-->
                   <ul tabindex="0" class="dropdown-content w-32 bg-white rounded border absolute right-0 top-10">
                     <li>
-                      <a class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-[#EEEEEE]" href="#">
+                      <a class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray" href="#">
                         <span class="inline-block w-6 h-6"><DocumentDuplicateIcon/></span>
                         <p>複製行程</p>
                       </a>  
                     </li>
                     <li>
-                      <a class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-[#EEEEEE]" href="#">
+                      <a class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray" href="#">
                         <span class="inline-block w-6 h-6"><UserPlusIcon/></span>
                         <p>邀請共編</p>
                       </a>  
                     </li>
                     <li class="border-t">
-                      <a class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-[#EEEEEE]" href="#">
+                      <a class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray" href="#">
                         <span class="inline-block w-6 h-6"><TrashIcon/></span>
                         <p>刪除行程</p>
                       </a>  
@@ -163,19 +163,19 @@
                 <!-- dropdown-content 控制開關-->
                 <ul tabindex="0" class="dropdown-content w-32 bg-white rounded border absolute right-0 top-10">
                   <li>
-                    <a class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-[#EEEEEE]" href="#">
+                    <a class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray" href="#">
                       <span class="inline-block w-6 h-6"><DocumentDuplicateIcon/></span>
                       <p>複製行程</p>
                     </a>  
                   </li>
                   <li>
-                    <a class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-[#EEEEEE]" href="#">
+                    <a class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray" href="#">
                       <span class="inline-block w-6 h-6"><UserPlusIcon/></span>
                       <p>邀請共編</p>
                     </a>  
                   </li>
                   <li class="border-t">
-                    <a class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-[#EEEEEE]" href="#">
+                    <a class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray" href="#">
                       <span class="inline-block w-6 h-6"><TrashIcon/></span>
                       <p>刪除行程</p>
                     </a>  
@@ -199,13 +199,13 @@
           <!-- <div class="w-full h-52 text-center mt-7">
             <img class="w-[180px] h-[90] mx-auto" src="https://web.chictrip.com.tw/assets/monster_empty.3a44f172.png" alt="">
             <p class="mb-6">還沒有安排新行程哦</p>
-            <button class=" font-medium text-white bg-[#D23430] hover:bg-[#B12824] w-44 rounded-3xl px-5 py-3">建立新行程</button>
+            <button class=" font-medium text-white bg-primary-600 hover:bg-primary-700 w-44 rounded-3xl px-5 py-3">建立新行程</button>
           </div> -->
         <!-- 與我共編-->
           <!--已登入 -->
           <div class="w-full h-52 text-center mt-7" v-else>
             <img class="w-[180px] h-[103px] mx-auto" src="https://web.chictrip.com.tw/assets/master-unlock.990b2501.png" alt="">
-            <p class="mb-6">還沒有 <spna class="text-[#D23430]">與我共編</spna> 的行程哦</p>
+            <p class="mb-6">還沒有 <spna class="text-primary-600">與我共編</spna> 的行程哦</p>
           </div>
           <!-- 未登入 -->
           <!-- <div class="w-full lg:w-96 h-38 px-2.5 py-5 bg-white border-t fixed bottom-0 right-0">
@@ -214,7 +214,7 @@
               <br>
               登入就能查看共編行程囉 
             </p>
-            <button class="w-full h-12 px-5 py-3 bg-[#D23430] hover:bg-[#B12824] text-white text-center rounded-3xl">
+            <button class="w-full h-12 px-5 py-3 bg-primary-600 hover:bg-primary-700 text-white text-center rounded-3xl">
               登入 / 註冊
             </button>
           </div> -->
@@ -222,7 +222,7 @@
         <!-- add schedule btn 建立新行程按鈕-->
         <!--已登入 -->
         <div class="w-full lg:w-96 h-20 px-2.5 py-5 bg-white border-t fixed bottom-0 right-0">
-          <button class="w-full h-12 px-5 py-3 bg-[#D23430] hover:bg-[#B12824] text-white text-center rounded-3xl">
+          <button class="w-full h-12 px-5 py-3 bg-primary-600 hover:bg-primary-700 text-white text-center rounded-3xl">
             建立新行程
           </button>
         </div>
@@ -233,7 +233,7 @@
             <br>
             登入就能開始規劃你的專屬行程囉 
           </p>
-          <button class="w-full h-12 px-5 py-3 bg-[#D23430] hover:bg-[#B12824] text-white text-center rounded-3xl">
+          <button class="w-full h-12 px-5 py-3 bg-primary-600 hover:bg-primary-700 text-white text-center rounded-3xl">
             登入 / 註冊，建立新行程
           </button>
         </div> -->
