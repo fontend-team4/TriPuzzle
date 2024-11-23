@@ -92,7 +92,7 @@
 </template>
 
 <script setup>
-import { ChevronDownIcon, MapPinIcon } from '@heroicons/vue/24/outline';
+import { MapPinIcon } from '@heroicons/vue/24/outline';
 </script>
 
 <style>

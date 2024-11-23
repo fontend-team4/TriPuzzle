@@ -16,11 +16,11 @@
         </button>
       </div>
       <!-- date tab -->
-      <div class="flex border-b ">
-        <div class="w-full h-12 flex pt-2 ps-8 pe-3 overflow-x-scroll ">
+      <div class="flex border-b">
+        <div class="w-full h-12 flex pt-2 ps-8 pe-3 overflow-x-scroll">
           <ul class="flex gap-4">
-            <li class="whitespace-nowrap"><a href="" class="pb-2 text-gray-800 font-medium text-sm border-b-2 border-[#D23430]">總覽頁</a></li>
-            <li class="whitespace-nowrap"><a href="" class="pb-2 text-gray-500 font-medium text-sm hover:text-gray-800 hover:border-b-2 hover:border-[#D23430]">第1天</a></li>
+            <li class="whitespace-nowrap"><a href="" class="pb-2 text-gray-500 font-medium text-sm hover:text-gray-800 hover:border-b-2 hover:border-[#D23430]">總覽頁</a></li>
+            <li class="whitespace-nowrap"><a href="" class="pb-2 text-gray-800 font-medium text-sm border-b-2 border-[#D23430]">第1天</a></li>
             <li class="whitespace-nowrap"><a href="" class="pb-2 text-gray-500 font-medium text-sm hover:text-gray-800 hover:border-b-2 hover:border-[#D23430]">第2天</a></li>
             <li class="whitespace-nowrap"><a href="" class="pb-2 text-gray-500 font-medium text-sm hover:text-gray-800 hover:border-b-2 hover:border-[#D23430]">第3天</a></li>
             <li class="whitespace-nowrap"><a href="" class="pb-2 text-gray-500 font-medium text-sm hover:text-gray-800 hover:border-b-2 hover:border-[#D23430]">第4天</a></li>

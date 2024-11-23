@@ -7,7 +7,9 @@
           <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
         </div>
       </form>
+      <!-- title -->
       <h2 class="text-2xl font-medium text-center mb-6">要移到哪天？</h2>
+      <!-- detail -->
       <ul class="h-[70vh] flex flex-col gap-2 overflow-y-scroll">
         <li class="w-full py-2 px-3 bg-[#EEEEEE] opacity-40 rounded-lg">
           <p class="text-base font-medium mb-1">第 1 天</p>
