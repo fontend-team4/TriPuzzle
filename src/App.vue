@@ -1,11 +1,13 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 import { GlobeAsiaAustraliaIcon } from '@heroicons/vue/24/solid'
+import AddPlaceModal from './components/AddPlaceModal.vue'
 </script>
 
 <template>
-  <header class="w-80 mx-auto flex flex-col gap-10 mt-10 text-center">
-    <nav class="flex gap-6 underline text-orange-800 font-bold text-xl">
+  <AddPlaceModal />
+  <header class=" w-80 mx-auto flex flex-col gap-10 mt-10 text-center">
+    <nav class=" flex gap-6 underline text-orange-800 font-bold text-xl">
       <RouterLink to="/">HOME</RouterLink>
       <RouterLink to="/planner">PLANNER</RouterLink>
       <RouterLink to="/member">MEMBER</RouterLink>
