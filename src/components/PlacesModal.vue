@@ -33,7 +33,7 @@ const hamburgerCls = computed(() => {
   <!-- 漢堡選單 -->
     <label  
       for="sideCheckbox" 
-      class="fixed flex items-center w-12 h-12 px-2 transition-all duration-300 rounded-full top-24 bg-gray left-20 group hover:w-32 " 
+      class="fixed flex items-center w-12 h-12 px-2 transition-all duration-300 bg-white rounded-full shadow-md top-24 left-20 group hover:w-32" 
       @click="sideToggle" :cls="hamburgerCls"
     >
       <div class="flex-shrink-0">

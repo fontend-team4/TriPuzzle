@@ -1,10 +1,14 @@
 <script setup>
-import MapComponent from '../components/MainComponent.vue'
+import { RouterLink, RouterView } from 'vue-router'
+import PlacesComponent from '@/components/PlacesComponent.vue'
+import MainComponent from '@/components/MainComponent.vue';
+import MapToggle from '@/components/MapToggle.vue';
 </script>
 
 <template>
-  <div>
-    MapComponent + SideBar + MainComponent
-  </div>
-  <MapComponent />
+
+  <!-- <MapComponent /> -->
+  <!-- <PlacesComponent /> -->
+  <MainComponent />
+  <!-- <MapToggle /> -->
 </template>

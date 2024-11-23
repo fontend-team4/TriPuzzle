@@ -2,6 +2,9 @@
 import DetailCarousel from './DetailCarousel.vue';
 import { CalendarIcon, ClockIcon, PhoneIcon, GlobeAltIcon, MapPinIcon, MagnifyingGlassIcon, HeartIcon, ShareIcon ,PaperAirplaneIcon, XMarkIcon, PhotoIcon } from "@heroicons/vue/24/outline";
 import { StarIcon } from "@heroicons/vue/24/solid";
+
+// 愛心顏色的切換可參考PlacesComponent，為避免重複同樣功能這邊就不放了，之後可統一做移動到stores去
+
 </script>
 
 <template>

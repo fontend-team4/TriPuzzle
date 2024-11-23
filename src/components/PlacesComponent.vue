@@ -60,7 +60,7 @@ const toggleFavorite = (item) => {
 
 <template>
   <div>
-    <div class="w-full h-full px-10 pt-4 pb-14 bg-gray">
+    <div class="w-full h-screen px-10 pt-4 pb-14 bg-slate-100 ">
       <!-- 瀑布流 -->
       <div
         class="grid"

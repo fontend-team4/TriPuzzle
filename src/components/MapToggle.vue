@@ -1,8 +1,9 @@
 <script setup>
-import { ref } from "vue";
 import { MapIcon, Squares2X2Icon } from "@heroicons/vue/24/outline";
 
-const isChecked = ref(false);
+
+const props = defineProps(["isPlacesComponent"]);
+
 </script>
 
 <template>
@@ -11,21 +12,21 @@ const isChecked = ref(false);
       type="checkbox"
       id="switch"
       class="hidden toggle"
-      v-model="isChecked"
+      :checked="isPlacesComponent"
+      @change="$emit('update:isPlacesComponent', !isPlacesComponent)"
     />
     <label
       for="switch"
-      class="inline-flex items-center justify-center px-4 py-2 text-white bg-blue-400 rounded-full shadow-md cursor-pointer"
+      class="inline-flex items-center justify-center px-4 py-2 text-white rounded-full shadow-md cursor-pointer bg-primary-950"
     >
-      <div v-show="!isChecked" class="flex items-center">
+      <div v-show="isPlacesComponent" class="flex items-center">
         <MapIcon class="text-white size-6" />
         <p class="ml-2">查看地圖</p>
       </div>
-      <div v-show="isChecked" class="flex items-center">
+      <div v-show="!isPlacesComponent" class="flex items-center">
         <Squares2X2Icon class="size-6" />
         <p class="ml-2">查看景點牆</p>
       </div>
     </label>
   </div>
 </template>
-<!-- 問題：可以把rgba(0, 0, 0, 0.24) 2px 2px 8px 0px 寫進tailwind自定義裡嗎？-->
