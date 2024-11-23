@@ -21,6 +21,11 @@ const router = createRouter({
       path: '/planner',
       name: 'planner',
       component: () => import('../views/PlannerView.vue'),
+    },
+    {
+      path: "/SearchArea",
+      name: "SearchArea",
+      component: () => import('../views/CategoryView.vue'),
     }
   ],
 })
