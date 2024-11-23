@@ -2,11 +2,13 @@
 import { RouterLink, RouterView } from 'vue-router'
 import { GlobeAsiaAustraliaIcon } from '@heroicons/vue/24/solid'
 import SearchBar from './components/SearchBar.vue';
+
+
 </script>
 
 <template>
   <SearchBar />
-  <header class=" w-80 mx-auto flex flex-col gap-10 mt-10 text-center">
+  <header class="w-80 mx-auto flex flex-col gap-10 mt-10 text-center" @click.self="switchToCategoryMode">
     <nav class=" flex gap-6 underline text-orange-800 font-bold text-xl">
       <RouterLink to="/">HOME</RouterLink>
       <RouterLink to="/planner">PLANNER</RouterLink>
