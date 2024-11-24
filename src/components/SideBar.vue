@@ -42,7 +42,7 @@ const toggleMenu = () => {
         />
       </div>
       <ul class="space-y-2 w-full">
-        <li class="flex items-center p-2 text-gray-700 hover:bg-primary-100 hover:text-primary-800 rounded-lg transition-all">
+        <li class="flex items-center p-2 hover:bg-primary-100 hover:text-primary-800 rounded-lg transition-all">
           <MagnifyingGlassIcon class="w-6 h-6" />
           <span
             class="ml-3 font-medium opacity-0 group-hover:opacity-100 hidden group-hover:inline-block transition-opacity duration-500 delay-500 whitespace-nowrap"
@@ -50,7 +50,7 @@ const toggleMenu = () => {
             發現
           </span>
         </li>
-        <li class="flex items-center p-2 text-gray-700 hover:bg-primary-100 hover:text-primary-800 rounded-lg transition-all">
+        <li class="flex items-center p-2 hover:bg-primary-100 hover:text-primary-800 rounded-lg transition-all">
           <ShoppingCartIcon class="w-6 h-6" />
           <span
             class="ml-3 font-medium opacity-0 group-hover:opacity-100 hidden group-hover:inline-block transition-opacity duration-500 delay-500 whitespace-nowrap"
@@ -58,7 +58,7 @@ const toggleMenu = () => {
             商城
           </span>
         </li>
-        <li class="flex items-center p-2 text-gray-700 hover:bg-primary-100 hover:text-primary-800 rounded-lg transition-all">
+        <li class="flex items-center p-2 hover:bg-primary-100 hover:text-primary-800 rounded-lg transition-all">
           <StarIcon class="w-6 h-6" />
           <span
             class="ml-3 font-medium opacity-0 group-hover:opacity-100 hidden group-hover:inline-block transition-opacity duration-500 delay-500 whitespace-nowrap"
@@ -66,7 +66,7 @@ const toggleMenu = () => {
             去趣星榜單
           </span>
         </li>
-        <li class="flex items-center p-2 text-gray-700 hover:bg-primary-100 hover:text-primary-800 rounded-lg transition-all">
+        <li class="flex items-center p-2 hover:bg-primary-100 hover:text-primary-800 rounded-lg transition-all">
           <LightBulbIcon class="w-6 h-6" />
           <span
             class="ml-3 font-medium opacity-0 group-hover:opacity-100 hidden group-hover:inline-block transition-opacity duration-500 delay-500 whitespace-nowrap"
@@ -74,8 +74,8 @@ const toggleMenu = () => {
             認識去趣
           </span>
         </li>
-        <hr class="border-t border-gray-300 my-4 w-full" />
-        <li class="flex items-center p-2 text-gray-700 hover:bg-primary-100 hover:text-primary-800 rounded-lg transition-all">
+        <hr class="border-t my-4 w-full" />
+        <li class="flex items-center p-2 hover:bg-primary-100 hover:text-primary-800 rounded-lg transition-all">
           <UserCircleIcon class="w-6 h-6" />
           <span
             class="ml-3 font-medium opacity-0 group-hover:opacity-100 hidden group-hover:inline-block transition-opacity duration-500 delay-500 whitespace-nowrap"

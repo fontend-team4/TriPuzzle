@@ -32,7 +32,7 @@ import { GlobeAsiaAustraliaIcon } from '@heroicons/vue/24/solid'
     </dialog>
 
     <!-- heroicon rest -->
-    Heroicon test : 
+    Heroicon test :
     <GlobeAsiaAustraliaIcon class="size-10 text-green-700" />
   </header>
   <RouterView />

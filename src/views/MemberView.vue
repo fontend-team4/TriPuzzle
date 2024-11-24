@@ -1,14 +1,17 @@
 <script setup>
 import { ref } from 'vue';
 import SideBar from '@/components/SideBar.vue';
-import {  HeartIcon, 
-          PencilIcon, 
-          Cog8ToothIcon, 
-          ShareIcon, 
-          ArrowRightStartOnRectangleIcon, 
+import {  HeartIcon,
+          PencilIcon,
+          Cog8ToothIcon,
+          ShareIcon,
+          ArrowRightStartOnRectangleIcon,
           EnvelopeIcon,
           ChatBubbleLeftEllipsisIcon,
+          ChevronRightIcon,
+          XMarkIcon,
 } from '@heroicons/vue/24/solid';
+import { PencilSquareIcon } from '@heroicons/vue/24/solid';
 
 const isOpen = ref(false);
 
@@ -24,7 +27,7 @@ const toggleMenu = () => {
       <div class="ml-4">
         <img
           src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSC8fFURU-S1FRIkYCVhF6LbBB0BQUbGd6bQ&s"
-          alt="User Avatar"
+          alt=""
           class="w-10 h-10 mt-2">
       </div>
       <div class="bg-white p-2 rounded-lg mb-4">
@@ -32,19 +35,20 @@ const toggleMenu = () => {
           <div class="flex">
             <img
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSC8fFURU-S1FRIkYCVhF6LbBB0BQUbGd6bQ&s"
-              alt="User avatar"
-              class="w-32 h-32 rounded-full border border-gray-300 ml-2"
+              alt=""
+              class="w-32 h-32 rounded-full border ml-2"
             >
             <div>
               <div class="block mt-2 mr-20 pl-4">
                 <p class="text-xl font-semibold mt-4">XXX</p>
                 <p class="mt-4">0行程 ・ 0旅遊小書</p>
                 <div class="flex justify-between items-center mt-4 gap-4">
-                  <button class="px-4 py-1 text-primary-600 border rounded-full hover:text-primary-700 transition flex items-center">
+                  <button class="px-4 py-1 text-primary-600 border rounded-full hover:text-primary-700 transition flex items-center"
+                          onclick="document.getElementById('Editmodal').showModal()">
                     <PencilIcon class="w-4 h-4 mr-2" />
                     <span>編輯</span>
                   </button>
-                  <div class="flex relative"> 
+                  <div class="flex relative">
                     <button @click="toggleMenu" class="w-8 h-8 border rounded-full transition items-center justify-center flex">
                       <Cog8ToothIcon class="w-4 h-4" />
                     </button>
@@ -71,7 +75,7 @@ const toggleMenu = () => {
               </div>
             </div>
           </div>
-          <div class="flex mt-4 pl-10 text-gray-700 pb-0 md:pb-0  lg:pb-20 lg:pl-0">
+          <div class="flex mt-4 pl-10 pb-0 md:pb-0 lg:pb-20 lg:pl-0">
             <div class="flex gap-6 ">
               <div>
                 <span class="font-semibold">0</span> 粉絲
@@ -95,7 +99,7 @@ const toggleMenu = () => {
           </button>
         </div>
         <div class="p-8">
-          <h2 class="flex font-semibold text-lg text-gray-800"><HeartIcon class="w-6 h-6"/>收藏</h2>
+          <h2 class="flex font-semibold text-lg"><HeartIcon class="w-6 h-6"/>收藏</h2>
           <hr>
         </div>
 
@@ -112,6 +116,225 @@ const toggleMenu = () => {
         </div>
       </div>
     </div>
+    <!-- Edit的Modal -->
+    <dialog id="Editmodal" class="modal">
+      <div class="modal-box">
+        <div class="flex flex-col items-center text-center space-y-4 mb-5">
+          <h3 class="text-lg font-bold ">個人資料</h3>
+            <div class="relative">
+              <img
+                id="profileImage"
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSC8fFURU-S1FRIkYCVhF6LbBB0BQUbGd6bQ&s"
+                alt=""
+                class="w-20 h-20 rounded-full shadow-lg"
+              >
+                <button
+                  class="absolute bottom-0 right-0 bg-black opacity-70 text-white p-1 rounded-full shadow-md"
+                  onclick="document.getElementById('imageUpload').click();"
+                >
+                <PencilSquareIcon class="w-5 h-5" />
+              </button>
+            </div>
+              <input
+                type="file"
+                id="imageUpload"
+                class="hidden"
+                accept="image/*"
+                onchange="updateProfileImage(event)"
+              />
+        </div>
+        <div class="space-y-1">
+          <button class="flex w-full justify-between p-2 bg-gray rounded-xl"
+          onclick="document.getElementById('NickNameModal').showModal()"
+          >
+            <div class="mx-3">
+              <span class="text-xs">暱稱</span>
+              <p class="font-bold">XXX</p>
+            </div>
+            <ChevronRightIcon class="w-4 h-4 mt-4"/>
+          </button>
+          <button class="flex w-full justify-between p-2 bg-gray rounded-xl"
+          onclick="document.getElementById('ProfileModal').showModal()"
+          >
+          <div class="mx-3 flex flex-col items-start">
+              <span class="text-xs">個人簡介</span>
+              <p class="font-bold">有趣的介紹可以吸引更多人追蹤喔！</p>
+            </div>
+            <ChevronRightIcon class="w-4 h-4 mt-4" />
+          </button>
+          <button class="flex w-full justify-between p-2 bg-gray rounded-xl"
+          onclick="document.getElementById('PersonalInformatioMmodal').showModal()"
+          >
+            <div class="mx-3">
+              <span class="text-xs">打造你的旅行名片</span>
+              <p class="font-bold">修改個人資料</p>
+            </div>
+            <ChevronRightIcon class="w-4 h-4 mt-4" />
+          </button>
+        </div>
+        <div class="mt-3 space-y-1">
+          <p>帳號綁定</p>
+          <div class="flex justify-between p-2 bg-gray rounded-xl">
+            <div class="mx-3">
+              <p class="text-sm font-bold">TriPuzzle會員登入/註冊</p>
+              <p class="text-xs">成為會員，即享會員專屬功能！</p>
+            </div>
+            <button class="bg-orange-400 p-2 rounded-full">
+              <p class="text-white text-xs">立即加入</p>
+            </button>
+          </div>
+          <div class="flex justify-between p-2 bg-gray rounded-xl">
+            <div>
+              <p class="text-sm mx-3 font-bold">其他登入方式</p>
+              <div class="flex mx-3">
+                <img
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSC8fFURU-S1FRIkYCVhF6LbBB0BQUbGd6bQ&s"
+                  alt=""
+                  class="w-4 h-4"
+                  >
+                <p class="text-xs ml-2">xxx.gmail.com</p>
+              </div>
+            </div>
+          </div>
+          <div class="text-center pt-10">
+            <span class="text-blue-500 underline">刪除帳號</span>
+          </div>
+        </div>
+        <div class="modal-action">
+          <form method="dialog">
+            <button class="btn">Close</button>
+          </form>
+        </div>
+      </div>
+    </dialog>
+    <!-- NickName的Modal -->
+    <dialog id="NickNameModal" class="modal">
+      <div class="modal-box">
+        <div>
+          <div class="text-center mb-10">
+            <p class="text-2xl font-bold">修改暱稱</p>
+          </div>
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <p class="text-sm font-medium">暱稱(必填)</p>
+              <p class="text-sm ">0/50</p>
+            </div>
+            <div class="relative">
+              <input id="nickname" class="w-full text-lg px-4 py-2 pr-10 border bo rounded-lg"
+                type="text" placeholder="輸入暱稱" />
+              <button type="button" onclick="document.getElementById('nickname').value=''"
+                class="absolute right-3 top-1/2 transform -translate-y-1/2">
+                <XMarkIcon class="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+          <div class="flex justify-around space-x-4 mt-4 pt-6">
+            <button class="p-1 w-full text-lg bg-gray rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+              取消
+            </button>
+            <button class="p-1 w-full text-lg bg-gray rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+              儲存
+            </button>
+          </div>
+        </div>
+        <div class="modal-action">
+          <form method="dialog">
+            <button class="btn">Close</button>
+          </form>
+        </div>
+      </div>
+    </dialog>
+    <!-- Profile的Modal -->
+    <dialog id="ProfileModal" class="modal">
+      <div class="modal-box">
+        <div>
+          <div class="text-center mb-10">
+            <p class="text-2xl font-bold">修改個人簡介</p>
+          </div>
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <p class="text-sm font-medium ">個人簡介</p>
+              <p class="text-sm ">0/500</p>
+            </div>
+            <div class="relative">
+              <textarea id="nickname" class="w-full text-lg px-4 py-2 pr-10 border rounded-lg"
+                type="text" placeholder="有趣的介紹可以吸引更多人追蹤喔！" />
+            </div>
+          </div>
+          <div class="flex justify-around space-x-4 mt-4 pt-6">
+            <button class="p-1 w-full text-lg bg-gray rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+              取消
+            </button>
+            <button class="p-1 w-full text-lg bg-gray rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+              儲存
+            </button>
+          </div>
+        </div>
+        <div class="modal-action">
+          <form method="dialog">
+            <button class="btn">Close</button>
+          </form>
+        </div>
+      </div>
+    </dialog>
+    <!-- PersonalInformatio的Mmodal -->
+    <dialog id="PersonalInformatioMmodal" class="modal">
+      <div class="modal-box">
+        <div>
+          <div class="text-center mb-10">
+            <p class="text-2xl font-bold">修改個人資料</p>
+          </div>
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <p class="text-sm font-medium">聯繫Email</p>
+            </div>
+            <div class="relative">
+              <input id="PersonalInformatio" class="w-full text-lg px-4 py-2 pr-10 border rounded-lg"
+                type="text" placeholder="輸入Email" />
+              <button type="button" onclick="document.getElementById('PersonalInformatio').value=''"
+                class="absolute right-3 top-1/2 transform -translate-y-1/2">
+                <XMarkIcon class="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+          <div class="mt-5">
+            <p>性別</p>
+            <div class="flex gap-3 mt-2">
+              <button class="p-3 w-full bg-gray text-lg rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                男
+              </button>
+              <button class="p-3 w-full bg-gray text-lg rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                女
+              </button>
+              <button class="p-3 w-full bg-gray text-lg rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                秘密
+              </button>
+            </div>
+          </div>
+          <div class="space-y-2 mt-5">
+            <label class="text-sm">生日</label>
+            <input
+              type="date"
+              class="w-full p-3 text-lg border rounded-lg"
+            />
+          </div>
+          <div class="flex justify-around space-x-4 mt-4 pt-6">
+            <button class="p-1 w-full text-lg bg-gray rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+              取消
+            </button>
+            <button class="p-1 w-full text-lg bg-gray rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+              儲存
+            </button>
+          </div>
+        </div>
+        <div class="modal-action">
+          <form method="dialog">
+            <button class="btn">Close</button>
+          </form>
+        </div>
+      </div>
+    </dialog>
+
   </div>
 </template>
 
