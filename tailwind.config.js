@@ -31,7 +31,7 @@ export default {
           950: '#451a03',
         },
         highlights: '#EB4574',
-        gray: '#EEEEEE',
+        gray:'#EEEEEE',
       },
     },
   },
