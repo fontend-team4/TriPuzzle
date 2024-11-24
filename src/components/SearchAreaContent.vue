@@ -18,8 +18,12 @@ const areas = ref([
       <p class="title pb-2">目前位置</p>
       <div class="tag-list mb-6 w-full">
         <button
-          class="btn btn-sm bg-primary-700 text-white rounded-3xl border-transparent flex items-center gap-1 px-4 py-2 
-          hover:bg-primary-600 shadow-lg hover:scale-105 transition transform"
+          class="btn btn-sm bg-primary-100 text-primary-600 rounded-3xl border-transparent flex items-center gap-1 px-4 py-2 
+          hover:bg-primary-700 
+          hover:shadow-lg 
+          hover:text-primary-100
+          hover:scale-105
+          hover:border-transparent"
         >
           <MapPinIcon class="flex items-center w-4 h-4" />
           <span>找附近</span>
