@@ -2,7 +2,6 @@
 import ScheduleCoverImgModal from "./ScheduleCoverImgModal.vue";
 import { ref } from "vue";
 
-const isModalVisible = ref(false);
 
 const replaceImgLabelClick = () => {
   // 點擊收回下拉式選單(再點擊一次)
@@ -10,15 +9,14 @@ const replaceImgLabelClick = () => {
 };
 
 //點選選擇交通方式紅框
-const isChecked=ref(false);
-const transportationLabelClick=()=>{
+const isChecked = ref(false);
+const transportationLabelClick = () => {
   const checkbox = document.getElementById("toggle-transportation");
   if (checkbox) {
     checkbox.checked = !checkbox.checked; // 切換 checked 狀態
-    isChecked.value = checkbox.checked;  // 更新 Vue 狀態
+    isChecked.value = checkbox.checked; // 更新 Vue 狀態
   }
-}
-
+};
 
 const closeDropdown = () => {
   isChecked.value = false; // 收起選單
@@ -28,7 +26,8 @@ const closeDropdown = () => {
 <template>
   <button class="btn" onclick="my_modal_2.showModal()">建立行程</button>
   <dialog id="my_modal_2" class="modal">
-    <div class="modal-box p-0 w-[480px]">
+    <div class="modal-box p-0 w-[480px] ">
+      
       <div class="w-[480px] h-[60px] px-[15px] py-[8px] sticky top-0 bg-white">
         <form method="dialog">
           <button
@@ -95,14 +94,16 @@ const closeDropdown = () => {
           <!-- 下拉選單(插入更換圖片modal) -->
           <ul
             class="font-bold replace-img-btn absolute right-0 top-full mt-2 w-[153px] h-[80px] bg-white rounded-lg shadow-lg transition-all duration-300 ease-in-out max-h-0 overflow-hidden opacity-0 peer-checked:max-h-[150px] peer-checked:opacity-100 z-10"
+              @click="replaceImgLabelClick"
           >
             <li
               class="h-[50%] px-[20px] py-[8px] hover:bg-gray-100 cursor-pointer flex items-center"
-              @click="isModalVisible = true"
             >
               <label
                 for="dropdown-toggle"
                 class="flex items-center cursor-pointer w-full"
+              @click="replaceImgLabelClick"
+
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -126,7 +127,7 @@ const closeDropdown = () => {
             >
               <label
                 for="file-upload"
-                @click="replaceImgLabelClick"
+               @click="replaceImgLabelClick"
                 class="flex items-center cursor-pointer w-full"
               >
                 <svg
@@ -146,15 +147,9 @@ const closeDropdown = () => {
                 <span class="pl-[5px] text-[14px]">上傳照片</span>
               </label>
 
-              <input id="file-upload" type="file" class="hidden" />
+              <input id="file-upload" type="file" class="hidden"/>
             </li>
           </ul>
-
-          <!-- ScheduleCoverImgModal 彈窗 -->
-          <ScheduleCoverImgModal
-            v-if="isModalVisible"
-            @close="isModalVisible = false"
-          />
 
           <div class="relative w-full h-auto rounded-xl overflow-hidden">
             <img
@@ -214,15 +209,16 @@ const closeDropdown = () => {
         </div>
 
         <!-- 主要交通方式 -->
-         
+
         <div>
           <p class="mb-2 font-bold">主要交通方式</p>
           <div
-            class="relative w-[100%] h-[40px] border border-primary-100 rounded-lg px-[20px] py-[8px] flex items-center justify-between cursor-pointer " :class="{'red-frame':isChecked}" @click="transportationLabelClick"
+            class="relative w-[100%] h-[40px] border border-primary-100 rounded-lg px-[20px] py-[8px] flex items-center justify-between cursor-pointer"
+            :class="{ 'red-frame': isChecked }"
+            @click="transportationLabelClick"
           >
-
-          <span>自訂</span>
-          <input type="checkbox" id="toggle-transportation" class="hidden" />
+            <span>自訂</span>
+            <input type="checkbox" id="toggle-transportation" class="hidden" />
             <label for="toggle-transportation" class="cursor-pointer">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -238,30 +234,71 @@ const closeDropdown = () => {
                   d="m19.5 8.25-7.5 7.5-7.5-7.5"
                 />
               </svg>
-
             </label>
-              <!-- hover透過script綁定邏輯 -->
-
-            <ul
-              class="h-[212px] transportation-area absolute left-0 bottom-[50px] mb-1 w-full bg-white shadow-lg flex-col gap-[5px] py-[5px] rounded-lg transition-all duration-200 ease-in-out"
-              :class="{'opacity-100 translate-y-0': isChecked, 'opacity-0 translate-y-[20px]': !isChecked}"
+            <!-- hover透過script綁定邏輯 -->
+            <transition
+              name="fade-slide"
+              @before-enter="beforeEnter"
+              @after-enter="afterEnter"
             >
-              <li class="px-4 py-2 cursor-pointer h-[40px]" @click="closeDropdown">走路</li>
-              <li class="px-4 py-2 cursor-pointer h-[40px]" @click="closeDropdown">汽車</li>
-              <li class="px-4 py-2 cursor-pointer h-[40px]" @click="closeDropdown">大眾運輸</li>
-              <li class="px-4 py-2 cursor-pointer h-[40px]" @click="closeDropdown">機車</li>
-              <li class="px-4 py-2 cursor-pointer bg-primary-300 text-primary-800 font-bold" @click="closeDropdown">自訂</li>
-            </ul>
+              <ul
+                class="h-[212px] transportation-area absolute left-0 bottom-[50px] mb-1 w-full bg-white shadow-lg flex-col gap-[5px] py-[5px] rounded-lg transition-all duration-200 ease-in-out"
+                :class="{
+                  'opacity-100 translate-y-0': isChecked,
+                  'opacity-0 translate-y-[20px]': !isChecked,
+                }"
+                v-show="isChecked"
+              >
+                <li
+                  class="px-4 py-2 cursor-pointer h-[40px]"
+                  @click="closeDropdown"
+                >
+                  走路
+                </li>
+                <li
+                  class="px-4 py-2 cursor-pointer h-[40px]"
+                  @click="closeDropdown"
+                >
+                  汽車
+                </li>
+                <li
+                  class="px-4 py-2 cursor-pointer h-[40px]"
+                  @click="closeDropdown"
+                >
+                  大眾運輸
+                </li>
+                <li
+                  class="px-4 py-2 cursor-pointer h-[40px]"
+                  @click="closeDropdown"
+                >
+                  機車
+                </li>
+                <li
+                  class="px-4 py-2 cursor-pointer bg-primary-300 text-primary-800 font-bold"
+                  @click="closeDropdown"
+                >
+                  自訂
+                </li>
+              </ul>
+            </transition>
           </div>
         </div>
       </div>
 
       <div
-        class="w-[100%] h-[80px] absolute bottom-0 sticky border-t-[1px] border-slate-200 py-[16px] px-[24px] z-20 "
+        class="w-[100%] h-[80px] absolute bottom-0 sticky border-t-[1px] border-slate-200 py-[16px] px-[24px] z-20"
       >
         <form method="dialog" class="flex gap-[12px]">
-          <button class="w-[50%] h-[48px] border-[1px] border-primary-800 rounded-3xl text-primary-800 font-bold text-sm justify-center items-center px-[12px] py-[8px]">取消</button>
-          <button class="w-[50%] h-[48px] bg-primary-800 rounded-3xl text-white font-bold text-sm justify-center items-center px-[12px] py-[8px]">完成</button>
+          <button
+            class="w-[50%] h-[48px] border-[1px] border-primary-800 rounded-3xl text-primary-800 font-bold text-sm justify-center items-center px-[12px] py-[8px]"
+          >
+            取消
+          </button>
+          <button
+            class="w-[50%] h-[48px] bg-primary-800 rounded-3xl text-white font-bold text-sm justify-center items-center px-[12px] py-[8px]"
+          >
+            完成
+          </button>
         </form>
       </div>
     </div>
@@ -272,6 +309,22 @@ const closeDropdown = () => {
 </template>
 
 <style>
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.fade-slide-enter-from,
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.fade-slide-enter-to,
+.fade-slide-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+}
 
 /* 圖標旋轉 */
 #toggle-transportation:checked + label svg {
@@ -280,7 +333,7 @@ const closeDropdown = () => {
 
 .transportation-area li:hover,
 .replace-img-btn li:hover {
-  background-color: #fffae3;
+  background-color: #EEEEEE;
 }
 input {
   border: 2px solid transparent;
@@ -296,14 +349,14 @@ input:focus {
     /* 中間的陰影 */ 0 0 16px rgba(210, 52, 48, 0.1); /* 外層的陰影 */
 }
 
-
-
 .red-frame {
   border-color: #d23430;
-  box-shadow: 0 0 4px rgba(210, 52, 48, 0.5), /* 內層的陰影 */
-    0 0 8px rgba(210, 52, 48, 0.3), /* 中間的陰影 */
-    0 0 16px rgba(210, 52, 48, 0.1); /* 外層的陰影 */
+  box-shadow: 0 0 4px rgba(210, 52, 48, 0.5),
+    /* 內層的陰影 */ 0 0 8px rgba(210, 52, 48, 0.3),
+    /* 中間的陰影 */ 0 0 16px rgba(210, 52, 48, 0.1); /* 外層的陰影 */
   transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
+
+
 
 </style>
