@@ -1,14 +1,6 @@
 <script setup>
-import { ref, computed } from "vue";
-import CategoryMenu from "../components/CategoryNav.vue";
-
-// 傳入的 props，使用 `defineProps`
-defineProps({
-  category: {
-    type: String,
-    default: "推薦",
-  },
-});
+import { ref, computed, watch } from "vue";
+import CategoryNav from "../components/CategoryNav.vue";
 
 // 本地數據
 const categories = ref(["推薦", "台灣", "日本", "韓國"]);
@@ -19,17 +11,30 @@ const destinations = ref([
   { name: "地點4", category: "韓國", image: "https://fakeimg.pl/100x100/400" },
 ]);
 
+// 從路由獲取當前分類
+const route = useRoute();
+const currentCategory = ref(route.params.category || "推薦");
+
+// 監聽路由變化，更新分類
+watch(
+  () => route.params.category,
+  (newCategory) => {
+    currentCategory.value = newCategory || "推薦";
+  }
+);
+
 // 計算過濾後的目的地
 const filteredDestinations = computed(() =>
-  destinations.value.filter((destination) => destination.category === category)
+  destinations.value.filter(
+    (destination) => destination.category === currentCategory.value
+  )
 );
 </script>
 
 <template>
-  <div>
+  <div >
     <!-- 顯示篩選選單 -->
-    <CategoryMenu :categories="categories" />
-
+    <CategoryNav :categories="categories" />
     <!-- 顯示過濾後的目的地 -->
     <div class="area-list flex flex-wrap gap-2 mt-4">
       <div

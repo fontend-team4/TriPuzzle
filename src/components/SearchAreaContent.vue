@@ -13,20 +13,23 @@ const areas = ref([
 
 
 <template>
-  <div class="block-content flex flex-col w-full py-3">
-    <div class="section">
+  <div class="block-content flex flex-col w-full pt-3 pl-4 bg-grey text-black">
+    <div class="section section-current">
       <p class="title pb-2">目前位置</p>
-      <div class="tag-list  mb-6 w-full">
-        <button class="btn btn-sm bg-primary-700 rounded-3xl border-transparent">
-          <MapPinIcon class="bg-primary-700 flex items-center w-4 h-4" />
+      <div class="tag-list mb-6 w-full">
+        <button
+          class="btn btn-sm bg-primary-700 text-white rounded-3xl border-transparent flex items-center gap-1 px-4 py-2 
+          hover:bg-primary-600 shadow-lg hover:scale-105 transition transform"
+        >
+          <MapPinIcon class="flex items-center w-4 h-4" />
           <span>找附近</span>
         </button>
       </div>
     </div>
 
     <!-- 熱門目的地 -->
-    <div class="section">
-      <p class="title pb-1">熱門目的地</p>
+    <div class="section mt-4">
+      <p class="title pb-2">熱門目的地</p>
       <div class="area-list flex flex-wrap gap-2">
         <div class="area-item" v-for="area in areas" :key="area.id">
           <img :src="area.image" alt="熱門地點" class="rounded-md shadow-md" />
@@ -38,6 +41,14 @@ const areas = ref([
 
 
 <style scoped>
+.section-current{
+  border-bottom: 1px dashed gray;
+  margin-bottom: 4px;
+}
+
+.btn:hover{
+  border: transparent;
+}
 
 .area-item img {
   width: 100px;
