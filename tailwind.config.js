@@ -3,6 +3,13 @@ export default {
   content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      boxShadow: {
+        '3xl': '4px 4px 60px 8px rgba(227, 188, 188, 0.3)',
+      },
+      fontSize: {
+        '1.5xl': '1.375rem',
+        '4.5xl': '2.5rem',
+      },
       spacing: {
         4.5: '1.125rem',
       },
@@ -36,6 +43,7 @@ export default {
         highlights: '#EB4574',
         gray: '#EEEEEE',
       },
+      apply: true,
     },
   },
   plugins: [require('daisyui')],
