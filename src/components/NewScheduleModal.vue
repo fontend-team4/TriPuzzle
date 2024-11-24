@@ -27,12 +27,9 @@ const closeDropdown = () => {
   <button class="btn" onclick="my_modal_2.showModal()">建立行程</button>
   <dialog id="my_modal_2" class="modal">
     <div class="modal-box p-0 w-[480px] ">
-      
       <div class="w-[480px] h-[60px] px-[15px] py-[8px] sticky top-0 bg-white">
         <form method="dialog">
-          <button
-            class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-          >
+          <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -53,16 +50,12 @@ const closeDropdown = () => {
 
       <div>
         <header>
-          <span class="text-2xl font-bold flex items-center justify-center"
-            >行程設定</span
-          >
+          <span class="text-2xl font-bold flex items-center justify-center">行程設定</span>
         </header>
       </div>
 
       <!-- 主內容區塊 -->
-      <div
-        class="pt-0 px-[20px] pb-[50px] w-[480px] h-[552.75px] flex flex-col gap-[20px] relative"
-      >
+      <div class="pt-0 px-[20px] pb-[50px] w-[480px] h-[552.75px] flex flex-col gap-[20px] relative">
         <!-- 封面照片 -->
         <div class="relative">
           <p class="font-bold">封面照片</p>
@@ -71,9 +64,7 @@ const closeDropdown = () => {
 
           <!-- 使用 Label 包裹按鈕 -->
           <label
-            for="dropdown-toggle"
-            class="w-[82px] h-[32px] absolute right-[20px] bottom-[16px] z-10 flex items-center justify-center gap-2 border-[1px] border-white rounded-3xl py-[4px] px-[12px] cursor-pointer"
-          >
+            for="dropdown-toggle" class="w-[82px] h-[32px] absolute right-[20px] bottom-[16px] z-10 flex items-center justify-center gap-2 border-[1px] border-white rounded-3xl py-[4px] px-[12px] cursor-pointer">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -92,19 +83,12 @@ const closeDropdown = () => {
           </label>
 
           <!-- 下拉選單(插入更換圖片modal) -->
-          <ul
-            class="font-bold replace-img-btn absolute right-0 top-full mt-2 w-[153px] h-[80px] bg-white rounded-lg shadow-lg transition-all duration-300 ease-in-out max-h-0 overflow-hidden opacity-0 peer-checked:max-h-[150px] peer-checked:opacity-100 z-10"
-              @click="replaceImgLabelClick"
-          >
-            <li
-              class="h-[50%] px-[20px] py-[8px] hover:bg-gray-100 cursor-pointer flex items-center"
-            >
+          <ul class="font-bold replace-img-btn absolute right-0 top-full mt-2 w-[153px] h-[80px] bg-white rounded-lg shadow-lg transition-all duration-300 ease-in-out max-h-0 overflow-hidden opacity-0 peer-checked:max-h-[150px] peer-checked:opacity-100 z-10" @click="replaceImgLabelClick">
+            <li class="h-[50%] px-[20px] py-[8px] hover:bg-gray-100 cursor-pointer flex items-center">
               <label
                 for="dropdown-toggle"
                 class="flex items-center cursor-pointer w-full"
-              @click="replaceImgLabelClick"
-
-              >
+              @click="replaceImgLabelClick">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -122,14 +106,11 @@ const closeDropdown = () => {
                 <span class="pl-[5px] text-[14px]">從圖庫中挑選</span>
               </label>
             </li>
-            <li
-              class="h-[50%] px-[20px] py-[8px] hover:bg-gray-100 cursor-pointer flex items-center border-t-[1px] border-slate-200"
-            >
+            <li class="h-[50%] px-[20px] py-[8px] hover:bg-gray-100 cursor-pointer flex items-center border-t-[1px] border-slate-200">
               <label
                 for="file-upload"
                @click="replaceImgLabelClick"
-                class="flex items-center cursor-pointer w-full"
-              >
+                class="flex items-center cursor-pointer w-full">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -146,7 +127,6 @@ const closeDropdown = () => {
                 </svg>
                 <span class="pl-[5px] text-[14px]">上傳照片</span>
               </label>
-
               <input id="file-upload" type="file" class="hidden"/>
             </li>
           </ul>
@@ -155,11 +135,8 @@ const closeDropdown = () => {
             <img
               src="https://chictirpstorageprod.blob.core.windows.net/system/166b42c7-fc3c-4708-ab2b-f9730bfd1b8a.jpg"
               alt="封面照片"
-              class="w-full h-full object-cover"
-            />
-            <div
-              class="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent"
-            ></div>
+              class="w-full h-full object-cover"/>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent"></div>
           </div>
         </div>
 
@@ -169,8 +146,7 @@ const closeDropdown = () => {
           <input
             type="text"
             placeholder="幫行程取個名字吧"
-            class="border-solid border border-primary-100 rounded-lg w-[100%] h-[40px] py-2 px-5"
-          />
+            class="border-solid border border-primary-100 rounded-lg w-[100%] h-[40px] py-2 px-5"/>
         </div>
 
         <!-- 行程日期 -->
@@ -203,8 +179,7 @@ const closeDropdown = () => {
             <input
               type="date"
               placeholder="結束日"
-              class="border-solid border border-primary-100 rounded-lg w-[198px] h-[40px] py-2 px-5"
-            />
+              class="border-solid border border-primary-100 rounded-lg w-[198px] h-[40px] py-2 px-5"/>
           </div>
         </div>
 
@@ -215,8 +190,7 @@ const closeDropdown = () => {
           <div
             class="relative w-[100%] h-[40px] border border-primary-100 rounded-lg px-[20px] py-[8px] flex items-center justify-between cursor-pointer"
             :class="{ 'red-frame': isChecked }"
-            @click="transportationLabelClick"
-          >
+            @click="transportationLabelClick">
             <span>自訂</span>
             <input type="checkbox" id="toggle-transportation" class="hidden" />
             <label for="toggle-transportation" class="cursor-pointer">
@@ -237,66 +211,32 @@ const closeDropdown = () => {
             </label>
             <!-- hover透過script綁定邏輯 -->
             <transition
-              name="fade-slide"
-              @before-enter="beforeEnter"
-              @after-enter="afterEnter"
-            >
+              name="fade-slide">
               <ul
                 class="h-[212px] transportation-area absolute left-0 bottom-[50px] mb-1 w-full bg-white shadow-lg flex-col gap-[5px] py-[5px] rounded-lg transition-all duration-200 ease-in-out"
                 :class="{
                   'opacity-100 translate-y-0': isChecked,
                   'opacity-0 translate-y-[20px]': !isChecked,
                 }"
-                v-show="isChecked"
-              >
-                <li
-                  class="px-4 py-2 cursor-pointer h-[40px]"
-                  @click="closeDropdown"
-                >
-                  走路
-                </li>
-                <li
-                  class="px-4 py-2 cursor-pointer h-[40px]"
-                  @click="closeDropdown"
-                >
-                  汽車
-                </li>
-                <li
-                  class="px-4 py-2 cursor-pointer h-[40px]"
-                  @click="closeDropdown"
-                >
-                  大眾運輸
-                </li>
-                <li
-                  class="px-4 py-2 cursor-pointer h-[40px]"
-                  @click="closeDropdown"
-                >
-                  機車
-                </li>
-                <li
-                  class="px-4 py-2 cursor-pointer bg-primary-300 text-primary-800 font-bold"
-                  @click="closeDropdown"
-                >
-                  自訂
-                </li>
+                v-show="isChecked">
+                <li class="px-4 py-2 cursor-pointer h-[40px]" @click="closeDropdown">走路</li>
+                <li class="px-4 py-2 cursor-pointer h-[40px]" @click="closeDropdown">汽車</li>
+                <li class="px-4 py-2 cursor-pointer h-[40px]" @click="closeDropdown">大眾運輸</li>
+                <li class="px-4 py-2 cursor-pointer h-[40px]" @click="closeDropdown">機車</li>
+                <li class="px-4 py-2 cursor-pointer bg-primary-300 text-primary-800 font-bold" @click="closeDropdown">自訂</li>
               </ul>
             </transition>
           </div>
         </div>
       </div>
 
-      <div
-        class="w-[100%] h-[80px] absolute bottom-0 sticky border-t-[1px] border-slate-200 py-[16px] px-[24px] z-20"
-      >
+      <!-- footer -->
+      <div class="w-[100%] h-[80px] absolute bottom-0 sticky border-t-[1px] border-slate-200 py-[16px] px-[24px] z-20">
         <form method="dialog" class="flex gap-[12px]">
-          <button
-            class="w-[50%] h-[48px] border-[1px] border-primary-800 rounded-3xl text-primary-800 font-bold text-sm justify-center items-center px-[12px] py-[8px]"
-          >
+          <button class="w-[50%] h-[48px] border-[1px] border-primary-800 rounded-3xl text-primary-800 font-bold text-sm justify-center items-center px-[12px] py-[8px]">
             取消
           </button>
-          <button
-            class="w-[50%] h-[48px] bg-primary-800 rounded-3xl text-white font-bold text-sm justify-center items-center px-[12px] py-[8px]"
-          >
+          <button class="w-[50%] h-[48px] bg-primary-800 rounded-3xl text-white font-bold text-sm justify-center items-center px-[12px] py-[8px]">
             完成
           </button>
         </form>
@@ -356,7 +296,4 @@ input:focus {
     /* 中間的陰影 */ 0 0 16px rgba(210, 52, 48, 0.1); /* 外層的陰影 */
   transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
-
-
-
 </style>
