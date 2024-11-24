@@ -4,10 +4,24 @@ import { ref } from "vue";
 
 const isModalVisible = ref(false);
 
-const handleLabelClick = () => {
+const replaceImgLabelClick = () => {
   // 點擊收回下拉式選單(再點擊一次)
   document.getElementById("dropdown-toggle").click();
+};
 
+//點選選擇交通方式紅框
+const isChecked=ref(false);
+const transportationLabelClick=()=>{
+  const checkbox = document.getElementById("toggle-transportation");
+  if (checkbox) {
+    checkbox.checked = !checkbox.checked; // 切換 checked 狀態
+    isChecked.value = checkbox.checked;  // 更新 Vue 狀態
+  }
+}
+
+
+const closeDropdown = () => {
+  isChecked.value = false; // 收起選單
 };
 </script>
 
@@ -59,7 +73,6 @@ const handleLabelClick = () => {
           <!-- 使用 Label 包裹按鈕 -->
           <label
             for="dropdown-toggle"
-          
             class="w-[82px] h-[32px] absolute right-[20px] bottom-[16px] z-10 flex items-center justify-center gap-2 border-[1px] border-white rounded-3xl py-[4px] px-[12px] cursor-pointer"
           >
             <svg
@@ -86,32 +99,34 @@ const handleLabelClick = () => {
             <li
               class="h-[50%] px-[20px] py-[8px] hover:bg-gray-100 cursor-pointer flex items-center"
               @click="isModalVisible = true"
-              
-            ><label for="dropdown-toggle"   class="flex items-center cursor-pointer w-full" >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="w-[24px] h-[24px]"
+            >
+              <label
+                for="dropdown-toggle"
+                class="flex items-center cursor-pointer w-full"
               >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
-                />
-              </svg>
-              <span class="pl-[5px] text-[14px]">從圖庫中挑選</span>
-            </label>
-          
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="w-[24px] h-[24px]"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+                  />
+                </svg>
+                <span class="pl-[5px] text-[14px]">從圖庫中挑選</span>
+              </label>
             </li>
             <li
               class="h-[50%] px-[20px] py-[8px] hover:bg-gray-100 cursor-pointer flex items-center border-t-[1px] border-slate-200"
             >
               <label
                 for="file-upload"
-                @click="handleLabelClick"
+                @click="replaceImgLabelClick"
                 class="flex items-center cursor-pointer w-full"
               >
                 <svg
@@ -199,13 +214,15 @@ const handleLabelClick = () => {
         </div>
 
         <!-- 主要交通方式 -->
+         
         <div>
           <p class="mb-2 font-bold">主要交通方式</p>
           <div
-            class="relative w-[100%] h-[40px] border border-primary-100 rounded-lg px-[20px] py-[8px] flex items-center justify-between"
+            class="relative w-[100%] h-[40px] border border-primary-100 rounded-lg px-[20px] py-[8px] flex items-center justify-between cursor-pointer " :class="{'red-frame':isChecked}" @click="transportationLabelClick"
           >
-            <span>自訂</span>
-            <input type="checkbox" id="toggle-transportation" class="hidden" />
+
+          <span>自訂</span>
+          <input type="checkbox" id="toggle-transportation" class="hidden" />
             <label for="toggle-transportation" class="cursor-pointer">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -222,30 +239,29 @@ const handleLabelClick = () => {
                 />
               </svg>
 
-              <!-- hover透過script綁定邏輯 -->
             </label>
+              <!-- hover透過script綁定邏輯 -->
+
             <ul
-              class="h-[210px] transportation-area absolute left-0 bottom-[50px] mb-1 w-full bg-white border-primary-100 shadow-lg hidden transition-all duration-500 opacity-0"
+              class="h-[212px] transportation-area absolute left-0 bottom-[50px] mb-1 w-full bg-white shadow-lg flex-col gap-[5px] py-[5px] rounded-lg transition-all duration-200 ease-in-out"
+              :class="{'opacity-100 translate-y-0': isChecked, 'opacity-0 translate-y-[20px]': !isChecked}"
             >
-              <li class="px-4 py-2 cursor-pointer">走路</li>
-              <li class="px-4 py-2 cursor-pointer">汽車</li>
-              <li class="px-4 py-2 cursor-pointer">大眾運輸</li>
-              <li class="px-4 py-2 cursor-pointer">機車</li>
-              <li
-                class="px-4 py-2 cursor-pointer bg-primary-300 text-primary-600 font-bold"
-              >
-                自訂
-              </li>
+              <li class="px-4 py-2 cursor-pointer h-[40px]" @click="closeDropdown">走路</li>
+              <li class="px-4 py-2 cursor-pointer h-[40px]" @click="closeDropdown">汽車</li>
+              <li class="px-4 py-2 cursor-pointer h-[40px]" @click="closeDropdown">大眾運輸</li>
+              <li class="px-4 py-2 cursor-pointer h-[40px]" @click="closeDropdown">機車</li>
+              <li class="px-4 py-2 cursor-pointer bg-primary-300 text-primary-800 font-bold" @click="closeDropdown">自訂</li>
             </ul>
           </div>
         </div>
       </div>
 
       <div
-        class="w-[100%] h-[80px] absolute bottom-0 sticky border-t-[1px] border-slate-200"
+        class="w-[100%] h-[80px] absolute bottom-0 sticky border-t-[1px] border-slate-200 py-[16px] px-[24px] z-20 "
       >
-        <form method="dialog">
-          <button class="btn">Close</button>
+        <form method="dialog" class="flex gap-[12px]">
+          <button class="w-[50%] h-[48px] border-[1px] border-primary-800 rounded-3xl text-primary-800 font-bold text-sm justify-center items-center px-[12px] py-[8px]">取消</button>
+          <button class="w-[50%] h-[48px] bg-primary-800 rounded-3xl text-white font-bold text-sm justify-center items-center px-[12px] py-[8px]">完成</button>
         </form>
       </div>
     </div>
@@ -256,17 +272,6 @@ const handleLabelClick = () => {
 </template>
 
 <style>
-/* 顯示選單 */
-#toggle-transportation:checked + label + .transportation-area {
-  display: block;
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* 隱藏選單 */
-.transportation-area {
-  transform: translateY(-10px);
-}
 
 /* 圖標旋轉 */
 #toggle-transportation:checked + label svg {
@@ -277,4 +282,28 @@ const handleLabelClick = () => {
 .replace-img-btn li:hover {
   background-color: #fffae3;
 }
+input {
+  border: 2px solid transparent;
+  border-radius: 4px;
+  outline: none;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+input:focus {
+  border-color: #d23430;
+  box-shadow: 0 0 4px rgba(210, 52, 48, 0.5),
+    /* 內層的陰影 */ 0 0 8px rgba(210, 52, 48, 0.3),
+    /* 中間的陰影 */ 0 0 16px rgba(210, 52, 48, 0.1); /* 外層的陰影 */
+}
+
+
+
+.red-frame {
+  border-color: #d23430;
+  box-shadow: 0 0 4px rgba(210, 52, 48, 0.5), /* 內層的陰影 */
+    0 0 8px rgba(210, 52, 48, 0.3), /* 中間的陰影 */
+    0 0 16px rgba(210, 52, 48, 0.1); /* 外層的陰影 */
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
 </style>
