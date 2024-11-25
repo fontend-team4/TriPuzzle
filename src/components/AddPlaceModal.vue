@@ -1,19 +1,23 @@
 <script setup>
-import { PlusCircleIcon  } from "@heroicons/vue/24/solid";
-import { ChevronDownIcon  } from "@heroicons/vue/24/outline"
+import { ref } from "vue";
+import AddPlaceBtn from "./AddPlaceBtn.vue";
+import AddPlacecColps from "./AddPlacecColps.vue";
+import AddPlcToNewSchedule from "./AddPlcToNewSchedule.vue";
+
+
+
+
 
 </script>
 
 <template>
   <!-- Button上顯示的字要跟已存在行程連動，預設是"加入行程" -->
-  <button class="btn overflow-hidden text-white text-lg bg-secondary-500 rounded-full
-  hover:bg-secondary-600" 
-  onclick="my_modal.showModal()">加入行程 <PlusCircleIcon class="size-6"/>  </button>
+  <AddPlaceBtn onclick="my_modal.showModal()" />
 
   <dialog id="my_modal" class="modal">
     <div class=
         " h-[100vh] mt-[-24px] w-full lg:max-h-[800px] lg:max-w-[1000px] lg:mx-auto lg:mb-[calc(100vh/8)] bg-white lg:flex md:rounded-md overflow-hidden">
-      <div class="hidden lg:block lg:w-2/3 lg:bg-[#f7f1ec]">
+      <div class="hidden lg:block lg:w-2/3 lg:bg-[#f4f4f4]">
           <div class="flex h-full">
             <img src="https://web.chictrip.com.tw/assets/join_placeholder.2950886f.png" class="m-auto">
           </div>
@@ -39,32 +43,21 @@ import { ChevronDownIcon  } from "@heroicons/vue/24/outline"
            </svg>
           </button>
         </form>
-        <!-- 測試 -->
 
-       <div  class=" my-[20px] p-2 w-full h-100vh box-border ">
+<!-- 測試2 -->
           <div 
-            role="tablist"
-            aria-label="tabs"
-            class="relative w-full mx-auto h-[2.5rem] grid grid-cols-2 items-center px-[3px] rounded-full bg-gray-900/20 overflow-hidden shadow-2xl shadow-900/20 transition  bg-[#f7f1ec]"
+            class="relative w-full mt-[1rem] mx-auto h-[2.5rem] grid grid-cols-2 items-center px-[3px] rounded-full bg-gray-900/20 overflow-hidden shadow-md shadow-[#eeeeee] transition  bg-white"
           >
-          <input class="toggle absolute indicator h-11 my-auto top-0 bottom-0 left-0 rounded-full shadow-md"></input>
+         
           <button
-            role="tab"
-            aria-selected="true"
-            aria-controls="panel-1"
-            id="tab-1"
-            tabindex="0" 
-            class="relative block h-10 px-6 tab rounded-full  text-white bg-primary-500"
-          >
+            @click="myRunDown"
+            class=" relative block h-10 px-6 tab rounded-full  text-white bg-primary-500 hover:bg-primary-400"
+            >
             <span class="text-base">我的行程</span>
           </button>
           <button
-            role="tab"
-            aria-selected="false"
-            aria-controls="panel-2"
-            id="tab-2"
-            tabindex="-1"
-            class="relative block h-10 px-6 tab rounded-full "
+            @click="coEdit"
+            class=" relative block h-10 px-6 tab rounded-full bg-white text-black hover:bg-primary-400 hover:text-white"
           >
             <span class="text-base">與我共編</span>
           </button>
@@ -75,38 +68,10 @@ import { ChevronDownIcon  } from "@heroicons/vue/24/outline"
             id="panel-1"
             class="tab-panel transition duration-300"
           >
-          <div class="collapse m-[-1rem] ">
-              <input type="checkbox"/>
-              <div class="collapse-title flex justify-between">
-                <div>
-                 <h2 class="text-xl font-bold text-stone-950">行程一</h2>
-                 <p class="text-sm text-gray-600">2024/11/01</p>
-                </div> 
-                <ChevronDownIcon class="size-3" />
-              </div>
-              <div class="collapse-content ">
-                  <div class="p-2 my-[0.5rem] bg-[#f7f1ec] rounded-xl">
-                    <h3 class="text-black text-semibold">第一天</h3>
-                    <!-- 景點數量要跟我的行程連動 -->
-                    <p>11/01 週五，4個景點</p>
-                  </div>
-                  <div class="p-2  my-[0.5rem] bg-[#f7f1ec] rounded-xl">
-                    <h3 class="text-black text-semibold">第二天</h3>
-                    <p>11/02 週六，0個景點</p>
-                  </div>
-                  <div class="p-2  my-[0.5rem] bg-[#f7f1ec] rounded-xl">
-                    <h3 class="text-black text-semibold">第三天</h3>
-                    <p>11/03 週日，0個景點</p>
-              </div>
-            </div>
-          </div>
-              <!-- 按這裡要去NewScheduleModal的Modal -->
-              <div class="">
-                <a class="bg-white flex mt-[1rem]">
-                  <PlusCircleIcon  class="size-5 fill-primary-500 mr-[0.5rem] mt-[0.1rem]" />
-                  <p class= " hover:text-primary-500 text-black text-md text-bold ">建立新行程</p>
-                </a>
-              </div>
+          <AddPlacecColps />
+          <AddPlcToNewSchedule />
+          
+
           </div>
           <div
             role="tabpanel"
@@ -117,7 +82,7 @@ import { ChevronDownIcon  } from "@heroicons/vue/24/outline"
         </div>
       </div>
         </div>
-    </div>
+    
  
 
 
@@ -132,3 +97,4 @@ import { ChevronDownIcon  } from "@heroicons/vue/24/outline"
 
 
 </template>
+
