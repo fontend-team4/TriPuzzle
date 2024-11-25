@@ -7,6 +7,7 @@ import FeaturesIllustration5 from './FeaturesIllustration5.vue'
 import FeaturesIllustration6 from './FeaturesIllustration6.vue'
 import FooterIllustration1 from './FooterIllustration1.vue'
 import FooterIllustration2 from './FooterIllustration2.vue'
+import Mockup from './Mockup.vue'
 
 export {
   Logo,
@@ -18,4 +19,5 @@ export {
   FeaturesIllustration6,
   FooterIllustration1,
   FooterIllustration2,
+  Mockup,
 }
