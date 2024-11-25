@@ -24,6 +24,8 @@ const closeDropdown = () => {
 </script>
 
 <template>
+  
+
   <button class="btn" onclick="my_modal_2.showModal()">建立行程</button>
   <dialog id="my_modal_2" class="modal">
     <div class="modal-box p-0 w-[480px] ">
@@ -85,7 +87,8 @@ const closeDropdown = () => {
           <!-- 下拉選單(插入更換圖片modal) -->
           <ul class="font-bold replace-img-btn absolute right-0 top-full mt-2 w-[153px] h-[80px] bg-white rounded-lg shadow-lg transition-all duration-300 ease-in-out max-h-0 overflow-hidden opacity-0 peer-checked:max-h-[150px] peer-checked:opacity-100 z-10" @click="replaceImgLabelClick">
             <li class="h-[50%] px-[20px] py-[8px] hover:bg-gray-100 cursor-pointer flex items-center">
-              <label
+              <ScheduleCoverImgModal/>
+              <!-- <label
                 for="dropdown-toggle"
                 class="flex items-center cursor-pointer w-full"
               @click="replaceImgLabelClick">
@@ -103,14 +106,14 @@ const closeDropdown = () => {
                     d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
                   />
                 </svg>
-                <span class="pl-[5px] text-[14px]">從圖庫中挑選</span>
-              </label>
+                <span class="pl-[5px] text-[14px] ">從圖庫中挑選</span>
+              </label> -->
             </li>
             <li class="h-[50%] px-[20px] py-[8px] hover:bg-gray-100 cursor-pointer flex items-center border-t-[1px] border-slate-200">
               <label
                 for="file-upload"
                @click="replaceImgLabelClick"
-                class="flex items-center cursor-pointer w-full">
+                class="flex items-center cursor-pointer w-full \">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"

@@ -7,8 +7,8 @@ import ScheduleCoverImgModal from "@/components/ScheduleCoverImgModal.vue";
 
 <template>
   <main>
-    <!-- <NewScheduleModal/> -->
-    <ScheduleCoverImgModal />
+    <NewScheduleModal/>
+    <!-- <ScheduleCoverImgModal /> -->
     <TheWelcome />
   </main>
 </template>

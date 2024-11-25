@@ -9,6 +9,17 @@ function clickImg(){
 </script>
 
 <template>
+
+
+<button class="btn" onclick="select_img.showModal()">open modal</button>
+<dialog id="select_img" class="modal">
+  <div class="modal-box">
+    <form method="dialog">
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+    </form>
+
+
+    
   <div class="max-w-[800px] bg-whiterounded-xl " >
     <div class="max-w-[800px] h-[60px] px-[15px] py-[8px] sticky top-0 bg-white rounded-xl relative">
       <form method="dialog ">
@@ -228,6 +239,15 @@ function clickImg(){
       </form>
     </div>
   </div>
+
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+    <button>close</button>
+  </form>
+</dialog>
+
+
 
   <form method="dialog" class="modal-backdrop">
     <button>close</button>
