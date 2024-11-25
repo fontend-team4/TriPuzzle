@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
-import { CheckIcon, XMarkIcon } from "@heroicons/vue/24/solid";
-
+import { CheckIcon, XMarkIcon,} from "@heroicons/vue/24/solid";
+import{PhotoIcon} from'@heroicons/vue/24/outline'
 
 // 把圖片儲存成物件，讓其個別都有id，選中後不會相互影響
 const imageStates = ref([
@@ -34,27 +34,26 @@ function selectImg(item){
 }
 
 
+
 </script>
 
 <template>
 
 
-<button class="btn" onclick="select_img.showModal()">open modal</button>
+<button
+    class="flex items-center justify-start w-full  gap-[5px] hover:bg-gray-100 transition"
+    onclick="select_img.showModal()"
+  >
+    <PhotoIcon class="w-[24px] h-[24px]" />
+    <span class="text-[14px] truncate">從圖庫中挑選</span>
+  </button>
 <dialog id="select_img" class="modal">
-  <div class="modal-box">
-    <form method="dialog">
-      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-    </form>
-
-
+  <div class="modal-box p-0 lg:max-w-[800px] md:max-w-[800px] sm:w-[100%] sm:h-[100%] max-md:rounded-none">
     
-  <div class="max-w-[800px] bg-whiterounded-xl " >
-    <div class="max-w-[800px] h-[60px] px-[15px] py-[8px] sticky top-0 bg-white rounded-xl relative">
-      <form method="dialog ">
-        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 flex justify-center item-center">
-          <XMarkIcon class="w-6 h-6" />
-        </button>
-      </form>
+    <div class="max-w-[800px] h-[60px] px-[15px] py-[8px] sticky top-0 bg-white rounded-xl relative z-10">
+      <form method="dialog">
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"><XMarkIcon class="w-6 h-6" /></button>
+    </form>
     </div>
 
     <div>
@@ -96,7 +95,7 @@ function selectImg(item){
         </button>
       </form>
     </div>
-  </div>
+
 
   </div>
   <form method="dialog" class="modal-backdrop">

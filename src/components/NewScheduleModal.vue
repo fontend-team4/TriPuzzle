@@ -2,7 +2,7 @@
 import ScheduleCoverImgModal from "./ScheduleCoverImgModal.vue";
 import { ref } from "vue";
 import { XMarkIcon,PencilSquareIcon,ArrowLongRightIcon,PencilIcon,ArrowUpTrayIcon,ChevronDownIcon } from "@heroicons/vue/24/solid";
-
+import{PhotoIcon} from'@heroicons/vue/24/outline'
 
 
 
@@ -31,11 +31,11 @@ const closeDropdown = () => {
   
 
   <button class="btn" onclick="my_modal_2.showModal()">建立行程</button>
-  <dialog id="my_modal_2" class="modal">
-    <div class="modal-box p-0 w-[480px] ">
-      <div class="w-[480px] h-[60px] px-[15px] py-[8px] sticky top-0 bg-white">
+  <dialog id="my_modal_2" class="modal ">
+    <div class="modal-box p-0 w-full md:max-w-[480px] sm:max-w-[100%] sm:max-h-[100%] max-md:rounded-none ">
+      <div class="max-w-[480px] md:max-w-[480px] sm:max-w-[100%] h-[60px] px-[15px] py-[8px] sticky top-0 bg-white relative ">
         <form method="dialog">
-          <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+          <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 ">
             <XMarkIcon class="w-6 h-6" />
           </button>
         </form>
@@ -48,7 +48,7 @@ const closeDropdown = () => {
       </div>
 
       <!-- 主內容區塊 -->
-      <div class="pt-0 px-[20px] pb-[50px] w-[480px] h-[552.75px] flex flex-col gap-[20px] relative">
+      <div class="pt-0 px-[20px] pb-[50px] max-w-[480px] md:max-w-[480px] sm:max-w-[100%] md:max-h-[552.75px] sm:max-h-[100%] flex flex-col gap-[20px] relative">
         <!-- 封面照片 -->
         <div class="relative">
           <p class="font-bold">封面照片</p>
@@ -64,28 +64,8 @@ const closeDropdown = () => {
 
           <!-- 下拉選單(插入更換圖片modal) -->
           <ul class="font-bold replace-img-btn absolute right-0 top-full mt-2 w-[153px] h-[80px] bg-white rounded-lg shadow-lg transition-all duration-300 ease-in-out max-h-0 overflow-hidden opacity-0 peer-checked:max-h-[150px] peer-checked:opacity-100 z-10" @click="replaceImgLabelClick">
-            <li class="h-[50%] px-[20px] py-[8px] hover:bg-gray-100 cursor-pointer flex items-center">
-              <ScheduleCoverImgModal/>
-              <!-- <label
-                for="dropdown-toggle"
-                class="flex items-center cursor-pointer w-full"
-              @click="replaceImgLabelClick">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  class="w-[24px] h-[24px]"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
-                  />
-                </svg>
-                <span class="pl-[5px] text-[14px] ">從圖庫中挑選</span>
-              </label> -->
+            <li class="h-[50%] px-[20px] py-[8px] hover:bg-gray-100 cursor-pointer flex items-center" >
+              <ScheduleCoverImgModal />
             </li>
             <li class="h-[50%] px-[20px] py-[8px] hover:bg-gray-100 cursor-pointer flex items-center border-t-[1px] border-slate-200">
               <label
@@ -122,11 +102,11 @@ const closeDropdown = () => {
           <div>
             <p class="mb-2 font-bold">行程日期</p>
           </div>
-          <div class="flex justify-between items-center">
+          <div class="flex flex-erap gap-[20px] justify-between items-center ">
             <input
               type="date"
               placeholder="出發日"
-              class="border-solid border border-primary-100 rounded-lg w-[198px] h-[40px] py-2 px-5"
+              class="border-solid border border-primary-100 rounded-lg w-[calc(50%-20px)] h-[40px] py-2 px-5"
             />
             <span>
                 <ArrowLongRightIcon class="size-5 text-stone-400"/>             
@@ -134,7 +114,7 @@ const closeDropdown = () => {
             <input
               type="date"
               placeholder="結束日"
-              class="border-solid border border-primary-100 rounded-lg w-[198px] h-[40px] py-2 px-5"/>
+              class="border-solid border border-primary-100 rounded-lg w-[calc(50%-20px)] h-[40px] py-2 px-5"/>
           </div>
         </div>
 
@@ -238,4 +218,5 @@ input:focus {
     /* 中間的陰影 */ 0 0 16px rgba(210, 52, 48, 0.1); /* 外層的陰影 */
   transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
+
 </style>
