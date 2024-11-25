@@ -32,7 +32,6 @@ const hamburgerCls = computed(() => {
   <div class="w-full h-screen "></div>
   <!-- 漢堡選單 -->
     <div  
-      for="sideCheckbox" 
       class="fixed flex items-center w-12 h-12 px-2 transition-all duration-300 bg-white rounded-full shadow-md cursor-pointer top-24 left-20 group hover:w-32" 
       @click="sideToggle" :cls="hamburgerCls"
     >
