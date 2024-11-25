@@ -30,7 +30,7 @@ const switchToCategoryMode = () => {
   <div 
     class="flex pt-4 justify-center" 
     @click.self="switchToCategoryMode">
-    <div class="w-full bg-white border border-gray-200 shadow-md rounded-full">
+    <div class="w-3/4 bg-white border border-gray-200 shadow-md rounded-full">
       <!-- 顯示分類模式或關鍵字模式 -->
       <div class="relative flex items-center h-10 w-full px-1">
         <template v-if="isCategoryMode">

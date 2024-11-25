@@ -24,6 +24,6 @@ import { MagnifyingGlassIcon } from '@heroicons/vue/24/solid';
 
 <style scoped>
 .dialog-header{
-  box-shadow: 0 4px 12px grey;
+  box-shadow: 0 4px 12px rgb(231, 226, 226);
 }
 </style>
