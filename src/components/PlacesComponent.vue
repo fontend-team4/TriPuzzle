@@ -94,17 +94,17 @@ const toggleFavorite = (item) => {
                 <img :id="'img-' + item.id" :src="item.url" alt="" />
               </div>
               <div>
-                <h3 class="text-lg font-bold text-gray-700 text-ellipsis">
+                <h3 class="text-sm font-bold text-gray-700 md:text-lg text-ellipsis">
                   {{ item.title }}
                 </h3>
                 <div class="flex justify-between">
-                  <div class="flex text-slate-500">
-                    <StarIcon class="text-yellow-500 size-6" /><span>{{
+                  <div class="flex text-slate-500 text-[12px] md:text-base">
+                    <StarIcon class="text-yellow-500 md:size-6 size-4" /><span>{{
                       item.rating
                     }}</span
                     >．<span>{{ item.location }}</span>
                   </div>
-                  <a :href="item.mapUrl"><MapPinIcon class="text-gray-500 size-6" /></a>
+                  <a :href="item.mapUrl"><MapPinIcon class="text-gray-500 md:size-6 size-4" /></a>
                 </div>
               </div>
             </a>
