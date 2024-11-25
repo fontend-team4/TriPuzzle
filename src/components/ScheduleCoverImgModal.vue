@@ -48,14 +48,12 @@ function selectImg(item){
     <span class="text-[14px] truncate">從圖庫中挑選</span>
   </button>
 <dialog id="select_img" class="modal">
-  <div class="modal-box p-0 lg:max-w-[800px] md:max-w-[800px] sm:w-[100%] sm:h-[100%] max-md:rounded-none">
-    
+  <div class="modal-box p-0 lg:max-w-[800px] md:min-w-[728px] max-md:h-full ">
     <div class="max-w-[800px] h-[60px] px-[15px] py-[8px] sticky top-0 bg-white rounded-xl relative z-10">
       <form method="dialog">
       <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"><XMarkIcon class="w-6 h-6" /></button>
     </form>
     </div>
-
     <div>
       <header>
         <span class="w-[100%] h-[36px] mb-[16px] text-2xl font-bold flex items-center justify-center">選擇行程封面</span>
@@ -63,16 +61,15 @@ function selectImg(item){
     </div>
 
     <!-- 主內容區塊 -->
-   <div class="max-w-[800px] h-[548.75px] relative overflow-hidden rounded-xl my-[50px]">
+   <div class="h-[548.75px] relative overflow-hidden rounded-xl my-[50px]">
     <div class="py-0 px-[24px] absolute inset-0 flex flex-wrap gap-[12px] overflow-y-auto">
-
-      <div class="cursor-pointer w-[calc(33.33%-8px)] overflow-hidden relative group p-[1px]" @click="selectImg(item)" v-for="(item, index) in imageStates" :key="item.id">
-        <img :src="item.src" alt="" class="w-full h-auto rounded-xl" />
+      <div class="lg:w-[calc(33.33%-8px)] md:w-[calc(50%-8px)] sm:w-[calc(100%-8px)] overflow-hidden relative group p-[1px] cursor-pointer" @click="selectImg(item)" v-for="(item, index) in imageStates" :key="item.id">
+        <img :src="item.src" alt="" class="w-full h-auto rounded-xl " />
         <div class="absolute inset-0 bg-[#2d4057] opacity-0 transition-opacity duration-200 group-hover:opacity-15 rounded-xl" ></div>
         <div class="absolute inset-0 bg-[#2d4057] duration-200 opacity-30 rounded-xl" v-show="item.isClicked"  ></div>
         <div class="absolute top-[13px] left-[13px] w-[22px] h-[22px] rounded-full bg-[#D23430] z-10" v-show="item.isClicked"></div>
-        <div class="absolute inset-0 w-full h-full rounded-xl " :class="{'red-frame':item.isClicked}"></div>
-        <label class="absolute top-3 left-3 w-[24px] h-[24px] flex items-center justify-center rounded-full bg-white/30 border-[1px] border-white cursor-pointer">
+        <div class="absolute inset-0 w-full h-full rounded-xl" :class="{'border-[1px] border-[#d23430] ,0_0_16px_rgba(210,52,48,0.1)] transition-all ease-in-out duration-300': item.isClicked}"></div>        
+        <label class="absolute top-3 left-3 w-[24px] h-[24px] flex items-center justify-center rounded-full bg-white/30 border-[1px] border-white " >
           <input type="checkbox" class="hidden" />
           <CheckIcon  class="w-[14px] h-[14px] text-white font-bold z-10"  v-show="item.isClicked"/>  
         </label>      
@@ -104,20 +101,4 @@ function selectImg(item){
   </form>
 </dialog>
 
-
-
-  <form method="dialog" class="modal-backdrop">
-    <button>close</button>
-  </form>
 </template>
-
-<style>
-.red-frame {
-	border-width: 1px solid;
-  border-color: #d23430;
-  box-shadow: 0 0 4px rgba(210, 52, 48, 0.5),
-    /* 內層的陰影 */ 0 0 8px rgba(210, 52, 48, 0.3),
-    /* 中間的陰影 */ 0 0 16px rgba(210, 52, 48, 0.1); /* 外層的陰影 */
-  transition: box-shadow 0.3s ease, border-color 0.3s ease;
-}
-</style>
