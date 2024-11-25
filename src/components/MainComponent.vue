@@ -19,6 +19,6 @@ const placesComponentCls = computed(() => {
     <MapComponent />
     <PlacesComponent class="absolute top-0 z-10 transition-all " :class="placesComponentCls" />
     <MapToggle class="absolute z-20 -translate-x-1/2 bottom-10 left-1/2" v-model:isPlacesComponent="isPlacesComponent" />
-    <PlacesModal />
+    <PlacesModal class="hidden md:block"/>
   </div>
 </template>

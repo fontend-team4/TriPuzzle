@@ -32,7 +32,7 @@ const hamburgerCls = computed(() => {
   <div class="w-full h-screen "></div>
   <!-- 漢堡選單 -->
     <div  
-      class="fixed flex items-center w-12 h-12 px-2 transition-all duration-300 bg-white rounded-full shadow-md cursor-pointer top-24 left-20 group hover:w-32" 
+      class="fixed items-center hidden w-12 h-12 px-2 transition-all duration-300 bg-white rounded-full shadow-md cursor-pointer top-24 left-20 group hover:w-32 md:flex" 
       @click="sideToggle" :cls="hamburgerCls"
     >
       <div class="flex-shrink-0">
@@ -46,7 +46,7 @@ const hamburgerCls = computed(() => {
     </div>
 
   <!-- 側欄 -->
-    <div  class="fixed left-0 h-full w-96">
+    <div  class="fixed left-0 hidden h-full w-96 md:block">
       <div class="w-96 h-[calc(100vh-72px)] bg-white fixed bottom-0 left-0 rounded-tr-3xl drop-shadow-md transition-all duration-300" :class="sideCls">
         <div class="z-20 flex items-center justify-between w-full p-4 bg-white rounded-tr-3xl">
           <div>
