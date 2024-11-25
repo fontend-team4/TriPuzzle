@@ -3,14 +3,14 @@ import { XMarkIcon } from '@heroicons/vue/24/solid';
 </script>
 
 <template>
-  <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-    <div class="bg-white rounded-2xl p-6 w-full max-w-md h-auto">
-      <div class="relative bg-white rounded-2xl w-full max-w-md h-auto">
-        <button class="absolute right-1" >
+  <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center overflow-auto">
+    <div class="bg-white rounded-2xl p-6 w-full max-w-md h-auto max-h-[90vh] overflow-auto">
+      <div class="relative w-full">
+        <button class="absolute right-2 top-2">
           <XMarkIcon class="w-6 h-6" />
         </button>
       </div>
-      <div class="text-center mt-8">
+      <div class="text-center mt-8 overflow-auto">
         <div class="mb-4">
           <img
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSC8fFURU-S1FRIkYCVhF6LbBB0BQUbGd6bQ&s"
@@ -66,4 +66,5 @@ import { XMarkIcon } from '@heroicons/vue/24/solid';
 </template>
 
 <style scoped>
+
 </style>

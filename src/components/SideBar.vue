@@ -43,45 +43,55 @@ const toggleMenu = () => {
       </div>
       <ul class="space-y-2 w-full">
         <li class="flex items-center p-2 hover:bg-primary-100 hover:text-primary-800 rounded-lg transition-all">
-          <MagnifyingGlassIcon class="w-6 h-6" />
-          <span
-            class="ml-3 font-medium opacity-0 group-hover:opacity-100 hidden group-hover:inline-block transition-opacity duration-500 delay-500 whitespace-nowrap"
-          >
-            發現
-          </span>
+          <button class="flex w-full">
+            <MagnifyingGlassIcon class="w-6 h-6" />
+            <span
+              class="ml-3 font-medium opacity-0 group-hover:opacity-100 hidden group-hover:inline-block transition-opacity duration-500 delay-500 whitespace-nowrap"
+            >
+              發現
+            </span>
+          </button>
         </li>
         <li class="flex items-center p-2 hover:bg-primary-100 hover:text-primary-800 rounded-lg transition-all">
-          <ShoppingCartIcon class="w-6 h-6" />
-          <span
-            class="ml-3 font-medium opacity-0 group-hover:opacity-100 hidden group-hover:inline-block transition-opacity duration-500 delay-500 whitespace-nowrap"
-          >
-            商城
-          </span>
+          <button class="flex w-full">
+            <ShoppingCartIcon class="w-6 h-6" />
+            <span
+              class="ml-3 font-medium opacity-0 group-hover:opacity-100 hidden group-hover:inline-block transition-opacity duration-500 delay-500 whitespace-nowrap"
+            >
+              商城
+            </span>
+          </button>
         </li>
         <li class="flex items-center p-2 hover:bg-primary-100 hover:text-primary-800 rounded-lg transition-all">
-          <StarIcon class="w-6 h-6" />
-          <span
-            class="ml-3 font-medium opacity-0 group-hover:opacity-100 hidden group-hover:inline-block transition-opacity duration-500 delay-500 whitespace-nowrap"
-          >
-            去趣星榜單
-          </span>
+          <button class="flex w-full">
+            <StarIcon class="w-6 h-6" />
+            <span
+              class="ml-3 font-medium opacity-0 group-hover:opacity-100 hidden group-hover:inline-block transition-opacity duration-500 delay-500 whitespace-nowrap"
+            >
+              去趣星榜單
+            </span>
+          </button>
         </li>
         <li class="flex items-center p-2 hover:bg-primary-100 hover:text-primary-800 rounded-lg transition-all">
-          <LightBulbIcon class="w-6 h-6" />
-          <span
-            class="ml-3 font-medium opacity-0 group-hover:opacity-100 hidden group-hover:inline-block transition-opacity duration-500 delay-500 whitespace-nowrap"
-          >
-            認識去趣
-          </span>
+          <button class="flex w-full">
+            <LightBulbIcon class="w-6 h-6" />
+            <span
+              class="ml-3 font-medium opacity-0 group-hover:opacity-100 hidden group-hover:inline-block transition-opacity duration-500 delay-500 whitespace-nowrap"
+            >
+              認識去趣
+            </span>
+          </button>
         </li>
         <hr class="border-t my-4 w-full" />
         <li class="flex items-center p-2 hover:bg-primary-100 hover:text-primary-800 rounded-lg transition-all">
-          <UserCircleIcon class="w-6 h-6" />
-          <span
-            class="ml-3 font-medium opacity-0 group-hover:opacity-100 hidden group-hover:inline-block transition-opacity duration-500 delay-500 whitespace-nowrap"
-          >
-            會員
-          </span>
+          <button class="flex w-full">
+            <UserCircleIcon class="w-6 h-6" />
+            <span
+              class="ml-3 font-medium opacity-0 group-hover:opacity-100 hidden group-hover:inline-block transition-opacity duration-500 delay-500 whitespace-nowrap"
+            >
+              會員
+            </span>
+          </button>
         </li>
       </ul>
     </div>

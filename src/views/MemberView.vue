@@ -119,6 +119,13 @@ const toggleMenu = () => {
     <!-- Edit的Modal -->
     <dialog id="Editmodal" class="modal">
       <div class="modal-box">
+        <div class="modal-action">
+            <form method="dialog">
+              <button>
+                <XMarkIcon class="w-5 h-5" />
+              </button>
+            </form>
+          </div>
         <div class="flex flex-col items-center text-center space-y-4 mb-5">
           <h3 class="text-lg font-bold ">個人資料</h3>
             <div class="relative">
@@ -200,17 +207,19 @@ const toggleMenu = () => {
             <button class="text-blue-500 underline">刪除帳號</button>
           </div>
         </div>
-        <div class="modal-action">
-          <form method="dialog">
-            <button class="btn hover:bg-primary-100 hover:text-primary-800">Close</button>
-          </form>
-        </div>
       </div>
     </dialog>
     <!-- NickName的Modal -->
     <dialog id="NickNameModal" class="modal">
       <div class="modal-box">
         <div>
+          <div class="modal-action">
+            <form method="dialog">
+              <button>
+                <XMarkIcon class="w-5 h-5" />
+              </button>
+            </form>
+          </div>
           <div class="text-center mb-10">
             <p class="text-2xl font-bold">修改暱稱</p>
           </div>
@@ -237,16 +246,18 @@ const toggleMenu = () => {
             </button>
           </div>
         </div>
-        <div class="modal-action">
-          <form method="dialog">
-            <button class="btn hover:bg-primary-100 hover:text-primary-800">Close</button>
-          </form>
-        </div>
       </div>
     </dialog>
     <!-- Profile的Modal -->
     <dialog id="ProfileModal" class="modal">
       <div class="modal-box">
+        <div class="modal-action">
+            <form method="dialog">
+              <button>
+                <XMarkIcon class="w-5 h-5" />
+              </button>
+            </form>
+          </div>
         <div>
           <div class="text-center mb-10">
             <p class="text-2xl font-bold">修改個人簡介</p>
@@ -270,17 +281,19 @@ const toggleMenu = () => {
             </button>
           </div>
         </div>
-        <div class="modal-action">
-          <form method="dialog">
-            <button class="btn hover:bg-primary-100 hover:text-primary-800">Close</button>
-          </form>
-        </div>
       </div>
     </dialog>
     <!-- PersonalInformatio的Mmodal -->
     <dialog id="PersonalInformatioMmodal" class="modal">
       <div class="modal-box">
         <div>
+          <div class="modal-action">
+            <form method="dialog">
+              <button>
+                <XMarkIcon class="w-5 h-5" />
+              </button>
+            </form>
+          </div>
           <div class="text-center mb-10">
             <p class="text-2xl font-bold">修改個人資料</p>
           </div>
@@ -326,11 +339,6 @@ const toggleMenu = () => {
               儲存
             </button>
           </div>
-        </div>
-        <div class="modal-action">
-          <form method="dialog">
-            <button class="btn hover:bg-primary-100 hover:text-primary-800">Close</button>
-          </form>
         </div>
       </div>
     </dialog>
