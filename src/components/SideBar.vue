@@ -11,28 +11,34 @@ import {
 } from '@heroicons/vue/24/solid';
 
 const isMenuOpen = ref(false);
-
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
 };
 </script>
 
 <template>
-  <div class="relative">
+  <div>
     <button
-        class="lg:hidden fixed top-4 left-20 z-60 bg-white text-black p-2 rounded-lg shadow"
-        @click="toggleMenu"
-        aria-label="Toggle Menu"
-        :aria-expanded="isMenuOpen ? 'true' : 'false' "
-      >
-        <Bars3Icon class="w-4 h-4" />
-      </button>
+      class="lg:hidden fixed top-4 left-5 z-60 bg-white text-black p-2 rounded-lg shadow"
+      @click="toggleMenu"
+      aria-label="Toggle Menu"
+      :aria-expanded="isMenuOpen ? 'true' : 'false' "
+    >
+      <Bars3Icon class="w-4 h-4" />
+    </button>
+    <div
+      v-if="isMenuOpen"
+      class="fixed inset-0 bg-black opacity-50 z-40"
+      @click="toggleMenu"
+    ></div>
     <div
       id="menu"
       :class="[
         'flex-col items-start p-4 bg-white shadow-2xl h-screen transition-all duration-200 w-20 hover:w-52 group fixed top-0 z-50',
         isMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',
       ]"
+      @mouseover="isMenuOpen = true"
+      @mouseleave="isMenuOpen = false"
     >
       <div class="flex items-center">
         <img
@@ -68,7 +74,7 @@ const toggleMenu = () => {
             <span
               class="ml-3 font-medium opacity-0 group-hover:opacity-100 hidden group-hover:inline-block transition-opacity duration-500 delay-500 whitespace-nowrap"
             >
-              去趣星榜單
+              TriPuzzle星榜單
             </span>
           </button>
         </li>
@@ -78,7 +84,7 @@ const toggleMenu = () => {
             <span
               class="ml-3 font-medium opacity-0 group-hover:opacity-100 hidden group-hover:inline-block transition-opacity duration-500 delay-500 whitespace-nowrap"
             >
-              認識去趣
+              認識TriPuzzle
             </span>
           </button>
         </li>

@@ -21,15 +21,15 @@ const toggleMenu = () => {
 </script>
 
 <template>
-  <SideBar />
-  <div class="flex min-h-screen bg-white lg:ml-16 transition-all duration-300 ease-in-out">
-    <div class="flex-1 p-2 ">
-      <div class="ml-5">
+  <!-- <SideBar /> -->
+  <div class="flex flex-col min-h-screen bg-white lg:ml-16 transition-all duration-300 ease-in-out">
+    <div class="ml-5 p-2">
         <img
           src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSC8fFURU-S1FRIkYCVhF6LbBB0BQUbGd6bQ&s"
           alt=""
-          class="w-10 h-10 mt-2">
+          class="w-10 h-10 mt-2 ml-2 lg:ml-1 md:ml-8 sm:ml-8">
       </div>
+    <div class="flex-1 p-2 ml-10">
       <div class="bg-white p-2 rounded-lg mb-4">
         <div class="inline-block pb-1 mb-4 items-center space-x-4 lg:flex lg:p-0">
           <div class="flex">
@@ -78,24 +78,27 @@ const toggleMenu = () => {
           <div class="flex mt-4 pl-10 pb-0 md:pb-0 lg:pb-20 lg:pl-0">
             <div class="flex gap-6 ">
               <div>
-                <span class="font-semibold">0</span> 粉絲
+                <span class="font-semibold text-3xl">0</span>
+                <span>粉絲</span>
               </div>
               <div>
-                <span class="font-semibold">0</span> 追蹤中
+                <span class="font-semibold text-3xl">0</span>
+                <span>追蹤中</span>
               </div>
               <div>
-                <span class="font-semibold">0</span> 影音
+                <span class="font-semibold text-3xl">0</span>
+                <span>影音</span>
               </div>
             </div>
           </div>
         </div>
-        <div class="ml-3 p-2 rounded-lg flex items-center bg-gray justify-between 
-        w-full lg:max-w-80">
-          <div class="flex flex-col mr-4">
+        <div class="ml-3 p-1 rounded-xl flex items-center bg-gray justify-between
+        w-auto lg:max-w-80">
+          <div class="flex flex-col ml-4">
             <p class="mt-2 font-medium mb-1 text-sm">想要更多專屬功能？</p>
             <p class="mb-2 text-sm">快速登入/註冊去趣會員</p>
           </div>
-          <button class="px-6 py-2 bg-secondary-500 text-white rounded-full transition">
+          <button class="px-6 py-2 mr-4 bg-secondary-500 text-white rounded-full transition">
             立即升級
           </button>
         </div>
@@ -314,13 +317,13 @@ const toggleMenu = () => {
           <div class="mt-5">
             <p>性別</p>
             <div class="flex gap-3 mt-2">
-              <button class="p-3 w-full bg-gray text-lg rounded-md focus:outline-none hover:bg-primary-100 hover:text-primary-800">
+              <button class="p-3 w-full bg-gray text-lg rounded-md focus:ring-1 focus:ring-primary-800 active:bg-primary-100 hover:bg-primary-100 hover:text-primary-800">
                 男
               </button>
-              <button class="p-3 w-full bg-gray text-lg rounded-md focus:outline-none hover:bg-primary-100 hover:text-primary-800">
+              <button class="p-3 w-full bg-gray text-lg rounded-md focus:ring-1 focus:ring-primary-800 active:bg-primary-100 hover:bg-primary-100 hover:text-primary-800">
                 女
               </button>
-              <button class="p-3 w-full bg-gray text-lg rounded-md focus:outline-none hover:bg-primary-100 hover:text-primary-800">
+              <button class="p-3 w-full bg-gray text-lg rounded-md focus:ring-1 focus:ring-primary-800 active:bg-primary-100 hover:bg-primary-100 hover:text-primary-800">
                 秘密
               </button>
             </div>
