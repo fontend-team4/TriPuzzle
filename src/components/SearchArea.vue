@@ -1,6 +1,6 @@
 <script setup>
 import { ChevronDownIcon } from '@heroicons/vue/24/solid';
-import CategoryNav from '../components/CategoryNav.vue';
+import SearchCategoryNav from './SearchCategoryNav.vue';
 import SearchAreaContent from '../components/SearchAreaContent.vue';
 import SearchAreaBar from '../components/SearchAreaBar.vue';
 
@@ -39,7 +39,7 @@ const closeModal = () => {
         <!-- 主體內容 -->
         <div class="dialog-body flex h-full bg-gray">
           <!-- 左側選單 -->
-          <CategoryNav />
+          <SearchCategoryNav />
           <!-- 右側內容 -->
           <SearchAreaContent/>
         </div>
