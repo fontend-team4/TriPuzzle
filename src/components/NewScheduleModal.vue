@@ -1,6 +1,10 @@
 <script setup>
 import ScheduleCoverImgModal from "./ScheduleCoverImgModal.vue";
 import { ref } from "vue";
+import { XMarkIcon,PencilSquareIcon,ArrowLongRightIcon,PencilIcon,ArrowUpTrayIcon,ChevronDownIcon } from "@heroicons/vue/24/solid";
+
+
+
 
 
 const replaceImgLabelClick = () => {
@@ -32,20 +36,7 @@ const closeDropdown = () => {
       <div class="w-[480px] h-[60px] px-[15px] py-[8px] sticky top-0 bg-white">
         <form method="dialog">
           <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="size-6"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M6 18 18 6M6 6l12 12"
-              />
-            </svg>
+            <XMarkIcon class="w-6 h-6" />
           </button>
         </form>
       </div>
@@ -67,20 +58,7 @@ const closeDropdown = () => {
           <!-- 使用 Label 包裹按鈕 -->
           <label
             for="dropdown-toggle" class="w-[82px] h-[32px] absolute right-[20px] bottom-[16px] z-10 flex items-center justify-center gap-2 border-[1px] border-white rounded-3xl py-[4px] px-[12px] cursor-pointer">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="2.5"
-              stroke="currentColor"
-              class="size-5 font-bold text-white"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
-              />
-            </svg>
+            <PencilIcon class="size-5 font-bold text-white" />
             <p class="font-bold text-sm text-white">更換</p>
           </label>
 
@@ -114,20 +92,7 @@ const closeDropdown = () => {
                 for="file-upload"
                @click="replaceImgLabelClick"
                 class="flex items-center cursor-pointer w-full \">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  class="w-[24px] h-[24px]"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"
-                  />
-                </svg>
+                <ArrowUpTrayIcon class="w-[24px] h-[24px]"/>
                 <span class="pl-[5px] text-[14px]">上傳照片</span>
               </label>
               <input id="file-upload" type="file" class="hidden"/>
@@ -164,20 +129,7 @@ const closeDropdown = () => {
               class="border-solid border border-primary-100 rounded-lg w-[198px] h-[40px] py-2 px-5"
             />
             <span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="4"
-                stroke="currentColor"
-                class="size-3.5 text-stone-400"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
-                />
-              </svg>
+                <ArrowLongRightIcon class="size-5 text-stone-400"/>             
             </span>
             <input
               type="date"
@@ -196,21 +148,8 @@ const closeDropdown = () => {
             @click="transportationLabelClick">
             <span>自訂</span>
             <input type="checkbox" id="toggle-transportation" class="hidden" />
-            <label for="toggle-transportation" class="cursor-pointer">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="w-5 h-5 transition-transform"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="m19.5 8.25-7.5 7.5-7.5-7.5"
-                />
-              </svg>
+            <label for="toggle-transportation" class="cursor-pointer">                
+                <ChevronDownIcon class="w-5 h-5 transition-transform"/>
             </label>
             <!-- hover透過script綁定邏輯 -->
             <transition
