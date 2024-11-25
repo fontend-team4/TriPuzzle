@@ -3,7 +3,7 @@ import {
   Logo,
   FooterIllustration1,
   FooterIllustration2,
-} from '@/components/SVG/exportSvg.js'
+} from '@/components/svg/exportSvg.js'
 </script>
 
 <template>

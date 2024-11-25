@@ -10,7 +10,7 @@ const carousel = ref(null)
 const features = ref(null)
 const tutorial = ref(null)
 const register = ref(null)
-const handleScroll = (sectionName) => {
+const scrollToAnchor = (sectionName) => {
   if (sectionName === 'carousel') {
     carousel.value?.scrollIntoView({ behavior: 'smooth' })
   } else if (sectionName === 'features') {
@@ -25,11 +25,11 @@ const handleScroll = (sectionName) => {
 
 <template>
   <main class="bg-white">
-    <Navbar @scrollTo="handleScroll" />
-    <img src="@/assets/SVG/banner.webp" />
-    <Carousel ref="carousel" />
-    <Features ref="features" />
-    <Tutorial ref="tutorial" />
-    <Footer ref="register" />
+    <Navbar @clickTab="scrollToAnchor" />
+    <img src="@/assets/svg/banner.webp" />
+    <div ref="carousel"><Carousel /></div>
+    <div ref="features"><Features /></div>
+    <div ref="tutorial"><Tutorial /></div>
+    <div ref="register"><Footer /></div>
   </main>
 </template>

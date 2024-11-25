@@ -1,6 +1,12 @@
 <script setup>
+import { defineEmits } from 'vue'
 import { PuzzlePieceIcon } from '@heroicons/vue/20/solid'
-import { Logo } from '@/components/SVG/exportSvg.js'
+import { Logo } from '@/components/svg/exportSvg.js'
+
+const emit = defineEmits(['clickTab'])
+const clickTab = (sectionName) => {
+  emit('clickTab', sectionName)
+}
 </script>
 
 <template>
@@ -9,10 +15,18 @@ import { Logo } from '@/components/SVG/exportSvg.js'
       <Logo class="flex-none" />
 
       <ul class="flex gap-4 text-neutral-800 font-bold">
-        <li class="px-4.5 py-4">達人旅圖</li>
-        <li class="px-4.5 py-4">功能特點</li>
-        <li class="px-4.5 py-4">關於旅圖</li>
-        <li class="px-4.5 py-4">註冊會員</li>
+        <li class="px-4.5 py-4 cursor-pointer" @click="clickTab('carousel')">
+          達人旅圖
+        </li>
+        <li class="px-4.5 py-4 cursor-pointer" @click="clickTab('features')">
+          功能特點
+        </li>
+        <li class="px-4.5 py-4 cursor-pointer" @click="clickTab('tutorial')">
+          關於旅圖
+        </li>
+        <li class="px-4.5 py-4 cursor-pointer" @click="clickTab('register')">
+          註冊會員
+        </li>
       </ul>
 
       <RouterLink

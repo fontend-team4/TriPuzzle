@@ -6,7 +6,7 @@ import {
   FeaturesIllustration4,
   FeaturesIllustration5,
   FeaturesIllustration6,
-} from '@/components/SVG/exportSvg.js'
+} from '@/components/svg/exportSvg.js'
 </script>
 
 <template>

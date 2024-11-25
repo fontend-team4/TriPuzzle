@@ -77,9 +77,15 @@ const currentTab = computed(() => tabs[activeTab.value])
         <!-- Tab Content -->
         <div class="canvas">
           <div class="flex flex-col gap-6 h-72">
-            <h1 class="text-7xl font-bold">{{ activeTab + 1 }}.</h1>
-            <h2 class="text-4xl font-bold">{{ currentTab.title }}</h2>
-            <p class="text-2xl font-bold">{{ currentTab.text }}</p>
+            <h1 class="text-7xl font-bold text-neutral-800">
+              {{ activeTab + 1 }}.
+            </h1>
+            <h2 class="text-4xl font-bold text-neutral-800">
+              {{ currentTab.title }}
+            </h2>
+            <p class="text-2xl font-bold text-neutral-800">
+              {{ currentTab.text }}
+            </p>
           </div>
           <img :src="currentTab.image" />
         </div>
