@@ -31,9 +31,9 @@ const hamburgerCls = computed(() => {
 <template>
   <div class="w-full h-screen "></div>
   <!-- 漢堡選單 -->
-    <label  
+    <div  
       for="sideCheckbox" 
-      class="fixed flex items-center w-12 h-12 px-2 transition-all duration-300 bg-white rounded-full shadow-md top-24 left-20 group hover:w-32" 
+      class="fixed flex items-center w-12 h-12 px-2 transition-all duration-300 bg-white rounded-full shadow-md cursor-pointer top-24 left-20 group hover:w-32" 
       @click="sideToggle" :cls="hamburgerCls"
     >
       <div class="flex-shrink-0">
@@ -44,7 +44,7 @@ const hamburgerCls = computed(() => {
       >
         顯示清單
       </span>
-    </label>
+    </div>
 
   <!-- 側欄 -->
     <div  class="fixed left-0 h-full w-96">
