@@ -1,12 +1,12 @@
 <script setup>
 import { ref, computed, watch } from "vue";
-import CategoryNav from "../components/CategoryNav.vue";
+import SearchCategoryNav from "../components/SearchCategoryNav.vue";
 
 // 本地數據
 const categories = ref(["推薦", "台灣", "日本", "韓國"]);
 const destinations = ref([
   { name: "地點1", category: "推薦", image: "https://fakeimg.pl/100x100/100" },
-  { name: "地點2", category: "台灣", image: "https://fakeimg.pl/100x100/200" },
+  { name: "地點2", category: "台灣", image: "https://fakeimg.pl/100x200/300" },
   { name: "地點3", category: "日本", image: "https://fakeimg.pl/100x100/300" },
   { name: "地點4", category: "韓國", image: "https://fakeimg.pl/100x100/400" },
 ]);
@@ -34,7 +34,7 @@ const filteredDestinations = computed(() =>
 <template>
   <div >
     <!-- 顯示篩選選單 -->
-    <CategoryNav :categories="categories" />
+    <SearchCategoryNav :categories="categories" />
     <!-- 顯示過濾後的目的地 -->
     <div class="area-list flex flex-wrap gap-2 mt-4">
       <div
