@@ -20,17 +20,17 @@ const toggleMenu = () => {
 <template>
   <div class="relative">
     <button
-      class="lg:hidden fixed top-4 left-20 z-60 bg-white text-black p-2 rounded-lg shadow"
-      @click="toggleMenu"
-      aria-label="Toggle Menu"
-      :aria-expanded="isMenuOpen ? 'true' : 'false' "
-    >
-      <Bars3Icon class="w-6 h-6" />
-    </button>
+        class="lg:hidden fixed top-4 left-20 z-60 bg-white text-black p-2 rounded-lg shadow"
+        @click="toggleMenu"
+        aria-label="Toggle Menu"
+        :aria-expanded="isMenuOpen ? 'true' : 'false' "
+      >
+        <Bars3Icon class="w-4 h-4" />
+      </button>
     <div
       id="menu"
       :class="[
-        'flex-col items-start p-4 space-y-4 bg-white shadow-2xl h-screen transition-all duration-200 w-20 hover:w-52 group fixed top-0 z-50',
+        'flex-col items-start p-4 bg-white shadow-2xl h-screen transition-all duration-200 w-20 hover:w-52 group fixed top-0 z-50',
         isMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',
       ]"
     >
@@ -38,7 +38,7 @@ const toggleMenu = () => {
         <img
           src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSC8fFURU-S1FRIkYCVhF6LbBB0BQUbGd6bQ&s"
           alt="Logo"
-          class="w-10 h-10"
+          class="w-10 h-10 mb-3"
         />
       </div>
       <ul class="space-y-2 w-full">
@@ -100,9 +100,5 @@ const toggleMenu = () => {
 </template>
 
 <style scoped>
-@media (min-width: 1024px) {
-  #menu {
-    transform: none;
-  }
-}
+
 </style>

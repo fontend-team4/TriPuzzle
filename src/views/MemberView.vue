@@ -21,10 +21,10 @@ const toggleMenu = () => {
 </script>
 
 <template>
-  <!-- <SideBar /> -->
-  <div class="flex min-h-screen bg-white">
-    <div class="flex-1 p-2 main-content">
-      <div class="ml-4">
+  <SideBar />
+  <div class="flex min-h-screen bg-white lg:ml-16 transition-all duration-300 ease-in-out">
+    <div class="flex-1 p-2 ">
+      <div class="ml-5">
         <img
           src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSC8fFURU-S1FRIkYCVhF6LbBB0BQUbGd6bQ&s"
           alt=""
@@ -89,7 +89,8 @@ const toggleMenu = () => {
             </div>
           </div>
         </div>
-        <div class="ml-3 p-2 rounded-lg flex items-center bg-gray justify-between w-full sm:max-w-80 sm:w-auto">
+        <div class="ml-3 p-2 rounded-lg flex items-center bg-gray justify-between 
+        w-full lg:max-w-80">
           <div class="flex flex-col mr-4">
             <p class="mt-2 font-medium mb-1 text-sm">想要更多專屬功能？</p>
             <p class="mb-2 text-sm">快速登入/註冊去趣會員</p>
@@ -346,16 +347,5 @@ const toggleMenu = () => {
 </template>
 
 <style scoped>
-.main-content {
-  margin-left: 4rem;
-  transition: margin 0.3s ease;
-}
-@media (max-width: 1024px) {
-  .main-content {
-    margin-left: 0;
-  }
-  .sm\:max-w-80 {
-    max-width: none;
-  }
-}
+
 </style>
