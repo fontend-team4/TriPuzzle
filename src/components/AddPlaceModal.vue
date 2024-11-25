@@ -125,7 +125,7 @@ const tab2Cls = computed(() => {
           <div
             role="tabpanel"
             id="panel-2"
-            class="absolute top-0 tab-panel p-6 transition opacity-0 duration-300"
+            class="absolute top-0 tab-panel p-6 transition opacity-0 duration-300 flex justify-center"
             :class="tab2Cls"
             >
              <img src="https://web.chictrip.com.tw/assets/join_placeholder.2950886f.png" alt=""> 
