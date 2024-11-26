@@ -28,7 +28,7 @@ const switchToCategoryMode = () => {
 <template >
   <!-- 搜尋列 -->
   <div 
-    class="flex pt-4 justify-center" 
+    class="flex" 
     @click.self="switchToCategoryMode">
     <div class="w-3/4 bg-white border border-gray-200 shadow-md rounded-full">
       <!-- 顯示分類模式或關鍵字模式 -->

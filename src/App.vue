@@ -13,7 +13,6 @@ import SearchBar from './components/SearchBar.vue';
 </script>
 
 <template>
-    <SearchBar />
     <RouterView />
     <nav class="flex gap-6 text-xl font-bold text-orange-800 underline ">
       <RouterLink to="/">HOME</RouterLink>

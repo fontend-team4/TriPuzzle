@@ -7,7 +7,7 @@ const areas = ref([
   { id: 1, image: 'https://fakeimg.pl/100x100/100' },
   { id: 2, image: 'https://fakeimg.pl/100x100/100' },
   { id: 3, image: 'https://fakeimg.pl/100x100/100' },
-  { id: 4, image: 'https://fakeimg.pl/100x100/100' },
+  { id: 4, image: 'https://fakeimg.pl/100x200/100' },
 ]);
 </script>
 
