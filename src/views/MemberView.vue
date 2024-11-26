@@ -43,13 +43,18 @@ const toggleMenu = () => {
                 <p class="text-xl font-semibold mt-4">XXX</p>
                 <p class="mt-4">0行程 ・ 0旅遊小書</p>
                 <div class="flex justify-between items-center mt-4 gap-4">
-                  <button class="px-4 py-1 border rounded-full hover:bg-primary-100 hover:text-primary-800  transition flex items-center"
-                          onclick="document.getElementById('Editmodal').showModal()">
+                  <button 
+                    class="px-4 py-1 border rounded-full hover:bg-primary-100 hover:text-primary-800  transition flex items-center"
+                    onclick="document.getElementById('Editmodal').showModal()"
+                  >
                     <PencilIcon class="w-4 h-4 mr-2" />
                     <span>編輯</span>
                   </button>
                   <div class="relative flex">
-                    <button @click="toggleMenu" class="w-8 h-8 border hover:text-primary-800 hover:bg-primary-100 rounded-full transition items-center justify-center flex">
+                    <button 
+                      @click="toggleMenu" 
+                      class="w-8 h-8 border hover:text-primary-800 hover:bg-primary-100 rounded-full transition items-center justify-center flex"
+                    >
                       <Cog8ToothIcon class="w-4 h-4" />
                     </button>
                       <ul v-if="isOpen" class=" absolute top-full mt-2 bg-white border border-gray shadow-xl rounded-lg w-52">
@@ -92,8 +97,7 @@ const toggleMenu = () => {
             </div>
           </div>
         </div>
-        <div class="ml-3 p-1 rounded-xl flex items-center bg-gray justify-between
-        w-auto lg:max-w-80">
+        <div class="ml-3 p-1 rounded-xl flex items-center bg-gray justify-between w-auto lg:max-w-80">
           <div class="flex flex-col ml-4">
             <p class="mt-2 font-medium mb-1 text-sm">想要更多專屬功能？</p>
             <p class="mb-2 text-sm">快速登入/註冊去趣會員</p>
@@ -124,14 +128,14 @@ const toggleMenu = () => {
     <dialog id="Editmodal" class="modal">
       <div class="modal-box">
         <div class="modal-action">
-            <form method="dialog">
-              <button>
-                <XMarkIcon class="w-5 h-5" />
-              </button>
-            </form>
-          </div>
+          <form method="dialog">
+            <button>
+              <XMarkIcon class="w-5 h-5" />
+            </button>
+          </form>
+        </div>
         <div class="flex flex-col items-center text-center space-y-4 mb-5">
-          <h3 class="text-lg font-bold ">個人資料</h3>
+          <h3 class="text-xl font-bold">個人資料</h3>
             <div class="relative">
               <img
                 id="profileImage"
@@ -155,8 +159,9 @@ const toggleMenu = () => {
               />
         </div>
         <div class="space-y-1">
-          <button class="flex w-full justify-between p-2 bg-gray rounded-xl"
-          onclick="document.getElementById('NickNameModal').showModal()"
+          <button 
+            class="flex w-full justify-between p-2 bg-gray rounded-xl"
+            onclick="document.getElementById('NickNameModal').showModal()"
           >
             <div class="mx-3">
               <span class="text-xs">暱稱</span>
@@ -165,7 +170,7 @@ const toggleMenu = () => {
             <ChevronRightIcon class="w-4 h-4 mt-4"/>
           </button>
           <button class="flex w-full justify-between p-2 bg-gray rounded-xl"
-          onclick="document.getElementById('ProfileModal').showModal()"
+                  onclick="document.getElementById('ProfileModal').showModal()"
           >
           <div class="mx-3 flex flex-col items-start">
               <span class="text-xs">個人簡介</span>
@@ -174,7 +179,7 @@ const toggleMenu = () => {
             <ChevronRightIcon class="w-4 h-4 mt-3" />
           </button>
           <button class="flex w-full justify-between p-2 bg-gray rounded-xl"
-          onclick="document.getElementById('PersonalInformatioMmodal').showModal()"
+                  onclick="document.getElementById('PersonalInformatioMmodal').showModal()"
           >
             <div class="mx-3">
               <span class="text-xs">打造你的旅行名片</span>
@@ -233,16 +238,22 @@ const toggleMenu = () => {
               <p class="text-sm ">0/50</p>
             </div>
             <div class="relative">
-              <input id="nickname" class="w-full text-lg px-4 py-2 pr-10 border bo rounded-lg"
-                type="text" placeholder="輸入暱稱" />
-              <button type="button" onclick="document.getElementById('nickname').value=''"
-                class="absolute right-3 top-1/2 transform -translate-y-1/2">
+              <input id="nickname" class="w-full text-lg px-4 py-2 pr-10 border rounded-lg" type="text" placeholder="輸入暱稱" />
+              <button 
+                type="button" 
+                class="absolute right-3 top-1/2 transform -translate-y-1/2"
+                onclick="document.getElementById('nickname').value=''" 
+              >
                 <XMarkIcon class="w-5 h-5" />
               </button>
             </div>
           </div>
           <div class="flex justify-around space-x-4 mt-4 pt-6">
-            <button class="p-1 w-full text-lg bg-gray rounded-full focus:outline-none hover:bg-primary-100 hover:text-primary-800">
+            <button 
+              type="button" 
+              class="p-1 w-full text-lg bg-gray rounded-full focus:outline-none hover:bg-primary-100 hover:text-primary-800"
+              onclick="document.getElementById('NickNameModal').close()"
+            >
               取消
             </button>
             <button class="p-1 w-full text-lg bg-gray rounded-full focus:outline-none hover:bg-primary-100 hover:text-primary-800">
@@ -256,28 +267,31 @@ const toggleMenu = () => {
     <dialog id="ProfileModal" class="modal">
       <div class="modal-box">
         <div class="modal-action">
-            <form method="dialog">
-              <button>
-                <XMarkIcon class="w-5 h-5" />
-              </button>
-            </form>
-          </div>
+          <form method="dialog">
+            <button>
+              <XMarkIcon class="w-5 h-5" />
+            </button>
+          </form>
+        </div>
         <div>
           <div class="text-center mb-10">
             <p class="text-2xl font-bold">修改個人簡介</p>
           </div>
           <div class="space-y-4">
             <div class="flex items-center justify-between">
-              <p class="text-sm font-medium ">個人簡介</p>
-              <p class="text-sm ">0/500</p>
+              <p class="text-sm font-medium">個人簡介</p>
+              <p class="text-sm">0/500</p>
             </div>
-            <div class="relative">
               <textarea id="nickname" class="w-full text-lg px-4 py-2 pr-10 border rounded-lg"
-                type="text" placeholder="有趣的介紹可以吸引更多人追蹤喔！" />
-            </div>
+                placeholder="有趣的介紹可以吸引更多人追蹤喔！">
+              </textarea>
           </div>
           <div class="flex justify-around space-x-4 mt-4 pt-6">
-            <button class="p-1 w-full text-lg bg-gray rounded-full focus:outline-none hover:bg-primary-100 hover:text-primary-800">
+            <button 
+              type="button" 
+              class="p-1 w-full text-lg bg-gray rounded-full focus:outline-none hover:bg-primary-100 hover:text-primary-800"
+              onclick="document.getElementById('ProfileModal').close()"
+            >
               取消
             </button>
             <button class="p-1 w-full text-lg bg-gray rounded-full focus:outline-none hover:bg-primary-100 hover:text-primary-800">
@@ -287,7 +301,7 @@ const toggleMenu = () => {
         </div>
       </div>
     </dialog>
-    <!-- PersonalInformatio的Mmodal -->
+    <!-- PersonalInformatio的Modal -->
     <dialog id="PersonalInformatioMmodal" class="modal">
       <div class="modal-box">
         <div>
@@ -306,10 +320,17 @@ const toggleMenu = () => {
               <p class="text-sm font-medium">聯繫Email</p>
             </div>
             <div class="relative">
-              <input id="PersonalInformatio" class="w-full text-lg px-4 py-2 pr-10 border rounded-lg"
-                type="text" placeholder="輸入Email" />
-              <button type="button" onclick="document.getElementById('PersonalInformatio').value=''"
-                class="absolute right-3 top-1/2 transform -translate-y-1/2">
+              <input 
+                id="PersonalInformatio" 
+                class="w-full text-lg px-4 py-2 pr-10 border rounded-lg"
+                type="text" 
+                placeholder="輸入Email" 
+              />
+              <button 
+                type="button" 
+                class="absolute right-3 top-1/2 transform -translate-y-1/2"
+                onclick="document.getElementById('PersonalInformatio').value=''"
+              >
                 <XMarkIcon class="w-5 h-5" />
               </button>
             </div>
@@ -330,13 +351,14 @@ const toggleMenu = () => {
           </div>
           <div class="space-y-2 mt-5">
             <label class="text-sm">生日</label>
-            <input
-              type="date"
-              class="w-full p-3 text-lg border rounded-lg"
-            />
+            <input type="date" class="w-full p-3 text-lg border rounded-lg" />
           </div>
           <div class="flex justify-around space-x-4 mt-4 pt-6">
-            <button class="p-1 w-full text-lg bg-gray rounded-full focus:outline-none hover:bg-primary-100 hover:text-primary-800">
+            <button 
+              type="button" 
+              class="p-1 w-full text-lg bg-gray rounded-full focus:outline-none hover:bg-primary-100 hover:text-primary-800"
+              onclick="document.getElementById('PersonalInformatioMmodal').close()"
+            >
               取消
             </button>
             <button class="p-1 w-full text-lg bg-gray rounded-full focus:outline-none hover:bg-primary-100 hover:text-primary-800">
