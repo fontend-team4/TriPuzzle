@@ -127,7 +127,7 @@ const toggleMenu = () => {
     <!-- Edit的Modal -->
     <dialog id="Editmodal" class="modal">
       <div class="modal-box">
-        <div class="modal-action">
+        <div class="flex justify-end">
           <form method="dialog">
             <button>
               <XMarkIcon class="w-5 h-5" />
@@ -222,7 +222,7 @@ const toggleMenu = () => {
     <dialog id="NickNameModal" class="modal">
       <div class="modal-box">
         <div>
-          <div class="modal-action">
+          <div class="flex justify-end">
             <form method="dialog">
               <button>
                 <XMarkIcon class="w-5 h-5" />
@@ -266,7 +266,7 @@ const toggleMenu = () => {
     <!-- Profile的Modal -->
     <dialog id="ProfileModal" class="modal">
       <div class="modal-box">
-        <div class="modal-action">
+        <div class="flex justify-end">
           <form method="dialog">
             <button>
               <XMarkIcon class="w-5 h-5" />
@@ -305,7 +305,7 @@ const toggleMenu = () => {
     <dialog id="PersonalInformatioMmodal" class="modal">
       <div class="modal-box">
         <div>
-          <div class="modal-action">
+          <div class="flex justify-end">
             <form method="dialog">
               <button>
                 <XMarkIcon class="w-5 h-5" />
