@@ -52,7 +52,7 @@ const closeDropdown = () => {
       <div class="pt-0 px-[20px] pb-[50px] max-w-[480px] md:max-w-[480px] sm:max-w-[100%] md:max-h-[552.75px] sm:max-h-[100%] flex flex-col gap-[20px] relative">
         <!-- 封面照片 -->
         <div class="relative">
-          <p class="font-bold">封面照片</p>
+          <p class="font-bold mb-[5px]">封面照片</p>
           <!-- 隱藏的 Checkbox -->
           <input type="checkbox" id="dropdown-toggle" class="hidden peer" />
 
@@ -95,7 +95,7 @@ const closeDropdown = () => {
           <input
             type="text"
             placeholder="幫行程取個名字吧"
-            class="border-solid border border-primary-100 rounded-lg w-[100%] h-[40px] py-2 px-5"/>
+            class="border-solid border border-[#EEEEEE] rounded-lg w-[100%] h-[40px] py-2 px-5"/>
         </div>
 
         <!-- 行程日期 -->
@@ -107,7 +107,7 @@ const closeDropdown = () => {
             <input
               type="date"
               placeholder="出發日"
-              class="border-solid border border-primary-100 rounded-lg w-[calc(50%-20px)] h-[40px] py-2 px-5"
+              class="border-solid border border-[#EEEEEE] rounded-lg w-[calc(50%-20px)] h-[40px] py-2 px-5"
             />
             <span>
                 <ArrowLongRightIcon class="size-5 text-stone-400"/>             
@@ -115,7 +115,7 @@ const closeDropdown = () => {
             <input
               type="date"
               placeholder="結束日"
-              class="border-solid border border-primary-100 rounded-lg w-[calc(50%-20px)] h-[40px] py-2 px-5"/>
+              class="border-solid border border-[#EEEEEE] rounded-lg w-[calc(50%-20px)] h-[40px] py-2 px-5"/>
           </div>
         </div>
 
@@ -124,31 +124,26 @@ const closeDropdown = () => {
         <div>
           <p class="mb-2 font-bold">主要交通方式</p>
           <div
-            class="relative w-[100%] h-[40px] border border-primary-100 rounded-lg px-[20px] py-[8px] flex items-center justify-between cursor-pointer"
+            class="relative w-[100%] h-[40px] border border-[#EEEEEE] rounded-lg px-[20px] py-[8px] flex items-center justify-between cursor-pointer"
             :class="{ 'red-frame': isChecked }"
             @click="transportationLabelClick">
             <span>自訂</span>
-            <input type="checkbox" id="toggle-transportation" class="hidden" />
+            <input type="checkbox" id="toggle-transportation" class="hidden peer" />
             <label for="toggle-transportation" class="cursor-pointer">                
                 <ChevronDownIcon class="w-5 h-5 transition-transform"/>
             </label>
-            <!-- hover透過script綁定邏輯 -->
-            <transition
-              name="fade-slide">
+            <!-- 選定透過script綁定邏輯 -->
+            <transition name="fade-slide">
               <ul
-                class="h-[212px] transportation-area absolute left-0 bottom-[50px] mb-1 w-full bg-white shadow-lg flex-col gap-[5px] py-[5px] rounded-lg transition-all duration-200 ease-in-out"
-                :class="{
-                  'opacity-100 translate-y-0': isChecked,
-                  'opacity-0 translate-y-[20px]': !isChecked,
-                }"
-                v-show="isChecked">
+                v-show="isChecked"
+                class="h-[212px] transportation-area absolute left-0 bottom-[50px] mb-1 w-full bg-white shadow-lg flex-col gap-[5px] py-[5px] rounded-lg ">
                 <li class="px-4 py-2 cursor-pointer h-[40px]" @click="closeDropdown">走路</li>
                 <li class="px-4 py-2 cursor-pointer h-[40px]" @click="closeDropdown">汽車</li>
                 <li class="px-4 py-2 cursor-pointer h-[40px]" @click="closeDropdown">大眾運輸</li>
                 <li class="px-4 py-2 cursor-pointer h-[40px]" @click="closeDropdown">機車</li>
                 <li class="px-4 py-2 cursor-pointer bg-primary-300 text-primary-800 font-bold" @click="closeDropdown">自訂</li>
               </ul>
-            </transition>
+            </transition>           
           </div>
         </div>
       </div>
@@ -156,10 +151,10 @@ const closeDropdown = () => {
       <!-- footer -->
       <div class="w-[100%] h-[80px] absolute bottom-0 sticky border-t-[1px] border-slate-200 py-[16px] px-[24px] z-20">
         <form method="dialog" class="flex gap-[12px]">
-          <button class="w-[50%] h-[48px] border-[1px] border-primary-800 rounded-3xl text-primary-800 font-bold text-sm justify-center items-center px-[12px] py-[8px]">
+          <button class="w-[50%] h-[48px] border-[1px] border-primary-800 rounded-3xl text-primary-800 font-bold text-sm justify-center items-center px-[12px] py-[8px] hover:bg-primary-100">
             取消
           </button>
-          <button class="w-[50%] h-[48px] bg-primary-800 rounded-3xl text-white font-bold text-sm justify-center items-center px-[12px] py-[8px]">
+          <button class="w-[50%] h-[48px] bg-primary-800 rounded-3xl text-white font-bold text-sm justify-center items-center px-[12px] py-[8px] hover:bg-primary-600">
             完成
           </button>
         </form>

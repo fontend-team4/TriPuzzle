@@ -27,14 +27,17 @@ const imageStates = ref([
   { id: 20, isClicked: false, src: "https://chictirpstorageprod.blob.core.windows.net/system/50ceeac1-5a85-41fd-875e-c5f955310a70.jpg" },
 ]);
 
-const isClicked=ref(false)
 
-function selectImg(item){
-  item.isClicked=!item.isClicked
+// 取消所有其他圖片的選中狀態
+function selectImg(clickedItem) {
+  imageStates.value.forEach(item => {
+    if (item.id !== clickedItem.id) {
+      item.isClicked = false;
+    }
+  });
+
+  clickedItem.isClicked = true
 }
-
-
-
 </script>
 
 <template>
@@ -48,7 +51,7 @@ function selectImg(item){
     <span class="text-[14px] truncate">從圖庫中挑選</span>
   </button>
 <dialog id="select_img" class="modal">
-  <div class="modal-box p-0 lg:max-w-[800px] md:min-w-[728px] max-md:h-full ">
+  <div class="modal-box p-0 lg:max-w-[800px] md:min-w-[728px] max-md:h-full sm:max-w-[100%]">
     <div class="max-w-[800px] h-[60px] px-[15px] py-[8px] sticky top-0 bg-white rounded-xl relative z-10">
       <form method="dialog">
       <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"><XMarkIcon class="w-6 h-6" /></button>
@@ -65,13 +68,17 @@ function selectImg(item){
     <div class="py-0 px-[24px] absolute inset-0 flex flex-wrap gap-[12px] overflow-y-auto">
       <div class="lg:w-[calc(33.33%-8px)] md:w-[calc(50%-8px)] sm:w-[calc(100%-8px)] overflow-hidden relative group p-[1px] cursor-pointer" @click="selectImg(item)" v-for="(item, index) in imageStates" :key="item.id">
         <img :src="item.src" alt="" class="w-full h-auto rounded-xl " />
+        <!-- 圖片hover反灰 -->
         <div class="absolute inset-0 bg-[#2d4057] opacity-0 transition-opacity duration-200 group-hover:opacity-15 rounded-xl" ></div>
-        <div class="absolute inset-0 bg-[#2d4057] duration-200 opacity-30 rounded-xl" v-show="item.isClicked"  ></div>
-        <div class="absolute top-[13px] left-[13px] w-[22px] h-[22px] rounded-full bg-[#D23430] z-10" v-show="item.isClicked"></div>
-        <div class="absolute inset-0 w-full h-full rounded-xl" :class="{'border-[1px] border-[#d23430] ,0_0_16px_rgba(210,52,48,0.1)] transition-all ease-in-out duration-300': item.isClicked}"></div>        
+        <!-- 圖片點擊變灰 -->
+        <div class="absolute inset-0 bg-[#2d4057] transition-all duration-300 opacity-0 rounded-xl" :class="{ 'opacity-30': item.isClicked }"  ></div>
+        <!-- 圖片點擊後紅色填滿checkbox -->
+        <div class="absolute top-[13px] left-[13px] w-[22px] h-[22px] rounded-full bg-[#D23430] transition-all duration-300 opacity-0 z-10":class="{ 'opacity-100': item.isClicked }"></div>
+        <!-- 圖片點擊後外框變紅 -->
+        <div class="absolute inset-0 w-full h-full rounded-xl" :class="{'border-[1px] border-[#d23430] shadow-[0_0_16px_rgba(210,52,48,0.1)] transition-all ease-in-out duration-300': item.isClicked}"></div>        
+        <!-- 圖片點擊後打勾 -->
         <label class="absolute top-3 left-3 w-[24px] h-[24px] flex items-center justify-center rounded-full bg-white/30 border-[1px] border-white " >
-          <input type="checkbox" class="hidden" />
-          <CheckIcon  class="w-[14px] h-[14px] text-white font-bold z-10"  v-show="item.isClicked"/>  
+          <CheckIcon  class="w-[14px] h-[14px] text-white font-bold transition-all duration-300 opacity-0 scale-0  z-10" :class="{ 'opacity-100 scale-100 ': item.isClicked }"/>  
         </label>      
       </div>
 
@@ -82,12 +89,12 @@ function selectImg(item){
     <div class="w-[100%] h-[80px] absolute bottom-0 sticky border-t-[1px] border-slate-200 py-[16px] px-[24px] bg-white z-20">
       <form method="dialog" class="flex gap-[12px]">
         <button
-          class="w-[50%] h-[48px] border-[1px] border-primary-800 rounded-3xl text-primary-800 font-bold text-sm justify-center items-center px-[12px] py-[8px]"
+          class="w-[50%] h-[48px] border-[1px] border-primary-800 rounded-3xl text-primary-800 font-bold text-sm justify-center items-center px-[12px] py-[8px] hover:bg-primary-100"
         >
           取消
         </button>
         <button
-          class="w-[50%] h-[48px] bg-primary-800 rounded-3xl text-white font-bold text-sm justify-center items-center px-[12px] py-[8px]">
+          class="w-[50%] h-[48px] bg-primary-800 rounded-3xl text-white font-bold text-sm justify-center items-center px-[12px] py-[8px] hover:bg-primary-600">
           完成
         </button>
       </form>
