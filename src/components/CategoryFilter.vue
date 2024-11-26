@@ -72,55 +72,58 @@ const closeModal = () => {
         </form>
       </header>
 
-      <div class="filter-body overflow-y-auto">
-        <div class="block-my overflow-y-auto inline-flex flex-col">
-          <div class="flex flex-col justify-center items-center mb-2 overflow-y-auto">
+      <div class="filter-body">
+        <div class="block-my inline-flex flex-col w-full h-72 mx-1 ">
+          <div class="flex flex-col justify-center items-center mb-2">
             <h3 class="text-2xl font-bold text-black mb-2">我的分類</h3>
             <p class="text-sm text-gray-500 mb-4">拖動即可排序</p>
             <!-- 待新增:拖曳功能 -->
+            <div 
+              class="list-group flex justify-start items-start space-between flex-wrap w-full gap-2 ml-10 pb-8">
+              <span
+                v-for="(category, index) in categories"
+                :key="category.name"
+                class="list-group-item btn btn-sm bg-primary-100 text-sm text-primary-600 rounded-3xl border-transparent justify-center items-center 
+                hover:bg-primary-700 
+                hover:shadow-lg 
+                hover:text-primary-100 
+                hover:scale-105 
+                hover:border-transparent"
+              >
+                {{ category.icon }} {{ category.name }}
+                <button
+                  @click="removeCategory(index)"
+                  class="text-primary-600 hover:text-red-500  btn btn-xs btn-ghost"
+                >
+                  <p class="text-center">✕</p>
+                </button>
+              </span>
+          </div>
           </div>
           <!-- 分類標籤 -->
-          <div class="list-group flex justify-start items-center flex-wrap gap-2 mx-4 mb-4 pb-8">
-            <span
-              v-for="(category, index) in categories"
-              :key="category.name"
-              class="list-group-item btn btn-sm bg-primary-100 text-sm text-primary-600 rounded-3xl border-transparent items-center 
-              hover:bg-primary-700 
-              hover:shadow-lg 
-              hover:text-primary-100 
-              hover:scale-105 
-              hover:border-transparent"
-            >
-              {{ category.icon }} {{ category.name }}
-              <button
-                @click="removeCategory(index)"
-                class="text-primary-600 hover:text-red-500  btn btn-xs btn-ghost"
-              >
-                ✕
-              </button>
-            </span>
-          </div>
+          
         </div>
         <!-- 新增分類 -->
-        <div class="block-other">
+        <div class="block-other inline-flex flex-col w-full mx-1 ">
           <div class="flex flex-col justify-center items-center mb-2">
-            <p class="text-xl font-bold text-black mb-2">點擊新增更多</p>
+            <p class="text-xl font-bold text-black mt-4 mb-4">點擊新增更多</p>
+            <div class="other-list-group flex justify-start items-start flex-wrap w-full gap-2 ml-10 pb-8">
+              <button
+                v-for="category in additionalCategories"
+                :key="category.name"
+                class="other-list-group-item btn btn-sm bg-primary-100 text-primary-600 rounded-3xl border-transparent flex items-center 
+                hover:bg-primary-700 
+                hover:shadow-lg 
+                hover:text-primary-100 
+                hover:scale-105 
+                hover:border-transparent"
+                @click="addCategory(category)"
+              >
+                {{ category.icon }} {{ category.name }}
+              </button>
           </div>
-          <div class="other-list-group flex justify-start items-center flex-wrap gap-2 mx-4 mb-4 pb-8">
-            <button
-              v-for="category in additionalCategories"
-              :key="category.name"
-              class="other-list-group-item btn btn-sm bg-primary-100 text-primary-600 rounded-3xl border-transparent flex items-center 
-              hover:bg-primary-700 
-              hover:shadow-lg 
-              hover:text-primary-100 
-              hover:scale-105 
-              hover:border-transparent"
-              @click="addCategory(category)"
-            >
-              {{ category.icon }} {{ category.name }}
-            </button>
           </div>
+          
         </div>
       </div>
       <!-- 按鈕區域 -->
@@ -142,7 +145,8 @@ const closeModal = () => {
 </template>
 
 <style scoped>
-.list-group{
+
+.block-my{
   border-bottom: 1px dashed gray;
 }
 
