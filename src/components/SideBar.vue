@@ -14,12 +14,16 @@ const isMenuOpen = ref(false);
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
 };
+const isLoginDialogOpen = ref(false);
+const openLoginDialog = () => {
+  isLoginDialogOpen.value = true;
+};
 </script>
 
 <template>
   <div>
     <button
-      class="lg:hidden fixed top-4 left-5 z-60 bg-white text-black p-2 rounded-lg shadow"
+      class="fixed top-4 left-5 z-60 bg-white text-black p-2 rounded-lg shadow lg:hidden "
       @click="toggleMenu"
       aria-label="Toggle Menu"
       :aria-expanded="isMenuOpen ? 'true' : 'false' "
@@ -37,9 +41,9 @@ const toggleMenu = () => {
     >
       <div class="flex items-center">
         <img
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSC8fFURU-S1FRIkYCVhF6LbBB0BQUbGd6bQ&s"
+          src="https://web.chictrip.com.tw/assets/logo_horizontal.aa2cb44e.svg"
           alt="Logo"
-          class="w-10 h-10 mb-3"
+          class="w-24 mb-3"
         />
       </div>
       <ul class="space-y-2 w-full">
@@ -55,17 +59,25 @@ const toggleMenu = () => {
         </li>
         <li class="flex items-center p-2 hover:bg-primary-100 hover:text-primary-800 rounded-lg transition-all">
           <button class="flex w-full">
-            <LightBulbIcon class="w-6 h-6 flex-none" />
-            <span
-              class="ml-3 font-medium opacity-0 group-hover:opacity-100 hidden group-hover:inline-block transition-opacity duration-500 delay-500 whitespace-nowrap"
+            <RouterLink
+            to="/home"
             >
-              認識TriPuzzle
-            </span>
+              <div class="flex">
+                <LightBulbIcon class="w-6 h-6 flex-none" />
+                <span
+                  class="ml-3 font-medium opacity-0 group-hover:opacity-100 hidden group-hover:inline-block transition-opacity duration-500 delay-500 whitespace-nowrap"
+                >
+                  認識TriPuzzle
+                </span>
+              </div>
+            </RouterLink>
           </button>
         </li>
         <hr class="border-t my-4 w-full" />
         <li class="flex items-center p-2 hover:bg-primary-100 hover:text-primary-800 rounded-lg transition-all">
-          <button class="flex w-full">
+          <button class="flex w-full"
+                  @click="openLoginDialog"
+          >
             <UserCircleIcon class="w-6 h-6 flex-none" />
             <span
               class="ml-3 font-medium opacity-0 group-hover:opacity-100 hidden group-hover:inline-block transition-opacity duration-500 delay-500 whitespace-nowrap"
@@ -76,6 +88,7 @@ const toggleMenu = () => {
         </li>
       </ul>
     </div>
+    <LoginDialog v-if="isLoginDialogOpen" />
   </div>
   <!-- <LoginDialog /> -->
 </template>

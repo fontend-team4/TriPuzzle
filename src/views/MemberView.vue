@@ -10,8 +10,8 @@ import {  HeartIcon,
           ChatBubbleLeftEllipsisIcon,
           ChevronRightIcon,
           XMarkIcon,
+          PencilSquareIcon,
 } from '@heroicons/vue/24/solid';
-import { PencilSquareIcon } from '@heroicons/vue/24/solid';
 
 const isOpen = ref(false);
 
@@ -25,25 +25,25 @@ const toggleMenu = () => {
   <div class="flex flex-col min-h-screen bg-white lg:ml-16 transition-all duration-300 ease-in-out">
     <div class="ml-5 p-2">
         <img
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSC8fFURU-S1FRIkYCVhF6LbBB0BQUbGd6bQ&s"
+          src="https://web.chictrip.com.tw/assets/logo_horizontal.aa2cb44e.svg"
           alt=""
-          class="w-10 h-10 mt-2 ml-2 lg:ml-1 md:ml-8 sm:ml-8">
+          class="w-24 mt-1 ml-2 lg:ml-1 md:ml-8 sm:ml-8">
       </div>
-    <div class="flex-1 p-2 ml-10">
+    <div class="flex-1 p-2 sm:ml-1 md:ml-1 lg:ml-10">
       <div class="bg-white p-2 rounded-lg mb-4">
         <div class="inline-block pb-1 mb-4 items-center space-x-4 lg:flex lg:p-0">
           <div class="flex">
             <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSC8fFURU-S1FRIkYCVhF6LbBB0BQUbGd6bQ&s"
+              src="https://web.chictrip.com.tw/assets/waterview_default.f746ada9.svg"
               alt=""
-              class="w-32 h-32 rounded-full border ml-2"
+              class="w-32 h-32 rounded-full ml-2"
             >
             <div>
               <div class="block mt-2 mr-20 pl-4">
                 <p class="text-xl font-semibold mt-4">XXX</p>
                 <p class="mt-4">0行程 ・ 0旅遊小書</p>
                 <div class="flex justify-between items-center mt-4 gap-4">
-                  <button 
+                  <button
                     class="px-4 py-2 border rounded-full hover:bg-primary-100 hover:text-primary-800  transition flex items-center"
                     onclick="document.getElementById('Editmodal').showModal()"
                   >
@@ -51,8 +51,8 @@ const toggleMenu = () => {
                     <span class="w-10">編輯</span>
                   </button>
                   <div class="relative flex">
-                    <button 
-                      @click="toggleMenu" 
+                    <button
+                      @click="toggleMenu"
                       class="w-10 h-10 border hover:text-primary-800 hover:bg-primary-100 rounded-full transition items-center justify-center flex"
                     >
                       <Cog8ToothIcon class="w-4 h-4" />
@@ -113,83 +113,89 @@ const toggleMenu = () => {
 
         <div class="text-center p-6 rounded-lg">
           <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSC8fFURU-S1FRIkYCVhF6LbBB0BQUbGd6bQ&s"
+            src="https://web.chictrip.com.tw/assets/img-empty.65a29235.png"
             alt="Empty collection"
-            class="w-20 h-20 mx-auto mb-4"
+            class="w-80 mx-auto mb-4"
           >
-          <p class="mb-4">「收藏」中還沒有景點哦</p>
-          <RouterLink to="/planner" class="px-6 py-2 bg-primary-600 text-white rounded-full hover:bg-primary-800 transition">探索景點</RouterLink>
+          <p class="mb-8">「收藏」中還沒有景點哦</p>
+          <RouterLink
+            to="/planner"
+            class="px-20 py-4 bg-primary-600 text-white text-sm rounded-full hover:bg-primary-800 transition">
+              探索景點
+          </RouterLink>
         </div>
       </div>
     </div>
     <!-- Edit的Modal -->
     <dialog id="Editmodal" class="modal">
-      <div class="modal-box">
-        <div class="flex justify-end">
-          <form method="dialog">
-            <button>
-              <XMarkIcon class="w-5 h-5" />
-            </button>
-          </form>
-        </div>
-        <div class="flex flex-col items-center text-center space-y-4 mb-5">
-          <h3 class="text-xl font-bold">個人資料</h3>
-            <div class="relative">
-              <img
-                id="profileImage"
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSC8fFURU-S1FRIkYCVhF6LbBB0BQUbGd6bQ&s"
-                alt=""
-                class="w-20 h-20 rounded-full shadow-lg"
-              >
-                <button
-                  class="absolute bottom-0 right-0 bg-black opacity-70 text-white p-1 rounded-full shadow-md"
-                  onclick="document.getElementById('imageUpload').click();"
-                >
-                <PencilSquareIcon class="w-5 h-5" />
-              </button>
-            </div>
-              <input
-                type="file"
-                id="imageUpload"
-                class="hidden"
-                accept="image/*"
-                onchange="updateProfileImage(event)"
-              />
-        </div>
-        <div class="space-y-1">
-          <button 
-            class="flex w-full justify-between p-2 bg-gray rounded-xl"
+      <div class="modal-box w-full max-h-none max-w-none md:w-96 max-md:h-screen p-4 max-md:rounded-none">
+       <div class="flex justify-end">
+         <form method="dialog">
+           <button>
+             <XMarkIcon class="w-5 h-5" />
+           </button>
+         </form>
+       </div>
+       <div class="flex flex-col items-center text-center space-y-4 mb-5">
+       <h3 class="text-xl font-bold">個人資料</h3>
+         <div class="relative">
+           <img
+             id="profileImage"
+             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSC8fFURU-S1FRIkYCVhF6LbBB0BQUbGd6bQ&s"
+             alt=""
+             class="w-20 h-20 rounded-full shadow-lg"
+           >
+             <button
+               class="absolute bottom-0 right-0 bg-black opacity-70 text-white p-1 rounded-full shadow-md"
+               onclick="document.getElementById('imageUpload').click();"
+             >
+             <PencilSquareIcon class="w-5 h-5" />
+           </button>
+         </div>
+           <input
+             type="file"
+             id="imageUpload"
+             class="hidden"
+             accept="image/*"
+             onchange="updateProfileImage(event)"
+           />
+      </div>
+        <div class="bg-gray rounded-2xl">
+          <button
+            class="flex w-full justify-between p-2"
             onclick="document.getElementById('NickNameModal').showModal()"
           >
-            <div class="mx-3">
+            <div class="p-2 flex flex-col items-start">
               <span class="text-xs">暱稱</span>
               <p class="font-bold">XXX</p>
             </div>
-            <ChevronRightIcon class="w-4 h-4 mt-4"/>
+            <ChevronRightIcon class="w-4 h-4 mt-5"/>
           </button>
-          <button class="flex w-full justify-between p-2 bg-gray rounded-xl"
+          <hr class=" w-11/12 mx-auto">
+          <button class="flex w-full justify-between p-2"
                   onclick="document.getElementById('ProfileModal').showModal()"
           >
-          <div class="mx-3 flex flex-col items-start">
+          <div class="p-2 flex flex-col items-start">
               <span class="text-xs">個人簡介</span>
               <p class="font-bold">有趣的介紹可以吸引更多人追蹤喔！</p>
             </div>
-            <ChevronRightIcon class="w-4 h-4 mt-3" />
+            <ChevronRightIcon class="w-4 h-4 mt-5" />
           </button>
-          <button class="flex w-full justify-between p-2 bg-gray rounded-xl"
+          <hr class=" w-11/12 mx-auto">
+          <button class="flex w-full justify-between p-2"
                   onclick="document.getElementById('PersonalInformatioMmodal').showModal()"
           >
-            <div class="mx-3">
+            <div class=" p-2 flex flex-col items-start">
               <span class="text-xs">打造你的旅行名片</span>
               <p class="font-bold">修改個人資料</p>
             </div>
-            <ChevronRightIcon class="w-4 h-4 mt-4" />
+            <ChevronRightIcon class="w-4 h-4 mt-5" />
           </button>
         </div>
-        <div class="mt-3 space-y-1">
+        <div class="mt-3">
           <p>帳號綁定</p>
-          <div class="flex justify-between p-2 bg-gray rounded-xl">
-            <div class="mx-3">
+          <div class="flex justify-between p-4 bg-gray rounded-xl">
+            <div>
               <p class="text-sm font-bold">TriPuzzle會員登入/註冊</p>
               <p class="text-xs">成為會員，即享會員專屬功能！</p>
             </div>
@@ -197,10 +203,10 @@ const toggleMenu = () => {
               <p class="text-white text-xs">立即加入</p>
             </button>
           </div>
-          <div class="flex justify-between p-2 bg-gray rounded-xl">
+          <div class="flex mt-1 justify-between p-4 bg-gray rounded-xl">
             <div>
-              <p class="text-sm mx-3 font-bold">其他登入方式</p>
-              <div class="flex mx-3">
+              <p class="text-sm font-bold">其他登入方式</p>
+              <div class="flex">
                 <img
                   src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSC8fFURU-S1FRIkYCVhF6LbBB0BQUbGd6bQ&s"
                   alt=""
@@ -210,16 +216,19 @@ const toggleMenu = () => {
               </div>
             </div>
           </div>
-          <div class="text-center pt-10">
-            <button class="text-blue-500 underline">刪除帳號</button>
+            <div class="text-center py-4 ">
+              <button class="text-blue-500 underline">刪除帳號</button>
+            </div>
           </div>
         </div>
-      </div>
-    </dialog>
+        <form method="dialog" class="modal-backdrop">
+          <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+          <button>close</button>
+        </form>
+      </dialog>
     <!-- NickName的Modal -->
     <dialog id="NickNameModal" class="modal">
-      <div class="modal-box">
-        <div>
+        <div class="modal-box w-full max-h-none max-w-none md:w-96 max-md:h-screen p-4 max-md:rounded-none">
           <div class="flex justify-end">
             <form method="dialog">
               <button>
@@ -227,7 +236,7 @@ const toggleMenu = () => {
               </button>
             </form>
           </div>
-          <div class="text-center mb-10">
+            <div class="text-center mb-10">
             <p class="text-2xl font-bold">修改暱稱</p>
           </div>
           <div class="space-y-4">
@@ -236,73 +245,79 @@ const toggleMenu = () => {
               <p class="text-sm ">0/50</p>
             </div>
             <div class="relative">
-              <input id="nickname" class="w-full text-lg px-4 py-2 pr-10 border rounded-lg" type="text" placeholder="輸入暱稱" />
-              <button 
-                type="button" 
+              <input id="nickname" class="w-full px-4 py-2 pr-10 border rounded-lg" type="text" placeholder="輸入暱稱" />
+              <button
+                type="button"
                 class="absolute right-3 top-1/2 transform -translate-y-1/2"
-                onclick="document.getElementById('nickname').value=''" 
+                onclick="document.getElementById('nickname').value=''"
               >
                 <XMarkIcon class="w-5 h-5" />
               </button>
             </div>
           </div>
           <div class="flex justify-around space-x-4 mt-4 pt-6">
-            <button 
-              type="button" 
-              class="p-1 w-full text-lg bg-gray rounded-full focus:outline-none hover:bg-primary-100 hover:text-primary-800"
+            <button
+              type="button"
+              class="p-2 w-full bg-gray rounded-full focus:outline-none hover:bg-primary-100 hover:text-primary-800"
               onclick="document.getElementById('NickNameModal').close()"
             >
               取消
             </button>
-            <button class="p-1 w-full text-lg bg-gray rounded-full focus:outline-none hover:bg-primary-100 hover:text-primary-800">
+            <button class="p-2 w-full bg-gray rounded-full focus:outline-none hover:bg-primary-100 hover:text-primary-800">
               儲存
             </button>
           </div>
         </div>
-      </div>
-    </dialog>
+        <form method="dialog" class="modal-backdrop">
+          <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+          <button>close</button>
+        </form>
+      </dialog>
     <!-- Profile的Modal -->
     <dialog id="ProfileModal" class="modal">
-      <div class="modal-box">
-        <div class="flex justify-end">
-          <form method="dialog">
-            <button>
-              <XMarkIcon class="w-5 h-5" />
-            </button>
-          </form>
-        </div>
-        <div>
-          <div class="text-center mb-10">
-            <p class="text-2xl font-bold">修改個人簡介</p>
+        <div class="modal-box w-full max-h-none max-w-none md:w-96 max-md:h-screen p-4 max-md:rounded-none">
+          <div class="flex justify-end">
+            <form method="dialog">
+              <button>
+                <XMarkIcon class="w-5 h-5" />
+              </button>
+            </form>
           </div>
-          <div class="space-y-4">
-            <div class="flex items-center justify-between">
-              <p class="text-sm font-medium">個人簡介</p>
-              <p class="text-sm">0/500</p>
+          <div>
+            <div class="text-center mb-10">
+              <p class="text-2xl font-bold">修改個人簡介</p>
             </div>
-              <textarea id="nickname" class="w-full text-lg px-4 py-2 pr-10 border rounded-lg"
-                placeholder="有趣的介紹可以吸引更多人追蹤喔！">
-              </textarea>
-          </div>
-          <div class="flex justify-around space-x-4 mt-4 pt-6">
-            <button 
-              type="button" 
-              class="p-1 w-full text-lg bg-gray rounded-full focus:outline-none hover:bg-primary-100 hover:text-primary-800"
-              onclick="document.getElementById('ProfileModal').close()"
-            >
-              取消
-            </button>
-            <button class="p-1 w-full text-lg bg-gray rounded-full focus:outline-none hover:bg-primary-100 hover:text-primary-800">
-              儲存
-            </button>
+            <div class="space-y-4">
+              <div class="flex items-center justify-between">
+                <p class="text-sm font-medium">個人簡介</p>
+                <p class="text-sm">0/500</p>
+              </div>
+                <textarea id="nickname" class="w-full px-4 py-2 pr-10 border rounded-lg"
+                  placeholder="有趣的介紹可以吸引更多人追蹤喔！">
+                </textarea>
+            </div>
+            <div class="flex justify-around space-x-4 mt-4 pt-6">
+              <button
+                type="button"
+                class="p-2 w-full bg-gray rounded-full focus:outline-none hover:bg-primary-100 hover:text-primary-800"
+                onclick="document.getElementById('ProfileModal').close()"
+              >
+                取消
+              </button>
+              <button class="p-2 w-full bg-gray rounded-full focus:outline-none hover:bg-primary-100 hover:text-primary-800">
+                儲存
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    </dialog>
+        <form method="dialog" class="modal-backdrop">
+          <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+          <button>close</button>
+        </form>
+      </dialog>
     <!-- PersonalInformatio的Modal -->
     <dialog id="PersonalInformatioMmodal" class="modal">
-      <div class="modal-box">
-        <div>
+        <div class="modal-box w-full max-h-none max-w-none md:w-96 max-md:h-screen p-4 max-md:rounded-none">
           <div class="flex justify-end">
             <form method="dialog">
               <button>
@@ -318,14 +333,14 @@ const toggleMenu = () => {
               <p class="text-sm font-medium">聯繫Email</p>
             </div>
             <div class="relative">
-              <input 
-                id="PersonalInformatio" 
-                class="w-full text-lg px-4 py-2 pr-10 border rounded-lg"
-                type="text" 
-                placeholder="輸入Email" 
+              <input
+                id="PersonalInformatio"
+                class="w-full px-4 p-2 pr-10 border rounded-lg"
+                type="text"
+                placeholder="輸入Email"
               />
-              <button 
-                type="button" 
+              <button
+                type="button"
                 class="absolute right-3 top-1/2 transform -translate-y-1/2"
                 onclick="document.getElementById('PersonalInformatio').value=''"
               >
@@ -335,37 +350,40 @@ const toggleMenu = () => {
           </div>
           <div class="mt-5">
             <p>性別</p>
-            <div class="flex gap-3 mt-2">
-              <button class="p-3 w-full bg-gray text-lg rounded-md focus:ring-1 focus:ring-primary-800 active:bg-primary-100 hover:bg-primary-100 hover:text-primary-800">
+            <div class="flex gap-2 mt-2 mx-1">
+              <button class="p-3 w-full bg-gray rounded-md focus:ring-1 focus:bg-primary-100 focus:ring-primary-800 hover:bg-primary-100 hover:text-primary-800">
                 男
               </button>
-              <button class="p-3 w-full bg-gray text-lg rounded-md focus:ring-1 focus:ring-primary-800 active:bg-primary-100 hover:bg-primary-100 hover:text-primary-800">
+              <button class="p-3 w-full bg-gray rounded-md focus:ring-1 focus:bg-primary-100 focus:ring-primary-800 hover:bg-primary-100 hover:text-primary-800">
                 女
               </button>
-              <button class="p-3 w-full bg-gray text-lg rounded-md focus:ring-1 focus:ring-primary-800 active:bg-primary-100 hover:bg-primary-100 hover:text-primary-800">
+              <button class="p-3 w-full bg-gray rounded-md focus:ring-1 focus:bg-primary-100 focus:ring-primary-800 hover:bg-primary-100 hover:text-primary-800">
                 秘密
               </button>
             </div>
           </div>
           <div class="space-y-2 mt-5">
             <label class="text-sm">生日</label>
-            <input type="date" class="w-full p-3 text-lg border rounded-lg" />
+            <input type="date" class="w-full p-2 border rounded-lg" />
           </div>
           <div class="flex justify-around space-x-4 mt-4 pt-6">
-            <button 
-              type="button" 
-              class="p-1 w-full text-lg bg-gray rounded-full focus:outline-none hover:bg-primary-100 hover:text-primary-800"
+            <button
+              type="button"
+              class="p-2 w-full bg-gray rounded-full focus:outline-none hover:bg-primary-100 hover:text-primary-800"
               onclick="document.getElementById('PersonalInformatioMmodal').close()"
             >
               取消
             </button>
-            <button class="p-1 w-full text-lg bg-gray rounded-full focus:outline-none hover:bg-primary-100 hover:text-primary-800">
+            <button class="p-2 w-full bg-gray rounded-full focus:outline-none hover:bg-primary-100 hover:text-primary-800">
               儲存
             </button>
           </div>
         </div>
-      </div>
-    </dialog>
+        <form method="dialog" class="modal-backdrop">
+          <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+          <button>close</button>
+        </form>
+      </dialog>
   </div>
 </template>
 
