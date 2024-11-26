@@ -27,11 +27,6 @@ const toggleMenu = () => {
       <Bars3Icon class="w-4 h-4" />
     </button>
     <div
-      v-if="isMenuOpen"
-      class="fixed inset-0 bg-black opacity-50 z-40"
-      @click="toggleMenu"
-    ></div>
-    <div
       id="menu"
       :class="[
         'flex-col items-start p-4 bg-white shadow-2xl h-screen transition-all duration-200 w-20 hover:w-52 group fixed top-0 z-50',
@@ -50,7 +45,7 @@ const toggleMenu = () => {
       <ul class="space-y-2 w-full">
         <li class="flex items-center p-2 hover:bg-primary-100 hover:text-primary-800 rounded-lg transition-all">
           <button class="flex w-full">
-            <MagnifyingGlassIcon class="w-6 h-6" />
+            <MagnifyingGlassIcon class="w-6 h-6 flex-none" />
             <span
               class="ml-3 font-medium opacity-0 group-hover:opacity-100 hidden group-hover:inline-block transition-opacity duration-500 delay-500 whitespace-nowrap"
             >
@@ -60,27 +55,7 @@ const toggleMenu = () => {
         </li>
         <li class="flex items-center p-2 hover:bg-primary-100 hover:text-primary-800 rounded-lg transition-all">
           <button class="flex w-full">
-            <ShoppingCartIcon class="w-6 h-6" />
-            <span
-              class="ml-3 font-medium opacity-0 group-hover:opacity-100 hidden group-hover:inline-block transition-opacity duration-500 delay-500 whitespace-nowrap"
-            >
-              商城
-            </span>
-          </button>
-        </li>
-        <li class="flex items-center p-2 hover:bg-primary-100 hover:text-primary-800 rounded-lg transition-all">
-          <button class="flex w-full">
-            <StarIcon class="w-6 h-6" />
-            <span
-              class="ml-3 font-medium opacity-0 group-hover:opacity-100 hidden group-hover:inline-block transition-opacity duration-500 delay-500 whitespace-nowrap"
-            >
-              TriPuzzle星榜單
-            </span>
-          </button>
-        </li>
-        <li class="flex items-center p-2 hover:bg-primary-100 hover:text-primary-800 rounded-lg transition-all">
-          <button class="flex w-full">
-            <LightBulbIcon class="w-6 h-6" />
+            <LightBulbIcon class="w-6 h-6 flex-none" />
             <span
               class="ml-3 font-medium opacity-0 group-hover:opacity-100 hidden group-hover:inline-block transition-opacity duration-500 delay-500 whitespace-nowrap"
             >
@@ -91,7 +66,7 @@ const toggleMenu = () => {
         <hr class="border-t my-4 w-full" />
         <li class="flex items-center p-2 hover:bg-primary-100 hover:text-primary-800 rounded-lg transition-all">
           <button class="flex w-full">
-            <UserCircleIcon class="w-6 h-6" />
+            <UserCircleIcon class="w-6 h-6 flex-none" />
             <span
               class="ml-3 font-medium opacity-0 group-hover:opacity-100 hidden group-hover:inline-block transition-opacity duration-500 delay-500 whitespace-nowrap"
             >

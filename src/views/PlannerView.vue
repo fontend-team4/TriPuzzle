@@ -7,6 +7,6 @@ import LoginDialog from '@/components/LoginDialog.vue';
     SideBar+ MapComponent + MainComponent
   </div>
   <div>
-    <!-- <SideBar /> -->
+    <SideBar />
   </div>
 </template>

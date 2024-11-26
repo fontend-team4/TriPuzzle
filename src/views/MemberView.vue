@@ -44,16 +44,16 @@ const toggleMenu = () => {
                 <p class="mt-4">0行程 ・ 0旅遊小書</p>
                 <div class="flex justify-between items-center mt-4 gap-4">
                   <button 
-                    class="px-4 py-1 border rounded-full hover:bg-primary-100 hover:text-primary-800  transition flex items-center"
+                    class="px-4 py-2 border rounded-full hover:bg-primary-100 hover:text-primary-800  transition flex items-center"
                     onclick="document.getElementById('Editmodal').showModal()"
                   >
                     <PencilIcon class="w-4 h-4 mr-2" />
-                    <span>編輯</span>
+                    <span class="w-10">編輯</span>
                   </button>
                   <div class="relative flex">
                     <button 
                       @click="toggleMenu" 
-                      class="w-8 h-8 border hover:text-primary-800 hover:bg-primary-100 rounded-full transition items-center justify-center flex"
+                      class="w-10 h-10 border hover:text-primary-800 hover:bg-primary-100 rounded-full transition items-center justify-center flex"
                     >
                       <Cog8ToothIcon class="w-4 h-4" />
                     </button>
@@ -118,9 +118,7 @@ const toggleMenu = () => {
             class="w-20 h-20 mx-auto mb-4"
           >
           <p class="mb-4">「收藏」中還沒有景點哦</p>
-          <button class="px-6 py-2 bg-primary-600 text-white rounded-full hover:bg-primary-800 transition">
-            探索景點
-          </button>
+          <RouterLink to="/planner" class="px-6 py-2 bg-primary-600 text-white rounded-full hover:bg-primary-800 transition">探索景點</RouterLink>
         </div>
       </div>
     </div>
