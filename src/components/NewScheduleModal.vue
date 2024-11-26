@@ -68,16 +68,14 @@ const closeDropdown = () => {
             <li class="h-[50%] px-[20px] py-[8px] hover:bg-gray-100 cursor-pointer flex items-center" >
               <ScheduleCoverImgModal />
             </li>
+
+            <label for="file-upload" @click="replaceImgLabelClick" class="cursor-pointer w-full">
             <li class="h-[50%] px-[20px] py-[8px] hover:bg-gray-100 cursor-pointer flex items-center border-t-[1px] border-slate-200">
-              <label
-                for="file-upload"
-               @click="replaceImgLabelClick"
-                class="flex items-center cursor-pointer w-full \">
                 <ArrowUpTrayIcon class="w-[24px] h-[24px]"/>
                 <span class="pl-[5px] text-[14px]">上傳照片</span>
-              </label>
-              <input id="file-upload" type="file" class="hidden"/>
+                <input id="file-upload" type="file" class="hidden"/>
             </li>
+            </label>
           </ul>
 
           <div class="relative w-full h-auto rounded-xl overflow-hidden">
