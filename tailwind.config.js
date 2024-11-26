@@ -3,6 +3,9 @@ export default {
   content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      aspectRatio: {
+        '3/4': '3 / 4',
+      },
       boxShadow: {
         '3xl': '4px 4px 60px 8px rgba(227, 188, 188, 0.3)',
       },

@@ -10,9 +10,9 @@ const clickTab = (sectionName) => {
 </script>
 
 <template>
-  <nav class="border-b-2 border-neutral-200">
+  <nav class="border-b-2 border-neutral-200 bg-white z-10">
     <div class="w-9/12 py-4 mx-auto flex justify-between items-center">
-      <Logo class="flex-none" />
+      <Logo class="flex-none cursor-pointer" @click="clickTab('top')" />
 
       <ul class="flex gap-4 text-neutral-800 font-bold">
         <li class="px-4.5 py-4 cursor-pointer" @click="clickTab('carousel')">
