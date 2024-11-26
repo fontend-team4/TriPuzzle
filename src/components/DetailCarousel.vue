@@ -12,7 +12,7 @@ import { PhotoIcon } from "@heroicons/vue/24/outline";
       class="w-full" />
     <div class="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
       <span></span>
-      <a href="#slide2" class="btn btn-circle w-8 h-8 bg-gray-100 bg-opacity-75 border-0">❯</a>
+      <a href="#slide2" class="btn btn-circle">❯</a>
     </div>
   </div>
   <div id="slide2" class="relative w-full carousel-item">

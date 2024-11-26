@@ -60,7 +60,7 @@ const hamburgerCls = computed(() => {
             <XMarkIcon class="size-5" />
           </button>
         </div>
-        <div class="w-full h-full px-5 overflow-auto">
+        <div class="w-full h-[calc(100%-60px)] px-5 overflow-auto ">
           <ul class="w-full h-full">
             <li
               v-for="item in fakeLocations"
@@ -72,11 +72,11 @@ const hamburgerCls = computed(() => {
                     <img :src="item.image" alt="" class="aspect-square" />
                   </div>
                   <div class="pt-3 pl-4 pr-3 w-[176px]">
-                    <h3 class="font-bold">{{ item.name }}</h3>
-                    <p class="flex items-center gap-1 text-sm leading-6">
+                    <h3 class="font-bold text-slate-900">{{ item.name }}</h3>
+                    <p class="flex items-center gap-1 text-sm leading-6 text-slate-500">
                       <StarIcon class="size-4 text-secondary-500" />{{ item.rating }}
                     </p>
-                    <p class="text-sm leading-6">
+                    <p class="text-sm leading-6 text-slate-500">
                       加入行程<span class="px-1">47</span>次
                     </p>
                     <div

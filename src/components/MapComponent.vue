@@ -15,7 +15,7 @@ import{ MagnifyingGlassIcon, PuzzlePieceIcon } from "@heroicons/vue/24/outline";
    <div class="absolute top-1/2 left-1/2">
     <div class="flex flex-col items-center justify-center group">
       <div class="flex flex-col items-center justify-center">
-        <div class=" bg-white rounded-md p-[2px] items-center hidden group-hover:flex absolute -top-16 w-auto shadow-md">
+        <div class=" bg-white rounded-md p-[4px] items-center hidden group-hover:flex absolute -top-16 w-auto shadow-md">
           <div class="w-12 h-12 overflow-hidden rounded-md ">
             <img src="https://assets-lighthouse.s3.amazonaws.com/uploads/image/file/5635/01.jpg" alt="" class=" aspect-square">
           </div>

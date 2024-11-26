@@ -94,7 +94,7 @@ const toggleFavorite = (item) => {
                 <img :id="'img-' + item.id" :src="item.url" alt="" />
               </div>
               <div>
-                <h3 class="text-sm font-bold text-gray-700 md:text-lg text-ellipsis">
+                <h3 class="text-sm font-bold text-gray-700 md:text-lg text-ellipsis text-slate-900">
                   {{ item.title }}
                 </h3>
                 <div class="flex justify-between">
