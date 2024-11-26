@@ -128,7 +128,7 @@ const closeDropdown = () => {
             :class="{ 'red-frame': isChecked }"
             @click="transportationLabelClick">
             <span>自訂</span>
-            <input type="checkbox" id="toggle-transportation" class="hidden peer" />
+            <input type="checkbox" id="toggle-transportation" class="hidden" />
             <label for="toggle-transportation" class="cursor-pointer">                
                 <ChevronDownIcon class="w-5 h-5 transition-transform"/>
             </label>
