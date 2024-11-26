@@ -1,15 +1,29 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 import { GlobeAsiaAustraliaIcon } from '@heroicons/vue/24/solid'
+import MapToggle from './components/MapToggle.vue'
+import DetailModal from './components/DetailModal.vue'
+import DetailCarousel from './components/DetailCarousel.vue'
+import PlacesComponent from './components/PlacesComponent.vue'
+import PlacesModal from './components/PlacesModal.vue'
+import MapComponent from './components/MapComponent.vue'
+
 import SearchBar from './components/SearchBar.vue';
 
 
 </script>
 
 <template>
-  <SearchBar />
-  <header class="w-80 mx-auto flex flex-col gap-10 mt-10 text-center" @click.self="switchToCategoryMode">
-    <nav class=" flex gap-6 underline text-orange-800 font-bold text-xl">
+        <!-- <MapToggle /> -->
+        <!-- <DetailModal /> -->
+        <!-- <PlacesComponent /> -->
+        <!-- <PlacesModal /> -->
+        <!-- <RouterView /> -->
+        <!-- <MapComponent /> -->
+        <SearchBar />
+        <RouterView />
+
+
       <RouterLink to="/">HOME</RouterLink>
       <RouterLink to="/planner">PLANNER</RouterLink>
       <RouterLink to="/member">MEMBER</RouterLink>
