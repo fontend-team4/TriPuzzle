@@ -7,8 +7,8 @@ const showModal = ref(true);
 
 <template>
   <div v-if="showModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center overflow-auto">
-    <div class="bg-white rounded-xl p-6 w-full max-h-none max-w-none md:w-96 h-auto max-md:h-screen max-md:p-4 max-md:rounded-none">
-      <div class="relative w-full">
+    <div class="bg-white rounded-2xl p-6 w-full max-h-none md:w-96 max-md:h-screen max-md:p-4 max-md:rounded-none">
+      <div class="relative">
         <button @click="$emit('close')" class="absolute right-2 top-2">
           <XMarkIcon class="w-6 h-6" />
         </button>

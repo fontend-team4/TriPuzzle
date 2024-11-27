@@ -24,7 +24,7 @@ const closeLoginDialog = () => {
 <template>
   <div>
     <button
-      class="fixed top-4 left-5 z-60 bg-white text-black p-2 rounded-lg shadow lg:hidden"
+      class="fixed top-2 left-5 z-60 bg-white text-black p-2 rounded-lg shadow lg:hidden"
       @click="toggleMenu"
       aria-label="Toggle Menu"
       :aria-expanded="isMenuOpen ? 'true' : 'false' "
@@ -33,7 +33,7 @@ const closeLoginDialog = () => {
     </button>
     <div
       id="menu"
-      :class="[ 
+      :class="[
         'flex-col items-start p-4 bg-white shadow-2xl h-screen transition-all duration-200 w-20 hover:w-52 group fixed top-0 z-50',
         isMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',
       ]"
