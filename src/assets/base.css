@@ -43,6 +43,10 @@
     @apply font-gen font-medium;
   }
   h1 {
-    @apply font-gen font-bold;
+    @apply font-bold;
+  }
+  a,
+  button {
+    @apply font-medium;
   }
 }

@@ -10,7 +10,7 @@ export default {
         '3/4': '3 / 4',
       },
       boxShadow: {
-        '3xl': '4px 4px 60px 8px rgba(227, 188, 188, 0.3)',
+        canvas: '4px 4px 60px 8px rgba(227, 188, 188, 0.3)',
       },
       fontSize: {
         '1.5xl': '1.375rem',
