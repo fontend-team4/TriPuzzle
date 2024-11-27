@@ -42,6 +42,6 @@ import {
   @apply focus:border-primary-600 focus:outline-none focus:bg-primary-50;
 }
 .btn {
-  @apply ml-4 px-7 py-4 text-sm font-bold text-neutral-50 bg-primary-800 rounded-full;
+  @apply ml-4 px-7 text-sm font-bold text-neutral-50 bg-primary-800 rounded-full;
 }
 </style>

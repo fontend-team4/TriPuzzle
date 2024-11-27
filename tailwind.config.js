@@ -3,6 +3,11 @@ export default {
   content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      fontFamily: {
+        bodylight: ['LightFont', 'sans-serif'],
+        bodybold: ['BoldFont', 'sans-serif'],
+        bodyblack: ['BlackFont', 'sans-serif'],
+      },
       aspectRatio: {
         '3/4': '3 / 4',
       },
