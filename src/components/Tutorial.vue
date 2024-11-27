@@ -103,9 +103,8 @@ const currentTab = computed(() => tabs[activeTab.value])
     @apply bg-primary-600 text-neutral-50 border-primary-100;
   }
 }
-
 .canvas {
-  @apply bg-white shadow-3xl rounded-3xl px-52 py-14;
+  @apply bg-white shadow-canvas rounded-3xl px-52 py-14;
   @apply flex gap-8 items-center;
   height: 600px;
 }
