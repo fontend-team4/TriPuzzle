@@ -1,5 +1,4 @@
 <script setup>
-import { ref } from 'vue';
 import SideBar from '@/components/SideBar.vue';
 import {  HeartIcon,
           PencilIcon,
@@ -12,12 +11,6 @@ import {  HeartIcon,
           XMarkIcon,
           PencilSquareIcon,
 } from '@heroicons/vue/24/solid';
-
-const isOpen = ref(false);
-
-const toggleMenu = () => {
-  isOpen.value = !isOpen.value;
-};
 </script>
 
 <template>
@@ -27,7 +20,7 @@ const toggleMenu = () => {
         <img
           src="https://web.chictrip.com.tw/assets/logo_horizontal.aa2cb44e.svg"
           alt=""
-          class="w-24 mt-1 ml-2 lg:ml-1 md:ml-8 sm:ml-8">
+          class="w-24 mt-1 ml-8 lg:ml-1 md:ml-8 sm:ml-8">
       </div>
     <div class="flex-1 p-2 sm:ml-1 md:ml-1 lg:ml-10">
       <div class="bg-white p-2 rounded-lg mb-4">
@@ -50,30 +43,35 @@ const toggleMenu = () => {
                     <PencilIcon class="w-4 h-4 mr-2" />
                     <span class="w-10">編輯</span>
                   </button>
-                  <div class="relative flex">
-                    <button
-                      @click="toggleMenu"
-                      class="w-10 h-10 border hover:text-primary-800 hover:bg-primary-100 rounded-full transition items-center justify-center flex"
-                    >
+                  <div class="dropdown">
+                    <div tabindex="0" class="p-3 rounded-full border hover:bg-primary-100 hover:text-primary-800">
                       <Cog8ToothIcon class="w-4 h-4" />
-                    </button>
-                      <ul v-if="isOpen" class=" absolute top-full mt-2 bg-white border border-gray shadow-xl rounded-lg w-52">
-                        <li class="py-2 px-4 hover:bg-primary-100 hover:text-primary-800 flex items-center">
+                    </div>
+                    <ul tabindex="0" class="dropdown-content bg-base-100 rounded-lg w-52 shadow">
+                      <button class="w-52">
+                        <li class="flex flex-row py-2 px-4 hover:bg-primary-100 hover:text-primary-800 rounded-t-lg items-center">
                           <ShareIcon class="h-4 w-4 mr-2" />
                           分享
                         </li>
-                        <li class="py-2 px-4 hover:bg-primary-100 hover:text-primary-800 flex items-center">
+                      </button>  
+                      <button class="w-52">
+                        <li class="flex flex-row py-2 px-4 hover:bg-primary-100 hover:text-primary-800 items-center">
                           <EnvelopeIcon class="h-4 w-4 mr-2" />
                           服務條款與隱私聲明
                         </li>
-                        <li class="py-2 px-4 hover:bg-primary-100 hover:text-primary-800 flex items-center">
-                          <ChatBubbleLeftEllipsisIcon class="h-4 w-4 mr-2" />
-                          意見回饋
-                        </li>
-                        <li class="py-2 px-4 hover:bg-primary-100 hover:text-primary-800 flex items-center">
-                          <ArrowRightStartOnRectangleIcon class="h-4 w-4 mr-2" />
-                          登出
-                        </li>
+                      </button>
+                      <button class="w-52">
+                          <li class="flex flex-row py-2 px-4 hover:bg-primary-100 hover:text-primary-800 items-center">
+                            <ChatBubbleLeftEllipsisIcon class="h-4 w-4 mr-2" />
+                            意見回饋
+                          </li>
+                      </button>
+                        <button class="w-52">
+                          <li class="flex flex-row py-2 px-4 hover:bg-primary-100 hover:text-primary-800 rounded-b-lg items-center">
+                            <ArrowRightStartOnRectangleIcon class="h-4 w-4 mr-2" />
+                            登出
+                          </li>
+                        </button>
                     </ul>
                   </div>
                 </div>
@@ -100,7 +98,7 @@ const toggleMenu = () => {
         <div class="ml-3 p-1 rounded-xl flex items-center bg-gray justify-between w-auto lg:max-w-80">
           <div class="flex flex-col ml-4">
             <p class="mt-2 font-medium mb-1 text-sm">想要更多專屬功能？</p>
-            <p class="mb-2 text-sm">快速登入/註冊去趣會員</p>
+            <p class="mb-2 text-sm">快速登入/註冊旅圖會員</p>
           </div>
           <button class="px-6 py-2 mr-4 bg-secondary-500 text-white rounded-full transition">
             立即升級
@@ -120,7 +118,7 @@ const toggleMenu = () => {
           <p class="mb-8">「收藏」中還沒有景點哦</p>
           <RouterLink
             to="/planner"
-            class="px-20 py-4 bg-primary-600 text-white text-sm rounded-full hover:bg-primary-800 transition">
+            class="px-16 p-4 bg-primary-600 text-white text-sm rounded-full hover:bg-primary-800 transition">
               探索景點
           </RouterLink>
         </div>
@@ -128,37 +126,37 @@ const toggleMenu = () => {
     </div>
     <!-- Edit的Modal -->
     <dialog id="Editmodal" class="modal">
-      <div class="modal-box w-full max-h-none max-w-none md:w-96 max-md:h-screen p-4 max-md:rounded-none">
-       <div class="flex justify-end">
-         <form method="dialog">
-           <button>
-             <XMarkIcon class="w-5 h-5" />
-           </button>
-         </form>
-       </div>
-       <div class="flex flex-col items-center text-center space-y-4 mb-5">
-       <h3 class="text-xl font-bold">個人資料</h3>
-         <div class="relative">
-           <img
-             id="profileImage"
-             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSC8fFURU-S1FRIkYCVhF6LbBB0BQUbGd6bQ&s"
-             alt=""
-             class="w-20 h-20 rounded-full shadow-lg"
-           >
-             <button
-               class="absolute bottom-0 right-0 bg-black opacity-70 text-white p-1 rounded-full shadow-md"
-               onclick="document.getElementById('imageUpload').click();"
-             >
-             <PencilSquareIcon class="w-5 h-5" />
-           </button>
-         </div>
-           <input
-             type="file"
-             id="imageUpload"
-             class="hidden"
-             accept="image/*"
-             onchange="updateProfileImage(event)"
-           />
+      <div class="modal-box w-full max-h-none max-w-none md:w-96 h-auto max-md:h-screen max-md:p-4 max-md:rounded-none">
+        <div class="flex justify-end">
+          <form method="dialog">
+            <button>
+              <XMarkIcon class="w-5 h-5" />
+            </button>
+          </form>
+        </div>
+        <div class="flex flex-col items-center text-center space-y-4 mb-5">
+        <h3 class="text-xl font-bold">個人資料</h3>
+          <div class="relative">
+            <img
+              id="profileImage"
+              src="https://web.chictrip.com.tw/assets/waterview_default.f746ada9.svg"
+              alt=""
+              class="w-20 h-20 rounded-full shadow-lg"
+            >
+              <button
+                class="absolute bottom-0 right-0 bg-black opacity-70 text-white p-1 rounded-full shadow-md"
+                onclick="document.getElementById('imageUpload').click();"
+              >
+              <PencilSquareIcon class="w-5 h-5" />
+            </button>
+          </div>
+            <input
+              type="file"
+              id="imageUpload"
+              class="hidden"
+              accept="image/*"
+              onchange="updateProfileImage(event)"
+            />
       </div>
         <div class="bg-gray rounded-2xl">
           <button
@@ -196,7 +194,7 @@ const toggleMenu = () => {
           <p>帳號綁定</p>
           <div class="flex justify-between p-4 bg-gray rounded-xl">
             <div>
-              <p class="text-sm font-bold">TriPuzzle會員登入/註冊</p>
+              <p class="text-sm font-bold">旅圖會員登入/註冊</p>
               <p class="text-xs">成為會員，即享會員專屬功能！</p>
             </div>
             <button class="bg-secondary-500 p-2 rounded-full">
@@ -216,7 +214,7 @@ const toggleMenu = () => {
               </div>
             </div>
           </div>
-            <div class="text-center py-4 ">
+            <div class="text-center py-5 mt-1">
               <button class="text-blue-500 underline">刪除帳號</button>
             </div>
           </div>
@@ -258,12 +256,12 @@ const toggleMenu = () => {
           <div class="flex justify-around space-x-4 mt-4 pt-6">
             <button
               type="button"
-              class="p-2 w-full bg-gray rounded-full focus:outline-none hover:bg-primary-100 hover:text-primary-800"
+              class="p-3 w-full rounded-full text-primary-600 ring-1 ring-primary-600 hover:bg-primary-100"
               onclick="document.getElementById('NickNameModal').close()"
             >
               取消
             </button>
-            <button class="p-2 w-full bg-gray rounded-full focus:outline-none hover:bg-primary-100 hover:text-primary-800">
+            <button class="p-3 w-full text-white bg-primary-600 hover:bg-primary-800 rounded-full">
               儲存
             </button>
           </div>
@@ -299,12 +297,12 @@ const toggleMenu = () => {
             <div class="flex justify-around space-x-4 mt-4 pt-6">
               <button
                 type="button"
-                class="p-2 w-full bg-gray rounded-full focus:outline-none hover:bg-primary-100 hover:text-primary-800"
+                class="p-3 w-full rounded-full  text-primary-600 ring-1 ring-primary-600 hover:bg-primary-100"
                 onclick="document.getElementById('ProfileModal').close()"
               >
                 取消
               </button>
-              <button class="p-2 w-full bg-gray rounded-full focus:outline-none hover:bg-primary-100 hover:text-primary-800">
+              <button class="p-3 w-full rounded-full  text-white bg-primary-600 hover:bg-primary-800">
                 儲存
               </button>
             </div>
@@ -351,13 +349,13 @@ const toggleMenu = () => {
           <div class="mt-5">
             <p>性別</p>
             <div class="flex gap-2 mt-2 mx-1">
-              <button class="p-3 w-full bg-gray rounded-md focus:ring-1 focus:bg-primary-100 focus:ring-primary-800 hover:bg-primary-100 hover:text-primary-800">
+              <button class="p-3 w-full bg-gray rounded-md focus:ring-1 focus:bg-primary-100 focus:text-primary-600 focus:ring-primary-600 hover:bg-primary-100 hover:text-primary-800">
                 男
               </button>
-              <button class="p-3 w-full bg-gray rounded-md focus:ring-1 focus:bg-primary-100 focus:ring-primary-800 hover:bg-primary-100 hover:text-primary-800">
+              <button class="p-3 w-full bg-gray rounded-md focus:ring-1 focus:bg-primary-100 focus:text-primary-600 focus:ring-primary-600 hover:bg-primary-100 hover:text-primary-800">
                 女
               </button>
-              <button class="p-3 w-full bg-gray rounded-md focus:ring-1 focus:bg-primary-100 focus:ring-primary-800 hover:bg-primary-100 hover:text-primary-800">
+              <button class="p-3 w-full bg-gray rounded-md focus:ring-1 focus:bg-primary-100 focus:text-primary-600 focus:ring-primary-600 hover:bg-primary-100 hover:text-primary-800">
                 秘密
               </button>
             </div>
@@ -369,12 +367,12 @@ const toggleMenu = () => {
           <div class="flex justify-around space-x-4 mt-4 pt-6">
             <button
               type="button"
-              class="p-2 w-full bg-gray rounded-full focus:outline-none hover:bg-primary-100 hover:text-primary-800"
+              class="p-3 w-full rounded-full  text-primary-600 ring-1 ring-primary-600 hover:bg-primary-100"
               onclick="document.getElementById('PersonalInformatioMmodal').close()"
             >
               取消
             </button>
-            <button class="p-2 w-full bg-gray rounded-full focus:outline-none hover:bg-primary-100 hover:text-primary-800">
+            <button class="p-3 w-full rounded-full  text-white bg-primary-600 hover:bg-primary-800">
               儲存
             </button>
           </div>
