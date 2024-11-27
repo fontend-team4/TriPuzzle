@@ -68,6 +68,24 @@ const closeModal = () => {
   const dialog = document.getElementById("my_modal");  //id盡量與組件同名稱，避免與其他modal混淆
   dialog?.close();
 };
+
+
+// 卡片數據
+const cards = ref([
+  { location1: '❶ 饒河觀光夜市', newlocation: '松山文創園區', location2: '❷ 國父紀念館' },
+  { location1: '❷ 國父紀念館', newlocation: '松山文創園區', location2: '❸ 中正紀念堂' },
+  { location1: '❸ 中正紀念堂', newlocation: '松山文創園區', location2: '❹ 五倍學院' },
+  { location1: '❹ 五倍學院', newlocation: '松山文創園區', location2: '❺ 二二八紀念公園' },
+  { location1: '❺ 二二八紀念公園', newlocation: '松山文創園區', location2: '❻ 台大醫院' },
+]);
+
+// 預設第二張卡片被選中
+const selectedCard = ref(1);
+
+// 點擊選擇卡片
+const selectCard = (index) => {
+  selectedCard.value = index;
+};
 </script>
 
 
@@ -242,73 +260,86 @@ const closeModal = () => {
         </div>  
         <!-- 右邊 -->
         <div class=" md:w-1/3 bg-white box-border relative">
-          <h2 class="pt-[3.5rem] pb-[1rem] pl-[1rem] text-3xl text-bold text-black ">要加在哪？</h2>
+          <h2 class="pt-[3.5rem] pb-[1rem] pl-[1rem] text-3xl font-bold text-black ">要加在哪？</h2>
           <div role="tablist" class="tabs tabs-bordered ">
 
-  <!-- 一天 -->
-        <input type="radio" name="dailySchedule" role="tab" class="tab rounded-lg active:bg-black " aria-label="第一天" :checked="selectedTab === 'day1'"/>
-        <div role="tabpanel" class="tab-content p-5">
-          <div class=" w-full !overflow-y-scroll">
-              <div class="border-2 p-3 pl-5 mb-4 rounded-xl">
-                  <p class="text-lg">❶ 饒河觀光夜市</p>
-                  <p class="text-lg flex items-center"><MapPinIcon class="size-5 ml-[-0.2rem] "/>  松山文創園區</p>
-                  <p class="text-lg">❷ 國父紀念館</p>
+  <!--第一天 -->
+          <input
+              type="radio"
+              name="dailySchedule"
+              role="tab"
+              class="tab rounded-lg hover:bg-primary-800 hover:text-white checked:bg-primary-600 checked:text-white"
+              aria-label="第一天"
+              :checked="selectedTab === 'day1'"
+              @change="selectTab('day1')"
+            />
+            <div role="tabpanel" class="tab-content">
+              <div class="w-full md:h-[580px] md:overflow-y-scroll relative bg-primary-200">
+                <!-- 卡片列表 -->
+                <div 
+                  v-for="(card, index) in cards" 
+                  :key="index" 
+                  @click="selectCard(index)" 
+                  :class="[  
+                    'p-5 pl-5 mx-[1rem] mt-5 rounded-lg relative transition-colors',
+                    selectedCard === index 
+                      ? 'bg-white border-primary-300 border-2' 
+                      : 'bg-primary-100 border-none hover:bg-primary-50'
+                  ]"
+                >
+                  <!-- 卡片位置1 -->
+                  <p 
+                    class="text-lg font-medium"
+                    :class="selectedCard === index ? 'text-black' : 'text-[#c7c7c7]'"
+                  >
+                    {{ card.location1 }}
+                  </p>
+                
+                  <!-- 卡片新位置 -->
+                  <p 
+                    class="text-lg flex items-center mt-2"
+                    :class="selectedCard === index ? 'text-secondary-500' : 'text-[#c7c7c7]'"
+                  >
+                    <MapPinIcon 
+                      :class="[  
+                        'size-5 ml-[-0.2rem]',  
+                        selectedCard === index ? 'fill-secondary-500' : 'fill-[#c7c7c7]'
+                      ]"
+                    />
+                    {{ card.newlocation }}
+                  </p>
+                
+                  <!-- 卡片位置2 -->
+                  <p class="text-lg mt-2" 
+                      :class="[  
+                      selectedCard === index ? 'text-black' : 'text-[#c7c7c7]'
+                      ]">{{ card.location2 }}</p>
+                </div>
               </div>
-              <div class="border-2 p-3 pl-5 mb-4 rounded-xl relative  overflow-hidden">
-                <label for="" class="absolute top-0 right-0 bg-secondary-500 text-white
-                flex items-center gap-1 p-[0.25rem] rounded-bl-xl text-xs  border-box
+            </div>
+
+  <!-- 第二天 -->
+        <input
+            type="radio"
+            name="dailySchedule"
+            role="tab"
+            class="tab rounded-lg hover:bg-primary-800 hover:text-white checked:bg-primary-600 checked:text-white"
+            aria-label="第二天"
+            :checked="selectedTab === 'day2'"
+            @change="selectTab('day2')"
+          />
+          <div role="tabpanel" class="tab-content p-0">
+            <div class="w-full md:h-[580px] md:overflow-y-scroll bg-primary-200 ">
+              <div class="border-2 border-primary-400 bg-white p-6 pl-5 mx-[1rem] mt-5 rounded-lg relative overflow-hidden">
+                <label for="" class="absolute top-0 right-0 bg-primary-400 text-white
+                  flex items-center gap-1 p-[0.25rem] rounded-bl-xl text-xs  border-box
                 ">
                   <HandThumbUpIcon class="size-3 ml-[0.25rem]"/>加在這裡最順
                 </label>
-                <p class="text-lg">❷ 國父紀念館</p>
-                <p class="text-lg flex items-center"><MapPinIcon class="size-5 ml-[-0.2rem] "/>  松山文創園區</p>
-                <p class="text-lg">❸ 中正紀念堂</p>
-            </div>
-            <div class="border-2 p-3 pl-5 mb-4 rounded-xl">
-                <p class="text-lg">❸ 中正紀念堂</p>
-                <p class="text-lg flex items-center"><MapPinIcon class="size-5 ml-[-0.2rem] "/>  松山文創園區</p>
-                <p class="text-lg">❹ 五倍學院</p>
-            </div>
-            <div class="border-2 p-3 pl-5 mb-4 rounded-xl">
-                <p class="text-lg">❹ 五倍學院</p>
-                <p class="text-lg flex items-center"><MapPinIcon class="size-5 ml-[-0.2rem] "/>  松山文創園區</p>
-                <p class="text-lg">❺ 二二八紀念公園</p>
-            </div>
-            <div class="border-2 p-3 pl-5 mb-4 rounded-xl">
-                <p class="text-lg">❺ 二二八紀念公園</p>
-                <p class="text-lg flex items-center"><MapPinIcon class="size-5 ml-[-0.2rem] "/>  松山文創園區</p>
-                <p class="text-lg">❻ 台大醫院</p>
-            </div>
-            <div class="border-2 p-3 pl-5 mb-4 rounded-xl">
-                <p class="text-lg">❻ 台大醫院</p>
-                <p class="text-lg flex items-center"><MapPinIcon class="size-5 ml-[-0.2rem] "/>  松山文創園區</p>
-                <p class="text-lg">❻ 台大醫院</p>
-            </div>
-            <div class="border-2 p-3 pl-5 mb-4 rounded-xl">
-                <p class="text-lg">❻ 台大醫院</p>
-                <p class="text-lg flex items-center"><MapPinIcon class="size-5 ml-[-0.2rem] "/>  松山文創園區</p>
-                <p class="text-lg">❻ 台大醫院</p>
-            </div>
-            <div class="border-2 p-3 pl-5 mb-4 rounded-xl">
-                <p class="text-lg">❻ 台大醫院</p>
-                <p class="text-lg flex items-center"><MapPinIcon class="size-5 ml-[-0.2rem] "/>  松山文創園區</p>
-                <p class="text-lg">❻ 台大醫院</p>
-            </div>
-            
-          </div>
-        </div>
-
-  <!-- 第二天 -->
-          <input type="radio" name="dailySchedule" role="tab" class="tab rounded-lg" aria-label="第二天" :checked="selectedTab === 'day2'" />
-          <div role="tabpanel" class="tab-content p-5">
-            <div class=" w-full">
-              <div class="border-2 p-3 pl-5 rounded-xl">
-                  <p class="text-lg">❶ 饒河觀光夜市</p>
-                  <p class="text-lg flex items-center"><MapPinIcon class="size-5 ml-[-0.2rem] "/>  松山文創園區</p>
-                  <p class="text-lg">❷ 國父紀念館</p>
+                <p class="text-lg flex items-center text-secondary-500"><MapPinIcon class="size-5 ml-[-0.2rem] fill-secondary-500"/>
+                  松山文創園區
+                </p>
               </div>
-              <div></div>
-              <div></div>
             </div>
           </div>
 
