@@ -30,9 +30,13 @@ const scrollToAnchor = (sectionName) => {
   <main class="bg-white">
     <Navbar @clickTab="scrollToAnchor" class="sticky top-0" />
     <img src="@/assets/images/banner.webp" ref="top" />
-    <div ref="carousel"><Carousel /></div>
-    <div ref="features"><Features /></div>
-    <div ref="tutorial"><Tutorial /></div>
-    <div ref="register"><Footer /></div>
+    <div ref="carousel"></div>
+    <Carousel />
+    <div ref="features" class="h-1"></div>
+    <Features />
+    <div ref="tutorial" class="h-7"></div>
+    <Tutorial />
+    <div ref="register"></div>
+    <Footer />
   </main>
 </template>

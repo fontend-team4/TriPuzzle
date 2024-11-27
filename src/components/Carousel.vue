@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import {
   ArrowRightIcon,
   ChevronLeftIcon,
@@ -7,7 +7,8 @@ import {
 } from '@heroicons/vue/20/solid'
 import { loadImage } from '@/assets/images/loadImage'
 
-const index = ref(0)
+const currentIndex = ref(0)
+const maxIndex = computed(() => images.length - 3)
 const images = [
   loadImage('item1'),
   loadImage('item3'),
@@ -32,65 +33,47 @@ const images = [
         <ArrowRightIcon class="w-5 h-5 text-neutral-50" />
       </RouterLink>
     </div>
-
-    <!-- <div class="relative">
-      <div class="carousel carousel-start space-x-6 w-full">
-        <img :src="loadImage('item1')" class="carousel-item carousel-object" />
-        <img :src="loadImage('item3')" class="carousel-item carousel-object" />
-        <img :src="loadImage('item4')" class="carousel-item carousel-object" />
-        <img :src="loadImage('item2')" class="carousel-item carousel-object" />
-        <img :src="loadImage('item5')" class="carousel-item carousel-object" />
-        <img :src="loadImage('item6')" class="carousel-item carousel-object" />
-        <img :src="loadImage('item7')" class="carousel-item carousel-object" />
-      </div>
+    <div class="relative overflow-hidden">
       <div
-        class="flex justify-between absolute top-1/2 -translate-y-1/2 left-5 right-5"
+        class="space-x-6 w-full flex transition-transform duration-500"
+        :style="{
+          transform: `translateX(calc(((100% - 3rem) / 3 + 1.5rem) * -${currentIndex}))`,
+        }"
       >
-        <div class="p-2 rounded-full bg-neutral-800/40">
-          <ChevronLeftIcon class="w-14 h-14 text-neutral-100" />
-        </div>
-        <div class="p-2 rounded-full bg-neutral-800/40">
-          <ChevronRightIcon class="w-14 h-14 text-neutral-100" />
-        </div>
+        <img
+          :src="image"
+          class="carousel-items"
+          v-for="(image, index) in images"
+          :key="index"
+        />
       </div>
-    </div> -->
-
-    <div class="relative">
-      <div class="carousel carousel-start space-x-6 w-full">
-        <img :src="images[index]" class="carousel-item carousel-object" />
-        <img :src="images[index + 1]" class="carousel-item carousel-object" />
-        <img :src="images[index + 2]" class="carousel-item carousel-object" />
-        <img :src="images[index + 3]" class="carousel-item carousel-object" />
-        <img :src="images[index + 4]" class="carousel-item carousel-object" />
-        <img :src="images[index + 5]" class="carousel-item carousel-object" />
-        <img :src="images[index + 6]" class="carousel-item carousel-object" />
-      </div>
-
       <div
-        class="p-2 rounded-full bg-neutral-800/60 absolute top-1/2 -translate-y-1/2 left-5"
-        v-show="index > 0"
-        @click="index--"
+        class="chevron left-5"
+        v-show="currentIndex > 0"
+        @click="currentIndex--"
       >
         <ChevronLeftIcon class="w-14 h-14 text-neutral-100" />
       </div>
       <div
-        class="p-2 rounded-full bg-neutral-800/60 absolute top-1/2 -translate-y-1/2 right-5"
-        v-show="index < images.length - 3"
-        @click="index++"
+        class="chevron right-5"
+        v-show="currentIndex < maxIndex"
+        @click="currentIndex++"
       >
         <ChevronRightIcon class="w-14 h-14 text-neutral-100" />
       </div>
     </div>
   </section>
 </template>
-
 <style scoped lang="postcss">
 .btn {
-  @apply bg-primary-800 px-5 py-3 rounded-full text-lg font-bold text-neutral-50;
+  @apply bg-primary-800 px-5 py-3 rounded-full text-lg font-medium text-neutral-50;
   @apply flex gap-2 content-center;
 }
-.carousel-object {
-  @apply rounded-box object-cover bg-primary-600 aspect-3/4;
+.carousel-items {
+  @apply rounded-box object-cover aspect-3/4;
   width: calc((100% - 3rem) / 3);
+}
+.chevron {
+  @apply p-2 rounded-full bg-neutral-800/60 absolute top-1/2 -translate-y-1/2;
 }
 </style>

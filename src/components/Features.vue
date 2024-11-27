@@ -10,7 +10,7 @@ import {
 </script>
 
 <template>
-  <section class="w-9/12 mx-auto my-20">
+  <section class="w-9/12 mx-auto mt-20 mb-12">
     <h1 class="text-4.5xl font-bold text-neutral-800 mb-1">
       旅圖網站！自助旅行的最佳夥伴
     </h1>
