@@ -1,19 +1,18 @@
 <template>
   <div class="min-w-full h-screen flex flex-row-reverse bg-gray overflow-x-hidden">
-    <input type="checkbox" id="schedule-list-toggle" class="hidden">
-    <div class="schedule-list w-full lg:w-96 h-screen bg-white shadow-xl translate-x-full">
+    <div class="schedule-list w-full lg:w-96 h-screen bg-white shadow-xl transition-all" :class="listSwitch">
       <!-- 行程 toggle -->
-      <label for="schedule-list-toggle" class="schedule flex items-center text-white w-[56px] hover:w-[86px] h-10 py-2 ps-3 pe-5 bg-yellow-500 rounded-s-full shadow-lg absolute top-4 left-[-56px] hover:left-[-86px] hover:cursor-pointer">
+      <div class="schedule flex items-center text-white w-[56px] hover:w-[86px] h-10 py-2 ps-3 pe-5 bg-yellow-500 rounded-s-full shadow-lg absolute top-4 left-[-56px] hover:left-[-86px] hover:cursor-pointer" @click="listToggle" :class="scheduleToggleSwitch">
         <span class="inline-block w-6 h-6"><GlobeAsiaAustraliaIcon/></span>
         <p class="text-sm pl-0.5 font-medium hidden">行程</p>
-      </label>
+      </div>
       <!-- schedule list -->
       <div class="p-5 relative">
         <!-- header -->
         <div class="pb-3 relative bg-white z-10">
-          <button class="bg-gray-200 w-8 h-8 rounded-full absolute top-0 right-0 p-1.5">
+          <div class="bg-gray-200 w-8 h-8 rounded-full absolute top-0 right-0 p-1.5 hover:cursor-pointer" @click="listToggle">
             <XMarkIcon />
-          </button>
+          </div >
           <h2 class="text-2xl font-medium pt-10 pb-2.5">行程</h2>
           <div class="w-full h-10 flex gap-1 mb-5 p-1 rounded-xl bg-gray">
             <input id="mine" type="radio" name="toggle" v-model="checkedSchedule" value="mine" class="hidden" checked>
@@ -40,7 +39,7 @@
           <!-- 我的行程 -->
           <!-- v-if 有行程 -->
           <div class="flex flex-wrap gap-4 justify-center" v-if="checkedSchedule === 'mine'">
-            <div class="card card-compact bg-base-100 sm:w-full md:w-[30%] lg:w-full h-[176px] lg:h-auto border mb-4 relative hover:cursor-pointer">
+            <div class="card card-compact bg-base-100 sm:w-full md:w-[30%] lg:w-full h-[176px] lg:h-auto border mb-4 relative hover:cursor-pointer" @click="detailToggle">
             <figure>
               <img
                 src="https://chictirpstorageprod.blob.core.windows.net/system/2bf62bfd-5bbd-47f1-9174-492c7218dcdf.jpg"
@@ -205,7 +204,7 @@
           <!--已登入 -->
           <div class="w-full h-52 text-center mt-7" v-else>
             <img class="w-[180px] h-[103px] mx-auto" src="https://web.chictrip.com.tw/assets/master-unlock.990b2501.png" alt="">
-            <p class="mb-6">還沒有 <spna class="text-primary-600">與我共編</spna> 的行程哦</p>
+            <p class="mb-6">還沒有 <span class="text-primary-600">與我共編</span> 的行程哦</p>
           </div>
           <!-- 未登入 -->
           <!-- <div class="w-full lg:w-96 h-38 px-2.5 py-5 bg-white border-t fixed bottom-0 right-0">
@@ -239,16 +238,66 @@
         </div> -->
       </div>
     </div>
+    <!-- <ScheduleDetail/> -->
+    <!-- <TransportationWay/> -->
+    <ScheduleDetail :class="detailSwitch"/>
+    <TransportationWay :class="transportationSwitch"/> 
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { computed, ref, provide } from 'vue'
 import { ChevronDownIcon, EllipsisHorizontalIcon } from '@heroicons/vue/16/solid'
 import { XMarkIcon, UserPlusIcon, ShareIcon, DocumentDuplicateIcon, TrashIcon, BriefcaseIcon, GlobeAsiaAustraliaIcon } from '@heroicons/vue/24/outline'
 import ShareScheduleModal from '@/components/ShareScheduleModal.vue'
+import ScheduleDetail from '@/components/ScheduleDetail.vue'
+import TransportationWay from './TransportationWay.vue'
 
 const checkedSchedule = ref('mine')
+
+// schedule list 開關
+const listOpen = ref(false)
+const scheduleToggleShow = ref(true)
+const listToggle = () => {
+  listOpen.value = !listOpen.value
+  scheduleToggleShow.value = !scheduleToggleShow.value
+}
+// 給 ScheduleDetail 使用
+provide('listToggle', () => {
+  listOpen.value = !listOpen.value
+  scheduleToggleShow.value = !scheduleToggleShow.value
+  detailOpen.value = !detailOpen.value
+})
+
+const listSwitch = computed(() => {
+  return listOpen.value ? 'translate-x-0 transition-all' : 'translate-x-full'
+})
+const scheduleToggleSwitch = computed(() => {
+  return scheduleToggleShow.value ? 'block' : 'hidden'
+})
+
+// schedule detail 開關
+const detailOpen = ref(false)
+const detailToggle = () => {
+  detailOpen.value = !detailOpen.value
+}
+// 給 ScheduleDetail 使用
+provide('detailToggle', detailToggle)
+const detailSwitch = computed(() => {
+  return detailOpen.value ? 'translate-x-full transition-all' : 'translate-x-[200%]'
+})
+
+// TransportationWay 開關
+const transportationOpen = ref(false)
+const transportationToggle = () => {
+  transportationOpen.value = !transportationOpen.value
+}
+// 給 ScheduleDetail & TransportationWay 使用
+provide('transportationToggle', transportationToggle)
+const transportationSwitch = computed(() => {
+  return transportationToggle.value ? 'translate-x-[200%] transition-all' : 'translate-x-[300%]'
+})
+
 </script>
 
 <style>
