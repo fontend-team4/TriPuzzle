@@ -10,7 +10,7 @@ import Waterfall from './Waterfall.vue';
 const showPhoto = ref(false)
 
 const isPhotoShow = computed(() => {
-    return showPhoto.value ? ["" ,"md:translate-x-0" , "opacity-100" ] : ["hidden" ,"md:translate-x-full", "md:translate-y-0", "opacity-0","md:flex" ];
+    return showPhoto.value ? ["h-screen" ,"md:translate-x-0" , "opacity-100", "bottom-0" ] : ["h-0" ,"md:translate-x-full", "md:translate-y-0", "opacity-0", "-bottom-12" ];
 });
 
 const overflowStatus = computed(() => {
@@ -117,7 +117,7 @@ const changeShowPhoto = () => {
       </div>
       </div>
       <!-- 照片區 -->
-      <div class="absolute top-0 right-0 z-40 w-screen h-screen transition-all duration-300 transform bg-white md:w-[368px] md:right-0 overflow-hidden" :class="isPhotoShow">
+      <div class="absolute   md:top-0 right-0 z-40 w-screen h-screen transition-all duration-300 transform bg-white md:w-[368px] md:right-0 overflow-hidden" :class="isPhotoShow">
         <div class="flex justify-between px-5 py-4 bg-white border-b-[2px] border-b-slate-100 fixed top-0 w-screen">
           <div class="flex text-base">
             <button @click="changeShowPhoto"><ChevronLeftIcon class="size-6"/></button>
