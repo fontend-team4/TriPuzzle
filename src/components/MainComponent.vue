@@ -17,10 +17,10 @@ const placesComponentCls = computed(() => {
 </script>
 
 <template>
-  <div class="flex w-full py-2 item-center gap-2 ">
-    <SearchBar class="flex w-4/5 justify-end"/>
+  <div class="flex relative w-full item-center gap-2">
+    <SearchBar class="flex w-full justify-end"/>
     <MapToggle 
-      class="flex justify-start item-center"
+      class="hidden justify-start item-center xl:flex"
       v-model:isPlacesComponent="isPlacesComponent" />
   </div>
 
@@ -29,4 +29,7 @@ const placesComponentCls = computed(() => {
     <PlacesComponent class="absolute top-0 z-10 transition-all " :class="placesComponentCls" />
     <PlacesModal class="hidden md:block"/>
   </div>
+  <MapToggle 
+    class="absolute bottom-[1rem] left-[37%] z-20 justify-center item-center md:left-[44%] xl:hidden"
+    v-model:isPlacesComponent="isPlacesComponent" />
 </template>

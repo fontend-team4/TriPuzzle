@@ -17,7 +17,7 @@ const closeModal = () => {
     <!-- 區域選擇按鈕 -->
     <div class="block-area flex justify-center items-center pr-2">
       <button 
-        class="btn btn-sm border-transparent inline-flex items-center justify-center h-4 rounded-3xl cursor-pointer mt-0 mx-0  w-22 bg-primary-600
+        class="btn btn-sm border-transparent inline-flex items-center justify-center h-4 rounded-3xl cursor-pointer mt-0 mx-0 w-30 bg-primary-600
         hover:bg-primary-500" 
         onclick="SearchArea.showModal()"
       >

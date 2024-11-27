@@ -17,7 +17,7 @@ const props = defineProps(["isPlacesComponent"]);
     />
     <label
       for="switch"
-      class="inline-flex items-center justify-center px-4 py-2 text-white rounded-full shadow-md cursor-pointer bg-primary-950"
+      class="inline-flex items-center justify-center px-4 py-2 text-white rounded-full shadow-md cursor-pointer bg-primary-950 whitespace-nowrap "
     >
       <div v-show="isPlacesComponent" class="flex items-center">
         <MapIcon class="text-white size-6" />

@@ -72,7 +72,7 @@ const hamburgerCls = computed(() => {
                     <img :src="item.image" alt="" class="aspect-square" />
                   </div>
                   <div class="pt-3 pl-4 pr-3 w-[176px]">
-                    <h3 class="font-bold">{{ item.name }}</h3>
+                    <h3 class="font-bold text-black">{{ item.name }}</h3>
                     <p class="flex items-center gap-1 text-sm leading-6">
                       <StarIcon class="size-4 text-secondary-500" />{{ item.rating }}
                     </p>
