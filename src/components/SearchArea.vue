@@ -33,7 +33,10 @@ const closeModal = () => {
       class="modal flex items-center justify-center fixed inset-0 bg-black bg-opacity-50"
       @click.self="closeModal"
       >
-      <div class="modal-box w-full max-w-[64rem] h-full p-0 bg-white rounded-lg shadow-lg">
+      <div 
+        class="modal-box w-full max-w-[64rem] min-h-[100vh] p-0 bg-white rounded-lg shadow-lg
+        md:min-h-[80%]">
+        
         <!-- 搜尋欄 -->
         <SearchAreaBar />
         <!-- 主體內容 -->

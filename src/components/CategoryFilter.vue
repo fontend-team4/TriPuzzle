@@ -64,8 +64,9 @@ const closeModal = () => {
     @click.self="closeModal"
   >
     <div 
-      class="modal-box w-full h-full p-0 bg-white rounded-lg shadow-lg 
-      lg:mb-4 overflow-y-auto">
+      class="modal-box w-full min-h-screen p-0 bg-white rounded-lg shadow-lg 
+      lg:my-4
+      lg:min-h-3/4 overflow-y-auto">
       
       <header class="flex align-center w-full justify-end ">
         <form method="dialog">
@@ -75,9 +76,9 @@ const closeModal = () => {
         </form>
       </header>
       
-      <div class="filter-body overflow-hidden ">
+      <div class="filter-body flex flex-col overflow-hidden">
         <!-- 我的分類 -->
-        <div class="block-my inline-flex flex-col w-full h-full mx-0">
+        <div class="block-my flex flex-col w-[100%-36px] h-full mx-4">
           <div class="flex flex-col justify-start items-center mb-2">
             <h3 class="text-2xl font-bold text-black mb-1">我的分類</h3>
             <p class="text-sm text-gray-500 mb-4">拖動即可排序</p>
@@ -107,7 +108,7 @@ const closeModal = () => {
           
         </div>
         <!-- 新增分類 -->
-        <div class="block-other inline-flex flex-col w-full mx-1 h-30 ">
+        <div class="block-other flex flex-col w-[100%-36px] mx-4 h-30 ">
           <div class="flex flex-col justify-center items-center mb-2">
             <p class="text-xl font-bold text-black mt-4 mb-4">點擊新增更多</p>
             <div 
