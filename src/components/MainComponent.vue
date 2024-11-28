@@ -5,15 +5,64 @@ import MapToggle from './MapToggle.vue';
 import PlacesModal from './PlacesModal.vue';
 import SearchBar from './SearchBar.vue';
 
-import { ref, computed } from "vue";
+import { computed, ref, provide } from 'vue'
+import { ChevronDownIcon, EllipsisHorizontalIcon } from '@heroicons/vue/16/solid'
+import { XMarkIcon, UserPlusIcon, ShareIcon, DocumentDuplicateIcon, TrashIcon, BriefcaseIcon, GlobeAsiaAustraliaIcon } from '@heroicons/vue/24/outline'
+import ShareScheduleModal from './ShareScheduleModal.vue'
+import ScheduleDetail from '@/components/ScheduleDetail.vue'
+import TransportationWay from './TransportationWay.vue'
+import DeleteScheduleModal from './DeleteScheduleModal.vue'
+
+const checkedSchedule = ref('mine')
+
+// schedule list 開關
+const listOpen = ref(false)
+const scheduleToggleShow = ref(true)
+const listToggle = () => {
+  listOpen.value = !listOpen.value
+  scheduleToggleShow.value = !scheduleToggleShow.value
+}
+
+const listSwitch = computed(() => {
+  return listOpen.value ? 'translate-x-0 transition-all' : 'translate-x-full'
+})
+const scheduleToggleSwitch = computed(() => {
+  return scheduleToggleShow.value ? 'block' : 'hidden'
+})
+
+// schedule detail 開關
+const detailOpen = ref(false)
+const detailToggle = () => {
+  detailOpen.value = !detailOpen.value
+}
+// 給 ScheduleDetail 關閉自己
+provide('detailToggle', detailToggle)
+const detailSwitch = computed(() => {
+  return detailOpen.value ? 'translate-x-full transition-all' : 'translate-x-[200%]'
+})
+// 給 ScheduleDetail 關閉全部
+provide('listToggle', () => {
+  listOpen.value = !listOpen.value
+  scheduleToggleShow.value = !scheduleToggleShow.value
+  detailOpen.value = !detailOpen.value
+})
+
+// TransportationWay 開關
+const transportationOpen = ref(false)
+const transportationToggle = () => {
+  transportationOpen.value = !transportationOpen.value
+}
+// 給 ScheduleDetail & TransportationWay 使用
+provide('transportationToggle', transportationToggle)
+const transportationSwitch = computed(() => {
+  return transportationOpen.value ? 'translate-x-[200%] transition-all' : 'translate-x-[300%]'
+})
 
 const isPlacesComponent = ref(true);
 
 const placesComponentCls = computed(() => {
     return isPlacesComponent.value ? [""] : ["translate-y-full opacity-0"];
 });
-
-
 </script>
 
 <template>
@@ -86,8 +135,8 @@ const placesComponentCls = computed(() => {
             <div class="flex gap-2 absolute top-3 right-3">
               <span class="w-6 h-6 rounded-full bg-gray-transparent text-white p-1 hover:cursor-pointer" onclick="shareSchedule.showModal()">
                 <ShareIcon />
+                <ShareScheduleModal />
               </span>
-              <ShareScheduleModal />
               <div class="dropdown">
                 <button role="button" class="w-6 h-6 rounded-full bg-gray-transparent text-white p-1 relative">
                   <EllipsisHorizontalIcon />
@@ -281,61 +330,6 @@ const placesComponentCls = computed(() => {
   </div>
 </template>
 
-<script setup>
-import { computed, ref, provide } from 'vue'
-import { ChevronDownIcon, EllipsisHorizontalIcon } from '@heroicons/vue/16/solid'
-import { XMarkIcon, UserPlusIcon, ShareIcon, DocumentDuplicateIcon, TrashIcon, BriefcaseIcon, GlobeAsiaAustraliaIcon } from '@heroicons/vue/24/outline'
-import ShareScheduleModal from '@/components/ShareScheduleModal.vue'
-import ScheduleDetail from '@/components/ScheduleDetail.vue'
-import TransportationWay from './TransportationWay.vue'
-import DeleteScheduleModal from './DeleteScheduleModal.vue'
-
-const checkedSchedule = ref('mine')
-
-// schedule list 開關
-const listOpen = ref(false)
-const scheduleToggleShow = ref(true)
-const listToggle = () => {
-  listOpen.value = !listOpen.value
-  scheduleToggleShow.value = !scheduleToggleShow.value
-}
-
-const listSwitch = computed(() => {
-  return listOpen.value ? 'translate-x-0 transition-all' : 'translate-x-full'
-})
-const scheduleToggleSwitch = computed(() => {
-  return scheduleToggleShow.value ? 'block' : 'hidden'
-})
-
-// schedule detail 開關
-const detailOpen = ref(false)
-const detailToggle = () => {
-  detailOpen.value = !detailOpen.value
-}
-// 給 ScheduleDetail 關閉自己
-provide('detailToggle', detailToggle)
-const detailSwitch = computed(() => {
-  return detailOpen.value ? 'translate-x-full transition-all' : 'translate-x-[200%]'
-})
-// 給 ScheduleDetail 關閉全部
-provide('listToggle', () => {
-  listOpen.value = !listOpen.value
-  scheduleToggleShow.value = !scheduleToggleShow.value
-  detailOpen.value = !detailOpen.value
-})
-
-// TransportationWay 開關
-const transportationOpen = ref(false)
-const transportationToggle = () => {
-  transportationOpen.value = !transportationOpen.value
-}
-// 給 ScheduleDetail & TransportationWay 使用
-provide('transportationToggle', transportationToggle)
-const transportationSwitch = computed(() => {
-  return transportationOpen.value ? 'translate-x-[200%] transition-all' : 'translate-x-[300%]'
-})
-
-</script>
 
 <style>
 .bg-gray-transparent{
@@ -367,6 +361,5 @@ const transportationSwitch = computed(() => {
   background-color: #fff;
 }
 </style>
-=======
- 
+
 
