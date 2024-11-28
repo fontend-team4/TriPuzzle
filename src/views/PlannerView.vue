@@ -5,3 +5,5 @@ import MainComponent from '@/components/MainComponent.vue';
 <template>
   <MainComponent />
 </template>
+
+
