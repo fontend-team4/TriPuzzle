@@ -50,9 +50,7 @@ const currentTab = computed(() => tabs[activeTab.value])
 </script>
 
 <template>
-  <!-- Background -->
   <section class="bg-primary-50">
-    <!-- Container -->
     <div class="w-9/12 mx-auto pt-14 pb-20">
       <h1 class="text-4.5xl font-bold text-neutral-800 mb-1">
         如何使用旅圖規劃行程?
@@ -60,9 +58,7 @@ const currentTab = computed(() => tabs[activeTab.value])
       <h2 class="text-xl font-bold text-neutral-400 mb-14">
         安排旅行就是這麼輕鬆！建立行程、加入景點、路線與交通時間交給旅圖
       </h2>
-
       <div class="">
-        <!-- Tab Buttons -->
         <div class="tabs flex justify-between mb-8">
           <div
             v-for="(tab, index) in tabs"
@@ -74,7 +70,6 @@ const currentTab = computed(() => tabs[activeTab.value])
             {{ tab.label }}
           </div>
         </div>
-        <!-- Tab Content -->
         <div class="canvas">
           <div class="flex flex-col gap-6 h-72">
             <h1 class="text-7xl font-bold text-neutral-800">

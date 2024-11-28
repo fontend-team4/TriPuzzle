@@ -14,16 +14,18 @@ import {
     <h1
       class="text-center text-3xl font-bold text-neutral-800 mb-4 md:text-4.5xl md:text-left"
     >
-      旅圖網站！<br class="md:hidden" />自助旅行的最佳夥伴
+      旅圖網站！<br class="sm:hidden" />自助旅行的最佳夥伴
     </h1>
-    <h2 class="text-xl text-neutral-400 mb-14">
-      各種需求一應俱全，<br class="md:hidden" />一個旅圖網站抵十個旅遊工具
+    <h2
+      class="text-base text-center text-neutral-400 mb-14 md:text-lg md:text-left"
+    >
+      各種需求一應俱全，<br class="sm:hidden" />一個旅圖網站抵十個旅遊工具
     </h2>
 
-    <!-- Features -->
-
     <div class="flex flex-col gap-16">
-      <div class="flex justify-between text-neutral-800 font-bold mx-10">
+      <div
+        class="flex flex-col gap-16 justify-between mx-auto text-neutral-800 font-bold md:mx-10 sm:flex-row sm:flex-wrap"
+      >
         <div class="features">
           <div class="imgBG"></div>
           <FeaturesIllustration1 class="absolute top-6 -left-6" />
@@ -49,7 +51,9 @@ import {
           </p>
         </div>
       </div>
-      <div class="flex justify-between text-neutral-800 font-bold mx-10">
+      <div
+        class="flex flex-wrap justify-between text-neutral-800 font-bold mx-10"
+      >
         <div class="features">
           <div class="imgBG"></div>
           <FeaturesIllustration4 class="absolute top-4 -left-11" />

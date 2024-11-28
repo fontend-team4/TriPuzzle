@@ -5,9 +5,9 @@ import Carousel from '@/components/Carousel.vue'
 import Features from '@/components/Features.vue'
 import Tutorial from '@/components/Tutorial.vue'
 import Footer from '@/components/Footer.vue'
-<!-- 建立新行程 -->
-import NewScheduleModal from '@/components/NewScheduleModal.vue';
-import ScheduleCoverImgModal from "@/components/ScheduleCoverImgModal.vue";
+//建立新行程
+import NewScheduleModal from '@/components/NewScheduleModal.vue'
+import ScheduleCoverImgModal from '@/components/ScheduleCoverImgModal.vue'
 
 const top = ref(null)
 const carousel = ref(null)
@@ -30,14 +30,14 @@ const scrollToAnchor = (sectionName) => {
 </script>
 
 <template>
-<!-- 建立新行程 -->
+  <!-- 建立新行程 -->
   <main>
-    <NewScheduleModal/>
+    <NewScheduleModal />
     <!-- <ScheduleCoverImgModal /> -->
     <TheWelcome />
   </main>
 
-<!-- 認識旅圖 -->
+  <!-- 認識旅圖 -->
   <main class="bg-white">
     <Navbar @clickTab="scrollToAnchor" />
     <img src="@/assets/images/banner.webp" ref="top" />
@@ -45,10 +45,9 @@ const scrollToAnchor = (sectionName) => {
     <Carousel />
     <div ref="features" class="h-1"></div>
     <Features />
-    <div ref="tutorial" class="h-7"></div>
-    <Tutorial />
+    <!-- <div ref="tutorial" class="h-7"></div> -->
+    <!-- <Tutorial /> -->
     <div ref="register"></div>
     <Footer />
+  </main>
 </template>
-
-
