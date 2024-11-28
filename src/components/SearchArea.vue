@@ -41,7 +41,7 @@ const closeModal = () => {
           <!-- 左側選單 -->
           <SearchCategoryNav />
           <!-- 右側內容 -->
-          <SearchAreaContent/>
+          <RouterView />
         </div>
       </div>
     </dialog>
