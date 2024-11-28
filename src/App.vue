@@ -1,6 +1,5 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-
 </script>
 
 <template>
@@ -11,5 +10,3 @@ import { RouterLink, RouterView } from 'vue-router'
       <RouterLink to="/member">MEMBER</RouterLink>
     </nav>
 </template>
-
-
