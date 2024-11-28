@@ -32,11 +32,11 @@ const scrollToAnchor = (sectionName) => {
     <img src="@/assets/images/banner.webp" ref="top" />
     <div ref="carousel"></div>
     <Carousel />
-    <!-- <div ref="features" class="h-1"></div> -->
-    <!-- <Features /> -->
-    <!-- <div ref="tutorial" class="h-7"></div> -->
-    <!-- <Tutorial /> -->
-    <!-- <div ref="register"></div> -->
-    <!-- <Footer /> -->
+    <div ref="features" class="h-1"></div>
+    <Features />
+    <div ref="tutorial" class="h-7"></div>
+    <Tutorial />
+    <div ref="register"></div>
+    <Footer />
   </main>
 </template>
