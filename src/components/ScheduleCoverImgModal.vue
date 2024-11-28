@@ -44,27 +44,27 @@ function selectImg(clickedItem) {
 
 
 <button
-    class="flex items-center justify-start w-full  gap-[5px] hover:bg-gray-100 transition"
+    class="flex items-center justify-start w-full  gap-[5px] hover:bg-gray-100 transition "
     onclick="select_img.showModal()"
   >
     <PhotoIcon class="w-[24px] h-[24px]" />
     <span class="text-[14px] truncate">從圖庫中挑選</span>
   </button>
 <dialog id="select_img" class="modal">
-  <div class="modal-box p-0 lg:max-w-[800px] md:min-w-[728px] max-md:h-full sm:max-w-[100%]">
-    <div class="max-w-[800px] h-[60px] px-[15px] py-[8px] sticky top-0 bg-white rounded-xl relative z-10">
+  <div class="modal-box p-0 md:max-w-[800px] md:min-w-[728px] min-w-full max-h-full md:h-[740px] rounded-none md:rounded-xl">
+    <div class="md:max-w-[800px] md:min-w-[728px] h-[60px] px-[15px] py-[8px] sticky top-0 bg-white rounded-xl relative z-10">
       <form method="dialog">
       <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"><XMarkIcon class="w-6 h-6" /></button>
     </form>
     </div>
     <div>
       <header>
-        <span class="w-[100%] h-[36px] mb-[16px] text-2xl font-bold flex items-center justify-center">選擇行程封面</span>
+        <span class="w-[100%] h-[36px] mb-[16px] text-2xl font-bold flex items-center justify-center ">選擇行程封面</span>
       </header>
     </div>
 
     <!-- 主內容區塊 -->
-   <div class="h-[548.75px] relative overflow-hidden rounded-xl my-[50px]">
+   <div class="h-[548.75px] relative overflow-hidden rounded-xl my-[50px] ">
     <div class="py-0 px-[24px] absolute inset-0 flex flex-wrap gap-[12px] overflow-y-auto">
       <div class="lg:w-[calc(33.33%-8px)] md:w-[calc(50%-8px)] sm:w-[calc(100%-8px)] overflow-hidden relative group p-[1px] cursor-pointer" @click="selectImg(item)" v-for="(item, index) in imageStates" :key="item.id">
         <img :src="item.src" alt="" class="w-full h-auto rounded-xl " />
