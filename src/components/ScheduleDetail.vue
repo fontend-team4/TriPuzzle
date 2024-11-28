@@ -145,12 +145,13 @@
                         <p>複製</p>
                       </a>  
                     </li>
-                    <li class="border-t">
+                    <li class="border-t" onclick="delete_place.showModal()">
                       <a class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray" href="#">
                         <span class="inline-block w-6 h-6"><TrashIcon/></span>
                         <p>刪除</p>
                       </a>  
                     </li>
+                    <DeletePerPlaceModal />
                   </ul>
                 </div>
               </div>
@@ -385,6 +386,7 @@ import ShareScheduleModal from './ShareScheduleModal.vue'
 import EditPlaceModal from './EditPlaceModal.vue'
 import DeletePerDayModal from './DeletePerDayModal.vue'
 import MoveToOtherDateModal from './MoveToOtherDateModal.vue'
+import DeletePerPlaceModal from './DeletePerPlaceModal.vue'
 
 const listToggle = inject('listToggle')
 const detailToggle = inject('detailToggle')

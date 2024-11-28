@@ -262,12 +262,6 @@ const listToggle = () => {
   listOpen.value = !listOpen.value
   scheduleToggleShow.value = !scheduleToggleShow.value
 }
-// 給 ScheduleDetail 使用
-provide('listToggle', () => {
-  listOpen.value = !listOpen.value
-  scheduleToggleShow.value = !scheduleToggleShow.value
-  detailOpen.value = !detailOpen.value
-})
 
 const listSwitch = computed(() => {
   return listOpen.value ? 'translate-x-0 transition-all' : 'translate-x-full'
@@ -281,10 +275,16 @@ const detailOpen = ref(false)
 const detailToggle = () => {
   detailOpen.value = !detailOpen.value
 }
-// 給 ScheduleDetail 使用
+// 給 ScheduleDetail 關閉自己
 provide('detailToggle', detailToggle)
 const detailSwitch = computed(() => {
   return detailOpen.value ? 'translate-x-full transition-all' : 'translate-x-[200%]'
+})
+// 給 ScheduleDetail 關閉全部
+provide('listToggle', () => {
+  listOpen.value = !listOpen.value
+  scheduleToggleShow.value = !scheduleToggleShow.value
+  detailOpen.value = !detailOpen.value
 })
 
 // TransportationWay 開關
@@ -295,7 +295,7 @@ const transportationToggle = () => {
 // 給 ScheduleDetail & TransportationWay 使用
 provide('transportationToggle', transportationToggle)
 const transportationSwitch = computed(() => {
-  return transportationToggle.value ? 'translate-x-[200%] transition-all' : 'translate-x-[300%]'
+  return transportationOpen.value ? 'translate-x-[200%] transition-all' : 'translate-x-[300%]'
 })
 
 </script>

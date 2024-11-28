@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full lg:w-96 h-screen bg-white shadow-xl transition-all z-10">
+  <div class="w-full lg:w-96 h-screen bg-white shadow-xl transition-all z-50">
     <!-- header -->
     <div class="w-full flex items-center justify-between p-4">
       <button class="w-4 h-4 hover:cursor-pointer" @click="transportationToggle"><ChevronLeftIcon /></button>
