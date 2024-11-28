@@ -24,7 +24,7 @@ const closeLoginDialog = () => {
 <template>
   <div>
     <button
-      class="fixed top-2 left-5 z-60 bg-white text-black p-2 rounded-lg shadow lg:hidden"
+      class="fixed top-4 left-5 z-60 bg-white text-black p-2 rounded-lg shadow lg:hidden"
       @click="toggleMenu"
       aria-label="Toggle Menu"
       :aria-expanded="isMenuOpen ? 'true' : 'false' "
@@ -43,7 +43,7 @@ const closeLoginDialog = () => {
       <div class="flex items-center">
         <RouterLink to="/planner">
           <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSC8fFURU-S1FRIkYCVhF6LbBB0BQUbGd6bQ&s"
+            src="https://web.chictrip.com.tw/assets/logo.26916d07.svg"
             alt="Logo"
             class="w-10 mb-3"
           />

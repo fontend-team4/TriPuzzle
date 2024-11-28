@@ -11,11 +11,28 @@ import {  HeartIcon,
           XMarkIcon,
           PencilSquareIcon,
 } from '@heroicons/vue/24/solid';
+const closeEditmodal = () => {
+  const dialog = document.getElementById("Editmodal"); 
+  dialog?.close();
+};
+const closeNickNameModal = () => {
+  const dialog = document.getElementById("NickNameModal"); 
+  dialog?.close();
+};
+const closeProfileModal = () => {
+  const dialog = document.getElementById("ProfileModal"); 
+  dialog?.close();
+};
+const closePersonalInformatioMmodal = () => {
+  const dialog = document.getElementById("PersonalInformatioMmodal"); 
+  dialog?.close();
+};
 </script>
 
 <template>
+  <!-- <SideBar /> -->
   <div class="flex flex-col min-h-screen bg-white lg:ml-16 transition-all duration-300 ease-in-out">
-    <div class="ml-5 px-2">
+    <div class="ml-5 p-2">
         <img
           src="https://web.chictrip.com.tw/assets/logo_horizontal.aa2cb44e.svg"
           alt=""
@@ -30,8 +47,8 @@ import {  HeartIcon,
               alt=""
               class="w-32 h-32 rounded-full ml-2"
             >
-            <div>
-              <div class="block mt-2 mr-20 pl-4">
+            <div class="sm:mr-0">
+              <div class="block mt-2 md:mr-20 pl-4 sm:mr-0">
                 <p class="text-xl font-semibold mt-4">XXX</p>
                 <p class="mt-4">0行程 ・ 0旅遊小書</p>
                 <div class="flex justify-between items-center mt-4 gap-4">
@@ -43,16 +60,16 @@ import {  HeartIcon,
                     <span class="w-10">編輯</span>
                   </button>
                   <div class="dropdown">
-                    <div tabindex="0" class="p-3 rounded-full border hover:bg-primary-100 hover:text-primary-800">
-                      <Cog8ToothIcon class="w-4 h-4" />
+                    <div tabindex="0" class="p-2 rounded-full border hover:bg-primary-100 hover:text-primary-800">
+                      <Cog8ToothIcon class="w-5 h-5" />
                     </div>
-                    <ul tabindex="0" class="dropdown-content bg-base-100 rounded-lg w-52 shadow">
+                    <ul tabindex="0" class="dropdown-content bg-base-100 rounded-lg w-52 shadow sm:absolute top-15 right-5 md:left-0">
                       <button class="w-52">
                         <li class="flex flex-row py-2 px-4 hover:bg-primary-100 hover:text-primary-800 rounded-t-lg items-center">
                           <ShareIcon class="h-4 w-4 mr-2" />
                           分享
                         </li>
-                      </button>
+                      </button>  
                       <button class="w-52">
                         <li class="flex flex-row py-2 px-4 hover:bg-primary-100 hover:text-primary-800 items-center">
                           <EnvelopeIcon class="h-4 w-4 mr-2" />
@@ -78,7 +95,7 @@ import {  HeartIcon,
             </div>
           </div>
           <div class="flex mt-4 pl-10 pb-0 md:pb-0 lg:pb-20 lg:pl-0">
-            <div class="flex gap-6">
+            <div class="flex gap-6 ">
               <div>
                 <span class="font-semibold text-3xl">0</span>
                 <span>粉絲</span>
@@ -94,19 +111,17 @@ import {  HeartIcon,
             </div>
           </div>
         </div>
-        <div class="ml-3 p-2 mb-4 rounded-xl flex items-center bg-gray justify-between w-auto lg:max-w-80">
-          <div class="flex flex-col ml-2">
+        <div class="ml-3 p-1 rounded-xl flex items-center bg-gray justify-between w-auto lg:max-w-80">
+          <div class="flex flex-col ml-4">
             <p class="mt-2 font-medium mb-1 text-sm">想要更多專屬功能？</p>
             <p class="mb-2 text-sm">快速登入/註冊旅圖會員</p>
           </div>
-          <button class="px-6 py-2 mr-1 bg-secondary-500 text-white rounded-full transition">
+          <button class="px-6 py-2 mr-4 bg-secondary-500 text-white rounded-full transition">
             立即升級
           </button>
         </div>
-        <div class="py-6">
-          <h2 class="flex font-semibold text-lg">
-            <HeartIcon class="w-6 h-6"/>收藏
-          </h2>
+        <div class="p-8">
+          <h2 class="flex font-semibold text-lg"><HeartIcon class="w-6 h-6"/>收藏</h2>
           <hr>
         </div>
 
@@ -114,7 +129,7 @@ import {  HeartIcon,
           <img
             src="https://web.chictrip.com.tw/assets/img-empty.65a29235.png"
             alt="Empty collection"
-            class=" w-64 mx-auto mb-4"
+            class="w-80 mx-auto mb-4"
           >
           <p class="mb-8">「收藏」中還沒有景點哦</p>
           <RouterLink
@@ -126,8 +141,8 @@ import {  HeartIcon,
       </div>
     </div>
     <!-- Edit的Modal -->
-    <dialog id="Editmodal" class="modal">
-      <div class="modal-box w-full max-h-none max-w-none md:w-96 h-auto sm:w-screen max-md:h-screen max-md:w-screen max-md:p-4 max-md:rounded-none">
+    <dialog id="Editmodal" class="modal" @click.self="closeEditmodal">
+      <div class="bg-white rounded-none p-6 w-full h-full md:w-96 md:h-max md:rounded-2xl md:mb-20">
         <div class="flex justify-end">
           <form method="dialog">
             <button>
@@ -220,14 +235,14 @@ import {  HeartIcon,
             </div>
           </div>
         </div>
-        <form method="dialog" class="modal-backdrop">
+        <form method="dialog" class="modal-backdrop hidden md:block">
           <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
           <button>close</button>
         </form>
       </dialog>
     <!-- NickName的Modal -->
-    <dialog id="NickNameModal" class="modal">
-        <div class="modal-box w-full max-h-none max-w-none md:w-96 max-md:h-screen max-md:w-screen p-4 max-md:rounded-none">
+    <dialog id="NickNameModal" class="modal" @click.self="closeNickNameModal">
+        <div class="bg-white rounded-none p-6 w-full h-full md:w-96 md:h-max md:rounded-2xl md:mb-40">
           <div class="flex justify-end">
             <form method="dialog">
               <button>
@@ -267,14 +282,14 @@ import {  HeartIcon,
             </button>
           </div>
         </div>
-        <form method="dialog" class="modal-backdrop">
-          <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-          <button>close</button>
-        </form>
+          <form method="dialog" class="modal-backdrop hidden md:block">
+            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+            <button>close</button>
+          </form>
       </dialog>
     <!-- Profile的Modal -->
-    <dialog id="ProfileModal" class="modal">
-        <div class="modal-box w-full max-h-none max-w-none md:w-96 max-md:h-screen max-md:w-screen p-4 max-md:rounded-none">
+    <dialog id="ProfileModal" class="modal" @click.self="closeProfileModal">
+        <div class="bg-white rounded-none p-6 w-full h-full md:w-96 md:h-max md:rounded-2xl md:mb-40">
           <div class="flex justify-end">
             <form method="dialog">
               <button>
@@ -309,14 +324,14 @@ import {  HeartIcon,
             </div>
           </div>
         </div>
-        <form method="dialog" class="modal-backdrop">
+        <form method="dialog" class="modal-backdrop hidden md:block">
           <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
           <button>close</button>
         </form>
       </dialog>
     <!-- PersonalInformatio的Modal -->
-    <dialog id="PersonalInformatioMmodal" class="modal">
-        <div class="modal-box w-full max-h-none max-w-none md:w-96 max-md:h-screen max-md:w-screen p-4 max-md:rounded-none">
+    <dialog id="PersonalInformatioMmodal" class="modal" @click.self="closePersonalInformatioMmodal">
+        <div class="bg-white rounded-none p-6 w-full h-full md:w-96 md:h-max md:rounded-2xl md:mb-40">
           <div class="flex justify-end">
             <form method="dialog">
               <button>
@@ -378,7 +393,7 @@ import {  HeartIcon,
             </button>
           </div>
         </div>
-        <form method="dialog" class="modal-backdrop">
+        <form method="dialog" class="modal-backdrop hidden md:block">
           <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
           <button>close</button>
         </form>

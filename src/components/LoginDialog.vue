@@ -7,7 +7,7 @@ const showModal = ref(true);
 
 <template>
   <div v-if="showModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center overflow-auto">
-    <div class="bg-white rounded-2xl p-6 w-full max-h-none md:w-96 max-md:h-screen max-md:p-4 max-md:rounded-none">
+    <div class="bg-white pb-6 w-full h-full md:w-96 md:h-max md:rounded-2xl md:mb-20">
       <div class="relative">
         <button @click="$emit('close')" class="absolute right-2 top-2">
           <XMarkIcon class="w-6 h-6" />
@@ -17,7 +17,7 @@ const showModal = ref(true);
         <div class="text-center">
           <div class="mb-4">
             <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSC8fFURU-S1FRIkYCVhF6LbBB0BQUbGd6bQ&s"
+              src="https://web.chictrip.com.tw/assets/logo.26916d07.svg"
               alt="Logo"
               class="h-12 w-auto mx-auto"
             />
