@@ -1,5 +1,5 @@
 <template>
-  <dialog id="shareScheduleModal" class="modal">
+  <dialog id="shareSchedule" class="modal">
     <div class="modal-box min-w-full md:min-w-[480px]  bg-gray">
       <!-- close button -->
       <form method="dialog">

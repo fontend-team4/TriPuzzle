@@ -39,20 +39,19 @@
           <!-- 我的行程 -->
           <!-- v-if 有行程 -->
           <div class="flex flex-wrap gap-4 justify-center" v-if="checkedSchedule === 'mine'">
-            <div class="card card-compact bg-base-100 sm:w-full md:w-[30%] lg:w-full h-[176px] lg:h-auto border mb-4 relative hover:cursor-pointer" @click="detailToggle">
-            <figure>
+            <div class="card card-compact bg-base-100 sm:w-full md:w-[30%] lg:w-full h-[176px] lg:h-auto border mb-4 relative hover:cursor-pointer">
+            <figure @click="detailToggle">
               <img
                 src="https://chictirpstorageprod.blob.core.windows.net/system/2bf62bfd-5bbd-47f1-9174-492c7218dcdf.jpg"
                 alt="" />
             </figure>
             <!-- 行程右上設定 icon -->
             <div class="flex gap-2 absolute top-3 right-3">
-              <span class="w-6 h-6 rounded-full bg-gray-transparent text-white p-1 hover:cursor-pointer" onclick="shareScheduleModal.showModal()">
+              <span class="w-6 h-6 rounded-full bg-gray-transparent text-white p-1 hover:cursor-pointer" onclick="shareSchedule.showModal()">
                 <ShareIcon />
               </span>
               <ShareScheduleModal />
               <div class="dropdown">
-                <!-- <div tabindex="0" role="button" class="btn m-1"></div> -->
                 <button role="button" class="w-6 h-6 rounded-full bg-gray-transparent text-white p-1 relative">
                   <EllipsisHorizontalIcon />
                 </button>
@@ -70,13 +69,13 @@
                       <p>邀請共編</p>
                     </a>  
                   </li>
-                  <li class="border-t">
+                  <li class="border-t" onclick="delete_schedule.showModal()">
                     <a class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray" href="#">
                       <span class="inline-block w-6 h-6"><TrashIcon/></span>
                       <p>刪除行程</p>
                     </a>  
                   </li>
-                  
+                  <DeleteScheduleModal />
                 </ul>
               </div>
             </div>
@@ -252,6 +251,7 @@ import { XMarkIcon, UserPlusIcon, ShareIcon, DocumentDuplicateIcon, TrashIcon, B
 import ShareScheduleModal from '@/components/ShareScheduleModal.vue'
 import ScheduleDetail from '@/components/ScheduleDetail.vue'
 import TransportationWay from './TransportationWay.vue'
+import DeleteScheduleModal from './DeleteScheduleModal.vue'
 
 const checkedSchedule = ref('mine')
 
