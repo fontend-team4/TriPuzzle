@@ -1,6 +1,6 @@
 <script setup>
 import DetailCarousel from './DetailCarousel.vue';
-import { CalendarIcon, ClockIcon, PhoneIcon, GlobeAltIcon, MapPinIcon, MagnifyingGlassIcon, HeartIcon, ShareIcon ,PaperAirplaneIcon, XMarkIcon, PhotoIcon, ChevronLeftIcon } from "@heroicons/vue/24/outline";
+import { CalendarIcon, ClockIcon, PhoneIcon, GlobeAltIcon, MapPinIcon, MagnifyingGlassIcon, HeartIcon, ShareIcon ,PaperAirplaneIcon, XMarkIcon, PhotoIcon, ChevronLeftIcon ,ArrowDownTrayIcon, LinkIcon} from "@heroicons/vue/24/outline";
 import { StarIcon } from "@heroicons/vue/24/solid";
 import { computed ,ref } from 'vue'
 import Waterfall from './Waterfall.vue';
@@ -10,8 +10,11 @@ import Waterfall from './Waterfall.vue';
 const showPhoto = ref(false)
 
 const isPhotoShow = computed(() => {
-  console.log(123);
-    return showPhoto.value ? ["translate-y-0" ,"md:translate-x-0" , "opacity-100" ] : ["translate-y-full" ,"md:translate-x-full", "md:translate-y-0", "opacity-0" ];
+    return showPhoto.value ? ["h-screen" ,"md:translate-x-0" , "opacity-100", "bottom-0" ] : ["h-0" ,"md:translate-x-full", "md:translate-y-0", "opacity-0", "-bottom-12" ];
+});
+
+const overflowStatus = computed(() => {
+    return showPhoto.value ? ["overflow-hidden" ] : ["" ];
 });
 
 // md:translate-x-0
@@ -19,13 +22,12 @@ const isPhotoShow = computed(() => {
 const changeShowPhoto = () => {
   return showPhoto.value = !showPhoto.value
 };
-
 </script>
 
 <template>
-
-  <div class="w-screen h-screen p-0 m-0 bg-black md:pt-[15vh] bg-opacity-25 relative">
-    <div class="pb-10 md:pb-0 h-full md:h-[calc(100vh-160px)] lg:max-w-[1032px]  lg:mb-[50px] mx-0 md:mx-auto lg:mx-auto bg-white md:flex md:rounded-md md:overflow-hidden overflow-auto relative ">
+<!-- <div class="fixed inset-0 w-full h-full bg-black"></div> -->
+  <div class="relative flex items-center justify-center w-screen h-screen bg-black bg-opacity-25">
+    <div class="pb-10 md:pb-0 h-full md:h-[calc(100vh-160px)] lg:max-w-[1032px] mx-0 md:mx-auto  bg-white md:flex md:rounded-md md:overflow-hidden overflow-auto relative " :class="overflowStatus">
 
       <div class="bg-black md:w-[calc(100%-368px)] h-[360px] md:h-full md:overflow-hidden flex justify-center relative group">
         <!--輪播圖  -->
@@ -82,7 +84,32 @@ const changeShowPhoto = () => {
       <button class="absolute top-3.5 right-3.5 hidden md:block"><XMarkIcon class="size-6"/></button>
       <div class="fixed md:absolute bottom-0 left-0 w-full h-[50px] border-t-2 border-t-gray inline-flex items-center justify-between px-2 bg-white">
         <div class="inline-flex items-center gap-2 ">
-          <div class="tooltip" data-tip="分享"><ShareIcon class="cursor-pointer size-6"/></div>
+          <div class="tooltip" data-tip="分享" onclick="my_modal_2.showModal()"><ShareIcon class="cursor-pointer size-6"/></div>
+        <dialog id="my_modal_2" class="modal ">
+          <div class="modal-box min-w-full md:min-w-[480px]  min-h-full md:min-h-[464px] bg-gray relative rounded-none md:rounded-xl">
+            <form method="dialog">
+              <button class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2">✕</button>
+            </form>
+            <!-- 框框內容 -->
+             <div class="flex flex-col items-center mt-8">
+               <h3 class="pb-4 text-2xl font-medium ">分享</h3>
+               <div class="flex flex-col items-center w-full px-5 pt-10 pb-6 mb-8 bg-white rounded-xl">
+                <div class="mb-4"><img src="../assets/share_location_QRcode.png" alt=""></div>
+                <p class="text-base text-stone-900">手機掃描條碼，即可查看此景點</p>
+                <div class="flex flex-col w-full gap-3 pt-8 md:flex-row ">
+                  <button class="inline-flex justify-center w-full px-4 py-[11px] transition-all border rounded-full text-primary-600 border-primary-600 hover:bg-primary-100"><ArrowDownTrayIcon class="mr-1 size-6" /><span>下載QRcode</span></button>
+                  <button class="inline-flex justify-center w-full px-4 py-[11px] text-white border rounded-full bg-primary-600 border-primary-600 hover:bg-primary-700"><LinkIcon class="mr-1 size-6" /><span>複製連結</span></button>
+                  <div class="absolute right-0 top-1/2 md:w-[100px] md:h-[100px] w-[80px] h-[80px] -translate-y-full md:-translate-y-1/2"><img src="../assets/monster_take_phone.png" alt="" class="object-contain"></div>
+                </div>
+               </div>
+            </div>
+          </div>
+          <form method="dialog" class="modal-backdrop">
+            <button class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2">✕</button>
+            <button>close</button>
+          </form>
+        </dialog>
+
           <div class="tooltip" data-tip="加到最愛"><HeartIcon class="cursor-pointer size-6"/></div>
           <div class="tooltip" data-tip="導航"><PaperAirplaneIcon class="cursor-pointer size-6" /></div>
         </div>
@@ -90,7 +117,7 @@ const changeShowPhoto = () => {
       </div>
       </div>
       <!-- 照片區 -->
-      <div class="absolute top-0 right-0 z-40 w-screen h-screen transition-all duration-300 transform bg-white md:w-[368px] md:right-0 overflow-hidden" :class="isPhotoShow">
+      <div class="absolute   md:top-0 right-0 z-40 w-screen h-screen transition-all duration-300 transform bg-white md:w-[368px] md:right-0 overflow-hidden" :class="isPhotoShow">
         <div class="flex justify-between px-5 py-4 bg-white border-b-[2px] border-b-slate-100 fixed top-0 w-screen">
           <div class="flex text-base">
             <button @click="changeShowPhoto"><ChevronLeftIcon class="size-6"/></button>
@@ -100,7 +127,7 @@ const changeShowPhoto = () => {
         </div>
         <Waterfall class="mt-16" />
       </div>
-    </div>
+      </div>
 
   </div>
 </template>
@@ -117,6 +144,33 @@ img{
   100% {
     transform: translateX(0);
   }
+}
+
+
+/* 定義進入和離開的動畫效果 */
+.photo-fade-enter-active,
+.photo-fade-leave-active {
+  transition: all 0.3s ease;
+}
+
+.photo-fade-enter-from {
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+.photo-fade-enter-to {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.photo-fade-leave-from {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.photo-fade-leave-to {
+  transform: translateY(100%);
+  opacity: 0;
 }
 
 </style>
