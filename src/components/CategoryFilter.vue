@@ -96,12 +96,14 @@ const closeModal = () => {
                 hover:border-transparent"
               >
                 {{ category.icon }} {{ category.name }}
-                <button
+                <span>
+                  <button
                   @click="removeCategory(index)"
                   class="text-primary-600 hover:text-red-500 px-1 btn btn-xs btn-ghost"
-                >
-                  <p class="text-center">✕</p>
-                </button>
+                  >
+                    <p class="text-center">✕</p>
+                  </button>
+                </span>
               </button>
           </div>
         </div>
