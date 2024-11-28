@@ -10,12 +10,14 @@ import {
 </script>
 
 <template>
-  <section class="w-9/12 mx-auto mt-20 mb-12">
-    <h1 class="text-4.5xl font-bold text-neutral-800 mb-1">
-      旅圖網站！自助旅行的最佳夥伴
+  <section class="w-9/12 max-w-7xl mx-auto mt-20 mb-12">
+    <h1
+      class="text-center text-3xl font-bold text-neutral-800 mb-4 md:text-4.5xl md:text-left"
+    >
+      旅圖網站！<br class="md:hidden" />自助旅行的最佳夥伴
     </h1>
-    <h2 class="text-xl font-bold text-neutral-400 mb-14">
-      各種需求一應俱全，一個旅圖網站抵十個旅遊工具
+    <h2 class="text-xl text-neutral-400 mb-14">
+      各種需求一應俱全，<br class="md:hidden" />一個旅圖網站抵十個旅遊工具
     </h2>
 
     <!-- Features -->
