@@ -79,7 +79,7 @@ const toggleFavorite = (item) => {
                 <div class="absolute w-full h-full transition-opacity bg-black opacity-0 group-hover:opacity-20"></div>
                 
                 <!-- 喜歡按鈕和加入景點 -->
-                <div class="absolute bottom-0 z-10 flex items-center justify-between w-full p-4 transition-opacity opacity-0 group-hover:opacity-100">
+                <div class="absolute bottom-0 z-2 flex items-center justify-between w-full p-4 transition-opacity opacity-0 group-hover:opacity-100">
                   <div
                     class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer bg-gray hover:bg-opacity-75 tooltip " data-tip="加入最愛"
                     @click.prevent="toggleFavorite(item)"

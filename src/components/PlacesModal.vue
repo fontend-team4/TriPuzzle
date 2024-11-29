@@ -47,7 +47,7 @@ const hamburgerCls = computed(() => {
 
   <!-- 側欄 -->
     <div  class="fixed left-0 hidden h-full w-96 md:block">
-      <div class="w-96 h-[calc(100vh-72px)] bg-white fixed bottom-0 left-0 rounded-tr-3xl drop-shadow-md transition-all duration-300" :class="sideCls">
+      <div class="w-96 h-[calc(100vh-72px)] bg-white fixed bottom-0 left-20 rounded-tr-3xl drop-shadow-md transition-all duration-300" :class="sideCls">
         <div class="z-20 flex items-center justify-between w-full p-4 bg-white rounded-tr-3xl">
           <div>
 
@@ -60,7 +60,7 @@ const hamburgerCls = computed(() => {
             <XMarkIcon class="size-5" />
           </button>
         </div>
-        <div class="w-full h-[calc(100%-60px)] px-5 overflow-auto ">
+        <div class=" w-full h-[calc(100%-60px)] px-5 overflow-auto ">
           <ul class="w-full h-full">
             <li
               v-for="item in fakeLocations"
