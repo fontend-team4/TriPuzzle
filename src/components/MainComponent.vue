@@ -63,35 +63,30 @@ const isPlacesComponent = ref(true);
 const placesComponentCls = computed(() => {
     return isPlacesComponent.value ? [""] : ["translate-y-full opacity-0"];
 });
+
 </script>
 
 <template>
-
-<!-- 搜尋欄 -->
- <div class="flex relative w-full item-center gap-2">
-    <SearchBar class="flex w-full justify-end"/>
+<div class="main-content">
+  <!-- 搜尋欄 -->
+  <div class="flex relative w-full item-center gap-2">
+    <SearchBar class="flex lg:w-[75%]  justify-end w-full  lg:ml-20"/>
     <MapToggle 
-      class="hidden justify-start item-center xl:flex"
+      class="hidden lg:absolute top-0 right-0  justify-start item-center mr-24 lg:flex"
       v-model:isPlacesComponent="isPlacesComponent" />
+      <!-- 行程 toggle -->
+    <div 
+    class="schedule  flex items-center  lg:absolute top-0 right-0 text-white w-[56px] hover:w-[86px] h-10 py-2 ps-3 pe-5 bg-yellow-500 rounded-s-full shadow-lg  hover:cursor-pointer" 
+    @click="listToggle" 
+    :class="scheduleToggleSwitch">
+      <span class="inline-block w-6 h-6"><GlobeAsiaAustraliaIcon/></span>
+      <p class="text-sm pl-0.5 font-medium hidden">行程</p>
+    </div>
   </div>
-<!-- 地圖/景點牆 -->
-  <div class="relative h-screen overflow-hidden">
-    <MapComponent />
-    <PlacesComponent class="absolute top-0 z-10 transition-all " :class="placesComponentCls" />
-    <PlacesModal class="hidden md:block"/>
-  </div>
-  <MapToggle 
-    class="absolute bottom-[1rem] left-[37%] z-20 justify-center item-center md:left-[44%] xl:hidden"
-    v-model:isPlacesComponent="isPlacesComponent" />
-
+ 
 
   <div class="min-w-full h-screen flex flex-row-reverse bg-gray overflow-x-hidden">
     <div class="schedule-list w-full lg:w-96 h-screen bg-white shadow-xl transition-all" :class="listSwitch">
-      <!-- 行程 toggle -->
-      <div class="schedule flex items-center text-white w-[56px] hover:w-[86px] h-10 py-2 ps-3 pe-5 bg-yellow-500 rounded-s-full shadow-lg absolute top-4 left-[-56px] hover:left-[-86px] hover:cursor-pointer" @click="listToggle" :class="scheduleToggleSwitch">
-        <span class="inline-block w-6 h-6"><GlobeAsiaAustraliaIcon/></span>
-        <p class="text-sm pl-0.5 font-medium hidden">行程</p>
-      </div>
       <!-- schedule list -->
       <div class="p-5 relative">
         <!-- header -->
@@ -315,6 +310,7 @@ const placesComponentCls = computed(() => {
           <p class="mb-3 text-center font-medium">
             嗨，新朋友！
             <br>
+            
             登入就能開始規劃你的專屬行程囉 
           </p>
           <button class="w-full h-12 px-5 py-3 bg-primary-600 hover:bg-primary-700 text-white text-center rounded-3xl">
@@ -328,6 +324,19 @@ const placesComponentCls = computed(() => {
     <ScheduleDetail :class="detailSwitch"/>
     <TransportationWay :class="transportationSwitch"/> 
   </div>
+  <div>
+    <!-- 地圖/景點牆 -->
+    <div class="relative h-screen overflow-hidden">
+      <MapComponent />
+      <PlacesComponent class="absolute top-0 z-10 transition-all " :class="placesComponentCls" />
+      <PlacesModal class="hidden md:block"/>
+    </div>
+    <MapToggle 
+      class="absolute bottom-[1rem] left-[37%] z-20 justify-center item-center md:left-[44%] xl:hidden"
+      v-model:isPlacesComponent="isPlacesComponent" />
+  </div>
+  
+</div>
 </template>
 
 <style>
@@ -360,6 +369,5 @@ const placesComponentCls = computed(() => {
   background-color: #fff;
 }
 </style>
-=======
- 
+
 
