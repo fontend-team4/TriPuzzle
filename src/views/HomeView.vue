@@ -32,7 +32,6 @@ const scrollToAnchor = (sectionName) => {
 <!-- 建立新行程 -->
   <main>
     <NewScheduleModal/>
-    <TheWelcome />
   </main>
 
 <!-- 認識旅圖 -->
