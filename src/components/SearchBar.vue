@@ -8,7 +8,7 @@ import SearchArea from './SearchArea.vue';
 const isCategoryMode = ref(true);
 
 const categories = ['景點','收藏', '美食', '購物', '住宿', '租車站', '交通站', '充電樁', '我的最愛'];
-const Mdcategories = ['景點','收藏', '美食', '購物', '住宿','交通站'];
+const Mdcategories = ['景點','收藏', '美食', '購物', '住宿'];
 
 
 const activeCategory = ref(categories[0]);
@@ -43,7 +43,7 @@ const switchToCategoryMode = () => {
       lg:rounded-full lg:border lg:border-gray-200">
       <!-- 顯示分類模式或關鍵字模式 -->
       <div 
-        class="relative flex justify-center items-center h-10 w-full px-1 md:pl-2 pr-2 ">
+        class="relative flex justify-center items-center h-10 w-full md:pl-2 pr-2 ">
         <template 
           v-if="isCategoryMode">
           <!-- 分類模式 -->
@@ -64,10 +64,10 @@ const switchToCategoryMode = () => {
                 v-for="(category, index) in categories"
                 :key="index"
                 :class="[
-                  ' hidden font-medium text-sm leading-6 py-1 cursor-pointer transition border-b-2 border-transparent whitespace-nowrap md:inline-flex',
+                  'hidden font-medium text-sm leading-6 py-1 cursor-pointer transition border-b-2 border-transparent whitespace-nowrap md:inline-flex',
                   activeCategory === category
                     ? 'text-black border-b-red-500'
-                    : 'hover:text-gray-500 hover:border-b-red-500'
+                    : 'text-gray-400 hover:text-gray-500 hover:border-b-red-500'
                 ]"
                 @click="setActiveCategory(category)"
                 >
