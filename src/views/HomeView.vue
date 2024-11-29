@@ -5,10 +5,8 @@ import Carousel from '@/components/Carousel.vue'
 import Features from '@/components/Features.vue'
 import Tutorial from '@/components/Tutorial.vue'
 import Footer from '@/components/Footer.vue'
-
-//建立新行程 
+//建立新行程
 import NewScheduleModal from '@/components/NewScheduleModal.vue';
-import ScheduleCoverImgModal from "@/components/ScheduleCoverImgModal.vue";
 
 const top = ref(null)
 const carousel = ref(null)
@@ -28,14 +26,12 @@ const scrollToAnchor = (sectionName) => {
     top.value?.scrollIntoView({ behavior: 'smooth' })
   }
 }
-
 </script>
 
 <template>
 <!-- 建立新行程 -->
   <main>
     <NewScheduleModal/>
-    <!-- <ScheduleCoverImgModal /> -->
     <TheWelcome />
   </main>
 

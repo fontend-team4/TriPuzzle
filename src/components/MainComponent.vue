@@ -135,8 +135,8 @@ const placesComponentCls = computed(() => {
             <div class="flex gap-2 absolute top-3 right-3">
               <span class="w-6 h-6 rounded-full bg-gray-transparent text-white p-1 hover:cursor-pointer" onclick="shareSchedule.showModal()">
                 <ShareIcon />
-                <ShareScheduleModal />
               </span>
+              <ShareScheduleModal />
               <div class="dropdown">
                 <button role="button" class="w-6 h-6 rounded-full bg-gray-transparent text-white p-1 relative">
                   <EllipsisHorizontalIcon />
@@ -330,7 +330,6 @@ const placesComponentCls = computed(() => {
   </div>
 </template>
 
-
 <style>
 .bg-gray-transparent{
   background-color: #2d4057cc;
@@ -361,5 +360,6 @@ const placesComponentCls = computed(() => {
   background-color: #fff;
 }
 </style>
-
+=======
+ 
 
