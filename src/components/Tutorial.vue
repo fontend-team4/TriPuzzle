@@ -50,40 +50,52 @@ const currentTab = computed(() => tabs[activeTab.value])
 </script>
 
 <template>
-  <section class="bg-primary-50">
-    <div class="w-9/12 mx-auto pt-14 pb-20">
-      <h1 class="text-4.5xl font-bold text-neutral-800 mb-1">
+  <section class="bg-primary-50 hidden md:block">
+    <div class="w-9/12 max-w-7xl mx-auto pt-14 pb-14 lg:pb-20">
+      <h1
+        class="text-center text-3xl font-bold text-neutral-800 mb-4 md:text-[40px] lg:text-left"
+      >
         如何使用旅圖規劃行程?
       </h1>
-      <h2 class="text-xl font-bold text-neutral-400 mb-14">
+      <h2
+        class="text-base text-center text-neutral-400 mb-10 md:text-lg lg:text-left"
+      >
         安排旅行就是這麼輕鬆！建立行程、加入景點、路線與交通時間交給旅圖
       </h2>
-      <div class="">
-        <div class="tabs flex justify-between mb-8">
-          <div
-            v-for="(tab, index) in tabs"
-            :key="index"
-            class="tab"
-            :class="{ active: activeTab === index }"
-            @click="activeTab = index"
+
+      <div
+        class="tabs flex flex-wrap justify-start gap-4 mb-8 lg:justify-between xl:justify-start 2xl:justify-between 2xl:gap-0"
+      >
+        <div
+          v-for="(tab, index) in tabs"
+          :key="index"
+          class="tab"
+          :class="{ active: activeTab === index }"
+          @click="activeTab = index"
+        >
+          {{ tab.label }}
+        </div>
+      </div>
+      <div class="canvas">
+        <div class="flex flex-col gap-3 max-w-[560px] lg:gap-6">
+          <h1
+            class="font-bold text-neutral-800 text-3xl lg:text-[40px] 2xl:text-5xl"
           >
-            {{ tab.label }}
-          </div>
+            {{ activeTab + 1 }}.
+          </h1>
+          <h2
+            class="font-bold text-neutral-800 text-2xl lg:text-[28px] 2xl:text-[32px]"
+          >
+            {{ currentTab.title }}
+          </h2>
+          <p class="font-bold text-neutral-800 text-base 2xl:text-xl">
+            {{ currentTab.text }}
+          </p>
         </div>
-        <div class="canvas">
-          <div class="flex flex-col gap-6 h-72">
-            <h1 class="text-7xl font-bold text-neutral-800">
-              {{ activeTab + 1 }}.
-            </h1>
-            <h2 class="text-4xl font-bold text-neutral-800">
-              {{ currentTab.title }}
-            </h2>
-            <p class="text-2xl font-bold text-neutral-800">
-              {{ currentTab.text }}
-            </p>
-          </div>
-          <img :src="currentTab.image" />
-        </div>
+        <img
+          :src="currentTab.image"
+          class="lg:w-[400px] xl:w-[450px] 2xl:w-[500px]"
+        />
       </div>
     </div>
   </section>
@@ -91,16 +103,18 @@ const currentTab = computed(() => tabs[activeTab.value])
 
 <style scoped lang="postcss">
 .tab {
-  @apply px-10 py-5 border border-primary-500 rounded-full cursor-pointer text-lg text-primary-500 bg-primary-100 font-bold content-center;
+  @apply px-4 py-2 border border-primary-500 rounded-full cursor-pointer text-base text-primary-500 bg-primary-100 font-bold content-center;
   @apply hover:bg-primary-800 hover:text-neutral-50 hover:border-primary-800;
+  @apply xl:px-10 xl:py-5 xl:text-lg;
 
   &.active {
     @apply bg-primary-600 text-neutral-50 border-primary-100;
   }
 }
 .canvas {
-  @apply bg-white shadow-canvas rounded-3xl px-52 py-14;
-  @apply flex gap-8 items-center;
-  height: 600px;
+  @apply bg-white shadow-canvas rounded-3xl flex gap-7 items-center px-7 py-7;
+  @apply lg:h-[420px] xl:h-[480px] 2xl:h-[560px];
+  @apply md:flex-col lg:flex-row lg:gap-10;
+  @apply lg:px-8 xl:px-20 2xl:px-36;
 }
 </style>

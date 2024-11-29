@@ -20,7 +20,7 @@ const clickTab = (sectionName) => {
       </div>
       <RouterLink
         to="/planner"
-        class="flex gap-1 items-center bg-primary-800 px-2 py-1.5 text-xs text-neutral-50 rounded-full"
+        class="flex gap-1 items-center bg-primary-800 px-2 py-[6px] text-xs text-neutral-50 rounded-full"
       >
         <PuzzlePieceIcon class="w-4 h-4 text-neutral-50" />
         拼湊旅圖
@@ -36,16 +36,16 @@ const clickTab = (sectionName) => {
     >
       <Logo class="flex-none cursor-pointer" @click="clickTab('top')" />
       <ul class="flex gap-4 text-neutral-800">
-        <li class="px-4.5 py-4 cursor-pointer" @click="clickTab('carousel')">
+        <li class="px-[18px] py-4 cursor-pointer" @click="clickTab('carousel')">
           達人旅圖
         </li>
-        <li class="px-4.5 py-4 cursor-pointer" @click="clickTab('features')">
+        <li class="px-[18px] py-4 cursor-pointer" @click="clickTab('features')">
           功能特點
         </li>
-        <li class="px-4.5 py-4 cursor-pointer" @click="clickTab('tutorial')">
+        <li class="px-[18px] py-4 cursor-pointer" @click="clickTab('tutorial')">
           關於旅圖
         </li>
-        <li class="px-4.5 py-4 cursor-pointer" @click="clickTab('register')">
+        <li class="px-[18px] py-4 cursor-pointer" @click="clickTab('register')">
           註冊會員
         </li>
       </ul>

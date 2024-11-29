@@ -22,7 +22,7 @@ const images = [
 <template>
   <section class="w-9/12 max-w-7xl mx-auto my-5 md:my-20">
     <h1
-      class="text-3xl text-center text-neutral-800 mb-4 md:text-4.5xl lg:mb-1 lg:text-left"
+      class="text-3xl text-center text-neutral-800 mb-4 md:text-[40px] lg:mb-1 lg:text-left"
     >
       攻略特輯！<br class="sm:hidden" />私藏景點全新玩法
     </h1>
