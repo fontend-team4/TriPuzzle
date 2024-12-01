@@ -5,8 +5,7 @@ import Carousel from '@/components/Carousel.vue'
 import Features from '@/components/Features.vue'
 import Tutorial from '@/components/Tutorial.vue'
 import Footer from '@/components/Footer.vue'
-//建立新行程
-import NewScheduleModal from '@/components/NewScheduleModal.vue';
+
 
 const top = ref(null)
 const carousel = ref(null)
