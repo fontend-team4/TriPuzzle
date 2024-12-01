@@ -54,5 +54,6 @@ import {
 }
 .emailBtn {
   @apply px-4 py-2 text-xs text-neutral-50 bg-primary-800 rounded-full md:px-6 md:text-base md:py-3 md:font-bold;
+  @apply hover:bg-primary-600;
 }
 </style>

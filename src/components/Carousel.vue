@@ -72,7 +72,7 @@ const images = [
         @click="currentIndex--"
       >
         <ChevronLeftIcon
-          class="w-6 h-6 md:w-9 md:h-9 lg:w-14 lg:h-14 text-neutral-100"
+          class="w-7 h-7 sm:w-9 sm:h-9 lg:w-14 lg:h-14 text-neutral-100"
         />
       </div>
       <div
@@ -81,7 +81,7 @@ const images = [
         @click="currentIndex++"
       >
         <ChevronRightIcon
-          class="w-6 h-6 md:w-9 md:h-9 lg:w-14 lg:h-14 text-neutral-100"
+          class="w-7 h-7 sm:w-9 sm:h-9 lg:w-14 lg:h-14 text-neutral-100"
         />
       </div>
     </div>
@@ -89,9 +89,9 @@ const images = [
 </template>
 <style scoped lang="postcss">
 .linkBtn {
-  @apply bg-primary-800  rounded-full  font-medium text-neutral-50 px-3 py-2 text-sm;
-  @apply flex;
+  @apply bg-primary-800  rounded-full  font-medium text-neutral-50 px-3 py-2 text-sm flex;
   @apply md:px-5 md:py-3 md:text-lg;
+  @apply hover:bg-primary-600;
 }
 .carousel-items {
   @apply rounded-box object-cover aspect-3/4;

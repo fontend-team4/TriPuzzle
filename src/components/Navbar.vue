@@ -1,8 +1,12 @@
 <script setup>
-import { defineEmits } from 'vue'
+import { defineEmits, ref } from 'vue'
 import { PuzzlePieceIcon, Bars3Icon } from '@heroicons/vue/20/solid'
 import { Logo } from '@/components/svg/exportSvg.js'
 
+const isOpen = ref(false)
+const openDropdown = () => {
+  isOpen.value = !isOpen.value
+}
 const emit = defineEmits(['clickTab'])
 const clickTab = (sectionName) => {
   emit('clickTab', sectionName)
@@ -13,18 +17,43 @@ const clickTab = (sectionName) => {
   <nav
     class="border-b border-neutral-200 bg-white z-10 w-screen fixed top-0 md:hidden"
   >
-    <div class="flex justify-end items-center my-3 mx-3">
+    <div class="relative flex justify-end items-center my-3 mx-3">
       <div class="flex items-center flex-1">
-        <Bars3Icon class="w-6 h-6 text-neutral-800" />
+        <Bars3Icon class="w-6 h-6 text-neutral-800" @click="openDropdown" />
         <Logo class="ml-3 w-auto h-8" />
       </div>
       <RouterLink
         to="/planner"
-        class="flex gap-1 items-center bg-primary-800 px-2 py-[6px] text-xs text-neutral-50 rounded-full"
+        class="flex gap-1 items-center bg-primary-800 px-2 py-[6px] text-xs text-neutral-50 rounded-full hover:bg-primary-600"
       >
         <PuzzlePieceIcon class="w-4 h-4 text-neutral-50" />
         拼湊旅圖
       </RouterLink>
+    </div>
+    <div
+      :class="isOpen ? 'block' : 'hidden'"
+      class="absolute top-14 left-0 w-full bg-primary-50 shadow-xl rounded-2xl"
+    >
+      <ul class="flex flex-col p-3 gap-2 text-sm font-bold text-neutral-800">
+        <li
+          class="p-2 hover:bg-primary-100 hover:text-primary-800"
+          @click="clickTab('carousel')"
+        >
+          達人旅圖
+        </li>
+        <li
+          class="p-2 hover:bg-primary-100 hover:text-primary-800"
+          @click="clickTab('features')"
+        >
+          功能特點
+        </li>
+        <li
+          class="p-2 hover:bg-primary-100 hover:text-primary-800"
+          @click="clickTab('register')"
+        >
+          註冊會員
+        </li>
+      </ul>
     </div>
   </nav>
 
@@ -36,22 +65,34 @@ const clickTab = (sectionName) => {
     >
       <Logo class="flex-none cursor-pointer" @click="clickTab('top')" />
       <ul class="flex gap-4 text-neutral-800">
-        <li class="px-[18px] py-4 cursor-pointer" @click="clickTab('carousel')">
+        <li
+          class="px-[18px] py-4 cursor-pointer hover:text-primary-800"
+          @click="clickTab('carousel')"
+        >
           達人旅圖
         </li>
-        <li class="px-[18px] py-4 cursor-pointer" @click="clickTab('features')">
+        <li
+          class="px-[18px] py-4 cursor-pointer hover:text-primary-800"
+          @click="clickTab('features')"
+        >
           功能特點
         </li>
-        <li class="px-[18px] py-4 cursor-pointer" @click="clickTab('tutorial')">
+        <li
+          class="px-[18px] py-4 cursor-pointer hover:text-primary-800"
+          @click="clickTab('tutorial')"
+        >
           關於旅圖
         </li>
-        <li class="px-[18px] py-4 cursor-pointer" @click="clickTab('register')">
+        <li
+          class="px-[18px] py-4 cursor-pointer hover:text-primary-800"
+          @click="clickTab('register')"
+        >
           註冊會員
         </li>
       </ul>
       <RouterLink
         to="/planner"
-        class="flex gap-1 items-center bg-primary-800 px-5 py-2 ml-4 text-base text-neutral-50 rounded-full"
+        class="flex gap-1 items-center bg-primary-800 px-5 py-2 ml-4 text-base text-neutral-50 rounded-full hover:bg-primary-600"
       >
         <PuzzlePieceIcon class="w-5 h-5 text-neutral-50" />
         拼湊旅圖

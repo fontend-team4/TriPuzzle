@@ -62,14 +62,13 @@ const currentTab = computed(() => tabs[activeTab.value])
       >
         安排旅行就是這麼輕鬆！建立行程、加入景點、路線與交通時間交給旅圖
       </h2>
-
       <div
-        class="tabs flex flex-wrap justify-start gap-4 mb-8 lg:justify-between xl:justify-start 2xl:justify-between 2xl:gap-0"
+        class="grid grid-cols-[repeat(auto-fit,minmax(98px,1fr))] justify-items-center gap-4 mb-8 xl:grid-cols-[repeat(auto-fit,minmax(138px,1fr))]"
       >
         <div
           v-for="(tab, index) in tabs"
           :key="index"
-          class="tab"
+          class="featuresTab"
           :class="{ active: activeTab === index }"
           @click="activeTab = index"
         >
@@ -102,10 +101,10 @@ const currentTab = computed(() => tabs[activeTab.value])
 </template>
 
 <style scoped lang="postcss">
-.tab {
-  @apply px-4 py-2 border border-primary-500 rounded-full cursor-pointer text-base text-primary-500 bg-primary-100 font-bold content-center;
+.featuresTab {
+  @apply px-4 py-2 border border-primary-500 rounded-full cursor-pointer text-base text-primary-500 bg-primary-100 font-bold;
   @apply hover:bg-primary-800 hover:text-neutral-50 hover:border-primary-800;
-  @apply xl:px-10 xl:py-5 xl:text-lg;
+  @apply xl:px-8 xl:py-3 xl:text-lg;
 
   &.active {
     @apply bg-primary-600 text-neutral-50 border-primary-100;
