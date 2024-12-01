@@ -29,11 +29,6 @@ const scrollToAnchor = (sectionName) => {
 </script>
 
 <template>
-<!-- 建立新行程 -->
-  <main>
-    <NewScheduleModal/>
-  </main>
-
 <!-- 認識旅圖 -->
   <main class="bg-white">
     <Navbar @clickTab="scrollToAnchor" />

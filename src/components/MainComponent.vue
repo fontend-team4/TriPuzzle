@@ -7,6 +7,8 @@ import ShareScheduleModal from './ShareScheduleModal.vue'
 import ScheduleDetail from '@/components/ScheduleDetail.vue'
 import TransportationWay from './TransportationWay.vue'
 import DeleteScheduleModal from './DeleteScheduleModal.vue'
+import NewScheduleModal from '@/components/NewScheduleModal.vue';
+
 
 const checkedSchedule = ref('mine')
 
@@ -283,9 +285,7 @@ const transportationSwitch = computed(() => {
         <!-- add schedule btn 建立新行程按鈕-->
         <!--已登入 -->
         <div class="w-full lg:w-96 h-20 px-2.5 py-5 bg-white border-t fixed bottom-0 right-0">
-          <button class="w-full h-12 px-5 py-3 bg-primary-600 hover:bg-primary-700 text-white text-center rounded-3xl">
-            建立新行程
-          </button>
+          <NewScheduleModal />
         </div>
         <!-- 未登入 -->
         <!-- <div class="w-full lg:w-96 h-38 px-2.5 py-5 bg-white border-t fixed bottom-0 right-0">

@@ -28,9 +28,10 @@ const closeDropdown = () => {
 </script>
 
 <template>
-  <button class="w-full h-12 px-5 py-3 bg-red-800 text-white text-center text-base rounded-3xl" onclick="my_modal_2.showModal()">建立新行程
-    </button>
-  <dialog id="my_modal_2" class="modal ">
+  <button class="w-full h-12 px-5 py-3 bg-red-800 text-white text-center text-base rounded-3xl" onclick="NewSchedule.showModal()">
+    建立新行程
+  </button>
+  <dialog id="NewSchedule" class="modal ">
     <div class="modal-box p-0 w-full md:max-w-[480px] sm:max-w-[100%] sm:max-h-[100%] max-md:rounded-none ">
       <div class="max-w-[480px] md:max-w-[480px] sm:max-w-[100%] h-[60px] px-[15px] py-[8px] sticky top-0 bg-white relative ">
         <form method="dialog">
