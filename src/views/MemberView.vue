@@ -30,7 +30,7 @@ const closePersonalInformatioMmodal = () => {
 </script>
 
 <template>
-  <!-- <SideBar /> -->
+  <SideBar />
   <div class="flex flex-col min-h-screen bg-white lg:ml-16 transition-all duration-300 ease-in-out">
     <div class="ml-5 p-2">
         <img
