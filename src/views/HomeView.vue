@@ -28,7 +28,6 @@ const scrollToAnchor = (sectionName) => {
 </script>
 
 <template>
-<!-- 認識旅圖 -->
   <main class="bg-white">
     <Navbar @clickTab="scrollToAnchor" />
     <img src="@/assets/images/banner.webp" ref="top" />
@@ -42,5 +41,3 @@ const scrollToAnchor = (sectionName) => {
     <Footer />
   </main>
 </template>
-
-
