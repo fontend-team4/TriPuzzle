@@ -66,7 +66,7 @@ const closeLoginDialog = () => {
         </li>
         <li class="flex items-center p-2 hover:bg-primary-100 hover:text-primary-800 rounded-lg transition-all">
           <button class="flex w-full">
-            <RouterLink to="/home">
+            <RouterLink to="/">
               <div class="flex">
                 <LightBulbIcon class="w-6 h-6 flex-none" />
                 <span
@@ -91,7 +91,7 @@ const closeLoginDialog = () => {
         </li>
       </ul>
     </div>
-    <LoginDialog v-if="isLoginDialogOpen" @close="closeLoginDialog" />
+    <LoginDialog class="z-20" v-if="isLoginDialogOpen" @close="closeLoginDialog" />
   </div>
 </template>
 

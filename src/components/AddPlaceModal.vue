@@ -91,9 +91,9 @@ const selectCard = (index) => {
 
 
 <template>
-  <AddPlaceBtn onclick="my_modal.showModal()" />
+  <AddPlaceBtn onclick="AddPlace.showModal()" />
 
-  <dialog id="my_modal" class="modal" @click.self="closeModal">
+  <dialog id="AddPlace" class="modal" @click.self="closeModal">
   
     <div 
       v-if="currentPage === 'page1'"

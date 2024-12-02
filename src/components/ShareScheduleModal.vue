@@ -1,3 +1,13 @@
+<script setup>
+import { ref } from 'vue'
+import { LinkIcon, ShareIcon, ChevronDownIcon} from '@heroicons/vue/24/outline'
+import ScheduleSummaryModal from './ScheduleSummaryModal.vue';
+import ExportScheduleModal from './ExportScheduleModal.vue';
+import ExitCoEditModal from './ExitCoEditModal.vue';
+
+const activeTab = ref('share')
+</script>
+
 <template>
   <dialog id="shareSchedule" class="modal">
     <div class="modal-box min-w-full md:min-w-[480px]  bg-gray">
@@ -113,17 +123,7 @@
   </dialog>
 </template>
 
-<script setup>
-import { ref } from 'vue'
-import { LinkIcon, ShareIcon, ChevronDownIcon} from '@heroicons/vue/24/outline'
-import ScheduleSummaryModal from './ScheduleSummaryModal.vue';
-import ExportScheduleModal from './ExportScheduleModal.vue';
-import ExitCoEditModal from './ExitCoEditModal.vue';
-
-const activeTab = ref('share')
-</script>
-
-<style>
+<style scoped>
 .tooltip:before{
   font-size: 12px;
 }
