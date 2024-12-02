@@ -12,13 +12,6 @@ export default {
       boxShadow: {
         canvas: '4px 4px 60px 8px rgba(227, 188, 188, 0.3)',
       },
-      fontSize: {
-        '1.5xl': '1.375rem',
-        '4.5xl': '2.5rem',
-      },
-      spacing: {
-        4.5: '1.125rem',
-      },
       colors: {
         primary: {
           50: '#FFF8F8',
@@ -54,4 +47,3 @@ export default {
   },
   plugins: [require('daisyui')],
 }
-
