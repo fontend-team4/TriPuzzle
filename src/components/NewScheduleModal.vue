@@ -5,8 +5,6 @@ import { XMarkIcon,PencilSquareIcon,ArrowLongRightIcon,PencilIcon,ArrowUpTrayIco
 import{PhotoIcon} from'@heroicons/vue/24/outline'
 
 
-
-
 const replaceImgLabelClick = () => {
   // 點擊收回下拉式選單(再點擊一次)
   document.getElementById("dropdown-toggle").click();
@@ -28,7 +26,7 @@ const closeDropdown = () => {
 </script>
 
 <template>
-  <button class="w-full h-12 px-5 py-3 bg-red-800 text-white text-center text-base rounded-3xl" onclick="NewSchedule.showModal()">
+  <button class="w-full h-12 px-5 py-3 bg-primary-600 text-white text-center text-base rounded-3xl hover:bg-primary-700" onclick="NewSchedule.showModal()">
     建立新行程
   </button>
   <dialog id="NewSchedule" class="modal ">
@@ -146,12 +144,12 @@ const closeDropdown = () => {
       </div>
 
       <!-- footer -->
-      <div class="w-[100%] h-[80px] absolute bottom-0 sticky border-t-[1px] border-slate-200 py-[16px] px-[24px] z-20">
+      <div class="w-[100%] h-[80px] bottom-0 sticky border-t-[1px] border-slate-200 py-[16px] px-[24px] z-20">
         <form method="dialog" class="flex gap-[12px]">
-          <button class="w-[50%] h-[48px] border-[1px] border-primary-800 rounded-3xl text-primary-800 font-bold text-sm justify-center items-center px-[12px] py-[8px] hover:bg-primary-100">
+          <button class="w-[50%] h-[48px] border-[1px] border-primary-600 rounded-3xl text-primary-600 font-bold text-sm justify-center items-center px-[12px] py-[8px] hover:bg-primary-100">
             取消
           </button>
-          <button class="w-[50%] h-[48px] bg-primary-800 rounded-3xl text-white font-bold text-sm justify-center items-center px-[12px] py-[8px] hover:bg-primary-600">
+          <button class="w-[50%] h-[48px] bg-primary-600 rounded-3xl text-white font-bold text-sm justify-center items-center px-[12px] py-[8px] hover:bg-primary-700">
             完成
           </button>
         </form>

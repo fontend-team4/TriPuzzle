@@ -10,7 +10,7 @@ const activeTab = ref('share')
 
 <template>
   <dialog id="shareSchedule" class="modal">
-    <div class="modal-box min-w-full md:min-w-[480px]  bg-gray">
+    <div class="modal-box min-w-full md:min-w-[480px] bg-gray">
       <!-- close button -->
       <form method="dialog">
         <div class="w-full h-10">
@@ -18,7 +18,7 @@ const activeTab = ref('share')
         </div>
       </form>
       <!-- share & invite toggle -->
-      <div class="w-full h-10 flex gap-1 mb-5 p-1 rounded-xl bg-gray-200">
+      <div class="w-full h-10 flex gap-1 mb-5 p-1 rounded-xl bg-white">
         <input id="share" type="radio" name="tab" v-model="activeTab" value="share" class="hidden">
         <label for="share" class="share-toggle w-1/2 text-center py-1 px-2 rounded-lg hover:bg-primary-600 hover:text-white hover:cursor-pointer">分享行程</label>
         <input id="invite" type="radio" name="tab" v-model="activeTab" value="invite" class="hidden">
@@ -31,7 +31,7 @@ const activeTab = ref('share')
           <p class="mb-8 text-center">手機掃描條碼，即可查看此行程</p>
         </div>
         <div>
-          <p class="w-[310px] m-auto text-sm text-center mb-8 text-gray-400 relative before:inline-block before:h-[1px] before:w-1/3 before:bg-gray-400 before:absolute before:top-2 before:left-0 after:inline-block after:h-[1px] after:w-1/3 after:bg-gray-400 after:absolute after:top-2 after:right-0">其他方式</p>
+          <p class="w-[310px] m-auto text-sm text-center mb-8 text-slate-400 relative before:inline-block before:h-[1px] before:w-1/3 before:bg-gray before:absolute before:top-2 before:left-0 after:inline-block after:h-[1px] after:w-1/3 after:bg-gray after:absolute after:top-2 after:right-0">其他方式</p>
           <ul class="w-[310px] m-auto flex justify-around">
             <li>
               <button class="hover:cursor-pointer">
@@ -57,7 +57,7 @@ const activeTab = ref('share')
               <p class="text-sm font-medium p-1 me-2">僅供檢視</p>
               <span class="inline-block w-4 h-4 p-0.5"><ChevronDownIcon /></span>
             </div>
-            <ul tabindex="0" class="dropdown-content menu w-32 bg-base-100 rounded-sm border z-[1] py-2 px-0">
+            <ul tabindex="0" class="dropdown-content menu w-32 bg-base-100 rounded-sm border border-gray z-[1] py-2 px-0">
               <li><a class="rounded-none bg-gray text-primary-600 font-medium">僅供檢視</a></li>
               <li><a class="rounded-none font-medium hover:bg-gray focus:bg-transparent active:bg-white">可編輯</a></li>
             </ul>
@@ -83,7 +83,7 @@ const activeTab = ref('share')
       <div class="py-6" v-if="activeTab !== 'share'">
         <p class="text-sm mb-4 font-medium">成員(2)</p>
         <ul>
-          <li class="flex gap-4 pb-3 border-b-2 border-dashed mb-3">
+          <li class="flex gap-4 pb-3 border-b-2 border-dashed border-slate-300 mb-3">
             <img class="w-11 h-11" src="https://web.chictrip.com.tw/assets/waterview_default.f746ada9.svg" alt="">
             <div>
               <div class="flex items-center mb-2">
@@ -93,7 +93,7 @@ const activeTab = ref('share')
               <p class="text-gray-400">2 行程</p>
             </div>
           </li>
-          <li class="flex gap-4 pb-3 border-b-2 border-dashed mb-3 tooltip tooltip-bottom" data-tip="2024/11/18 加入行程">
+          <li class="flex gap-4 pb-3 border-b-2 border-dashed border-slate-300 mb-3 tooltip tooltip-bottom" data-tip="2024/11/18 加入行程">
             <img class="w-11 h-11" src="https://web.chictrip.com.tw/assets/waterview_default.f746ada9.svg" alt="">
             <div class="w-full flex justify-between items-center">
               <div>

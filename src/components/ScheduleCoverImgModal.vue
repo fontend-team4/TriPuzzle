@@ -64,7 +64,7 @@ function selectImg(clickedItem) {
     </div>
 
     <!-- 主內容區塊 -->
-   <div class="h-[548.75px] relative overflow-hidden rounded-xl my-[50px] ">
+  <div class="h-[548.75px] relative overflow-hidden rounded-xl my-[50px] ">
     <div class="py-0 px-[24px] absolute inset-0 flex flex-wrap gap-[12px] overflow-y-auto">
       <div class="lg:w-[calc(33.33%-8px)] md:w-[calc(50%-8px)] sm:w-[calc(100%-8px)] overflow-hidden relative group p-[1px] cursor-pointer" @click="selectImg(item)" v-for="(item, index) in imageStates" :key="item.id">
         <img :src="item.src" alt="" class="w-full h-auto rounded-xl " />
@@ -86,15 +86,15 @@ function selectImg(clickedItem) {
     </div >
 
     <!-- footer -->
-    <div class="w-[100%] h-[80px] absolute bottom-0 sticky border-t-[1px] border-slate-200 py-[16px] px-[24px] bg-white z-20">
+    <div class="w-[100%] h-[80px] bottom-0 sticky border-t-[1px] border-slate-200 py-[16px] px-[24px] bg-white z-20">
       <form method="dialog" class="flex gap-[12px]">
         <button
-          class="w-[50%] h-[48px] border-[1px] border-primary-800 rounded-3xl text-primary-800 font-bold text-sm justify-center items-center px-[12px] py-[8px] hover:bg-primary-100"
+          class="w-[50%] h-[48px] border-[1px] border-primary-600 rounded-3xl text-primary-600 font-bold text-sm justify-center items-center px-[12px] py-[8px] hover:bg-primary-100"
         >
           取消
         </button>
         <button
-          class="w-[50%] h-[48px] bg-primary-800 rounded-3xl text-white font-bold text-sm justify-center items-center px-[12px] py-[8px] hover:bg-primary-600">
+          class="w-[50%] h-[48px] bg-primary-600 rounded-3xl text-white font-bold text-sm justify-center items-center px-[12px] py-[8px] hover:bg-primary-700">
           完成
         </button>
       </form>
