@@ -338,6 +338,9 @@ const detailToggle = inject('detailToggle')
         <!-- add schedule btn 建立新行程按鈕-->
         <!--已登入 -->
         <div class="w-full lg:w-96 h-20 px-2.5 py-5 bg-white border-gray border-t absolute bottom-0 left-0">
+          <button class="w-full h-12 px-5 py-3 bg-primary-600 text-white text-center text-base rounded-3xl hover:bg-primary-700" onclick="NewSchedule.showModal()">
+            建立新行程
+          </button>
           <NewScheduleModal />
         </div>
         <!-- 未登入 -->

@@ -1,8 +1,9 @@
 <script setup>
 import { ref, onMounted, nextTick } from "vue";
-import { StarIcon, MapPinIcon, ChevronDownIcon, HeartIcon } from "@heroicons/vue/24/solid";
+import { StarIcon, MapPinIcon, ChevronDownIcon, HeartIcon, PlusCircleIcon } from "@heroicons/vue/24/solid";
 import { HeartIcon as OutlineHeartIcon } from "@heroicons/vue/24/outline";
 import fakeLocation from "../../fakeLocation.json";
+import AddPlaceModal from "./AddPlaceModal.vue";
 
 const fakeLocations = ref([]);
 const items = ref([]);
@@ -82,9 +83,10 @@ const toggleFavorite = (item) => {
                   @click.prevent="toggleFavorite(item)"
                 >
                 <component  :is="item.isFavorited ? HeartIcon : OutlineHeartIcon":class="item.isFavorited ? 'text-red-500' : 'text-gray-500'" class="size-6"/>
-
                 </div>
-                <div class="text-white">加入景點</div>
+                <button class="btn border-0 overflow-hidden text-white text-lg bg-secondary-500 rounded-full
+  hover:bg-secondary-600" onclick="AddPlace.showModal()">加入行程<PlusCircleIcon class="size-6"/></button>
+                <AddPlaceModal />
               </div>
               
               <!-- 圖片 -->

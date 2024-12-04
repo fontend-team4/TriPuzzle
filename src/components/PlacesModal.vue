@@ -1,7 +1,8 @@
 <script setup>
-import { ListBulletIcon, XMarkIcon, StarIcon, MapPinIcon } from "@heroicons/vue/24/solid";
-import fakeLocation from "../../fakeLocation.json";
 import { ref, onMounted, computed } from "vue"
+import { ListBulletIcon, XMarkIcon, StarIcon, MapPinIcon, PlusCircleIcon } from "@heroicons/vue/24/solid";
+import fakeLocation from "../../fakeLocation.json";
+import AddPlaceModal from "./AddPlaceModal.vue";
 
 const fakeLocations = ref([]);
 
@@ -82,7 +83,9 @@ const hamburgerCls = computed(() => {
                     <div
                       class="inline-flex items-center justify-between w-full text-sm duration-300 opacity-0 group-hover:opacity-100"
                     >
-                      <div>加入景點</div>
+                      <button class="btn border-0 overflow-hidden text-white text-lg bg-secondary-500 rounded-full
+  hover:bg-secondary-600" onclick="AddPlace.showModal()">加入行程<PlusCircleIcon class="size-6"/></button>
+                      <AddPlaceModal />
                       <a :href="item.google_map">
                         <MapPinIcon class="text-gray-500 size-5" />
                       </a>
