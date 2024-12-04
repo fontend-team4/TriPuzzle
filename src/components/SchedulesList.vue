@@ -17,7 +17,7 @@ const detailToggle = inject('detailToggle')
   <div class="overflow-x-hidden">
     <div class="schedule-list w-full lg:w-96 h-screen bg-white shadow-xl transition-all relative">
       <!-- schedule list -->
-      <div class="p-5 bg-white">
+      <div class="w-screen lg:w-full p-5 bg-white">
         <!-- header -->
         <div class="pb-3 relative bg-white">
           <div
@@ -313,7 +313,7 @@ const detailToggle = inject('detailToggle')
           </div> -->
           <!-- 與我共編-->
           <!--已登入 -->
-          <div class="w-full h-52 text-center mt-7" v-else>
+          <div class="h-52 text-center mt-7" v-else>
             <img
               class="w-[180px] h-[103px] mx-auto"
               src="https://web.chictrip.com.tw/assets/master-unlock.990b2501.png"

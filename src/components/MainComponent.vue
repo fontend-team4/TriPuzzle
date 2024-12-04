@@ -7,16 +7,17 @@ import ScheduleSideBar from './ScheduleSideBar.vue'
 
 const isPlacesComponent = ref(true);
 
-const placesComponentCls = computed(() => {
-    return isPlacesComponent.value ? [""] : ["translate-y-full opacity-0"];
-});
+// 改用 v-if 不然下面會佔位
+// const placesComponentCls = computed(() => {
+//     return isPlacesComponent.value ? [""] : ["translate-y-full opacity-0"];
+// });
 
 // ScheduleList
 const schedulesListRef = ref(null)
 
 // search bar 跟著右側列表伸縮寬度
 const topBarSwitch = computed(()=> {
-  return schedulesListRef?.value?.listOpen ? 'w-[75%] transition-all' : 'w-[98%]'
+  return schedulesListRef?.value?.listOpen ? 'w-[75%] transition-all' : 'w-full lg:w-[98%]'
 })
 
 // waterfall 跟著右側列表伸縮寬度
@@ -31,28 +32,12 @@ const waterFallSwitch = computed(()=> {
     <MapToggle 
     class="hidden lg:flex justify-start item-center mr-24"
     v-model:isPlacesComponent="isPlacesComponent" />
-  </div>
-  <PlacesComponent class="absolute top-0 transition-all" :class="waterFallSwitch, placesComponentCls" />
-  <ScheduleSideBar ref="schedulesListRef"/>
-  
-  <!-- <div class="flex relative w-screen item-center gap-2  bg-slate-100"> -->
-  <!-- 搜尋欄 -->
-  <!-- <SearchBar class="flex lg:w-[75%]  justify-end w-full  lg:ml-20"/>
-  <MapToggle 
-    class="hidden top-0 right-4 justify-start item-center mr-24 lg:absolute lg:flex"
-    v-model:isPlacesComponent="isPlacesComponent" />
-  </div> -->
-  <!-- 地圖/景點牆 -->
-  <!-- <div class="relative w-screen ">
-    <div class="absolute h-screen overflow-x-hidden lg:pl-12">
-      <MapComponent />
-      <PlacesComponent class="absolute top-0  transition-all" 
-      :class="placesComponentCls" />
-    </div>
     <MapToggle 
-      class="fixed bottom-0 left-[40%] justify-center item-center md:left-[44%] lg:hidden"
+      class="fixed bottom-5 left-1/2 -translate-x-1/2 justify-center item-center md:left-[44%] lg:hidden"
       v-model:isPlacesComponent="isPlacesComponent" />
-  </div> -->
+  </div>
+  <PlacesComponent v-if="isPlacesComponent" class="absolute top-0 transition-all" :class="waterFallSwitch" />
+  <ScheduleSideBar ref="schedulesListRef"/>
 </template>
 
 <style>
