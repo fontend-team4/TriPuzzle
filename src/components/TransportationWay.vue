@@ -1,6 +1,7 @@
 <script setup>
 import { inject } from 'vue';
 import { ChevronLeftIcon, MapPinIcon, ChevronDoubleDownIcon } from '@heroicons/vue/24/solid'
+import { Car, Motorcycle, Bus, Walking, EditPencil } from '@iconoir/vue'
 
 const transportationToggle = inject('transportationToggle')
 </script>
@@ -29,24 +30,24 @@ const transportationToggle = inject('transportationToggle')
     <div class="w-full flex overflow-x-scroll gap-2 px-5 pb-3">
       <ul class="flex gap-2">
         <li class="flex whitespace-nowrap items-center py-1 px-3 bg-gray rounded-full hover:cursor-pointer hover:bg-primary-100 hover:text-primary-600">
-          <i class="iconoir-car me-1"></i>
+          <Car class="me-1" height="18" width="18"/>
           <p class="text-sm font-medium">--</p>
         </li>
         <li class="flex whitespace-nowrap items-center py-1 px-3 bg-gray rounded-full hover:cursor-pointer hover:bg-primary-100 hover:text-primary-600">
-          <i class="iconoir-motorcycle me-1"></i>
+          <Motorcycle class="me-1" height="18" width="18"/>
           <p class="text-sm font-medium">24 分</p>
         </li>
         <li class="flex whitespace-nowrap items-center py-1 px-3 bg-gray rounded-full hover:cursor-pointer hover:bg-primary-100 hover:text-primary-600">
-          <i class="iconoir-bus me-1"></i>
+          <Bus class="me-1" height="18" width="18"/>
           <p class="text-sm font-medium">30 分</p>
         </li>
         <li class="flex whitespace-nowrap items-center py-1 px-3 bg-gray rounded-full hover:cursor-pointer hover:bg-primary-100 hover:text-primary-600">
-          <i class="iconoir-walking me-1"></i>
+          <Walking class="me-1" height="18" width="18"/>
           <p class="text-sm font-medium">--</p>
         </li>
       </ul>
       <div class="flex whitespace-nowrap items-center py-1 px-3 bg-gray rounded-full hover:cursor-pointer hover:bg-primary-100 hover:text-primary-600">
-        <i class="iconoir-edit-pencil me-1"></i>
+        <EditPencil class="me-1" height="18" width="18"/>
         <p class="text-sm font-medium">自訂</p>
       </div>
     </div>
