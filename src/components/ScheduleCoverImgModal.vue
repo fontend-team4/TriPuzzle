@@ -1,30 +1,29 @@
 <script setup>
 import { ref } from 'vue';
-import { CheckIcon, XMarkIcon,} from "@heroicons/vue/24/solid";
-import{PhotoIcon} from'@heroicons/vue/24/outline'
+import { CheckIcon, XMarkIcon } from "@heroicons/vue/24/solid";
+import{ PhotoIcon } from'@heroicons/vue/24/outline'
+import coverimage1 from "../assets/images/coverimage-1.jpg"
+import coverimage2 from "../assets/images/coverimage-2.jpg"
+import coverimage3 from "../assets/images/coverimage-3.jpg"
+import coverimage4 from "../assets/images/coverimage-4.jpg"
+import coverimage5 from "../assets/images/coverimage-5.jpg"
+import coverimage6 from "../assets/images/coverimage-6.jpg"
+import coverimage7 from "../assets/images/coverimage-7.jpg"
+import coverimage8 from "../assets/images/coverimage-8.jpg"
+import coverimage9 from "../assets/images/coverimage-9.jpg"
+
 
 // 把圖片儲存成物件，讓其個別都有id，選中後不會相互影響
 const imageStates = ref([
-  { id: 1, isClicked: false, src: "https://chictirpstorageprod.blob.core.windows.net/system/166b42c7-fc3c-4708-ab2b-f9730bfd1b8a.jpg" },
-  { id: 2, isClicked: false, src: "https://chictirpstorageprod.blob.core.windows.net/system/85cd9517-4fb3-4e98-874c-73d17803a94f.jpg" },
-  { id: 3, isClicked: false, src: "https://chictirpstorageprod.blob.core.windows.net/system/8f8b5696-4619-48f9-9d1a-7f2b9168c208.jpg" },
-  { id: 4, isClicked: false, src: "https://chictirpstorageprod.blob.core.windows.net/system/0a13c77b-1bef-4ddf-aa7c-e08a2ad0a35e.jpg" },
-  { id: 5, isClicked: false, src: "https://chictirpstorageprod.blob.core.windows.net/system/3bb84de2-3875-42e3-a0c3-03954fd0f9fd.jpg" },
-  { id: 6, isClicked: false, src: "https://chictirpstorageprod.blob.core.windows.net/system/7c67f30d-aad7-4165-a2b4-2825303693e5.jpg" },
-  { id: 7, isClicked: false, src: "https://chictirpstorageprod.blob.core.windows.net/system/82b8fafd-d76b-43f1-b730-2739e55c527e.jpg" },
-  { id: 8, isClicked: false, src: "https://chictirpstorageprod.blob.core.windows.net/system/7a661442-e00f-459d-aeb1-75d682b17551.jpg" },
-  { id: 9, isClicked: false, src: "https://chictirpstorageprod.blob.core.windows.net/system/2bf62bfd-5bbd-47f1-9174-492c7218dcdf.jpg" },
-  { id: 10, isClicked: false, src: "https://chictirpstorageprod.blob.core.windows.net/system/9899380f-153f-4384-be83-516b3b8a9b3c.jpg" },
-  { id: 11, isClicked: false, src: "https://chictirpstorageprod.blob.core.windows.net/system/70bce556-122b-44bb-bc79-4eed6aa4265f.jpg" },
-  { id: 12, isClicked: false, src: "https://chictirpstorageprod.blob.core.windows.net/system/be5380cd-da47-41d1-b38b-6d661b4b33d3.jpg" },
-  { id: 13, isClicked: false, src: "https://chictirpstorageprod.blob.core.windows.net/system/ad39f04a-c396-4ec6-9d3d-fc66b12b4160.jpg" },
-  { id: 14, isClicked: false, src: "https://chictirpstorageprod.blob.core.windows.net/system/33582d09-164f-45a2-bb29-44806de711d3.jpg" },
-  { id: 15, isClicked: false, src: "https://chictirpstorageprod.blob.core.windows.net/system/91e5c1d2-81a3-4c47-9354-d8508c45766e.jpg" },
-  { id: 16, isClicked: false, src: "https://chictirpstorageprod.blob.core.windows.net/system/81589db3-f900-481a-b03e-e9c079a9c42d.jpg" },
-  { id: 17, isClicked: false, src: "https://chictirpstorageprod.blob.core.windows.net/system/18460b43-cc4b-43de-97b2-4b6820c44f1f.jpg" },
-  { id: 18, isClicked: false, src: "https://chictirpstorageprod.blob.core.windows.net/system/adee7b7c-9206-4a73-9696-ddab50a165de.jpg" },
-  { id: 19, isClicked: false, src: "https://chictirpstorageprod.blob.core.windows.net/system/87f0c114-3846-4163-b3bc-d5b292300bf2.jpg" },
-  { id: 20, isClicked: false, src: "https://chictirpstorageprod.blob.core.windows.net/system/50ceeac1-5a85-41fd-875e-c5f955310a70.jpg" },
+  { id: 1, isClicked: false, src: coverimage1 },
+  { id: 2, isClicked: false, src: coverimage2 },
+  { id: 3, isClicked: false, src: coverimage3 },
+  { id: 4, isClicked: false, src: coverimage4 },
+  { id: 5, isClicked: false, src: coverimage5 },
+  { id: 6, isClicked: false, src: coverimage6 },
+  { id: 7, isClicked: false, src: coverimage7 },
+  { id: 8, isClicked: false, src: coverimage8 },
+  { id: 9, isClicked: false, src: coverimage9 },
 ]);
 
 
@@ -44,15 +43,14 @@ function selectImg(clickedItem) {
 
 
 <button
-    class="flex items-center justify-start w-full  gap-[5px] hover:bg-gray-100 transition "
-    onclick="select_img.showModal()"
-  >
-    <PhotoIcon class="w-[24px] h-[24px]" />
-    <span class="text-[14px] truncate">從圖庫中挑選</span>
-  </button>
+  class="flex items-center justify-start w-full  gap-[5px] hover:bg-gray-100 transition "
+  onclick="select_img.showModal()">
+  <PhotoIcon class="w-[24px] h-[24px]" />
+  <span class="text-[14px] truncate">從圖庫中挑選</span>
+</button>
 <dialog id="select_img" class="modal">
-  <div class="modal-box p-0 md:max-w-[800px] md:min-w-[728px] min-w-full max-h-full md:h-[740px] rounded-none md:rounded-xl">
-    <div class="md:max-w-[800px] md:min-w-[728px] h-[60px] px-[15px] py-[8px] sticky top-0 bg-white rounded-xl relative z-10">
+  <div class="modal-box p-0 md:max-w-[800px] md:min-w-[728px] min-w-full max-h-full md:h-[600px] rounded-none md:rounded-xl">
+    <div class="md:max-w-[800px] md:min-w-[728px] h-[60px] px-[15px] py-[8px] sticky top-0 bg-white rounded-xl z-10">
       <form method="dialog">
       <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"><XMarkIcon class="w-6 h-6" /></button>
     </form>
@@ -64,7 +62,7 @@ function selectImg(clickedItem) {
     </div>
 
     <!-- 主內容區塊 -->
-   <div class="h-[548.75px] relative overflow-hidden rounded-xl my-[50px] ">
+  <div class="h-[360px] relative overflow-hidden rounded-xl my-[50px] ">
     <div class="py-0 px-[24px] absolute inset-0 flex flex-wrap gap-[12px] overflow-y-auto">
       <div class="lg:w-[calc(33.33%-8px)] md:w-[calc(50%-8px)] sm:w-[calc(100%-8px)] overflow-hidden relative group p-[1px] cursor-pointer" @click="selectImg(item)" v-for="(item, index) in imageStates" :key="item.id">
         <img :src="item.src" alt="" class="w-full h-auto rounded-xl " />
@@ -86,15 +84,15 @@ function selectImg(clickedItem) {
     </div >
 
     <!-- footer -->
-    <div class="w-[100%] h-[80px] absolute bottom-0 sticky border-t-[1px] border-slate-200 py-[16px] px-[24px] bg-white z-20">
+    <div class="w-[100%] h-[80px] bottom-0 sticky border-t-[1px] border-slate-200 py-[16px] px-[24px] bg-white z-20">
       <form method="dialog" class="flex gap-[12px]">
         <button
-          class="w-[50%] h-[48px] border-[1px] border-primary-800 rounded-3xl text-primary-800 font-bold text-sm justify-center items-center px-[12px] py-[8px] hover:bg-primary-100"
+          class="w-[50%] h-[48px] border-[1px] border-primary-600 rounded-3xl text-primary-600 font-bold text-sm justify-center items-center px-[12px] py-[8px] hover:bg-primary-100"
         >
           取消
         </button>
         <button
-          class="w-[50%] h-[48px] bg-primary-800 rounded-3xl text-white font-bold text-sm justify-center items-center px-[12px] py-[8px] hover:bg-primary-600">
+          class="w-[50%] h-[48px] bg-primary-600 rounded-3xl text-white font-bold text-sm justify-center items-center px-[12px] py-[8px] hover:bg-primary-700">
           完成
         </button>
       </form>

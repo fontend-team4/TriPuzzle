@@ -1,7 +1,8 @@
 <script setup>
-import { ListBulletIcon, XMarkIcon, StarIcon, MapPinIcon } from "@heroicons/vue/24/solid";
-import fakeLocation from "../../fakeLocation.json";
 import { ref, onMounted, computed } from "vue"
+import { ListBulletIcon, XMarkIcon, StarIcon, MapPinIcon, PlusCircleIcon } from "@heroicons/vue/24/solid";
+import fakeLocation from "../../fakeLocation.json";
+import AddPlaceModal from "./AddPlaceModal.vue";
 
 const fakeLocations = ref([]);
 
@@ -29,10 +30,9 @@ const hamburgerCls = computed(() => {
 
 
 <template>
-  <div class="w-full h-screen "></div>
   <!-- 漢堡選單 -->
     <div  
-      class="fixed items-center hidden w-12 h-12 px-2 transition-all duration-300 bg-white rounded-full shadow-md cursor-pointer top-24 left-20 group hover:w-32 md:flex" 
+      class="fixed items-center hidden w-12 h-12 px-2 transition-all duration-300 bg-white rounded-full shadow-md cursor-pointer top-24 left-10 lg:left-28 group hover:w-32 md:flex" 
       @click="sideToggle" :cls="hamburgerCls"
     >
       <div class="flex-shrink-0">
@@ -46,8 +46,9 @@ const hamburgerCls = computed(() => {
     </div>
 
   <!-- 側欄 -->
-    <div  class="fixed left-0 hidden h-full w-96 md:block">
-      <div class="w-96 h-[calc(100vh-72px)] bg-white fixed bottom-0 left-20 rounded-tr-3xl drop-shadow-md transition-all duration-300" :class="sideCls">
+    <!-- fixed -->
+    <div  class=" hidden h-full w-96 md:block">
+      <div class="w-96 h-[calc(100vh-72px)] bg-white absolute bottom-0 left-0 lg:left-20 rounded-tr-3xl drop-shadow-md transition-all duration-300" :class="sideCls">
         <div class="z-20 flex items-center justify-between w-full p-4 bg-white rounded-tr-3xl">
           <div>
 
@@ -82,7 +83,9 @@ const hamburgerCls = computed(() => {
                     <div
                       class="inline-flex items-center justify-between w-full text-sm duration-300 opacity-0 group-hover:opacity-100"
                     >
-                      <div>加入景點</div>
+                      <button class="btn border-0 overflow-hidden text-white text-lg bg-secondary-500 rounded-full
+  hover:bg-secondary-600" onclick="AddPlace.showModal()">加入行程<PlusCircleIcon class="size-6"/></button>
+                      <AddPlaceModal />
                       <a :href="item.google_map">
                         <MapPinIcon class="text-gray-500 size-5" />
                       </a>

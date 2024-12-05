@@ -17,12 +17,12 @@
             <span class="block w-20 h-20 mb-3 mx-auto"><DocumentArrowDownIcon/></span>
             <p class="text-center">點擊下載</p>
           </button>
-          <div class="border-t pt-4">
+          <div class="border-t border-gray pt-4">
             <h3 class="text-2xl font-medium text-center mb-4">寄送 Email</h3>
             <input type="text" placeholder="輸入要寄送的 Email" class="input input-bordered w-full px-6 focus:outline-primary-600" />
           </div>
           <!-- bottom btn -->
-          <div class="w-full flex gap-3 h-20 px-6 py-4 bg-white border-t fixed bottom-0 right-0">
+          <div class="w-full flex gap-3 h-20 px-6 py-4 bg-white border-t border-gray fixed bottom-0 right-0">
             <button class="w-full h-12 px-5 py-3 border border-primary-600 text-primary-600 text-center rounded-3xl font-medium hover:bg-primary-100">
               取消
             </button>
