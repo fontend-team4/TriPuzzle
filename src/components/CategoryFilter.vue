@@ -1,7 +1,6 @@
 <script setup>
-import { AdjustmentsHorizontalIcon,PlusIcon } from '@heroicons/vue/24/solid'
-import { ref } from "vue";
-
+import { AdjustmentsHorizontalIcon, PlusIcon } from '@heroicons/vue/24/solid'
+import { ref, onMounted } from "vue";
 
 // 定義分類資料
 const categories = ref([
@@ -42,6 +41,19 @@ const closeModal = () => {
   const dialog = document.getElementById("CategoryFilter");
   dialog?.close();
 };
+
+// 保存分類
+const saveCategories = () => {
+  localStorage.setItem('categories', JSON.stringify(categories.value));
+  closeModal();
+};
+
+onMounted(() => {
+  const savedCategories = localStorage.getItem('categories');
+  if (savedCategories) {
+    categories.value = JSON.parse(savedCategories);
+  }
+});
 </script>
 
 <template>
@@ -140,13 +152,19 @@ const closeModal = () => {
             class="btn btn-lg rounded-full w-1/2 btn-outline text-primary-700 
             hover:bg-primary-200
             hover:border-primary-700
-            hover:text-primary-700">
+            hover:text-primary-700"
+            @click="closeModal"
+          >
             取消
           </button>
           <button 
             class="btn btn-lg rounded-full w-1/2 bg-primary-700 text-primary-100 border-transparent 
             hover:bg-primary-800
-            hover:border-primary-100">儲存</button>
+            hover:border-primary-100"
+            @click="saveCategories"
+          >
+            儲存
+          </button>
         </span>
       </footer>
     </div>

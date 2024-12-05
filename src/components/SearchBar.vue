@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref,watch } from 'vue';
 import { MagnifyingGlassIcon, XCircleIcon } from '@heroicons/vue/24/solid';
 import CategoryFilter from './CategoryFilter.vue';
 import SearchArea from './SearchArea.vue';
@@ -7,12 +7,11 @@ import SearchArea from './SearchArea.vue';
 // 預設為分類模式
 const isCategoryMode = ref(true);
 
-const categories = ['景點','收藏', '美食', '購物', '住宿', '租車站', '交通站', '充電樁', '我的最愛'];
-const Mdcategories = ['景點','收藏', '美食', '購物', '住宿'];
+const categories = ref(['景點','收藏', '美食', '購物', '住宿', '租車站', '交通站', '充電樁', '我的最愛']);
+const Mdcategories = ref(['景點','收藏', '美食', '購物', '住宿']);
 
-
-const activeCategory = ref(categories[0]);
-const activeMdCategory = ref(Mdcategories[0]);
+const activeCategory = ref(categories.value[0]);
+const activeMdCategory = ref(Mdcategories.value[0]);
 
 //切換模式
 const toggleMode = () => {
@@ -31,6 +30,13 @@ const setActiveMdCategory = (Mdcategory) => {
 const switchToCategoryMode = () => {
   isCategoryMode.value = true;
 }
+
+// Watch for changes in CategoryFilter and update categories
+watch(() => CategoryFilter.categories, (newCategories) => {
+  categories.value = newCategories;
+  activeCategory.value = newCategories[0];
+});
+
 </script>
 
 <template >
