@@ -1,3 +1,19 @@
+<script setup>
+import { ref, computed, inject, provide } from 'vue'
+import { XMarkIcon, ChevronLeftIcon, ArrowUpTrayIcon, UsersIcon, PencilIcon, TrashIcon, MagnifyingGlassIcon, BookmarkIcon, CalendarIcon, DocumentDuplicateIcon, PlusCircleIcon } from '@heroicons/vue/24/outline'
+import { EllipsisHorizontalIcon, MapPinIcon } from '@heroicons/vue/24/solid'
+import ShareScheduleModal from './ShareScheduleModal.vue'
+import EditPlaceModal from './EditPlaceModal.vue'
+import DeletePerDayModal from './DeletePerDayModal.vue'
+import MoveToOtherDateModal from './MoveToOtherDateModal.vue'
+import DeletePerPlaceModal from './DeletePerPlaceModal.vue'
+
+const listAndDetailToggle = inject('listAndDetailToggle')
+const detailToggle = inject('detailToggle')
+const transportationToggle = inject('transportationToggle')
+
+</script>
+
 <template>
   <div class="w-full lg:w-96 h-screen bg-white shadow-xl transition-all">
     <!-- header -->
@@ -10,12 +26,12 @@
         <div class="w-5 h-5 text-white hover:cursor-pointer" onclick="shareScheduleModal.showModal()"><ArrowUpTrayIcon /></div>
         <ShareScheduleModal />
       </div>
-      <label class="bg-gray opacity-80 text-gray-600 w-8 h-8 rounded-full absolute top-3.5 right-4 p-1.5 hover:opacity-90 tooltip tooltip-bottom hover:cursor-pointer" data-tip="隱藏行程" @click="listToggle">
+      <label class="bg-gray opacity-80 text-gray-600 w-8 h-8 rounded-full absolute top-3.5 right-4 p-1.5 hover:opacity-90 tooltip tooltip-bottom hover:cursor-pointer" data-tip="隱藏行程" @click="listAndDetailToggle">
         <XMarkIcon />
       </label>
     </div>
     <!-- date tab -->
-    <div class="flex border-b">
+    <div class="flex border-b border-gray">
       <div class="w-full h-12 flex pt-2 ps-8 pe-3 overflow-x-scroll">
         <ul class="flex gap-4">
           <li class="whitespace-nowrap"><a href="" class="pb-2 text-gray-800 font-medium text-sm border-b-2 border-primary-600">總覽頁</a></li>
@@ -52,7 +68,7 @@
             </form>
             <h2 class="text-2xl font-medium text-center pt-6 mb-4">行程筆記</h2>
             <textarea class="w-full h-[500px] textarea textarea-lg focus:border-0 focus:outline-none" placeholder="記下重要的旅行細節吧"></textarea>
-            <div class="w-full flex gap-3 h-20 px-6 py-4 bg-white border-t fixed bottom-0 right-0">
+            <div class="w-full flex gap-3 h-20 px-6 py-4 bg-white border-t border-gray fixed bottom-0 right-0">
               <button class="w-full h-12 px-5 py-3 border border-primary-600 text-primary-600 text-center rounded-3xl font-medium hover:bg-primary-100">
                 取消
               </button>
@@ -117,7 +133,7 @@
         <!-- have places -->
         <div class="">
           <!-- place & transportation -->
-          <div class="place w-full bg-gray rounded-xl border">
+          <div class="place w-full bg-gray rounded-xl border border-gray">
             <div class="flex p-1">
               <img class="w-[108px] h-[108px] rounded-xl object-cover" src="https://lh3.googleusercontent.com/places/ANJU3Ds3MXRcZf77xt6ejMr5CyGxuySKPa3n9yUWJ5EqShizmd3EPHhQNT8_xFYRuOpksBffhO-lOh21FWclCl_ZQv94ZzST19IrWtM=s1600-w480">
               <div class="w-cal flex justify-between">
@@ -158,7 +174,7 @@
             </div>
             <!-- hover:relative feature -->
             <div class="more lg:hidden">
-              <div class="h-10 flex justify-between items-center border-t">
+              <div class="h-10 flex justify-between items-center border-t border-white">
                 <ul class="flex gap-4 p-3">
                   <li class="flex items-center text-gray-500 gap-1 hover:cursor-pointer" onclick="edit_place.showModal()">
                     <span class="w-3 h-3"><PencilIcon/></span>
@@ -181,7 +197,7 @@
                       </form>
                       <h2 class="text-2xl font-medium text-center pt-6 mb-4">景點筆記</h2>
                       <textarea class="w-full h-[500px] textarea textarea-lg focus:border-0 focus:outline-none" placeholder="還沒有寫筆記哦"></textarea>
-                      <div class="w-full flex gap-3 h-20 px-6 py-4 bg-white border-t fixed bottom-0 right-0">
+                      <div class="w-full flex gap-3 h-20 px-6 py-4 bg-white border-t border-gray fixed bottom-0 right-0">
                         <button class="w-full h-12 px-5 py-3 border border-primary-600 text-primary-600 text-center rounded-3xl font-medium hover:bg-primary-100">
                           取消
                         </button>
@@ -196,16 +212,16 @@
                     </form>
                   </dialog> 
                 </ul>
-                <span class="w-10 h-10 text-gray-500 p-3 border-l hover:cursor-pointer"><MapPinIcon/></span>
+                <span class="w-10 h-10 text-gray-500 p-3 border-l border-white hover:cursor-pointer"><MapPinIcon/></span>
               </div>
             </div>
           </div>
           <!-- transportation -->
-          <div class="w-full ml-3 py-4 ps-3 border-l border-dashed hover:cursor-pointer" @click="transportationToggle">
+          <div class="w-full ml-3 py-4 ps-3 border-l border-dashed border-gray hover:cursor-pointer" @click="transportationToggle">
             <p>自訂交通 0 分</p>
           </div>
           <!-- place & transportation -->
-          <div class="place w-full bg-gray rounded-xl border">
+          <div class="place w-full bg-gray rounded-xl border border-gray">
             <div class="flex p-1">
               <img class="w-[108px] h-[108px] rounded-xl object-cover" src="https://chictirpstorageprod.blob.core.windows.net/poi/8d8b0e7e-b654-4e7f-91b8-096097b84246.jpg">
               <div class="w-cal flex justify-between">
@@ -244,7 +260,7 @@
             </div>
             <!-- hover:relative feature -->
             <div class="more lg:hidden">
-              <div class="h-10 flex justify-between items-center border-t">
+              <div class="h-10 flex justify-between items-center border-t border-white">
                 <ul class="flex gap-4 p-3">
                   <li class="flex items-center text-gray-500 gap-1 hover:cursor-pointer" onclick="edit_place.showModal()">
                     <span class="w-3 h-3"><PencilIcon/></span>
@@ -282,16 +298,16 @@
                     </form>
                   </dialog> 
                 </ul>
-                <span class="w-10 h-10 text-gray-500 p-3 border-l hover:cursor-pointer"><MapPinIcon/></span>
+                <span class="w-10 h-10 text-gray-500 p-3 border-l border-white hover:cursor-pointer"><MapPinIcon/></span>
               </div>
             </div>
           </div>
           <!-- transportation -->
-          <div class="w-full ml-3 py-4 ps-3 border-l border-dashed hover:cursor-pointer">
+          <div class="w-full ml-3 py-4 ps-3 border-l border-dashed border-gray hover:cursor-pointer">
             <p>自訂交通 0 分</p>
           </div>
           <!-- place -->
-          <div class="place w-full bg-gray rounded-xl border">
+          <div class="place w-full bg-gray rounded-xl border border-gray">
             <div class="flex p-1">
               <img class="w-[108px] h-[108px] rounded-xl object-cover" src="https://lh3.googleusercontent.com/places/ANJU3DsUY2LM1fuJKUAmH-PF1rJfdcdHY1r2gLmSddnr24aqnSDDkNAG5oMI5BNaQ1xXBbtxiJTyTnixNTKAyl541gqVjZax6o9DbsM=s1600-w480">
               <div class="w-cal flex justify-between">
@@ -318,7 +334,7 @@
                         <p>複製</p>
                       </a>  
                     </li>
-                    <li class="border-t">
+                    <li class="border-t border-gray">
                       <a class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray" href="#">
                         <span class="inline-block w-6 h-6"><TrashIcon/></span>
                         <p>刪除</p>
@@ -330,7 +346,7 @@
             </div>
             <!-- hover:relative feature -->
             <div class="more lg:hidden">
-              <div class="h-10 flex justify-between items-center border-t">
+              <div class="h-10 flex justify-between items-center border-t border-white">
                 <ul class="flex gap-4 p-3">
                   <li class="flex items-center text-gray-500 gap-1 hover:cursor-pointer" onclick="edit_place.showModal()">
                     <span class="w-3 h-3"><PencilIcon/></span>
@@ -353,7 +369,7 @@
                       </form>
                       <h2 class="text-2xl font-medium text-center pt-6 mb-4">景點筆記</h2>
                       <textarea class="w-full h-[500px] textarea textarea-lg focus:border-0 focus:outline-none" placeholder="還沒有寫筆記哦"></textarea>
-                      <div class="w-full flex gap-3 h-20 px-6 py-4 bg-white border-t fixed bottom-0 right-0">
+                      <div class="w-full flex gap-3 h-20 px-6 py-4 bg-white border-t border-gray fixed bottom-0 right-0">
                         <button class="w-full h-12 px-5 py-3 border border-primary-600 text-primary-600 text-center rounded-3xl font-medium hover:bg-primary-100">
                           取消
                         </button>
@@ -368,7 +384,7 @@
                     </form>
                   </dialog> 
                 </ul>
-                <span class="w-10 h-10 text-gray-500 p-3 border-l hover:cursor-pointer"><MapPinIcon/></span>
+                <span class="w-10 h-10 text-gray-500 p-3 border-l border-white hover:cursor-pointer"><MapPinIcon/></span>
               </div>
             </div>
           </div>
@@ -377,21 +393,6 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import { ref, computed, inject, provide } from 'vue'
-import { XMarkIcon, ChevronLeftIcon, ArrowUpTrayIcon, UsersIcon, PencilIcon, TrashIcon, MagnifyingGlassIcon, BookmarkIcon, CalendarIcon, DocumentDuplicateIcon, PlusCircleIcon } from '@heroicons/vue/24/outline'
-import { EllipsisHorizontalIcon, MapPinIcon } from '@heroicons/vue/24/solid'
-import ShareScheduleModal from './ShareScheduleModal.vue'
-import EditPlaceModal from './EditPlaceModal.vue'
-import DeletePerDayModal from './DeletePerDayModal.vue'
-import MoveToOtherDateModal from './MoveToOtherDateModal.vue'
-import DeletePerPlaceModal from './DeletePerPlaceModal.vue'
-
-const listToggle = inject('listToggle')
-const detailToggle = inject('detailToggle')
-const transportationToggle = inject('transportationToggle')
-</script>
 
 <style>
 .date:hover > .dropdown{

@@ -21,11 +21,11 @@ const props = defineProps(["isPlacesComponent"]);
     >
       <div v-show="isPlacesComponent" class="flex items-center">
         <MapIcon class="text-white size-6" />
-        <p class="ml-2">查看地圖</p>
+        <p class="ml-2 text-sm">查看地圖</p>
       </div>
       <div v-show="!isPlacesComponent" class="flex items-center">
         <Squares2X2Icon class="size-6" />
-        <p class="ml-2">查看景點牆</p>
+        <p class="ml-2 text-sm">查看景點牆</p>
       </div>
     </label>
   </div>

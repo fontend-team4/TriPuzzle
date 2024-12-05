@@ -1,8 +1,9 @@
 <script setup>
 import { ref, onMounted, nextTick } from "vue";
-import { StarIcon, MapPinIcon, ChevronDownIcon, HeartIcon } from "@heroicons/vue/24/solid";
+import { StarIcon, MapPinIcon, ChevronDownIcon, HeartIcon, PlusCircleIcon } from "@heroicons/vue/24/solid";
 import { HeartIcon as OutlineHeartIcon } from "@heroicons/vue/24/outline";
 import fakeLocation from "../../fakeLocation.json";
+import AddPlaceModal from "./AddPlaceModal.vue";
 
 const fakeLocations = ref([]);
 const items = ref([]);
@@ -37,7 +38,7 @@ const calculateColumns = async () => {
 };
 
 const handleResize = () => {
-  if (window.innerWidth >= 1024) numCols.value = 5;
+  if (window.innerWidth >= 1024) numCols.value = 4;
   else if (window.innerWidth >= 768) numCols.value = 3;
   else numCols.value = 2;
   calculateColumns();
@@ -54,61 +55,58 @@ onMounted(() => {
 const toggleFavorite = (item) => {
   item.isFavorited = !item.isFavorited;
 };
-
-
 </script>
 
 <template>
-  <div>
-    <div class="w-full h-screen px-10 pt-4 pb-14 bg-slate-100 ">
-      <!-- 瀑布流 -->
+  <div class="h-screen lg:ps-28 pt-20 lg:pt-24 pb-14 bg-slate-100">
+    <!-- 瀑布流 -->
+    <div
+      class="grid"
+      :style="{ gridTemplateColumns: `repeat(${numCols}, 1fr)` }"
+      style="gap: 16px"
+    >
       <div
-        class="grid"
-        :style="{ gridTemplateColumns: `repeat(${numCols}, 1fr)` }"
-        style="gap: 16px"
+        v-for="(col, colIndex) in columns"
+        :key="colIndex"
+        class="flex flex-col gap-4"
       >
-        <div
-          v-for="(col, colIndex) in columns"
-          :key="colIndex"
-          class="flex flex-col gap-4"
-        >
-          <div v-for="item in col" :key="item.id" class="group">
-            <a href="#">
-              <div class="relative w-full mb-2 overflow-hidden rounded-lg ">
-                <!-- 黑色遮罩 -->
-                <div class="absolute w-full h-full transition-opacity bg-black opacity-0 group-hover:opacity-20"></div>
-                
-                <!-- 喜歡按鈕和加入景點 -->
-                <div class="absolute bottom-0 z-2 flex items-center justify-between w-full p-4 transition-opacity opacity-0 group-hover:opacity-100">
-                  <div
-                    class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer bg-gray hover:bg-opacity-75 tooltip " data-tip="加入最愛"
-                    @click.prevent="toggleFavorite(item)"
-                  >
-                  <component  :is="item.isFavorited ? HeartIcon : OutlineHeartIcon":class="item.isFavorited ? 'text-red-500' : 'text-gray-500'" class="size-6"/>
-
-                  </div>
-                  <div class="text-white">加入景點</div>
+        <div v-for="item in col" :key="item.id" class="group">
+          <a href="#">
+            <div class="relative w-full mb-2 overflow-hidden rounded-lg ">
+              <!-- 黑色遮罩 -->
+              <div class="absolute w-full h-full transition-opacity bg-black opacity-0 group-hover:opacity-20"></div>
+              
+              <!-- 喜歡按鈕和加入景點 -->
+              <div class="absolute bottom-0 z-2 flex items-center justify-between w-full p-4 transition-opacity opacity-0 group-hover:opacity-100">
+                <div
+                  class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer bg-gray hover:bg-opacity-75 tooltip " data-tip="加入最愛"
+                  @click.prevent="toggleFavorite(item)"
+                >
+                <component  :is="item.isFavorited ? HeartIcon : OutlineHeartIcon":class="item.isFavorited ? 'text-red-500' : 'text-gray-500'" class="size-6"/>
                 </div>
-                
-                <!-- 圖片 -->
-                <img :id="'img-' + item.id" :src="item.url" alt="" />
+                <button class="btn border-0 overflow-hidden text-white text-lg bg-secondary-500 rounded-full
+  hover:bg-secondary-600" onclick="AddPlace.showModal()">加入行程<PlusCircleIcon class="size-6"/></button>
+                <AddPlaceModal />
               </div>
-              <div>
-                <h3 class="text-sm font-bold text-gray-700 md:text-lg text-ellipsis text-slate-900">
-                  {{ item.title }}
-                </h3>
-                <div class="flex justify-between">
-                  <div class="flex text-slate-500 text-[12px] md:text-base">
-                    <StarIcon class="text-yellow-500 md:size-6 size-4" /><span>{{
-                      item.rating
-                    }}</span
-                    >．<span>{{ item.location }}</span>
-                  </div>
-                  <a :href="item.mapUrl"><MapPinIcon class="text-gray-500 md:size-6 size-4" /></a>
+              
+              <!-- 圖片 -->
+              <img :id="'img-' + item.id" :src="item.url" alt="" />
+            </div>
+            <div>
+              <h3 class="text-sm font-bold text-gray-700 md:text-lg text-ellipsis text-slate-900">
+                {{ item.title }}
+              </h3>
+              <div class="flex justify-between">
+                <div class="flex text-slate-500 text-[12px] md:text-base">
+                  <StarIcon class="text-yellow-500 md:size-6 size-4" /><span>{{
+                    item.rating
+                  }}</span
+                  >．<span>{{ item.location }}</span>
                 </div>
+                <a :href="item.mapUrl"><MapPinIcon class="text-gray-500 md:size-6 size-4" /></a>
               </div>
-            </a>
-          </div>
+            </div>
+          </a>
         </div>
       </div>
     </div>
@@ -124,9 +122,9 @@ const toggleFavorite = (item) => {
   transition: opacity 0.3s ease-in-out;
 }
 
- summary:active{
-  background-color:transparent !important;
-  color: rgb(55 65 81 / var(--tw-text-opacity, 1))  !important;
- }
+summary:active{
+background-color:transparent !important;
+color: rgb(55 65 81 / var(--tw-text-opacity, 1))  !important;
+}
 
 </style>

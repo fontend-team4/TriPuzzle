@@ -43,7 +43,7 @@ const switchToCategoryMode = () => {
       lg:rounded-full lg:border lg:border-gray-200">
       <!-- 顯示分類模式或關鍵字模式 -->
       <div 
-        class="relative flex justify-center items-center h-10 w-full md:pl-2 pr-2 ">
+        class="relative flex justify-center items-center h-10 w-full pr-2">
         <template 
           v-if="isCategoryMode">
           <!-- 分類模式 -->
