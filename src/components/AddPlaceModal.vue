@@ -205,7 +205,7 @@ const selectCard = (index) => {
           <button class="btn p-0 border-white bg-white flex mt-[1rem] shadow-none hover:bg-white hover:border-white  group items-center" onclick="NewSchedule.showModal()">
             <PlusCircleIcon  class="size-5 fill-primary-600 mr-[0.5rem] " />
             <p class= "group-hover:text-primary-500 text-black text-md font-bold">建立新行程</p>
-            <NewScheduleModal />
+            <!-- <NewScheduleModal /> -->
           </button>
         
 
