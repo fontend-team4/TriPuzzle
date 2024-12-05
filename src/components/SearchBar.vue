@@ -7,9 +7,12 @@ import SearchArea from './SearchArea.vue';
 // 預設為分類模式
 const isCategoryMode = ref(true);
 
-const categories = ref(['景點','收藏', '美食', '購物', '住宿', '租車站', '交通站', '充電樁', '我的最愛']);
+
+const defcategories = ref(['景點','收藏', '美食', '購物']);
+const categories = ref([]);
 const Mdcategories = ref(['景點','收藏', '美食', '購物', '住宿']);
 
+const activeDefCategory = ref(defcategories.value[0]);
 const activeCategory = ref(categories.value[0]);
 const activeMdCategory = ref(Mdcategories.value[0]);
 
@@ -19,6 +22,10 @@ const toggleMode = () => {
 };
 
 //活動分類
+const setActiveDefCategory = (defcategory) => {
+  activeDefCategory.value = defcategory;
+};
+
 const setActiveCategory = (category) => {
   activeCategory.value = category;
 };
@@ -67,17 +74,17 @@ const updateCategories = (newCategories) => {
             <ul class="flex gap-4">
               <!-- 電腦版 -->
               <li
-                v-for="(category, index) in categories"
-                :key="index.name"
+                v-for="(item, index) in [...defcategories, ...categories]"
+                :key="item.name || item"
                 :class="[
-                  'hidden font-medium text-sm leading-6 py-1 cursor-pointer transition border-b-2 border-transparent whitespace-nowrap md:inline-flex',
-                  activeCategory === category
+                  'font-medium text-sm leading-6 py-1 cursor-pointer transition border-b-2 border-transparent whitespace-nowrap',
+                  (activeDefCategory === item || activeCategory === item)
                     ? 'text-black border-b-red-500'
                     : 'text-gray-400 hover:text-gray-500 hover:border-b-red-500'
                 ]"
-                @click="setActiveCategory(category)"
+                @click="item.name ? setActiveCategory(item) : setActiveDefCategory(item)"
                 >
-              {{ category.name }}
+                {{ item.name || item }}
               </li>
               <!-- 手機板 -->
               <li
