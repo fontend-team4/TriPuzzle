@@ -79,7 +79,7 @@ const openDetailModal = (detailId) => {
         class="flex flex-col gap-4"
       >
         <div v-for="item in col" :key="item.id" class="group">
-          <a href="#" @click="openDetailModal">
+          <a href="#" @click="openDetailModal(item.id)">
             <div class="relative w-full mb-2 overflow-hidden rounded-lg ">
               <!-- 黑色遮罩 -->
               <div class="absolute w-full h-full transition-opacity bg-black opacity-0 group-hover:opacity-20"></div>
