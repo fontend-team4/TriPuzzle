@@ -31,11 +31,11 @@ const switchToCategoryMode = () => {
   isCategoryMode.value = true;
 }
 
-// Watch for changes in CategoryFilter and update categories
-watch(() => CategoryFilter.categories, (newCategories) => {
+// 監聽 CategoryFilter 的 update-categories 事件
+const updateCategories = (newCategories) => {
   categories.value = newCategories;
   activeCategory.value = newCategories[0];
-});
+};
 
 </script>
 
@@ -68,7 +68,7 @@ watch(() => CategoryFilter.categories, (newCategories) => {
               <!-- 電腦版 -->
               <li
                 v-for="(category, index) in categories"
-                :key="index"
+                :key="index.name"
                 :class="[
                   'hidden font-medium text-sm leading-6 py-1 cursor-pointer transition border-b-2 border-transparent whitespace-nowrap md:inline-flex',
                   activeCategory === category
@@ -77,7 +77,7 @@ watch(() => CategoryFilter.categories, (newCategories) => {
                 ]"
                 @click="setActiveCategory(category)"
                 >
-              {{ category }}
+              {{ category.name }}
               </li>
               <!-- 手機板 -->
               <li
@@ -95,7 +95,7 @@ watch(() => CategoryFilter.categories, (newCategories) => {
                 </li>
             </ul>
           </div>
-          <CategoryFilter />
+          <CategoryFilter @update-categories="updateCategories" />
         </template>
         
         <template v-else>
