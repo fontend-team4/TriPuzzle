@@ -12,6 +12,7 @@
     "@heroicons/vue": "^2.1.5",
     "@iconoir/vue": "^7.10.1",
     "pinia": "^2.2.6",
+    "axios": "^1.7.9",
     "vue": "^3.5.12",
     "vue-router": "^4.4.5",
     "vuedraggable": "^2.24.3"
