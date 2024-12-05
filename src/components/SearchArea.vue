@@ -15,15 +15,15 @@ const closeModal = () => {
 
 <template>
     <!-- 區域選擇按鈕 -->
-    <div class="block-area pr-2">
+    <div class="block-area flex justify-center items-center px-2">
       <button 
-        class="btn btn-sm border-transparent inline-flex items-center justify-between h-4 rounded-3xl cursor-pointer mt-0 mx-0 mb-1 w-22 bg-primary-600
+        class="btn btn-sm border-transparent inline-flex items-center justify-center h-4 rounded-3xl cursor-pointer mt-0 mx-0 w-30 bg-primary-600
         hover:bg-primary-500" 
         onclick="SearchArea.showModal()"
       >
-        <span class="text-gray flex font-medium overflow-hidden text-ellipsis
+        <span class="text-gray flex font-medium overflow-hidden text-ellipsis justify-center items-center
           ">選擇區域
-          <ChevronDownIcon class="Icon-SelectArea w-4 h-4 pl-1 text-white text-primary-800"/>
+          <ChevronDownIcon class="Icon-SelectArea w-4 h-4 pl-1 text-white"/>
         </span>
       </button>
 
@@ -33,7 +33,10 @@ const closeModal = () => {
       class="modal flex items-center justify-center fixed inset-0 bg-black bg-opacity-50"
       @click.self="closeModal"
       >
-      <div class="modal-box w-full max-w-[64rem] h-full p-0 bg-white rounded-lg shadow-lg">
+      <div 
+        class="modal-box w-full max-w-[64rem] min-h-[100vh] p-0 bg-white rounded-lg shadow-lg
+        md:min-h-[80%]">
+        
         <!-- 搜尋欄 -->
         <SearchAreaBar />
         <!-- 主體內容 -->
