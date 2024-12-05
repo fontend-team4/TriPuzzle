@@ -132,18 +132,6 @@ onMounted(() => {
                 {{ category.icon }} {{ category.name }}
               </button>
               <button
-                v-for="(category, index) in defaultCategories"
-                :key="category.name"
-                class="list-group-item btn btn-sm bg-primary-100 text-primary-600 rounded-3xl border-transparent justify-center items-center gap-0 pl-3 pr-4
-                hover:bg-primary-700 
-                hover:shadow-lg 
-                hover:text-primary-100 
-                hover:scale-105 
-                hover:border-transparent"
-              >
-                {{ category.icon }} {{ category.name }}
-              </button>
-              <button
                 v-for="(category, index) in categories"
                 :key="category.name"
                 class="list-group-item btn btn-sm bg-primary-100 text-primary-600 rounded-3xl border-transparent justify-center items-center gap-0 px-1
@@ -153,7 +141,15 @@ onMounted(() => {
                 hover:scale-105 
                 hover:border-transparent"
               >
-                ✕
+                {{ category.icon }} {{ category.name }}
+                <span>
+                  <button
+                  @click="removeCategory(index)"
+                  class="text-primary-600 hover:text-red-500 px-1 btn btn-xs btn-ghost"
+                  >
+                    <p class="text-center">✕</p>
+                  </button>
+                </span>
               </button>
           </div>
         </div>
