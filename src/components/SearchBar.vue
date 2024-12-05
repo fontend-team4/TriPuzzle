@@ -23,6 +23,13 @@ const setActiveCategory = (category) => {
 const switchToCategoryMode = () => {
   isCategoryMode.value = true;
 }
+
+// 監聽 CategoryFilter 的 update-categories 事件
+const updateCategories = (newCategories) => {
+  categories.value = newCategories;
+  activeCategory.value = newCategories[0];
+};
+
 </script>
 
 <template >
@@ -44,7 +51,7 @@ const switchToCategoryMode = () => {
             <ul class="flex gap-4 pr-4">
               <li
                 v-for="(category, index) in categories"
-                :key="index"
+                :key="index.name"
                 :class="[
                   'font-medium text-sm leading-6 py-1 cursor-pointer transition border-b-2 border-transparent whitespace-nowrap',
                   activeCategory === category
@@ -52,12 +59,12 @@ const switchToCategoryMode = () => {
                     : 'hover:text-gray-500 hover:border-red-500'
                 ]"
                 @click="setActiveCategory(category)"
-              >
-                {{ category }}
+                >
+              {{ category.name }}
               </li>
             </ul>
           </div>
-          <CategoryFilter />
+          <CategoryFilter @update-categories="updateCategories" />
         </template>
         
         <template v-else>

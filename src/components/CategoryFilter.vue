@@ -1,40 +1,58 @@
 <script setup>
-import { AdjustmentsHorizontalIcon,HeartIcon } from '@heroicons/vue/24/solid'
-import { ref } from "vue";
 
+import { AdjustmentsHorizontalIcon, PlusIcon } from '@heroicons/vue/24/solid'
+import { ref, onMounted, watch, defineEmits } from "vue";
 
 // 定義分類資料
-const categories = ref([
+const defaultCategories = [
   { name: "景點", icon: "🌄" },
   { name: "收藏", icon: "❤️" },
-  { name: "住宿", icon: "🏨" },
-  { name: "美食", icon: "🍴" },
   { name: "購物", icon: "🛍️" },
+  { name: "美食", icon: "🍴" },
+];
+
+const categories = ref([...defaultCategories]);
+
+const additionalCategories = ref([
+  { name: "住宿", icon: "🏨" },
   { name: "租車站", icon: "🚗" },
   { name: "交通站", icon: "🚉" },
   { name: "充電樁", icon: "⚡" },
   { name: "機場", icon: "✈️" },
   { name: "水族館", icon: "🐠" },
-]);
-
-const additionalCategories = ref([
-  { name: "其他", icon: "🛠️" },
   { name: "公園", icon: "🏞️" },
   { name: "動物園", icon: "🐾" },
+  { name: "其他", icon: "🛠️" },
 ]);
+
+
+
+
+const emit = defineEmits(['update-categories']);
 
 // 新增分類
 const addCategory = (category) => {
-  categories.value.push(category);
-  additionalCategories.value = additionalCategories.value.filter(
-    (item) => item.name !== category.name
-  );
+  if (!categories.value.some(item => item.name === category.name)) {
+    categories.value.push(category);
+    additionalCategories.value = additionalCategories.value.filter(
+      (item) => item.name !== category.name
+    );
+    emit('update-categories', categories.value);
+  }
 };
+// 監聽 categories 的變化
+watch(categories, (newCategories) => {
+  emit('update-categories', newCategories);
+});
+
 
 // 移除分類
 const removeCategory = (index) => {
   const removed = categories.value.splice(index, 1)[0];
-  additionalCategories.value.push(removed);
+  if (!additionalCategories.value.some(item => item.name === removed.name)) {
+    additionalCategories.value.push(removed);
+  }
+  emit('update-categories', categories.value);
 };
 
 // 點擊外框關閉
@@ -42,6 +60,25 @@ const closeModal = () => {
   const dialog = document.getElementById("CategoryFilter");
   dialog?.close();
 };
+
+// 保存分類
+const saveCategories = () => {
+  localStorage.setItem('categories', JSON.stringify(categories.value));
+  closeModal();
+};
+
+onMounted(() => {
+  const savedCategories = localStorage.getItem('categories');
+  if (savedCategories) {
+    const loadedCategories = JSON.parse(savedCategories);
+    categories.value = loadedCategories;
+
+    // 移除已經存在於 categories 中的預設分類
+    additionalCategories.value = additionalCategories.value.filter(
+      (item) => !categories.value.some(category => category.name === item.name)
+    );
+  }
+});
 </script>
 
 <template>
@@ -93,8 +130,26 @@ const closeModal = () => {
             >
               {{ category.icon }} {{ category.name }}
               <button
-                @click="removeCategory(index)"
-                class="text-primary-600 hover:text-red-500  btn btn-xs btn-ghost"
+                v-for="(category, index) in defaultCategories"
+                :key="category.name"
+                class="list-group-item btn btn-sm bg-primary-100 text-primary-600 rounded-3xl border-transparent justify-center items-center gap-0 pl-3 pr-4
+                hover:bg-primary-700 
+                hover:shadow-lg 
+                hover:text-primary-100 
+                hover:scale-105 
+                hover:border-transparent"
+              >
+                {{ category.icon }} {{ category.name }}
+              </button>
+              <button
+                v-for="(category, index) in categories"
+                :key="category.name"
+                class="list-group-item btn btn-sm bg-primary-100 text-primary-600 rounded-3xl border-transparent justify-center items-center gap-0 px-1
+                hover:bg-primary-700 
+                hover:shadow-lg 
+                hover:text-primary-100 
+                hover:scale-105 
+                hover:border-transparent"
               >
                 ✕
               </button>
