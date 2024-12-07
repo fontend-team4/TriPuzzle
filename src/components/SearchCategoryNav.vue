@@ -22,6 +22,7 @@ const categories = ref(["推薦", "台灣", "日本", "韓國"]);
       </li>
     </ul>
   </nav>
+  <RouterView />
 </template>
 
 

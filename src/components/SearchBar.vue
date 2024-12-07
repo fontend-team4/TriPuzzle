@@ -7,8 +7,16 @@ import SearchArea from './SearchArea.vue';
 // 預設為分類模式
 const isCategoryMode = ref(true);
 
-const categories = ref(['景點','收藏', '美食', '購物', '住宿', '租車站', '交通站', '充電樁', '我的最愛']);
-const Mdcategories = ref(['景點','收藏', '美食', '購物', '住宿']);
+// 定義預設分類資料
+const defaultCategories = [
+  { name: "景點", icon: "🌄" },
+  { name: "收藏", icon: "❤️" },
+  { name: "美食", icon: "🍴" },
+  { name: "購物", icon: "🛍️" },
+];
+
+const categories = ref([...defaultCategories]);
+const Mdcategories = ref([...defaultCategories]);
 
 const activeCategory = ref(categories.value[0]);
 const activeMdCategory = ref(Mdcategories.value[0]);
@@ -91,7 +99,7 @@ const updateCategories = (newCategories) => {
                 ]"
                 @click="setActiveMdCategory(Mdcategory)"
                 >
-                {{ Mdcategory }}
+                {{ Mdcategory.name }}
                 </li>
             </ul>
           </div>
