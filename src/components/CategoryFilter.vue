@@ -1,6 +1,6 @@
 <script setup>
 
-import { AdjustmentsHorizontalIcon, PlusIcon } from '@heroicons/vue/24/solid'
+import { AdjustmentsHorizontalIcon } from '@heroicons/vue/24/solid'
 import { ref, onMounted, watch, defineEmits } from "vue";
 
 // 定義分類資料
@@ -29,6 +29,10 @@ const categories = ref([...defaultCategories]);
 
 const emit = defineEmits('update-categories');
 
+// 監聽 categories 的變化
+watch(categories, (newCategories) => {
+  emit('update-categories', newCategories);
+});
 
 // 新增分類
 const addCategory = (category) => {
@@ -40,11 +44,6 @@ const addCategory = (category) => {
     emit('update-categories', categories.value);
   }
 };
-
-// 監聽 categories 的變化
-watch(categories, (newCategories) => {
-  emit('update-categories', newCategories);
-});
 
 // 移除分類
 const removeCategory = (index) => {
@@ -125,7 +124,7 @@ onMounted(() => {
                 <button
                 v-for="(category, index) in categories"
                 :key="category.name"
-                class="list-group-item btn btn-sm bg-primary-100 text-primary-600 rounded-3xl border-transparent justify-center items-center gap-0 px-1
+                class="list-group-item btn btn-sm bg-primary-100 text-primary-600 rounded-3xl border-transparent justify-center items-center gap-0 px-0.5
                 hover:bg-primary-700 
                 hover:shadow-lg 
                 hover:text-primary-100 
@@ -141,6 +140,9 @@ onMounted(() => {
                   <p class="text-center">✕</p>
                   </button>
                 </span>
+                <span v-if="defaultCategories.some(defaultCategory => defaultCategory.name === category.name)">
+                  <p class="text-center px-0.5"></p>
+                </span>
                 </button>
           </div>
         </div>
@@ -155,7 +157,7 @@ onMounted(() => {
               <button
                 v-for="category in additionalCategories"
                 :key="category.name"
-                class="other-list-group-item btn btn-sm bg-primary-100 text-primary-600 rounded-3xl border-transparent flex items-center px-1
+                class="list-group-item btn btn-sm bg-primary-100 text-primary-600 rounded-3xl border-transparent justify-center items-center gap-0 px-0.5
                 hover:bg-primary-700 
                 hover:shadow-lg 
                 hover:text-primary-100 
@@ -164,7 +166,14 @@ onMounted(() => {
                 @click="addCategory(category)"
               >
                 {{ category.icon }} {{ category.name }}
-                <p class="text-center text-xl">+</p>
+                <span>
+                  <button
+                  @click="addCategory(index)"
+                  class="text-primary-600 hover:text-red-500 px-1 btn btn-xs btn-ghost"
+                  >
+                  <p class="text-center">+</p>
+                  </button>
+                </span>
               </button>
             </div>
           </div>
