@@ -130,7 +130,7 @@ onMounted(async() => {
           <div v-if="checkedSchedule === 'mine'">
             <!-- v-if 有行程  -->
             <div v-if="hasSchedules" class="flex flex-wrap gap-4 justify-center">
-              <div v-for="item in schedules" :key="item.id" class="card card-compact bg-base-100 sm:w-full md:w-[30%] lg:w-full h-[176px] lg:h-auto border-gray border mb-4 relative hover:cursor-pointer">
+              <div v-for="item in schedules.slice().reverse()" :key="item.id" class="card card-compact bg-base-100 sm:w-full md:w-[30%] lg:w-full h-[176px] lg:h-auto border-gray border mb-4 relative hover:cursor-pointer">
                 <figure @click="detailToggle">
                   <img :src=item.image_url alt="scheduleCoverImage">
                 </figure>
