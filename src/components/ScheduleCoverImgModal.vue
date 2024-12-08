@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, defineEmits } from 'vue';
 import { CheckIcon, XMarkIcon } from "@heroicons/vue/24/solid";
 import{ PhotoIcon } from'@heroicons/vue/24/outline'
 import coverimage1 from "../assets/images/coverimage-1.jpg"
@@ -26,22 +26,29 @@ const imageStates = ref([
   { id: 9, isClicked: false, src: coverimage9 },
 ]);
 
+const selectedImg = ref(null)
 
-// 取消所有其他圖片的選中狀態
-function selectImg(clickedItem) {
+const emit = defineEmits(['selectedImg']);
+
+const selectImg = (clickedItem) => {
+  // 取消所有其他圖片的選中狀態
   imageStates.value.forEach(item => {
     if (item.id !== clickedItem.id) {
-      item.isClicked = false;
+      item.isClicked = false; 
+    } else{
+      clickedItem.isClicked = true
     }
   });
 
-  clickedItem.isClicked = true
+  // 取得選中的圖片路徑
+  selectedImg.value = clickedItem.src
+}
+const saveCoverImg = () => {
+  emit('selectedImg', selectedImg.value);
 }
 </script>
 
 <template>
-
-
 <button
   class="flex items-center justify-start w-full  gap-[5px] hover:bg-gray-100 transition "
   onclick="select_img.showModal()">
@@ -64,7 +71,8 @@ function selectImg(clickedItem) {
     <!-- 主內容區塊 -->
   <div class="h-[360px] relative overflow-hidden rounded-xl my-[50px] ">
     <div class="py-0 px-[24px] absolute inset-0 flex flex-wrap gap-[12px] overflow-y-auto">
-      <div class="lg:w-[calc(33.33%-8px)] md:w-[calc(50%-8px)] sm:w-[calc(100%-8px)] overflow-hidden relative group p-[1px] cursor-pointer" @click="selectImg(item)" v-for="(item, index) in imageStates" :key="item.id">
+      <div class="lg:w-[calc(33.33%-8px)] md:w-[calc(50%-8px)] sm:w-[calc(100%-8px)] overflow-hidden relative group p-[1px] cursor-pointer" 
+      v-for="item in imageStates" :key="item.id" @click="selectImg(item)">
         <img :src="item.src" alt="" class="w-full h-auto rounded-xl " />
         <!-- 圖片hover反灰 -->
         <div class="absolute inset-0 bg-[#2d4057] opacity-0 transition-opacity duration-200 group-hover:opacity-15 rounded-xl" ></div>
@@ -79,7 +87,6 @@ function selectImg(clickedItem) {
           <CheckIcon  class="w-[14px] h-[14px] text-white font-bold transition-all duration-300 opacity-0 scale-0  z-10" :class="{ 'opacity-100 scale-100 ': item.isClicked }"/>  
         </label>      
       </div>
-
       </div>
     </div >
 
@@ -92,13 +99,11 @@ function selectImg(clickedItem) {
           取消
         </button>
         <button
-          class="w-[50%] h-[48px] bg-primary-600 rounded-3xl text-white font-bold text-sm justify-center items-center px-[12px] py-[8px] hover:bg-primary-700">
+          class="w-[50%] h-[48px] bg-primary-600 rounded-3xl text-white font-bold text-sm justify-center items-center px-[12px] py-[8px] hover:bg-primary-700" @click="saveCoverImg">
           完成
         </button>
       </form>
     </div>
-
-
   </div>
   <form method="dialog" class="modal-backdrop">
     <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
