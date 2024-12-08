@@ -4,6 +4,9 @@ import NewScheduleModal from "./NewScheduleModal.vue";
 import { ref, computed } from "vue";
 import { XMarkIcon, ChevronDownIcon, ChevronUpIcon, ChevronLeftIcon, HandThumbUpIcon  } from "@heroicons/vue/24/outline";
 import { PlusCircleIcon,  MapPinIcon} from "@heroicons/vue/24/solid";
+import { PlaceModalStore } from "@/stores/PlaceModal";
+
+const modalStore = PlaceModalStore();
 
 // Tab的部分
 const selectedButton = ref("myRunDown");
@@ -49,7 +52,6 @@ const toggleCollapse = (id) => {
 
 // Day Card切換
 const currentPage = ref('page1');
-
 const selectedTab = ref('day1');
 
 const switchToPage = (page, tab) => {
@@ -58,10 +60,12 @@ const switchToPage = (page, tab) => {
 };
 
 // 關閉backdrop
-const closeModal = () => {
-  const dialog = document.getElementById("my_modal");  //id盡量與組件同名稱，避免與其他modal混淆
-  dialog?.close();
+const closeAddPlaceModal = () => {
+  console.log("關掉");
+  modalStore.closeModal();
 };
+
+
 
 // 卡片數據
 const cards = ref([
@@ -83,23 +87,23 @@ const selectCard = (index) => {
 
 <template>
   
-  <button class="overflow-hidden text-lg text-white border-0 rounded-full btn bg-secondary-500 hover:bg-secondary-600" onclick="AddPlace.showModal()">加入行程 <PlusCircleIcon class="size-6"/></button>
-  <dialog  class="absolute z-50 modal" @click.self="closeModal" id="AddPlace" >
-  <div 
-    v-if="currentPage === 'page1'"
-    id="page1" class=
-      "relative h-[100vh] mt-[-24px] w-full md:max-h-[800px] md:max-w-[1000px] md:mx-auto md:mb-[calc(100vh/8)] bg-white md:flex md:rounded-md overflow-hidden">
-    <div class="hidden md:block md:w-2/3 md:bg-[#f4f4f4]">
-        <div class="flex h-full">
-          <img src="https://web.chictrip.com.tw/assets/join_placeholder.2950886f.png" class="m-auto">
-        </div>
-    </div>    
-    <div class="w-full h-full px-[15px] py-[8px] sticky top-0 mr-0 md:w-1/3 flex-wrap" >
-      <form method="dialog">
-        <h2 class="mt-[30px] ml-[10px] text-2xl text-black font-bold ">要加在哪?</h2>
-        <button class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2 ">
-          <XMarkIcon class="text-gray"/>
-        </button>
+  <div class="absolute top-0 z-50 flex items-center justify-center w-screen h-screen bg-black bg-opacity-25" @click="closeAddPlaceModal" @click.stop > 
+    <div  class="pb-10 w-full md:pb-0 h-full md:h-[calc(100vh-160px)] lg:w-[1032px] mx-0 md:mx-auto  bg-white md:flex md:rounded-md md:overflow-hidden overflow-auto relative" >
+      <div 
+      v-if="currentPage === 'page1'"
+      id="page1" class=
+      "relative h-[calc(100vh - 160px)] w-full md:max-h-[800px] md:max-w-[1032px] md:mx-0  bg-white md:flex md:rounded-md overflow-hidden">
+        <div class="hidden md:block md:w-2/3 md:bg-[#f4f4f4]">
+          <div class="flex h-full">
+            <img src="https://web.chictrip.com.tw/assets/join_placeholder.2950886f.png" class="m-auto">
+          </div>
+        </div>    
+        <div class="w-full h-full px-[15px] py-[8px] top-0 mr-0 md:w-1/3 flex-wrap relative" > 
+      <form method="dialog " class="flex items-end justify-between">
+        <h2 class="mt-[30px] mx-[10px] text-2xl text-black font-bold ">要加在哪?</h2>
+        <!-- <button class=" btn btn-sm btn-circle btn-ghost right-2 top-10">
+          <XMarkIcon class="text-black"/>
+        </button> -->
       </form>
 
 
@@ -221,18 +225,21 @@ const selectCard = (index) => {
             <img src="https://web.chictrip.com.tw/assets/join_placeholder.2950886f.png" alt=""> 
         </div>
       </div>
-    </div>
-  </div>
-  <form method="dialog" class="modal-backdrop">
+        </div>
+      </div>
+      <button class="btn btn-sm absolute btn-circle btn-ghost right-[1rem] top-[1rem] z-10" @click="closeAddPlaceModal">
+            <XMarkIcon class="text-black"/>
+      </button>
+  <!-- <form method="dialog" class="modal-backdrop">
     <button>close</button>
-  </form>
+  </form> -->
 <!-- 第O天卡片 -->
   <div v-if="currentPage === 'DayCard'" id="dayCard"
-      class="relative h-[100vh] mt-[-24px] w-full md:max-h-[800px] md:max-w-[1000px] md:mx-auto md:mb-[150px] bg-white md:flex md:rounded-md overflow-hidden"
+      class="relative h-[100vh]  w-full md:max-h-[calc(100vh-160px)] md:max-w-[1032px] md:mx-auto  bg-white md:flex md:rounded-md overflow-hidden"
       >
-      <button class="btn btn-sm absolute btn-circle btn-ghost right-[1rem] top-[1rem] z-10" @click="closeModal">
+      <!-- <button class="btn btn-sm absolute btn-circle btn-ghost right-[1rem] top-[1rem] z-10" @click="closeModal">
             <XMarkIcon class="text-black"/>
-        </button>
+        </button> -->
 
         <button @click="switchToPage('page1')" class="absolute left-[1rem] top-[1rem] hover:opacity-40">
         <ChevronLeftIcon class="size-8 text-black bg-white border-2 border-white hover:text-primary-600 hover:bg-primary-100 
@@ -244,11 +251,12 @@ const selectCard = (index) => {
       <div class=" md:w-2/3 bg-gray">
       </div>  
       <!-- 右邊 -->
-      <div class="box-border relative bg-white md:w-1/3">
+      <div class="box-border relative overflow-hidden bg-white md:w-1/3">
         <h2 class="pt-[3.5rem] pb-[1rem] pl-[1rem] text-3xl font-bold text-black ">要加在哪？</h2>
         <div role="tablist" class="tabs tabs-bordered ">
+          
 
-<!--第一天 -->
+        <!--第一天 -->
         <input
             type="radio"
             name="dailySchedule"
@@ -259,7 +267,7 @@ const selectCard = (index) => {
             @change="selectTab('day1')"
           />
           <div role="tabpanel" class="tab-content">
-            <div class="w-full md:h-[580px] md:overflow-y-scroll relative bg-primary-200">
+            <div class="w-full md:h-[580px] md:overflow-auto relative bg-primary-200">
               <!-- 卡片列表 -->
               <div 
                 v-for="(card, index) in cards" 
@@ -328,10 +336,9 @@ const selectCard = (index) => {
           </div>
         </div>
 
-      </div>
-
-<!-- 確認新增並關閉視窗 -->
-        <div class="h-[3rem] absolute bottom-[1rem] right-[0.5rem] left-[0.5rem]">
+        </div>
+  <!-- 確認新增並關閉視窗 -->
+        <div class="h-[3rem] absolute bottom-4 right-0 left-0 bg-white px-4 pt-2">
           <div class="w-full text-white border-none rounded-full btn bg-primary-600 hover:bg-primary-200 hover:text-primary-600" @click="closeModal">
               確認新增
           </div>
@@ -340,6 +347,7 @@ const selectCard = (index) => {
 
       
   </div>  
-  </dialog>
+    </div>
+  </div>
 </template>
 

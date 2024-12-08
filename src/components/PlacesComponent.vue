@@ -5,6 +5,7 @@ import { HeartIcon as OutlineHeartIcon } from "@heroicons/vue/24/outline";
 import fakeLocation from "../../fakeLocation.json";
 import AddPlaceModal from "./AddPlaceModal.vue";
 import { useRouter } from 'vue-router';
+import AddPlaceBtn from "./AddPlaceBtn.vue";
 const router = useRouter();
 
 const fakeLocations = ref([]);
@@ -66,7 +67,7 @@ const openDetailModal = (detailId) => {
 </script>
 
 <template>
-  <div class="h-screen pt-20 lg:ps-28 lg:pt-24 pb-14 bg-slate-100">
+  <div class="absolute top-0 h-screen pt-20 lg:ps-28 lg:pt-24 pb-14 bg-slate-100">
     <!-- 瀑布流 -->
     <div
       class="grid"
@@ -85,15 +86,16 @@ const openDetailModal = (detailId) => {
               <div class="absolute w-full h-full transition-opacity bg-black opacity-0 group-hover:opacity-20"></div>
               
               <!-- 喜歡按鈕和加入景點 -->
-              <div class="absolute bottom-0 flex items-center justify-between w-full p-4 transition-opacity opacity-0 z-2 group-hover:opacity-100" @click.stop>
+              <div class="absolute bottom-0 flex items-center justify-between w-full p-4 transition-opacity opacity-0 z-2 group-hover:opacity-100" >
                 <div
                   class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer bg-gray hover:bg-opacity-75 tooltip " data-tip="加入最愛"
-                  @click.prevent="toggleFavorite(item)"
+                  @click.prevent="toggleFavorite(item)" @click.stop
                 >
                 <component  :is="item.isFavorited ? HeartIcon : OutlineHeartIcon":class="item.isFavorited ? 'text-red-500' : 'text-gray-500'" class="size-6"/>
                 </div>
-                <button class="overflow-hidden text-lg text-white border-0 rounded-full btn bg-secondary-500 hover:bg-secondary-600" onclick="AddPlaceModal.showModal()">加入行程<PlusCircleIcon class="size-6"/></button>
-                <!-- <AddPlaceModal /> -->
+                <!-- <button class="overflow-hidden text-lg text-white border-0 rounded-full btn bg-secondary-500 hover:bg-secondary-600" onclick="AddPlaceModal.showModal()">加入行程<PlusCircleIcon class="size-6"/></button> -->
+                <AddPlaceBtn  @click.stop/>
+
               </div>
               
               <!-- 圖片 -->
@@ -118,7 +120,7 @@ const openDetailModal = (detailId) => {
       </div>
     </div>
   </div>
-  
+  <!-- <AddPlaceModal class="absolute top-0 z-50"/> -->
 </template>
 
 <style scoped>

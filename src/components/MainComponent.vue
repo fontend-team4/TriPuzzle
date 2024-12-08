@@ -8,7 +8,10 @@ import DetailModal from '@/components/DetailModal.vue';
 import { useRouter, useRoute } from "vue-router";
 import fakeLocation from "../../fakeLocation.json";
 import AddPlaceModal from './AddPlaceModal.vue'
+import { PlaceModalStore } from "@/stores/PlaceModal";
 
+
+const modalStore = PlaceModalStore();
 const router = useRouter();
 const route = useRoute();
 
@@ -47,13 +50,17 @@ const closeDetailModal = () => {
   router.push({ path: "/planner" });
 };
 
+const AppPlaceModalStatus = ref(false)
+
+const IsAppPlaceModalOpen = computed(()=>{
+ return false
+})
 
 </script>
 
 <template>
  
  <Transition name="detail">
-
     <DetailModal class="absolute top-0 left-0 z-40 flex-auto " v-if="isModalOpen" :place="currentPlace" @close="closeDetailModal"/>
   </Transition>
     <div class="absolute top-0 left-0 z-10 flex gap-4 transition-all item-center lg:top-5 lg:left-8" :class="topBarSwitch">
@@ -72,7 +79,9 @@ const closeDetailModal = () => {
 
   <ScheduleSideBar ref="schedulesListRef"/>
 
-
+  <Transition name="detail">
+    <AddPlaceModal class="absolute top-0 z-50 " v-if="modalStore.isOpen" />
+  </Transition>
 
 </template>
 

@@ -4,6 +4,8 @@ import { CalendarIcon, ClockIcon, PhoneIcon, GlobeAltIcon, MapPinIcon, Magnifyin
 import { StarIcon } from "@heroicons/vue/24/solid";
 import { computed ,ref, defineProps, defineEmits } from 'vue'
 import Waterfall from './Waterfall.vue';
+import AddPlaceModal from './AddPlaceModal.vue';
+import AddPlaceBtn from './AddPlaceBtn.vue';
 
 
 
@@ -119,11 +121,10 @@ defineEmits(["close"]);
             <button>close</button>
           </form>
         </dialog>
-
           <div class="tooltip" data-tip="加到最愛"><HeartIcon class="cursor-pointer size-6"/></div>
           <div class="tooltip" data-tip="導航"><PaperAirplaneIcon class="cursor-pointer size-6" /></div>
         </div>
-        <div>加入行程按鈕</div>
+        <AddPlaceBtn />
       </div>
       </div>
       <!-- 照片區 -->
