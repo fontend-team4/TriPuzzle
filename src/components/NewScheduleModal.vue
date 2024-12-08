@@ -92,9 +92,11 @@ const addSchedule = async() => {
     alert('行程建立成功！')
     props.savetoSchedules()
     // 清空欄位資料
+    coverImage.value = defaultCoverImage
     ScheduleName.value = ''
     startDate.value = ''
     endDate.value = ''
+    transportationWay.value=''
   } catch(err){
     console.error(err.message);
     alert('行程建立失敗')
