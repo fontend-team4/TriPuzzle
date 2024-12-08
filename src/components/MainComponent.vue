@@ -50,12 +50,6 @@ const closeDetailModal = () => {
   router.push({ path: "/planner" });
 };
 
-const AppPlaceModalStatus = ref(false)
-
-const IsAppPlaceModalOpen = computed(()=>{
- return false
-})
-
 </script>
 
 <template>

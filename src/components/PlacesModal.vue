@@ -1,11 +1,14 @@
 <script setup>
-import { ref, onMounted, computed } from "vue"
+import { ref, onMounted, computed, nextTick, defineEmits } from "vue"
 import { ListBulletIcon, XMarkIcon, StarIcon, MapPinIcon, PlusCircleIcon } from "@heroicons/vue/24/solid";
 import fakeLocation from "../../fakeLocation.json";
 import AddPlaceModal from "./AddPlaceModal.vue";
 import AddPlaceBtn from "./AddPlaceBtn.vue";
+import { useRouter } from 'vue-router';
+const router = useRouter();
 
 const fakeLocations = ref([]);
+const emit = defineEmits(['open-detail-modal'])
 
 
 onMounted(() => {
@@ -26,6 +29,14 @@ const sideCls = computed(() => {
 const hamburgerCls = computed(() => {
     return sideBarIsOpen.value ? ["opacity-0"] : [""];
 });
+
+const openDetailModal = (detailId) => {
+  router.push({
+    path: "/planner",
+    query: { action: "placeInfo", placeId: detailId },
+  });
+};
+
 
 </script>
 
@@ -68,7 +79,7 @@ const hamburgerCls = computed(() => {
               v-for="item in fakeLocations"
               class="w-full mb-3 transition-colors rounded-md p1 bg-gray hover:bg-primary-100"
             >
-              <a href="#">
+             <a href="#" @click="openDetailModal(item.id)">
                 <figure class="flex p-1 group">
                   <div class="w-40 h-40 overflow-hidden rounded-md ">
                     <img :src="item.image" alt="" class="aspect-square" />
@@ -86,7 +97,7 @@ const hamburgerCls = computed(() => {
                     <div
                       class="absolute inline-flex items-center justify-between w-[147px] h-auto mt-2 text-sm duration-300 opacity-0 group-hover:opacity-100 bottom-2"
                     >
-                      <AddPlaceBtn />
+                      <AddPlaceBtn  @click.stop/>
                       <!-- <AddPlaceModal /> -->
                       <a :href="item.google_map" target="_blank">
                         <MapPinIcon class="text-gray-500 size-5" />

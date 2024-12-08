@@ -88,7 +88,7 @@ const selectCard = (index) => {
 <template>
   
   <div class="absolute top-0 z-50 flex items-center justify-center w-screen h-screen bg-black bg-opacity-25" @click="closeAddPlaceModal" @click.stop > 
-    <div  class="pb-10 w-full md:pb-0 h-full md:h-[calc(100vh-160px)] lg:w-[1032px] mx-0 md:mx-auto  bg-white md:flex md:rounded-md md:overflow-hidden overflow-auto relative" >
+    <div  class="pb-10 w-full md:pb-0 h-full md:h-[calc(100vh-160px)] lg:w-[1032px] mx-0 md:mx-auto  bg-white md:flex md:rounded-md md:overflow-hidden overflow-auto relative" @click.stop  >
       <div 
       v-if="currentPage === 'page1'"
       id="page1" class=
