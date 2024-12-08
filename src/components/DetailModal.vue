@@ -6,6 +6,7 @@ import { computed ,ref, defineProps, defineEmits } from 'vue'
 import Waterfall from './Waterfall.vue';
 
 
+
 // 愛心顏色的切換可參考PlacesComponent，為避免重複同樣功能這邊就不放了，之後可統一做移動到stores去
 const showPhoto = ref(false)
 
@@ -33,21 +34,23 @@ defineEmits(["close"]);
 </script>
 
 <template>
-  <div class="absolute z-50 flex items-center justify-center w-screen h-screen bg-black bg-opacity-25" >
-    <div class="pb-10 md:pb-0 h-full md:h-[calc(100vh-160px)] lg:max-w-[1032px] mx-0 md:mx-auto  bg-white md:flex md:rounded-md md:overflow-hidden overflow-auto relative " :class="overflowStatus">
-
+  <div class="absolute z-50 flex items-center justify-center w-screen h-screen bg-black bg-opacity-25 " @click="$emit('close')" >
+    <div class="pb-10 md:pb-0 h-full md:h-[calc(100vh-160px)] lg:w-[1032px] mx-0 md:mx-auto  bg-white md:flex md:rounded-md md:overflow-hidden overflow-auto relative " :class="overflowStatus" @click.stop>
       <div class="bg-black md:w-[calc(100%-368px)] h-[360px] md:h-full md:overflow-hidden flex justify-center relative group">
         <!--輪播圖  -->
-        <DetailCarousel />
+        <!-- <DetailCarousel /> -->
+         <div class="inline-flex items-center justify-center w-full h-full bg-black">
+          <img :src="place.image" alt="" class="object-contain w-full">
+         </div>
         <button for="showPhoto" class="absolute flex gap-1 bg-gray-100 py-[3px] px-2.5 rounded-full top-4 right-16 h-[32px] text-sm items-center bg-opacity-75 bg-white md:right-4 md:opacity-0 md:group-hover:opacity-100 transition-opacity" @click="changeShowPhoto"><PhotoIcon class="size-5 "/>3</button>
-        <button class="absolute flex gap-1 bg-gray-100 py-[3px] px-2.5 rounded-full top-4 right-5 h-[32px] w-[32px] text-sm items-center bg-opacity-75 bg-white md:hidden " @click="$emit('close')"><XMarkIcon class="absolute right-1 size-5 -translate-x-[2px] " @click="closeDetailModal"/></button>
+        <button class="absolute flex gap-1 bg-gray-100 py-[3px] px-2.5 rounded-full top-4 right-5 h-[32px] w-[32px] text-sm items-center bg-opacity-75 bg-white md:hidden " @click="$emit('close')"><XMarkIcon class="absolute right-1 size-5 -translate-x-[2px] " /></button>
       </div>
       <div class="relative px-5 py-5 md:py-16  md:w-[368px] flex flex-wrap flex-col gap-2.5  ">
-        <h2 class="text-xl font-medium">機場捷運泰山站</h2>
+        <h2 class="text-xl font-medium">{{ place.name }}</h2>
         <div class="flex ">
           <div class="inline-flex items-center gap-1 pr-3 text-sm align-middle border-r-2 ">Google 評價
             <StarIcon  class="text-yellow-400 size-4"/>
-            <span class="text-yellow-400">4.5</span>
+            <span class="text-yellow-400">{{ place.rating }}</span>
             (<span class="underline">34</span>)
             
           </div>
@@ -63,7 +66,7 @@ defineEmits(["close"]);
         </div>
         <div class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px]">
           <PhoneIcon class="size-5"/>
-          <p class="pl-10 text-sm">09001122233</p>
+          <p class="pl-10 text-sm">{{place.phone}}</p>
         </div>
         <div class="flex pt-2.5 pb-3.5  border-b-slate-200 border-b-[1px]">
           <MagnifyingGlassIcon class="size-5"/>

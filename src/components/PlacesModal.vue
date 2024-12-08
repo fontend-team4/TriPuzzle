@@ -3,6 +3,7 @@ import { ref, onMounted, computed } from "vue"
 import { ListBulletIcon, XMarkIcon, StarIcon, MapPinIcon, PlusCircleIcon } from "@heroicons/vue/24/solid";
 import fakeLocation from "../../fakeLocation.json";
 import AddPlaceModal from "./AddPlaceModal.vue";
+import AddPlaceBtn from "./AddPlaceBtn.vue";
 
 const fakeLocations = ref([]);
 
@@ -47,7 +48,7 @@ const hamburgerCls = computed(() => {
 
   <!-- 側欄 -->
     <!-- fixed -->
-    <div  class=" hidden h-full w-96 md:block">
+    <div  class="hidden h-full w-96 md:block">
       <div class="w-96 h-[calc(100vh-72px)] bg-white absolute bottom-0 left-0 lg:left-20 rounded-tr-3xl drop-shadow-md transition-all duration-300" :class="sideCls">
         <div class="z-20 flex items-center justify-between w-full p-4 bg-white rounded-tr-3xl">
           <div>
@@ -69,24 +70,25 @@ const hamburgerCls = computed(() => {
             >
               <a href="#">
                 <figure class="flex p-1 group">
-                  <div class="w-40 h-40 overflow-hidden rounded-md">
+                  <div class="w-40 h-40 overflow-hidden rounded-md ">
                     <img :src="item.image" alt="" class="aspect-square" />
                   </div>
-                  <div class="pt-3 pl-4 pr-3 w-[176px]">
-                    <h3 class="font-bold text-slate-900">{{ item.name }}</h3>
-                    <p class="flex items-center gap-1 text-sm leading-6 text-slate-500">
-                      <StarIcon class="size-4 text-secondary-500" />{{ item.rating }}
-                    </p>
-                    <p class="text-sm leading-6 text-slate-500">
-                      加入行程<span class="px-1">47</span>次
-                    </p>
+                  <div class="pt-3 pl-4 pr-3 w-[176px] flex flex-col justify-between relative">
+                    <div>
+                      <h3 class="font-bold text-slate-900">{{ item.name }}</h3>
+                      <p class="flex items-center gap-1 text-sm leading-6 text-slate-500">
+                        <StarIcon class="size-4 text-secondary-500" />{{ item.rating }}
+                      </p>
+                      <p class="text-sm leading-6 text-slate-500">
+                        加入行程<span class="px-1">47</span>次
+                      </p>
+                    </div>
                     <div
-                      class="inline-flex items-center justify-between w-full text-sm duration-300 opacity-0 group-hover:opacity-100"
+                      class="absolute inline-flex items-center justify-between w-[147px] h-auto mt-2 text-sm duration-300 opacity-0 group-hover:opacity-100 bottom-2"
                     >
-                      <button class="btn border-0 overflow-hidden text-white text-lg bg-secondary-500 rounded-full
-  hover:bg-secondary-600" onclick="AddPlace.showModal()">加入行程<PlusCircleIcon class="size-6"/></button>
-                      <AddPlaceModal />
-                      <a :href="item.google_map">
+                      <AddPlaceBtn />
+                      <!-- <AddPlaceModal /> -->
+                      <a :href="item.google_map" target="_blank">
                         <MapPinIcon class="text-gray-500 size-5" />
                       </a>
                     </div>

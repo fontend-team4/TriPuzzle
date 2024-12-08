@@ -85,15 +85,15 @@ const openDetailModal = (detailId) => {
               <div class="absolute w-full h-full transition-opacity bg-black opacity-0 group-hover:opacity-20"></div>
               
               <!-- 喜歡按鈕和加入景點 -->
-              <div class="absolute bottom-0 flex items-center justify-between w-full p-4 transition-opacity opacity-0 z-2 group-hover:opacity-100">
+              <div class="absolute bottom-0 flex items-center justify-between w-full p-4 transition-opacity opacity-0 z-2 group-hover:opacity-100" @click.stop>
                 <div
                   class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer bg-gray hover:bg-opacity-75 tooltip " data-tip="加入最愛"
                   @click.prevent="toggleFavorite(item)"
                 >
                 <component  :is="item.isFavorited ? HeartIcon : OutlineHeartIcon":class="item.isFavorited ? 'text-red-500' : 'text-gray-500'" class="size-6"/>
                 </div>
-                <button class="overflow-hidden text-lg text-white border-0 rounded-full btn bg-secondary-500 hover:bg-secondary-600" onclick="AddPlace.showModal()">加入行程<PlusCircleIcon class="size-6"/></button>
-                <AddPlaceModal />
+                <button class="overflow-hidden text-lg text-white border-0 rounded-full btn bg-secondary-500 hover:bg-secondary-600" onclick="AddPlaceModal.showModal()">加入行程<PlusCircleIcon class="size-6"/></button>
+                <!-- <AddPlaceModal /> -->
               </div>
               
               <!-- 圖片 -->
@@ -110,7 +110,7 @@ const openDetailModal = (detailId) => {
                   }}</span
                   >．<span>{{ item.location }}</span>
                 </div>
-                <a :href="item.mapUrl"><MapPinIcon class="text-gray-500 md:size-6 size-4" /></a>
+                <a :href="item.mapUrl" target="_blank"><MapPinIcon class="text-gray-500 md:size-6 size-4" /></a>
               </div>
             </div>
           </a>
@@ -118,6 +118,7 @@ const openDetailModal = (detailId) => {
       </div>
     </div>
   </div>
+  
 </template>
 
 <style scoped>

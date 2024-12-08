@@ -1,3 +1,4 @@
+<!-- 右邊側欄 -->
 <script setup>
 import NewScheduleModal from "./NewScheduleModal.vue";
 import { ref, computed } from "vue";
@@ -81,9 +82,9 @@ const selectCard = (index) => {
 </script>
 
 <template>
-  <!-- <button class="btn border-0 overflow-hidden text-white text-lg bg-secondary-500 rounded-full
-  hover:bg-secondary-600" onclick="AddPlace.showModal()">加入行程 <PlusCircleIcon class="size-6"/></button> -->
-  <dialog id="AddPlace" class="modal" @click.self="closeModal">
+  
+  <button class="overflow-hidden text-lg text-white border-0 rounded-full btn bg-secondary-500 hover:bg-secondary-600" onclick="AddPlace.showModal()">加入行程 <PlusCircleIcon class="size-6"/></button>
+  <dialog  class="absolute z-50 modal" @click.self="closeModal" id="AddPlace" >
   <div 
     v-if="currentPage === 'page1'"
     id="page1" class=
@@ -96,7 +97,7 @@ const selectCard = (index) => {
     <div class="w-full h-full px-[15px] py-[8px] sticky top-0 mr-0 md:w-1/3 flex-wrap" >
       <form method="dialog">
         <h2 class="mt-[30px] ml-[10px] text-2xl text-black font-bold ">要加在哪?</h2>
-        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 ">
+        <button class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2 ">
           <XMarkIcon class="text-gray"/>
         </button>
       </form>
@@ -109,7 +110,7 @@ const selectCard = (index) => {
       <!-- 我的行程 -->
       <button
         @click="selectMyRunDown"
-        class="relative block h-10 px-6 tab rounded-lg transition duration-300"
+        class="relative block h-10 px-6 transition duration-300 rounded-lg tab"
         :class="myRunDownCls"
       >
         <span class="text-base">我的行程</span>
@@ -118,7 +119,7 @@ const selectCard = (index) => {
       <!-- 與我共編 -->
       <button
         @click="selectCoEdit"
-        class="relative block h-10 px-6 tab rounded-lg transition duration-300"
+        class="relative block h-10 px-6 transition duration-300 rounded-lg tab"
         :class="coEditCls"
       >
         <span class="text-base">與我共編</span>
@@ -127,11 +128,11 @@ const selectCard = (index) => {
 
 
 <!-- Tab One -->
-        <div class="mt-8 relative h-full ">
+        <div class="relative h-full mt-8 ">
           <div
             role="tabpanel"
             id="panel-1"
-            class="tab-panel transition duration-300"
+            class="transition duration-300 tab-panel"
             :class="tab1Cls"
           >
 <!-- 行程一 -->
@@ -144,12 +145,12 @@ const selectCard = (index) => {
               @change="toggleCollapse('journey1')" 
               />
               <div class=" collapse-title flex justify-between items-center p-0 pl-[1rem]">
-                <div class="hover:bg-primary-100 cursor-pointer group">
-                  <h2 class=" group-hover:text-primary-600 text-xl font-bold  text-stone-950">行程一</h2>
-                  <p class=" group-hover:text-primary-600 text-sm  text-gray-600 ">2024/11/01</p>
+                <div class="cursor-pointer hover:bg-primary-100 group">
+                  <h2 class="text-xl font-bold group-hover:text-primary-600 text-stone-950">行程一</h2>
+                  <p class="text-sm text-gray-600 group-hover:text-primary-600">2024/11/01</p>
                 </div> 
-                <ChevronDownIcon v-if="openedCollapse !== 'journey1'"  class="size-3 text-black" />
-                <ChevronUpIcon v-else class="size-3 text-black" />
+                <ChevronDownIcon v-if="openedCollapse !== 'journey1'"  class="text-black size-3" />
+                <ChevronUpIcon v-else class="text-black size-3" />
               </div>
               <div class="collapse-content p-0 pl-[1rem]">
                   <div  id="openDay1" @click="switchToPage('DayCard', 'day1')"
@@ -179,12 +180,12 @@ const selectCard = (index) => {
               :checked="openedCollapse === 'journey2'"
               @change="toggleCollapse('journey2')" />
               <div class=" collapse-title flex justify-between items-center p-0 pl-[1rem]">
-                <div class="hover:bg-primary-100 cursor-pointer group">
-                  <h2 class=" group-hover:text-primary-600 text-xl font-bold  text-stone-950">行程二</h2>
-                  <p class=" group-hover:text-primary-600 text-sm  text-gray-600 ">2024/11/01</p>
+                <div class="cursor-pointer hover:bg-primary-100 group">
+                  <h2 class="text-xl font-bold group-hover:text-primary-600 text-stone-950">行程二</h2>
+                  <p class="text-sm text-gray-600 group-hover:text-primary-600">2024/11/01</p>
                 </div> 
-                <ChevronDownIcon v-if="openedCollapse !== 'journey2'"  class="size-3 text-black" />
-                <ChevronUpIcon v-else class="size-3 text-black" />
+                <ChevronDownIcon v-if="openedCollapse !== 'journey2'"  class="text-black size-3" />
+                <ChevronUpIcon v-else class="text-black size-3" />
               </div>
               <div class="collapse-content p-0 pl-[1rem]">
                   <div class=" p-2 my-[0.5rem] bg-[#f4f4f4] rounded-xl cursor-pointer hover:bg-primary-100"
@@ -201,10 +202,10 @@ const selectCard = (index) => {
               </div>
           </div>
           
-        
+        <!-- 這裡的NewSchedule不必是動態的 -->
           <button class="btn p-0 border-white bg-white flex mt-[1rem] shadow-none hover:bg-white hover:border-white  group items-center" onclick="NewSchedule.showModal()">
             <PlusCircleIcon  class="size-5 fill-primary-600 mr-[0.5rem] " />
-            <p class= "group-hover:text-primary-500 text-black text-md font-bold">建立新行程</p>
+            <p class= "font-bold text-black group-hover:text-primary-500 text-md">建立新行程</p>
             <!-- <NewScheduleModal /> -->
           </button>
         
@@ -214,7 +215,7 @@ const selectCard = (index) => {
         <div
           role="tabpanel"
           id="panel-2"
-          class="absolute top-0 tab-panel p-6 transition opacity-0 duration-300 flex justify-center"
+          class="absolute top-0 flex justify-center p-6 transition duration-300 opacity-0 tab-panel"
           :class="tab2Cls"
           >
             <img src="https://web.chictrip.com.tw/assets/join_placeholder.2950886f.png" alt=""> 
@@ -243,7 +244,7 @@ const selectCard = (index) => {
       <div class=" md:w-2/3 bg-gray">
       </div>  
       <!-- 右邊 -->
-      <div class=" md:w-1/3 bg-white box-border relative">
+      <div class="box-border relative bg-white md:w-1/3">
         <h2 class="pt-[3.5rem] pb-[1rem] pl-[1rem] text-3xl font-bold text-black ">要加在哪？</h2>
         <div role="tablist" class="tabs tabs-bordered ">
 
@@ -252,7 +253,7 @@ const selectCard = (index) => {
             type="radio"
             name="dailySchedule"
             role="tab"
-            class="tab rounded-lg hover:bg-primary-800 hover:text-white checked:bg-primary-600 checked:text-white"
+            class="rounded-lg tab hover:bg-primary-800 hover:text-white checked:bg-primary-600 checked:text-white"
             aria-label="第一天"
             :checked="selectedTab === 'day1'"
             @change="selectTab('day1')"
@@ -281,7 +282,7 @@ const selectCard = (index) => {
               
                 <!-- 卡片新位置 -->
                 <p 
-                  class="text-lg flex items-center mt-2"
+                  class="flex items-center mt-2 text-lg"
                   :class="selectedCard === index ? 'text-secondary-500' : 'text-[#c7c7c7]'"
                 >
                   <MapPinIcon 
@@ -294,7 +295,7 @@ const selectCard = (index) => {
                 </p>
               
                 <!-- 卡片位置2 -->
-                <p class="text-lg mt-2" 
+                <p class="mt-2 text-lg" 
                     :class="[  
                     selectedCard === index ? 'text-black' : 'text-[#c7c7c7]'
                     ]">{{ card.location2 }}</p>
@@ -307,12 +308,12 @@ const selectCard = (index) => {
           type="radio"
           name="dailySchedule"
           role="tab"
-          class="tab rounded-lg hover:bg-primary-800 hover:text-white checked:bg-primary-600 checked:text-white"
+          class="rounded-lg tab hover:bg-primary-800 hover:text-white checked:bg-primary-600 checked:text-white"
           aria-label="第二天"
           :checked="selectedTab === 'day2'"
           @change="selectTab('day2')"
         />
-        <div role="tabpanel" class="tab-content p-0">
+        <div role="tabpanel" class="p-0 tab-content">
           <div class="w-full md:h-[580px] md:overflow-y-scroll bg-primary-200 ">
             <div class="border-2 border-primary-400 bg-white p-6 pl-5 mx-[1rem] mt-5 rounded-lg relative overflow-hidden">
               <label for="" class="absolute top-0 right-0 bg-primary-400 text-white
@@ -320,7 +321,7 @@ const selectCard = (index) => {
               ">
                 <HandThumbUpIcon class="size-3 ml-[0.25rem]"/>加在這裡最順
               </label>
-              <p class="text-lg flex items-center text-secondary-500"><MapPinIcon class="size-5 ml-[-0.2rem] fill-secondary-500"/>
+              <p class="flex items-center text-lg text-secondary-500"><MapPinIcon class="size-5 ml-[-0.2rem] fill-secondary-500"/>
                 松山文創園區
               </p>
             </div>
@@ -331,7 +332,7 @@ const selectCard = (index) => {
 
 <!-- 確認新增並關閉視窗 -->
         <div class="h-[3rem] absolute bottom-[1rem] right-[0.5rem] left-[0.5rem]">
-          <div class="btn w-full  rounded-full border-none bg-primary-600 text-white hover:bg-primary-200 hover:text-primary-600" @click="closeModal">
+          <div class="w-full text-white border-none rounded-full btn bg-primary-600 hover:bg-primary-200 hover:text-primary-600" @click="closeModal">
               確認新增
           </div>
         </div>
