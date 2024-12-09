@@ -5,7 +5,7 @@ import MainComponent from '@/components/MainComponent.vue';
 </script>
 
 <template>
-  <SideBar />
-  <MapComponent />
-  <MainComponent />
+    <SideBar />
+    <MapComponent />
+    <MainComponent class="h-screen overflow-hidden" />
 </template>

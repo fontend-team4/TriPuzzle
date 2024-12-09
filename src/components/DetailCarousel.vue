@@ -1,12 +1,20 @@
 <script setup>
 import { PhotoIcon } from "@heroicons/vue/24/outline";
+import { defineProps } from "vue";
+
+const props = defineProps({
+  image: {
+    type: String,
+    required: true,
+  },
+});
 </script>
 
 <template>
  
-        <div class="flex w-full">
-          <div class="w-full carousel carousel-center">
-  <div id="slide1" class="relative w-full carousel-item ">
+  <div class="flex w-full">
+  <div class="w-full carousel carousel-center">
+    <div id="slide1" class="relative w-full carousel-item ">
     <img
       src="https://img.daisyui.com/images/stock/photo-1625726411847-8cbb60cc71e6.webp"
       class="w-full" />

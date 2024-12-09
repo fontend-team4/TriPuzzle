@@ -4,13 +4,20 @@ import SearchBar from './SearchBar.vue'
 import MapToggle from './MapToggle.vue'
 import PlacesComponent from './PlacesComponent.vue'
 import ScheduleSideBar from './ScheduleSideBar.vue'
+import DetailModal from '@/components/DetailModal.vue';
+import { useRouter, useRoute } from "vue-router";
+import fakeLocation from "../../fakeLocation.json";
+import AddPlaceModal from './AddPlaceModal.vue'
+import { PlaceModalStore } from "@/stores/PlaceModal";
+
+
+const modalStore = PlaceModalStore();
+const router = useRouter();
+const route = useRoute();
+
 
 const isPlacesComponent = ref(true);
 
-// 改用 v-if 不然下面會佔位
-// const placesComponentCls = computed(() => {
-//     return isPlacesComponent.value ? [""] : ["translate-y-full opacity-0"];
-// });
 
 // ScheduleList
 const schedulesListRef = ref(null)
@@ -24,22 +31,75 @@ const topBarSwitch = computed(()=> {
 const waterFallSwitch = computed(()=> {
   return schedulesListRef?.value?.listOpen ? 'lg:pe-[420px] transition-all' : 'px-10'
 })
+
+
+const isModalOpen = computed(() => route.query.action === "placeInfo");
+const currentPlaceId = computed(() => route.query.placeId);
+const currentPlace = computed(() =>
+  fakeLocation.find((place) => place.id === Number(currentPlaceId.value))
+);
+
+const handleOpenDetailModal = (detailId) => {
+  router.push({
+    path: "/planner",
+    query: { action: "placeInfo", placeId: detailId },
+  });
+};
+
+const closeDetailModal = () => {
+  router.push({ path: "/planner" });
+};
+
 </script>
 
 <template>
-  <div class="flex item-center gap-4 absolute top-0 lg:top-5 left-0 lg:left-8 transition-all z-10" :class="topBarSwitch">
-    <SearchBar class="w-full flex justify-end lg:ml-20"/>
+ 
+ <Transition name="detail">
+    <DetailModal class="absolute top-0 left-0 z-40 flex-auto " v-if="isModalOpen" :place="currentPlace" @close="closeDetailModal"/>
+  </Transition>
+    <div class="absolute top-0 left-0 z-10 flex gap-4 transition-all item-center lg:top-5 lg:left-8" :class="topBarSwitch">
+    <SearchBar class="flex justify-end w-full lg:ml-20"/>
     <MapToggle 
-    class="hidden lg:flex justify-start item-center mr-24"
+    class="justify-start hidden mr-24 lg:flex item-center"
     v-model:isPlacesComponent="isPlacesComponent" />
     <MapToggle 
       class="fixed bottom-5 left-1/2 -translate-x-1/2 justify-center item-center md:left-[44%] lg:hidden"
       v-model:isPlacesComponent="isPlacesComponent" />
-  </div>
-  <PlacesComponent v-if="isPlacesComponent" class="absolute top-0 transition-all" :class="waterFallSwitch" />
+    </div>
+
+  <Transition name="places">
+    <PlacesComponent v-if="isPlacesComponent" class="absolute top-0 transition-all" :class="waterFallSwitch" @open-detail-modal="handleOpenDetailModal" />
+  </Transition>
+
   <ScheduleSideBar ref="schedulesListRef"/>
+
+  <Transition name="detail">
+    <AddPlaceModal class="absolute top-0 z-50 " v-if="modalStore.isOpen" />
+  </Transition>
+
 </template>
 
-<style>
+<style scoped>
+.places-enter-active,
+.places-leave-active {
+  transition: all 0.3s ease;
+}
+
+.places-enter-from,
+.places-leave-to {
+  opacity: 0;
+  transform: translateY(100%);
+}
+
+.detail-enter-active,
+.detail-leave-active {
+  transition: all 0.3s ease;
+}
+
+.detail-enter-from,
+.detail-leave-to {
+  opacity: 0;
+  transform: translateY(-5%);
+}
 
 </style>
