@@ -1,7 +1,7 @@
-import { defineStore, storeToRefs } from 'pinia';
+import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
-export const PlaceModalStore = defineStore('PlaceModal', () => {
+export const DeleteScheduleStore = defineStore('DeleteScheduleModal', () => {
   const isOpen = ref(false);
 
   const openModal = () => {
