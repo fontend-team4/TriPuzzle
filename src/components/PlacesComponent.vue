@@ -1,14 +1,18 @@
 <script setup>
-import { ref, onMounted, nextTick } from "vue";
+import { ref, onMounted, nextTick, defineEmits } from "vue";
 import { StarIcon, MapPinIcon, ChevronDownIcon, HeartIcon, PlusCircleIcon } from "@heroicons/vue/24/solid";
 import { HeartIcon as OutlineHeartIcon } from "@heroicons/vue/24/outline";
 import fakeLocation from "../../fakeLocation.json";
 import AddPlaceModal from "./AddPlaceModal.vue";
+import { useRouter } from 'vue-router';
+import AddPlaceBtn from "./AddPlaceBtn.vue";
+const router = useRouter();
 
 const fakeLocations = ref([]);
 const items = ref([]);
 const columns = ref([]); // 每欄
 const numCols = ref(2); // 預設為兩欄
+const emit = defineEmits(['open-detail-modal'])
 
 const initializeItems = () => {
   items.value = fakeLocation.map((location) => ({
@@ -55,10 +59,15 @@ onMounted(() => {
 const toggleFavorite = (item) => {
   item.isFavorited = !item.isFavorited;
 };
+
+
+const openDetailModal = (detailId) => {
+  emit('open-detail-modal', detailId);
+};
 </script>
 
 <template>
-  <div class="h-screen lg:ps-28 pt-20 lg:pt-24 pb-14 bg-slate-100">
+  <div class="absolute top-0 h-screen pt-20 lg:ps-28 lg:pt-24 pb-14 bg-slate-100">
     <!-- 瀑布流 -->
     <div
       class="grid"
@@ -71,22 +80,22 @@ const toggleFavorite = (item) => {
         class="flex flex-col gap-4"
       >
         <div v-for="item in col" :key="item.id" class="group">
-          <a href="#">
+          <a href="#" @click="openDetailModal(item.id)">
             <div class="relative w-full mb-2 overflow-hidden rounded-lg ">
               <!-- 黑色遮罩 -->
               <div class="absolute w-full h-full transition-opacity bg-black opacity-0 group-hover:opacity-20"></div>
               
               <!-- 喜歡按鈕和加入景點 -->
-              <div class="absolute bottom-0 z-2 flex items-center justify-between w-full p-4 transition-opacity opacity-0 group-hover:opacity-100">
+              <div class="absolute bottom-0 flex items-center justify-between w-full p-4 transition-opacity opacity-0 z-2 group-hover:opacity-100" >
                 <div
                   class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer bg-gray hover:bg-opacity-75 tooltip " data-tip="加入最愛"
-                  @click.prevent="toggleFavorite(item)"
+                  @click.prevent="toggleFavorite(item)" @click.stop
                 >
                 <component  :is="item.isFavorited ? HeartIcon : OutlineHeartIcon":class="item.isFavorited ? 'text-red-500' : 'text-gray-500'" class="size-6"/>
                 </div>
-                <button class="btn border-0 overflow-hidden text-white text-lg bg-secondary-500 rounded-full
-  hover:bg-secondary-600" onclick="AddPlace.showModal()">加入行程<PlusCircleIcon class="size-6"/></button>
-                <AddPlaceModal />
+                <!-- <button class="overflow-hidden text-lg text-white border-0 rounded-full btn bg-secondary-500 hover:bg-secondary-600" onclick="AddPlaceModal.showModal()">加入行程<PlusCircleIcon class="size-6"/></button> -->
+                <AddPlaceBtn  @click.stop/>
+
               </div>
               
               <!-- 圖片 -->
@@ -103,7 +112,7 @@ const toggleFavorite = (item) => {
                   }}</span
                   >．<span>{{ item.location }}</span>
                 </div>
-                <a :href="item.mapUrl"><MapPinIcon class="text-gray-500 md:size-6 size-4" /></a>
+                <a :href="item.mapUrl" target="_blank"><MapPinIcon class="text-gray-500 md:size-6 size-4" /></a>
               </div>
             </div>
           </a>
@@ -111,6 +120,7 @@ const toggleFavorite = (item) => {
       </div>
     </div>
   </div>
+  <!-- <AddPlaceModal class="absolute top-0 z-50"/> -->
 </template>
 
 <style scoped>
