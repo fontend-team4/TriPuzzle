@@ -22,8 +22,8 @@ const schedules = ref([])
 const getUserToken = async ()=>{
   try {
     const config = {
-        name: "emma",
-        email: "emma@gmail.com",
+        name: "user",
+        email: "user@gmail.com",
         password: "12345678"
       }
     const response = await axios.post(`${API_URL}/users/login`, config)
