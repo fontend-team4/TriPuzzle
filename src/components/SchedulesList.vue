@@ -1,5 +1,5 @@
 <script setup>
-import { ref, provide, inject, onMounted } from 'vue'
+import { ref, inject, onMounted } from 'vue'
 import axios from 'axios'
 import {
   ChevronDownIcon,
@@ -16,7 +16,7 @@ import {
 } from '@heroicons/vue/24/outline'
 import ShareScheduleModal from './ShareScheduleModal.vue'
 import NewScheduleModal from '@/components/NewScheduleModal.vue'
-import { DeleteScheduleStore } from '@/stores/DeleteModal'
+import DeleteScheduleModal from './DeleteScheduleModal.vue'
 
 const listToggle = inject('listToggle')
 const detailToggle = inject('detailToggle')
@@ -47,6 +47,7 @@ const getUserToken = async () => {
 const hasSchedules = ref(false)
 const checkedSchedule = ref('mine')
 const schedules = ref([])
+const deletedId = ref(null)
 // 讀取行程資料
 const getSchedules = async () => {
   const config = {
@@ -66,19 +67,13 @@ const getSchedules = async () => {
     })
   } catch (error) {
     console.error(error.message)
+    hasSchedules.value = false
   }
 }
 
-const modalStore = DeleteScheduleStore()
-
-const itemId = ref(null)
 const openDeleteModal = (id) => {
-  // modalStore.openModal
-  itemId.value = id
-  console.log(itemId.value)
+  deletedId.value = id
 }
-
-provide('itemId', itemId.value)
 
 onMounted(async () => {
   await getUserToken()
@@ -171,7 +166,6 @@ onMounted(async () => {
                   >
                     <ShareIcon />
                   </span>
-                  <ShareScheduleModal />
                   <div class="dropdown">
                     <button
                       role="button"
@@ -208,7 +202,8 @@ onMounted(async () => {
                       </li>
                       <li
                         class="border-t border-gray"
-                        @click="modalStore.openModal"
+                        @click="openDeleteModal(item.id)"
+                        onclick="deleteSchedule.showModal()"
                       >
                         <a
                           class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray"
@@ -255,7 +250,6 @@ onMounted(async () => {
                 建立新行程
               </button>
             </div>
-            <!-- <NewScheduleModal /> -->
           </div>
           <!-- 與我共編 -->
           <div v-else>
@@ -300,7 +294,6 @@ onMounted(async () => {
           >
             建立新行程
           </button>
-          <NewScheduleModal :savetoSchedules="getSchedules" />
         </div>
         <!-- 未登入 -->
         <div
@@ -320,6 +313,9 @@ onMounted(async () => {
         </div>
       </div>
     </div>
+    <ShareScheduleModal />
+    <DeleteScheduleModal :toBeDeleteId="deletedId" :updateList="getSchedules" />
+    <NewScheduleModal :savetoSchedules="getSchedules" />
   </div>
 </template>
 

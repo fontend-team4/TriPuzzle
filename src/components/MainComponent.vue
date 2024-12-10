@@ -9,11 +9,9 @@ import { useRouter, useRoute } from 'vue-router'
 import fakeLocation from '../../fakeLocation.json'
 import AddPlaceModal from './AddPlaceModal.vue'
 import { PlaceModalStore } from '@/stores/PlaceModal'
-import DeleteScheduleModal from './DeleteScheduleModal.vue'
 import { DeleteScheduleStore } from '@/stores/DeleteModal'
 
 const modalStore = PlaceModalStore()
-const deleteStore = DeleteScheduleStore()
 
 const router = useRouter()
 const route = useRoute()
@@ -84,7 +82,7 @@ const closeDetailModal = () => {
       v-if="isPlacesComponent"
       class="absolute top-0 transition-all"
       :class="waterFallSwitch"
-      @open-detail-modal="handleOpenDetailModal"
+      @openDeleteModal="handleOpenDetailModal"
     />
   </Transition>
 
@@ -92,9 +90,6 @@ const closeDetailModal = () => {
 
   <Transition name="detail">
     <AddPlaceModal class="absolute top-0 z-50" v-if="modalStore.isOpen" />
-  </Transition>
-  <Transition name="delete">
-    <DeleteScheduleModal v-if="deleteStore.isOpen" />
   </Transition>
 </template>
 

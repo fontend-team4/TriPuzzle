@@ -1,5 +1,5 @@
 <script setup>
-import { ref, provide, computed } from 'vue'
+import { ref, provide } from 'vue'
 import { GlobeAsiaAustraliaIcon } from '@heroicons/vue/24/outline'
 import SchedulesList from './SchedulesList.vue'
 import ScheduleDetail from '@/components/ScheduleDetail.vue'
