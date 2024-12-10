@@ -2,17 +2,18 @@
 import { ref, onMounted, computed, nextTick, defineEmits } from "vue"
 import { ListBulletIcon, XMarkIcon, StarIcon, MapPinIcon, PlusCircleIcon } from "@heroicons/vue/24/solid";
 import fakeLocation from "../../fakeLocation.json";
+import defaultPlaces from "../../defaultPlaces.json"
 import AddPlaceModal from "./AddPlaceModal.vue";
 import AddPlaceBtn from "./AddPlaceBtn.vue";
 import { useRouter } from 'vue-router';
 const router = useRouter();
 
-const fakeLocations = ref([]);
+const defaultPlacesData = ref([]);
 const emit = defineEmits(['open-detail-modal'])
 
 
 onMounted(() => {
-  fakeLocations.value = fakeLocation;
+  defaultPlacesData.value = defaultPlaces;
 });
 
 
@@ -76,13 +77,13 @@ const openDetailModal = (detailId) => {
         <div class=" w-full h-[calc(100%-60px)] px-5 overflow-auto ">
           <ul class="w-full h-full">
             <li
-              v-for="item in fakeLocations"
+              v-for="item in defaultPlacesData"
               class="w-full mb-3 transition-colors rounded-md p1 bg-gray hover:bg-primary-100"
             >
              <a href="#" @click="openDetailModal(item.id)">
                 <figure class="flex p-1 group">
                   <div class="w-40 h-40 overflow-hidden rounded-md ">
-                    <img :src="item.image" alt="" class="aspect-square" />
+                    <img :src="item.image_url" alt="" class="aspect-square" />
                   </div>
                   <div class="pt-3 pl-4 pr-3 w-[176px] flex flex-col justify-between relative">
                     <div>

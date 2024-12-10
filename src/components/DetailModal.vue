@@ -2,9 +2,8 @@
 import DetailCarousel from './DetailCarousel.vue';
 import { CalendarIcon, ClockIcon, PhoneIcon, GlobeAltIcon, MapPinIcon, MagnifyingGlassIcon, HeartIcon, ShareIcon ,PaperAirplaneIcon, XMarkIcon, PhotoIcon, ChevronLeftIcon ,ArrowDownTrayIcon, LinkIcon} from "@heroicons/vue/24/outline";
 import { StarIcon } from "@heroicons/vue/24/solid";
-import { computed ,ref, defineProps, defineEmits } from 'vue'
+import { computed ,ref, defineEmits } from 'vue'
 import Waterfall from './Waterfall.vue';
-import AddPlaceModal from './AddPlaceModal.vue';
 import AddPlaceBtn from './AddPlaceBtn.vue';
 
 
@@ -36,13 +35,13 @@ defineEmits(["close"]);
 </script>
 
 <template>
-  <div class="absolute z-50 flex items-center justify-center w-screen h-screen bg-black bg-opacity-25 " @click="$emit('close')" >
+  <div class="absolute z-50 flex items-center justify-center w-screen h-screen overflow-hidden bg-black bg-opacity-25" @click="$emit('close')" >
     <div class="pb-10 md:pb-0 h-full md:h-[calc(100vh-160px)] lg:w-[1032px] mx-0 md:mx-auto  bg-white md:flex md:rounded-md md:overflow-hidden overflow-auto relative " :class="overflowStatus" @click.stop>
       <div class="bg-black md:w-[calc(100%-368px)] h-[360px] md:h-full md:overflow-hidden flex justify-center relative group">
         <!--輪播圖  -->
         <!-- <DetailCarousel /> -->
          <div class="inline-flex items-center justify-center w-full h-full bg-black">
-          <img :src="place.image" alt="" class="object-contain w-full">
+          <img :src="place.image_url" alt="" class="object-contain w-full">
          </div>
         <button for="showPhoto" class="absolute flex gap-1 bg-gray-100 py-[3px] px-2.5 rounded-full top-4 right-16 h-[32px] text-sm items-center bg-opacity-75 bg-white md:right-4 md:opacity-0 md:group-hover:opacity-100 transition-opacity" @click="changeShowPhoto"><PhotoIcon class="size-5 "/>3</button>
         <button class="absolute flex gap-1 bg-gray-100 py-[3px] px-2.5 rounded-full top-4 right-5 h-[32px] w-[32px] text-sm items-center bg-opacity-75 bg-white md:hidden " @click="$emit('close')"><XMarkIcon class="absolute right-1 size-5 -translate-x-[2px] " /></button>
@@ -64,7 +63,7 @@ defineEmits(["close"]);
         </div>
         <div class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px]">
           <CalendarIcon class="size-5"/>
-          <p class="pl-10 text-sm">簡介</p>
+          <p class="pl-10 text-sm">{{place.description}}</p>
         </div>
         <div class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px]">
           <PhoneIcon class="size-5"/>

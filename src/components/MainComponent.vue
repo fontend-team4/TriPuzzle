@@ -1,12 +1,12 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import SearchBar from './SearchBar.vue'
 import MapToggle from './MapToggle.vue'
 import PlacesComponent from './PlacesComponent.vue'
 import ScheduleSideBar from './ScheduleSideBar.vue'
 import DetailModal from '@/components/DetailModal.vue';
 import { useRouter, useRoute } from "vue-router";
-import fakeLocation from "../../fakeLocation.json";
+import defaultPlaces from "../../defaultPlaces.json"
 import AddPlaceModal from './AddPlaceModal.vue'
 import { PlaceModalStore } from "@/stores/PlaceModal";
 
@@ -36,7 +36,7 @@ const waterFallSwitch = computed(()=> {
 const isModalOpen = computed(() => route.query.action === "placeInfo");
 const currentPlaceId = computed(() => route.query.placeId);
 const currentPlace = computed(() =>
-  fakeLocation.find((place) => place.id === Number(currentPlaceId.value))
+  defaultPlaces.find((place) => place.id === Number(currentPlaceId.value))
 );
 
 const handleOpenDetailModal = (detailId) => {
@@ -50,14 +50,16 @@ const closeDetailModal = () => {
   router.push({ path: "/planner" });
 };
 
+
+
 </script>
 
 <template>
  
- <Transition name="detail">
-    <DetailModal class="absolute top-0 left-0 z-40 flex-auto " v-if="isModalOpen" :place="currentPlace" @close="closeDetailModal"/>
+ <Transition name="detail" >
+    <DetailModal class="absolute top-0 left-0 z-40 flex-auto" v-if="isModalOpen" :place="currentPlace" @close="closeDetailModal"/>
   </Transition>
-    <div class="absolute top-0 left-0 z-10 flex gap-4 transition-all item-center lg:top-5 lg:left-8" :class="topBarSwitch">
+    <div class="absolute top-0 left-0 z-10 flex gap-4 transition-all item-center lg:top-5 lg:left-8" :class="topBarSwitch" >
     <SearchBar class="flex justify-end w-full lg:ml-20"/>
     <MapToggle 
     class="justify-start hidden mr-24 lg:flex item-center"
@@ -68,7 +70,7 @@ const closeDetailModal = () => {
     </div>
 
   <Transition name="places">
-    <PlacesComponent v-if="isPlacesComponent" class="absolute top-0 transition-all" :class="waterFallSwitch" @open-detail-modal="handleOpenDetailModal" />
+      <PlacesComponent v-if="isPlacesComponent" class="absolute top-0 transition-all" :class="waterFallSwitch" @open-detail-modal="handleOpenDetailModal" />
   </Transition>
 
   <ScheduleSideBar ref="schedulesListRef"/>

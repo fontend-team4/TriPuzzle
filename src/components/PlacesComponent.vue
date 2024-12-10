@@ -2,26 +2,25 @@
 import { ref, onMounted, nextTick, defineEmits } from "vue";
 import { StarIcon, MapPinIcon, ChevronDownIcon, HeartIcon, PlusCircleIcon } from "@heroicons/vue/24/solid";
 import { HeartIcon as OutlineHeartIcon } from "@heroicons/vue/24/outline";
-import fakeLocation from "../../fakeLocation.json";
-import AddPlaceModal from "./AddPlaceModal.vue";
+import defaultPlaces from "../../defaultPlaces.json"
 import { useRouter } from 'vue-router';
 import AddPlaceBtn from "./AddPlaceBtn.vue";
 const router = useRouter();
 
-const fakeLocations = ref([]);
+const defaultPlacesData = ref([]);
 const items = ref([]);
 const columns = ref([]); // 每欄
 const numCols = ref(2); // 預設為兩欄
 const emit = defineEmits(['open-detail-modal'])
 
 const initializeItems = () => {
-  items.value = fakeLocation.map((location) => ({
+  items.value = defaultPlaces.map((location) => ({
     id: location.id,
-    url: location.image,
+    url: location.image_url,
     title: location.name,
     rating: location.rating.toString(),
     location: location.city,
-    mapUrl: location.google_map,
+    mapUrl: location.web_map,
   }));
 };
 
@@ -49,7 +48,7 @@ const handleResize = () => {
 };
 
 onMounted(() => {
-  fakeLocations.value = fakeLocation;
+  defaultPlacesData.value = defaultPlaces;
   initializeItems(); // 初始化 items
   handleResize();
   window.addEventListener("resize", handleResize);
