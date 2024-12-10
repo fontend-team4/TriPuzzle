@@ -74,6 +74,15 @@ const getSchedules = async () => {
 const openDeleteModal = (id) => {
   deletedId.value = id
 }
+const activeStatus = ref(null)
+
+const openShareModal = () => {
+  activeStatus.value = 'share'
+}
+
+const openInviteModal = () => {
+  activeStatus.value = 'invite'
+}
 
 onMounted(async () => {
   await getUserToken()
@@ -163,6 +172,7 @@ onMounted(async () => {
                   <span
                     class="w-6 h-6 rounded-full bg-gray-transparent text-white p-1 hover:cursor-pointer"
                     onclick="shareSchedule.showModal()"
+                    @click="openShareModal"
                   >
                     <ShareIcon />
                   </span>
@@ -189,7 +199,10 @@ onMounted(async () => {
                           <p>複製行程</p>
                         </a>
                       </li>
-                      <li>
+                      <li
+                        onclick="shareSchedule.showModal()"
+                        @click="openInviteModal"
+                      >
                         <a
                           class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray"
                           href="#"
@@ -313,7 +326,7 @@ onMounted(async () => {
         </div>
       </div>
     </div>
-    <ShareScheduleModal />
+    <ShareScheduleModal :activeTab="activeStatus" />
     <DeleteScheduleModal :toBeDeleteId="deletedId" :updateList="getSchedules" />
     <NewScheduleModal :savetoSchedules="getSchedules" />
   </div>
