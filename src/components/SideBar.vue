@@ -23,7 +23,7 @@ const closeLoginDialog = () => {
 
 <template>
   <button
-    class="fixed top-4 left-5 z-60 bg-white text-black p-2 rounded-lg shadow lg:hidden"
+    class="fixed z-50 p-2 text-black bg-white rounded-lg shadow top-4 left-5 lg:hidden"
     @click="toggleMenu"
     aria-label="Toggle Menu"
     :aria-expanded="isMenuOpen ? 'true' : 'false' "
@@ -48,14 +48,14 @@ const closeLoginDialog = () => {
         />
       </RouterLink>
     </div>
-    <ul class="space-y-2 w-full">
-      <li class="flex items-center p-2 hover:bg-primary-100 rounded-lg transition-all">
+    <ul class="w-full space-y-2">
+      <li class="flex items-center p-2 transition-all rounded-lg hover:bg-primary-100">
         <button class="flex w-full">
           <RouterLink to="/planner">
             <div class="flex">
-              <MagnifyingGlassIcon class="w-6 h-6 flex-none text-slate-500" />
+              <MagnifyingGlassIcon class="flex-none w-6 h-6 text-slate-500" />
               <span
-                class="ml-3 font-medium opacity-0 group-hover:opacity-100 hidden group-hover:inline-block transition-opacity duration-500 delay-500 whitespace-nowrap text-slate-500 hover:text-primary-800"
+                class="hidden ml-3 font-medium transition-opacity duration-500 delay-500 opacity-0 group-hover:opacity-100 group-hover:inline-block whitespace-nowrap text-slate-500 hover:text-primary-800"
               >
                 發現
               </span>
@@ -63,13 +63,13 @@ const closeLoginDialog = () => {
           </RouterLink>
         </button>
       </li>
-      <li class="flex items-center p-2 hover:bg-primary-100 rounded-lg transition-all">
+      <li class="flex items-center p-2 transition-all rounded-lg hover:bg-primary-100">
         <button class="flex w-full">
           <RouterLink to="/">
             <div class="flex">
-              <LightBulbIcon class="w-6 h-6 flex-none text-slate-500" />
+              <LightBulbIcon class="flex-none w-6 h-6 text-slate-500" />
               <span
-                class="ml-3 font-medium opacity-0 group-hover:opacity-100 hidden group-hover:inline-block transition-opacity duration-500 delay-500 whitespace-nowrap text-slate-500 hover:text-primary-800"
+                class="hidden ml-3 font-medium transition-opacity duration-500 delay-500 opacity-0 group-hover:opacity-100 group-hover:inline-block whitespace-nowrap text-slate-500 hover:text-primary-800"
               >
                 認識旅圖
               </span>
@@ -77,12 +77,12 @@ const closeLoginDialog = () => {
           </RouterLink>
         </button>
       </li>
-      <hr class="border-t border-gray my-4 w-full" />
-      <li class="flex items-center p-2 hover:bg-primary-100  rounded-lg transition-all">
+      <hr class="w-full my-4 border-t border-gray" />
+      <li class="flex items-center p-2 transition-all rounded-lg hover:bg-primary-100">
         <button class="flex w-full" @click="openLoginDialog">
-          <UserCircleIcon class="w-6 h-6 flex-none text-slate-500" />
+          <UserCircleIcon class="flex-none w-6 h-6 text-slate-500" />
           <span
-            class="ml-3 font-medium opacity-0 group-hover:opacity-100 hidden group-hover:inline-block transition-opacity duration-500 delay-500 whitespace-nowrap text-slate-500 hover:text-primary-800"
+            class="hidden ml-3 font-medium transition-opacity duration-500 delay-500 opacity-0 group-hover:opacity-100 group-hover:inline-block whitespace-nowrap text-slate-500 hover:text-primary-800"
           >
             會員
           </span>

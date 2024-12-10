@@ -55,30 +55,32 @@ const closeDetailModal = () => {
 </script>
 
 <template>
- 
- <Transition name="detail" >
-    <DetailModal class="absolute top-0 left-0 z-40 flex-auto" v-if="isModalOpen" :place="currentPlace" @close="closeDetailModal"/>
-  </Transition>
-    <div class="absolute top-0 left-0 z-10 flex gap-4 transition-all item-center lg:top-5 lg:left-8" :class="topBarSwitch" >
-    <SearchBar class="flex justify-end w-full lg:ml-20"/>
+  <div class="fixed top-0 z-40 w-full h-20 bg-slate-100">
+    <div class="absolute top-0 left-0 z-10 flex gap-4 transition-all item-center lg:top-5 lg:left-8 " :class="topBarSwitch" >
+    <SearchBar class="flex justify-end w-full lg:ml-20 "/>
     <MapToggle 
     class="justify-start hidden mr-24 lg:flex item-center"
     v-model:isPlacesComponent="isPlacesComponent" />
-    <MapToggle 
-      class="fixed bottom-5 left-1/2 -translate-x-1/2 justify-center item-center md:left-[44%] lg:hidden"
-      v-model:isPlacesComponent="isPlacesComponent" />
     </div>
+    <ScheduleSideBar ref="schedulesListRef"/>
+  </div>
 
+  <!-- 瀑布流 -->
   <Transition name="places">
       <PlacesComponent v-if="isPlacesComponent" class="absolute top-0 transition-all" :class="waterFallSwitch" @open-detail-modal="handleOpenDetailModal" />
   </Transition>
 
-  <ScheduleSideBar ref="schedulesListRef"/>
+
+
+
+  <!-- modal區 -->
+  <Transition name="detail" >
+    <DetailModal class="absolute top-0 left-0 z-40 flex-auto" v-if="isModalOpen" :place="currentPlace" @close="closeDetailModal"/>
+  </Transition>
 
   <Transition name="detail">
     <AddPlaceModal class="absolute top-0 z-50 " v-if="modalStore.isOpen" />
   </Transition>
-
 </template>
 
 <style scoped>
