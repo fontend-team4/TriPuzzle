@@ -69,35 +69,3 @@ const checkedSchedule = ref('mine');
     </div>
   </div>
 </template>
-
-
-<style>
-.bg-gray-transparent {
-  background-color: #2d4057cc;
-}
-.schedule:hover > p {
-  display: block;
-}
-#schedule-list-toggle:checked ~ .schedule-list {
-  transform: translateX(0);
-
-  /* 關閉按鈕做好之後就可以打開 */
-  /* .schedule{
-    display: none;
-  } */
-}
-.card > figure > img {
-  transform: scale(1);
-  transition: all 1s;
-}
-.card:hover > figure > img {
-  transform: scale(1.25);
-  transition: all 1s;
-}
-#mine:checked ~ .mine-toggle {
-  background-color: #fff;
-}
-#coedit:checked ~ .coedit-toggle {
-  background-color: #fff;
-}
-</style>

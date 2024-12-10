@@ -3,15 +3,12 @@
 import { AdjustmentsHorizontalIcon } from '@heroicons/vue/24/solid'
 import { ref, onMounted, watch, defineEmits } from "vue";
 
-// 定義分類資料
-
 const defaultCategories = [
   { name: "景點", icon: "🌄" },
   { name: "收藏", icon: "❤️" },
   { name: "美食", icon: "🍴" },
   { name: "購物", icon: "🛍️" },
 ];
-
 
 const additionalCategories = ref([
   { name: "住宿", icon: "🏨" },
