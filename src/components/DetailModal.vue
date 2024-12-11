@@ -35,7 +35,7 @@ defineEmits(["close"]);
 </script>
 
 <template>
-  <div class="absolute z-50 flex items-center justify-center w-screen h-screen overflow-hidden bg-black bg-opacity-25" @click="$emit('close')" >
+  <div class="fixed z-50 flex items-center justify-center w-screen h-screen overflow-hidden bg-black bg-opacity-25" @click="$emit('close')" >
     <div class="pb-10 md:pb-0 h-full md:h-[calc(100vh-160px)] lg:w-[1032px] mx-0 md:mx-auto  bg-white md:flex md:rounded-md md:overflow-hidden overflow-auto relative " :class="overflowStatus" @click.stop>
       <div class="bg-black md:w-[calc(100%-368px)] h-[360px] md:h-full md:overflow-hidden flex justify-center relative group">
         <!--輪播圖  -->

@@ -75,11 +75,11 @@ const closeDetailModal = () => {
 
   <!-- modal區 -->
   <Transition name="detail" >
-    <DetailModal class="absolute top-0 left-0 z-40 flex-auto" v-if="isModalOpen" :place="currentPlace" @close="closeDetailModal"/>
+    <DetailModal class="fixed top-0 left-0 z-40 flex-auto" v-if="isModalOpen" :place="currentPlace" @close="closeDetailModal"/>
   </Transition>
 
   <Transition name="detail">
-    <AddPlaceModal class="absolute top-0 z-50 " v-if="modalStore.isOpen" />
+    <AddPlaceModal class="fixed top-0 z-50 " v-if="modalStore.isOpen" />
   </Transition>
 </template>
 
