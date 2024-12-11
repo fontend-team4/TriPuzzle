@@ -82,7 +82,7 @@ const closeDetailModal = () => {
       v-if="isPlacesComponent"
       class="absolute top-0 transition-all"
       :class="waterFallSwitch"
-      @openDeleteModal="handleOpenDetailModal"
+      @open-detail-modal="handleOpenDetailModal"
     />
   </Transition>
 
