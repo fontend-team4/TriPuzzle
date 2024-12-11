@@ -10,7 +10,6 @@ import defaultPlaces from "../../defaultPlaces.json"
 import AddPlaceModal from './AddPlaceModal.vue'
 import { PlaceModalStore } from "@/stores/PlaceModal";
 
-
 const modalStore = PlaceModalStore();
 const router = useRouter();
 const route = useRoute();

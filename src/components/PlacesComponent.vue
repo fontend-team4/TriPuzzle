@@ -5,6 +5,10 @@ import { HeartIcon as OutlineHeartIcon } from "@heroicons/vue/24/outline";
 import defaultPlaces from "../../defaultPlaces.json"
 import { useRouter } from 'vue-router';
 import AddPlaceBtn from "./AddPlaceBtn.vue";
+import newPlaces from "../../places_default.json"
+
+
+console.log(newPlaces[0].id);
 const router = useRouter();
 
 const defaultPlacesData = ref([]);

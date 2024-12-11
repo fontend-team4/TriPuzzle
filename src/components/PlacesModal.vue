@@ -1,7 +1,6 @@
 <script setup>
 import { ref, onMounted, computed, nextTick, defineEmits } from "vue"
 import { ListBulletIcon, XMarkIcon, StarIcon, MapPinIcon, PlusCircleIcon } from "@heroicons/vue/24/solid";
-import fakeLocation from "../../fakeLocation.json";
 import defaultPlaces from "../../defaultPlaces.json"
 import AddPlaceModal from "./AddPlaceModal.vue";
 import AddPlaceBtn from "./AddPlaceBtn.vue";
