@@ -26,6 +26,10 @@ const showModal = ref(true);
           <p class="text-sm mt-2">暢你的旅遊 照你的玩</p>
         </div>
       </div>
+           
+
+
+
 
       <div class="flex justify-center items-center mt-20">
         <div class="text-center">
