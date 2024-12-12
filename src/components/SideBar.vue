@@ -7,6 +7,9 @@ import {
   UserCircleIcon,
   Bars3Icon,
 } from '@heroicons/vue/24/solid';
+import { LoginModalStore } from '@/stores/LoginModal.js'
+const LoginStore = LoginModalStore()
+
 
 const isMenuOpen = ref(false);
 const toggleMenu = () => {
@@ -79,7 +82,7 @@ const closeLoginDialog = () => {
       </li>
       <hr class="border-t border-gray my-4 w-full" />
       <li class="flex items-center p-2 hover:bg-primary-100  rounded-lg transition-all">
-        <button class="flex w-full" @click="openLoginDialog">
+        <button class="flex w-full" @click="LoginStore.openModal()">
           <UserCircleIcon class="w-6 h-6 flex-none text-slate-500" />
           <span
             class="ml-3 font-medium opacity-0 group-hover:opacity-100 hidden group-hover:inline-block transition-opacity duration-500 delay-500 whitespace-nowrap text-slate-500 hover:text-primary-800"
@@ -90,7 +93,8 @@ const closeLoginDialog = () => {
       </li>
     </ul>
   </div>
-  <LoginDialog class="z-20" v-if="isLoginDialogOpen" @close="closeLoginDialog" />
+  <!-- <LoginDialog class="z-20" v-if="isLoginDialogOpen" @close="closeLoginDialog" /> -->
+  <LoginDialog class="z-20" v-if="LoginStore.isOpen" @close="LoginStore.closeModal" />
   <div>
   </div>
 </template>
