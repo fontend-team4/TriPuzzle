@@ -1,14 +1,11 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import { MagnifyingGlassIcon, PuzzlePieceIcon } from "@heroicons/vue/24/outline";
+import{ MagnifyingGlassIcon, PuzzlePieceIcon } from "@heroicons/vue/24/outline";
 import PlacesModal from '@/components/PlacesModal.vue';
-const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-
 const map = ref(null)
 // 預設經緯度在信義區附近
 const lat = ref(24.998564)
 const lng = ref(121.576222)
-
 // 建立地圖
 const initMap = () => {
   // 透過 Map 物件建構子建立新地圖 map 物件實例，並將地圖呈現在 id 為 map 的元素中
@@ -34,12 +31,7 @@ const setMarker = () => {
     // 設定地標的座標
     position: { lat: lat.value, lng: lng.value },
     // 設定地標要放在哪一個地圖
-    map: map.value,
-    // 設定自定義圖標
-    icon: {
-      url: 'PuzzlePieceIcon', // 替換為你的自定義圖標路徑
-      scaledSize: new google.maps.Size(50, 50) // 調整圖標大小
-    }
+    map: map.value
   });
   // 透過 InfoWindow 物件建構子建立新訊息視窗
   const infowindow = new google.maps.InfoWindow({
@@ -58,12 +50,10 @@ const setMarker = () => {
     infowindow.open(map.value, marker);
   });
 }
-
 onMounted(() => {
   initMap();
-  setMarker();
+  // setMarker();
 })
-
 </script>
 
 <template>
@@ -74,28 +64,8 @@ onMounted(() => {
     <MagnifyingGlassIcon class="mr-1 size-5 text-primary-400" />
     <p>搜尋此區域</p>
   </button>
-  <gmp-advanced-marker
-        position="24.998564,121.576222"
-        title="Mountain View, CA"
-      ></gmp-advanced-marker>
-
-      <gmp-map
-        center="43.4142989,-124.2301242"
-        zoom="4"
-        map-id="DEMO_MAP_ID"
-        style="height: 400px"
-      >
-        <gmp-advanced-marker
-          position="24.998564,121.576222"
-          title="Mountain View, CA"
-        ></gmp-advanced-marker>
-        <gmp-advanced-marker
-          position="47.648994,-122.3503845"
-          title="Seattle, WA"
-        ></gmp-advanced-marker>
-      </gmp-map>
   <!-- 地點卡片 -->
-  <!-- <div class="absolute top-1/2 left-1/2">
+  <div class="absolute top-1/2 left-1/2">
     <div class="flex flex-col items-center justify-center group">
       <div class="flex flex-col items-center justify-center">
         <div class=" bg-white rounded-md p-[4px] items-center hidden group-hover:flex absolute top-16 w-auto shadow-md">
@@ -116,7 +86,7 @@ onMounted(() => {
         <p class="mr-1 group-hover:text-white">4.2</p>
       </button>
     </div>
-  </div> -->
+  </div>
   <PlacesModal class="hidden md:block  "/>
 </template>
 
@@ -128,9 +98,7 @@ onMounted(() => {
   z-index: -1;
   filter: drop-shadow(0 1px 1px rgb(0 0 0 / 0.25));
 }
-
 img{
   object-fit: cover
 }
-
 </style>
