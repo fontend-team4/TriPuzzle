@@ -203,20 +203,7 @@ const registerSubmit = async () => {
               >
             </p>
           </div>
-          <div>
-            <label for="email"></label>
-            <input
-              type="text"
-              placeholder="請輸入信箱"
-              id="email"
-              class="w-[80%] h-[48px] py-[12px] pr-[20px] pl-[16px] border-solid border border-[#EEEEEE] rounded-lg mt-1 mb-1 text-sm"
-              v-model="email"
-              v-on:keyup.enter="registerSubmit"
-            />
-          </div>
-          <!-- <p class=" text-red-500 text-sm font-light" v-show="isSubmitted&&email==''">
-            信箱不可為空
-          </p> -->
+
           <div class="relative">
             <label for="name"></label>
             <input
@@ -231,6 +218,21 @@ const registerSubmit = async () => {
           <!-- <p class=" text-red-500 text-sm font-light" v-show="isSubmitted&&name==''">
             帳號不可為空
           </p>         -->
+
+          <div>
+            <label for="email"></label>
+            <input
+              type="text"
+              placeholder="請輸入信箱"
+              id="email"
+              class="w-[80%] h-[48px] py-[12px] pr-[20px] pl-[16px] border-solid border border-[#EEEEEE] rounded-lg mt-1 mb-1 text-sm"
+              v-model="email"
+              v-on:keyup.enter="registerSubmit"
+            />
+          </div>
+          <!-- <p class=" text-red-500 text-sm font-light" v-show="isSubmitted&&email==''">
+            信箱不可為空
+          </p> -->
  
           <div class="relative">
             <label for="registerPassword"> </label>
