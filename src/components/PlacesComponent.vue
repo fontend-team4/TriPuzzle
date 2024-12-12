@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, nextTick, defineEmits } from 'vue'
+import { ref, onMounted, nextTick, defineEmits, provide } from 'vue'
 import {
   StarIcon,
   MapPinIcon,
@@ -8,12 +8,13 @@ import {
   PlusCircleIcon,
 } from '@heroicons/vue/24/solid'
 import { HeartIcon as OutlineHeartIcon } from '@heroicons/vue/24/outline'
-import oldDefaultPlaces from '../../defaultPlaces.json'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import AddPlaceBtn from './AddPlaceBtn.vue'
 import DefaultPlaces from '../../places_default.json'
 
-
+// const route = useRoute();
+// const selectedPlace = ref(null);
+// const placeId = computed(() => route.query.placeId);
 const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 const { places } = DefaultPlaces
 
@@ -34,7 +35,7 @@ const initializeItems = () => {
     url: `https://places.googleapis.com/v1/${location.photos[0].name}/media?key=${GOOGLE_API_KEY}&maxHeightPx=400&maxWidthPx=400`,
     title: location.displayName.text,
     rating: location.rating.toString(),
-    location: location.formattedAddress.split('').slice(5, 8).join(''),
+    location: location.formattedAddress.split(/[0-9]+/)[1].slice(2, 5),
     mapUrl: location.googleMapsUri,
   }))
 }

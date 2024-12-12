@@ -1,24 +1,44 @@
 <script setup>
-import { ref, onMounted, nextTick, onBeforeUnmount } from "vue";
-import fakeLocation from "../../fakeLocation.json";
+import { ref, onMounted, nextTick, onBeforeUnmount, watch } from "vue";
+// import fakeLocation from "../../fakeLocation.json";
+import DefaultPlaces from '../../places_default.json'
+
+
+const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
+const { places } = DefaultPlaces
 
 const containerRef = ref(null); // 參考外容器
-const fakeLocations = ref([]);
+// const fakeLocations = ref([]);
 const items = ref([]);
 const columns = ref([]); // 每欄
 const numCols = ref(2); // 預設為兩欄
 let resizeObserver = null;
 
+
+
 const initializeItems = () => {
-  items.value = fakeLocation.map((location) => ({
-    id: location.id,
-    url: location.image,
-    title: location.name,
-    rating: location.rating.toString(),
-    location: location.city,
-    mapUrl: location.google_map,
-  }));
+  items.value = places.flatMap((location) => 
+    location.photos.map((photo, index) => ({
+      id: `${location.id}-${index}`, // 每張圖片的唯一 ID
+      url: `https://places.googleapis.com/v1/${photo.name}/media?key=${GOOGLE_API_KEY}&maxHeightPx=400&maxWidthPx=400`,
+      title: location.displayName.text,
+      rating: location.rating.toString(),
+      location: location.formattedAddress.split(/[0-9]+/)[1].slice(2, 5),
+      mapUrl: location.googleMapsUri,
+    }))
+  );
 };
+
+// const initializeItems = () => {
+//   items.value = fakeLocation.map((location) => ({
+//     id: location.id,
+//     url: location.image,
+//     title: location.name,
+//     rating: location.rating.toString(),
+//     location: location.city,
+//     mapUrl: location.google_map,
+//   }));
+// };
 
 // 計算欄位分佈
 const calculateColumns = async () => {
@@ -50,7 +70,7 @@ const updateColumnCount = () => {
 };
 
 onMounted(() => {
-  fakeLocations.value = fakeLocation;
+  // fakeLocations.value = fakeLocation;
   initializeItems(); // 初始化 items
 
   // 監聽外容器大小

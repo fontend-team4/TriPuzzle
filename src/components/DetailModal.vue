@@ -55,6 +55,7 @@ const props = defineProps({
 })
 
 defineEmits(['close'])
+
 </script>
 
 <template>
@@ -63,7 +64,7 @@ defineEmits(['close'])
     @click="$emit('close')"
   >
     <div
-      class="pb-10 md:pb-0 h-full md:h-[calc(100vh-160px)] lg:w-[1032px] mx-0 md:mx-auto bg-white md:flex md:rounded-md md:overflow-hidden overflow-auto relative"
+      class="pb-10 md:pb-0 h-full md:h-[calc(100vh-160px)] md:w-[1032px] mx-0 md:mx-auto bg-white md:flex md:rounded-md md:overflow-hidden overflow-auto relative"
       :class="overflowStatus"
       @click.stop
     >
@@ -73,7 +74,7 @@ defineEmits(['close'])
         <!--輪播圖  -->
         <!-- <DetailCarousel /> -->
         <div
-          class="inline-flex items-center justify-center w-full h-full bg-black"
+          class="inline-flex items-center justify-center w-full h-full overflow-hidden bg-black"
         >
           <img
             :src="`https://places.googleapis.com/v1/${place.photos[0].name}/media?key=${GOOGLE_API_KEY}&maxHeightPx=800&maxWidthPx=800`"
@@ -96,7 +97,7 @@ defineEmits(['close'])
         </button>
       </div>
       <div
-        class="relative px-5 py-5 md:py-16 md:w-[368px] flex flex-wrap flex-col gap-2.5"
+        class="relative px-5 py-5 md:py-16 md:w-[368px] flex  flex-col gap-2.5 md:h-[calc(100% - 64px)] pb-20 overflow-y-auto"
       >
         <h2 class="text-xl font-medium">{{ place.displayName.text }}</h2>
         <div class="flex">
@@ -114,29 +115,29 @@ defineEmits(['close'])
         </div>
         <div class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px]">
           <MapPinIcon class="size-5" />
-          <p class="pl-10 text-sm">台灣 北部</p>
+          <p class="pl-8 text-sm">{{ place.formattedAddress.split(/[0-9]+/)[1].slice(2, 5) }}</p>
         </div>
         <div class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px]">
           <CalendarIcon class="size-5" />
-          <p class="pl-10 text-sm">簡介</p>
+          <p class="pl-8 text-sm">簡介</p>
         </div>
-        <div class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px]">
+        <div class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px]" v-if="place.nationalPhoneNumber">
           <PhoneIcon class="size-5" />
-          <p class="pl-10 text-sm">{{ place.nationalPhoneNumber }}</p>
+          <p class="pl-8 text-sm">{{ place.nationalPhoneNumber }}</p>
         </div>
         <div class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px]">
           <MagnifyingGlassIcon class="size-5" />
-          <div class="inline-flex items-center gap-1 pl-10 text-sm">
+          <div class="inline-flex items-center gap-1 pl-8 text-sm">
             <div class="pr-3.5">Google</div>
             <div>
-              <button class="px-4 py-1 rounded-full bg-gray">
+              <button class="px-4 py-1 rounded-full bg-gray" v-if="place.googleMapsLinks.reviewsUri">
                 <a :href="place.googleMapsLinks.reviewsUri" target="_blank"
                   >評論</a
                 >
               </button>
             </div>
             <div>
-              <button class="px-4 py-1 rounded-full bg-gray">
+              <button class="px-4 py-1 rounded-full bg-gray" v-if="place.googleMapsLinks.photosUri">
                 <a :href="place.googleMapsLinks.photosUri" target="_blank">
                   照片</a
                 >
@@ -149,31 +150,24 @@ defineEmits(['close'])
             </div>
           </div>
         </div>
-        <div class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px]">
-          <GlobeAltIcon class="size-5" />
-          <p class="pl-10 text-sm">
-            <a :href="place.websiteUri" target="_blank">{{
-              place.websiteUri
-            }}</a>
+        <div class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px] w-full" v-if="place.websiteUri">
+          <GlobeAltIcon class="flex-shrink-0 size-5" />
+          <p class="pl-8 overflow-hidden text-sm truncate-text whitespace-nowrap text-ellipsis">
+            <a :href="place.websiteUri" target="_blank">{{ place.websiteUri }}</a>
           </p>
         </div>
-        <div class="flex pt-2.5 pb-3.5 flex-wrap">
-          <ClockIcon class="size-5" />
+        <div class="flex pt-2.5 pb-3.5  w-full "  v-if="place.currentOpeningHours">
+          <ClockIcon class="flex-shrink-0 size-5" />
           <div>
-            <div class="pl-5 ml-5 text-sm leading-7">
-              <span>星期一</span><span class="ml-7">00:00-24:00</span>
-            </div>
-            <div class="pl-5 ml-5 text-sm leading-7">
-              <span>星期二</span><span class="ml-7">00:00-24:00</span>
-            </div>
-            <div class="pl-5 ml-5 text-sm leading-7">
-              <span>星期三</span><span class="ml-7">00:00-24:00</span>
-            </div>
-            <div class="pl-5 ml-5 text-sm leading-7">
-              <span>星期四</span><span class="ml-7">00:00-24:00</span>
-            </div>
-            <div class="pl-5 ml-5 text-sm leading-7">
-              <span>星期五</span><span class="ml-7">00:00-24:00</span>
+            <div>
+              <div
+                v-for="(description, index) in place.currentOpeningHours.weekdayDescriptions"
+                :key="index"
+                class="flex pl-4 ml-4 text-sm leading-7"
+              >
+                <span class="whitespace-nowrap">{{ description.split(': ')[0] }}</span>
+                <span class="ml-7">{{ description.split(': ')[1] }}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -183,8 +177,10 @@ defineEmits(['close'])
         >
           <XMarkIcon class="size-6" />
         </button>
-        <div
-          class="fixed md:absolute bottom-0 left-0 w-full h-[50px] border-t-2 border-t-gray inline-flex items-center justify-between px-2 bg-white"
+      </div>
+      <!-- fiexd 的那玩意 -->
+      <div
+          class="fixed md:absolute bottom-0 right-0 w-full md:w-[368px] h-[50px] border-t-2 border-t-gray inline-flex items-center justify-between px-2 bg-white"
         >
           <div class="inline-flex items-center gap-2">
             <div
@@ -261,7 +257,6 @@ defineEmits(['close'])
           </div>
           <AddPlaceBtn />
         </div>
-      </div>
       <!-- 照片區 -->
       <div
         class="absolute md:top-0 right-0 z-40 w-screen h-screen transition-all duration-300 transform bg-white md:w-[368px] md:right-0 overflow-hidden"
@@ -322,5 +317,9 @@ img {
 .photo-fade-leave-to {
   transform: translateY(100%);
   opacity: 0;
+}
+
+img{
+  object-fit: contain;
 }
 </style>
