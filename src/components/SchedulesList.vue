@@ -105,90 +105,21 @@ onMounted(async () => {
 
 <template>
   <div class="overflow-x-hidden">
-    <div
-      class="schedule-list w-full lg:w-96 h-screen bg-white shadow-xl transition-all relative"
-    >
-      <!-- schedule list -->
+    <div class="schedule-list w-full lg:w-96 h-screen bg-white shadow-xl transition-all relative">
       <div class="w-screen lg:w-full p-5 bg-white">
-        <!-- header -->
+        <!-- Header -->
         <div class="pb-3 relative bg-white">
-          <div
-            class="bg-gray-200 w-8 h-8 rounded-full absolute top-0 right-0 p-1.5 hover:cursor-pointer"
-            @click="listToggle"
-          >
+          <div class="bg-gray-200 w-8 h-8 rounded-full absolute top-0 right-0 p-1.5 hover:cursor-pointer" @click="listToggle">
             <XMarkIcon />
           </div>
           <h2 class="text-2xl font-medium pt-10 pb-2.5">行程</h2>
+          <!-- 切換選項 -->
           <div class="w-full h-10 flex gap-1 mb-5 p-1 rounded-xl bg-gray">
-            <input
-              id="mine"
-              type="radio"
-              name="toggle"
-              v-model="checkedSchedule"
-              value="mine"
-              class="hidden"
-              checked
-            />
-            <label
-              for="mine"
-              class="mine-toggle w-1/2 text-center py-1 px-2 rounded-lg hover:bg-white hover:cursor-pointer"
-              >我的行程</label
-            >
-            <input
-              id="coedit"
-              type="radio"
-              name="toggle"
-              v-model="checkedSchedule"
-              value="coedit"
-              class="hidden"
-            />
-            <label
-              for="coedit"
-              class="coedit-toggle w-1/2 text-center py-1 px-2 rounded-lg hover:bg-white hover:cursor-pointer"
-              >與我共編</label
-            >
+            <input id="mine" type="radio" name="toggle" v-model="checkedSchedule" value="mine" class="hidden" />
+            <label for="mine" class="w-1/2 text-center py-1 px-2 rounded-lg hover:bg-white hover:cursor-pointer">我的行程</label>
+            <input id="coedit" type="radio" name="toggle" v-model="checkedSchedule" value="coedit" class="hidden" />
+            <label for="coedit" class="w-1/2 text-center py-1 px-2 rounded-lg hover:bg-white hover:cursor-pointer">與我共編</label>
           </div>
-          <select
-            class="select select-ghost max-w-xs focus:border-0 focus:outline-none"
-            v-model="listsort"
-          >
-            <option selected value="newest">建立時間（從近到遠）</option>
-            <option value="oldest">建立時間（從遠到近）</option>
-          </select>
-
-          <!-- <details class="dropdown">
-            <summary
-              tabindex="0"
-              role="button"
-              class="flex items-center relative"
-            >
-              <p class="text-sm font-medium">建立時間（從近到遠）</p>
-              <p class="w-4 h-4"><ChevronDownIcon /></p>
-            </summary>
-            <ul
-              tabindex="0"
-              class="dropdown-content menu bg-white rounded-sm z-[1] w-44 p-0 border border-gray absolute top-8 left-0"
-            >
-              <li>
-                <a
-                  class="rounded-none"
-                  href=""
-                  @click.prevent="schedules = schedules.slice().reverse()"
-                >
-                  建立時間（從近到遠）</a
-                >
-              </li>
-              <li>
-                <a
-                  class="rounded-none"
-                  href=""
-                  @click.prevent="schedules = schedules.slice().reverse()"
-                >
-                  建立時間（從遠到近）</a
-                >
-              </li>
-            </ul>
-          </details> -->
         </div>
         <!-- schedules list 行程列表 -->
         <div class="h-[70vh] overflow-y-scroll pb-12">
@@ -375,6 +306,7 @@ onMounted(async () => {
     <NewScheduleModal :savetoSchedules="getSchedules" />
   </div>
 </template>
+
 
 <style>
 .bg-gray-transparent {
