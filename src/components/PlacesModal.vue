@@ -15,6 +15,9 @@ import AddPlaceBtn from './AddPlaceBtn.vue'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 
+const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
+
+
 const { places } = DefaultPlaces
 
 const defaultPlacesData = ref([])
@@ -96,7 +99,7 @@ const openDetailModal = (detailId) => {
               <figure class="flex p-1 group">
                 <div class="w-40 h-auto overflow-hidden rounded-md">
                   <img
-                    :src="`https://places.googleapis.com/v1/${item.photos[0].name}/media?key=AIzaSyB0Ip9EuG0dBEVMGmJLM63x704MYW9bhW0&maxHeightPx=800&maxWidthPx=800`"
+                    :src="`https://places.googleapis.com/v1/${item.photos[0].name}/media?key=${GOOGLE_API_KEY}&maxHeightPx=800&maxWidthPx=800`"
                     alt=""
                     class="aspect-square"
                   />

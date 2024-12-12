@@ -13,6 +13,8 @@ import { useRouter } from 'vue-router'
 import AddPlaceBtn from './AddPlaceBtn.vue'
 import DefaultPlaces from '../../places_default.json'
 
+
+const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 const { places } = DefaultPlaces
 
 // places是陣列形式
@@ -29,7 +31,7 @@ const emit = defineEmits(['open-detail-modal'])
 const initializeItems = () => {
   items.value = places.map((location) => ({
     id: location.id,
-    url: `https://places.googleapis.com/v1/${location.photos[0].name}/media?key=AIzaSyB0Ip9EuG0dBEVMGmJLM63x704MYW9bhW0&maxHeightPx=400&maxWidthPx=400`,
+    url: `https://places.googleapis.com/v1/${location.photos[0].name}/media?key=${GOOGLE_API_KEY}&maxHeightPx=400&maxWidthPx=400`,
     title: location.displayName.text,
     rating: location.rating.toString(),
     location: location.formattedAddress.split('').slice(5, 8).join(''),

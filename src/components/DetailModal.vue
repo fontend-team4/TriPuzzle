@@ -21,6 +21,9 @@ import { computed, ref, defineEmits } from 'vue'
 import Waterfall from './Waterfall.vue'
 import AddPlaceBtn from './AddPlaceBtn.vue'
 
+const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
+
+
 // 愛心顏色的切換可參考PlacesComponent，為避免重複同樣功能這邊就不放了，之後可統一做移動到stores去
 const showPhoto = ref(false)
 
@@ -73,7 +76,7 @@ defineEmits(['close'])
           class="inline-flex items-center justify-center w-full h-full bg-black"
         >
           <img
-            :src="`https://places.googleapis.com/v1/${place.photos[0].name}/media?key=AIzaSyB0Ip9EuG0dBEVMGmJLM63x704MYW9bhW0&maxHeightPx=800&maxWidthPx=800`"
+            :src="`https://places.googleapis.com/v1/${place.photos[0].name}/media?key=${GOOGLE_API_KEY}&maxHeightPx=800&maxWidthPx=800`"
             alt=""
             class="object-contain w-full"
           />

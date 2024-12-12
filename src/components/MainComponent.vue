@@ -6,7 +6,6 @@ import PlacesComponent from './PlacesComponent.vue'
 import ScheduleSideBar from './ScheduleSideBar.vue'
 import DetailModal from '@/components/DetailModal.vue'
 import { useRouter, useRoute } from 'vue-router'
-import defaultPlaces from '../../defaultPlaces.json'
 import AddPlaceModal from './AddPlaceModal.vue'
 import { PlaceModalStore } from '@/stores/PlaceModal'
 
