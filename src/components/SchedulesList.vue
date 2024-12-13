@@ -26,7 +26,7 @@ const token = ref(null)
 const getUserToken = async () => {
   try {
     const config = {
-      email: 'user@gmail.com',
+      identifier: 'user@gmail.com',
       password: '12345678',
     }
     const response = await axios.post(`${API_URL}/users/login`, config)
@@ -147,40 +147,6 @@ onMounted(async () => {
             <option selected value="newest">建立時間（從近到遠）</option>
             <option value="oldest">建立時間（從遠到近）</option>
           </select>
-
-          <!-- <details class="dropdown">
-            <summary
-              tabindex="0"
-              role="button"
-              class="flex items-center relative"
-            >
-              <p class="text-sm font-medium">建立時間（從近到遠）</p>
-              <p class="w-4 h-4"><ChevronDownIcon /></p>
-            </summary>
-            <ul
-              tabindex="0"
-              class="dropdown-content menu bg-white rounded-sm z-[1] w-44 p-0 border border-gray absolute top-8 left-0"
-            >
-              <li>
-                <a
-                  class="rounded-none"
-                  href=""
-                  @click.prevent="schedules = schedules.slice().reverse()"
-                >
-                  建立時間（從近到遠）</a
-                >
-              </li>
-              <li>
-                <a
-                  class="rounded-none"
-                  href=""
-                  @click.prevent="schedules = schedules.slice().reverse()"
-                >
-                  建立時間（從遠到近）</a
-                >
-              </li>
-            </ul>
-          </details> -->
         </div>
         <!-- schedules list 行程列表 -->
         <div class="h-[70vh] overflow-y-scroll pb-12">

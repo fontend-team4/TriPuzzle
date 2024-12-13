@@ -9,7 +9,6 @@ import { useRouter, useRoute } from 'vue-router'
 import fakeLocation from '../../fakeLocation.json'
 import AddPlaceModal from './AddPlaceModal.vue'
 import { PlaceModalStore } from '@/stores/PlaceModal'
-import { DeleteScheduleStore } from '@/stores/DeleteModal'
 
 const modalStore = PlaceModalStore()
 
