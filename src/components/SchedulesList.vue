@@ -1,5 +1,6 @@
 <script setup>
-import { ref, inject, onMounted } from 'vue'
+import { ref, inject, onMounted, computed } from 'vue'
+import axios from 'axios'
 import {
   ChevronDownIcon,
   EllipsisHorizontalIcon,
@@ -14,26 +15,18 @@ import {
   GlobeAsiaAustraliaIcon,
 } from '@heroicons/vue/24/outline'
 import ShareScheduleModal from './ShareScheduleModal.vue'
-import DeleteScheduleModal from './DeleteScheduleModal.vue'
 import NewScheduleModal from '@/components/NewScheduleModal.vue'
-import axios from 'axios'
-
-const hasSchedules = ref(false)
-const checkedSchedule = ref('mine')
-const isLogin = ref(false)
-const token = ref(null)
-
+import DeleteScheduleModal from './DeleteScheduleModal.vue'
 const listToggle = inject('listToggle')
 const detailToggle = inject('detailToggle')
-
 const API_URL = 'http://localhost:3000'
-const schedules = ref([])
-
 // 抓取 user login token
+const isLogin = ref(false)
+const token = ref(null)
 const getUserToken = async () => {
   try {
     const config = {
-      identifier: 'user@gmail.com',
+      email: 'user@gmail.com',
       password: '12345678',
     }
     const response = await axios.post(`${API_URL}/users/login`, config)
@@ -47,6 +40,11 @@ const getUserToken = async () => {
   }
 }
 // 讀取行程資料
+const hasSchedules = ref(false)
+const checkedSchedule = ref('mine')
+const schedules = ref([])
+const createdAt = ref('')
+const deletedId = ref(null)
 const getSchedules = async () => {
   const config = {
     headers: {
@@ -65,9 +63,32 @@ const getSchedules = async () => {
     })
   } catch (error) {
     console.error(error.message)
+    hasSchedules.value = false
   }
 }
-
+// 刪除彈窗
+const openDeleteModal = (id) => {
+  deletedId.value = id
+}
+// 行程分享、共編彈窗
+const activeStatus = ref(null)
+const openShareModal = () => {
+  activeStatus.value = 'share'
+}
+const openInviteModal = () => {
+  activeStatus.value = 'invite'
+}
+// 行程列表篩選
+const listsort = ref('newest')
+const sortedSchedules = computed(() => {
+  return schedules.value.sort((a, b) => {
+    if (listsort.value === 'newest') {
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    } else {
+      return new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+    }
+  })
+})
 onMounted(async () => {
   await getUserToken()
   await getSchedules()
@@ -119,20 +140,47 @@ onMounted(async () => {
               >與我共編</label
             >
           </div>
-          <div class="dropdown">
-            <div tabindex="0" role="button" class="flex items-center relative">
-              <p class="text-sm font-medium">上次編輯時間</p>
+          <select
+            class="select select-ghost max-w-xs focus:border-0 focus:outline-none"
+            v-model="listsort"
+          >
+            <option selected value="newest">建立時間（從近到遠）</option>
+            <option value="oldest">建立時間（從遠到近）</option>
+          </select>
+
+          <!-- <details class="dropdown">
+            <summary
+              tabindex="0"
+              role="button"
+              class="flex items-center relative"
+            >
+              <p class="text-sm font-medium">建立時間（從近到遠）</p>
               <p class="w-4 h-4"><ChevronDownIcon /></p>
-            </div>
+            </summary>
             <ul
               tabindex="0"
               class="dropdown-content menu bg-white rounded-sm z-[1] w-44 p-0 border border-gray absolute top-8 left-0"
             >
-              <li><a class="rounded-none" href=""> 上次編輯時間</a></li>
-              <li><a class="rounded-none" href=""> 建立時間（從近到遠）</a></li>
-              <li><a class="rounded-none" href=""> 建立時間（從遠到近）</a></li>
+              <li>
+                <a
+                  class="rounded-none"
+                  href=""
+                  @click.prevent="schedules = schedules.slice().reverse()"
+                >
+                  建立時間（從近到遠）</a
+                >
+              </li>
+              <li>
+                <a
+                  class="rounded-none"
+                  href=""
+                  @click.prevent="schedules = schedules.slice().reverse()"
+                >
+                  建立時間（從遠到近）</a
+                >
+              </li>
             </ul>
-          </div>
+          </details> -->
         </div>
         <!-- schedules list 行程列表 -->
         <div class="h-[70vh] overflow-y-scroll pb-12">
@@ -144,7 +192,7 @@ onMounted(async () => {
               class="flex flex-wrap gap-4 justify-center"
             >
               <div
-                v-for="item in schedules.slice().reverse()"
+                v-for="item in sortedSchedules"
                 :key="item.id"
                 class="card card-compact bg-base-100 sm:w-full md:w-[30%] lg:w-full h-[176px] lg:h-auto border-gray border mb-4 relative hover:cursor-pointer"
               >
@@ -156,10 +204,10 @@ onMounted(async () => {
                   <span
                     class="w-6 h-6 rounded-full bg-gray-transparent text-white p-1 hover:cursor-pointer"
                     onclick="shareSchedule.showModal()"
+                    @click="openShareModal"
                   >
                     <ShareIcon />
                   </span>
-                  <ShareScheduleModal />
                   <div class="dropdown">
                     <button
                       role="button"
@@ -183,7 +231,10 @@ onMounted(async () => {
                           <p>複製行程</p>
                         </a>
                       </li>
-                      <li>
+                      <li
+                        onclick="shareSchedule.showModal()"
+                        @click="openInviteModal"
+                      >
                         <a
                           class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray"
                           href="#"
@@ -196,7 +247,8 @@ onMounted(async () => {
                       </li>
                       <li
                         class="border-t border-gray"
-                        onclick="delete_schedule.showModal()"
+                        @click="openDeleteModal(item.id)"
+                        onclick="deleteSchedule.showModal()"
                       >
                         <a
                           class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray"
@@ -208,7 +260,6 @@ onMounted(async () => {
                           <p>刪除行程</p>
                         </a>
                       </li>
-                      <DeleteScheduleModal />
                     </ul>
                   </div>
                 </div>
@@ -222,7 +273,11 @@ onMounted(async () => {
                       {{ item.start_date }} ~ {{ item.end_date }}
                     </p>
                   </div>
-                  <div class="w-16 text-center hover:cursor-pointer">
+                  <div
+                    class="w-16 text-center hover:cursor-pointer"
+                    onclick="shareSchedule.showModal()"
+                    @click="openInviteModal"
+                  >
                     <p class="w-6 h-6 mx-auto"><UserPlusIcon /></p>
                     <p class="text-xs">2人</p>
                   </div>
@@ -244,7 +299,6 @@ onMounted(async () => {
                 建立新行程
               </button>
             </div>
-            <!-- <NewScheduleModal /> -->
           </div>
           <!-- 與我共編 -->
           <div v-else>
@@ -289,7 +343,6 @@ onMounted(async () => {
           >
             建立新行程
           </button>
-          <NewScheduleModal :savetoSchedules="getSchedules" />
         </div>
         <!-- 未登入 -->
         <div
@@ -309,6 +362,9 @@ onMounted(async () => {
         </div>
       </div>
     </div>
+    <ShareScheduleModal :activeTab="activeStatus" />
+    <DeleteScheduleModal :toBeDeleteId="deletedId" :updateList="getSchedules" />
+    <NewScheduleModal :savetoSchedules="getSchedules" />
   </div>
 </template>
 
@@ -321,7 +377,6 @@ onMounted(async () => {
 }
 #schedule-list-toggle:checked ~ .schedule-list {
   transform: translateX(0);
-
   /* 關閉按鈕做好之後就可以打開 */
   /* .schedule{
     display: none;
