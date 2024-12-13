@@ -26,7 +26,7 @@ const token = ref(null)
 const getUserToken = async () => {
   try {
     const config = {
-      email: 'user@gmail.com',
+      identifier: 'user@gmail.com',
       password: '12345678',
     }
     const response = await axios.post(`${API_URL}/users/login`, config)
