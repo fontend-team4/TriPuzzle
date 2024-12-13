@@ -1,6 +1,5 @@
 <script setup>
-import { ref, onMounted, nextTick, onBeforeUnmount, watch } from "vue";
-// import fakeLocation from "../../fakeLocation.json";
+import { ref, onMounted, nextTick, onBeforeUnmount, watch, computed, defineEmits, } from "vue";
 import DefaultPlaces from '../../places_default.json'
 
 
@@ -14,31 +13,6 @@ const columns = ref([]); // 每欄
 const numCols = ref(2); // 預設為兩欄
 let resizeObserver = null;
 
-
-
-const initializeItems = () => {
-  items.value = places.flatMap((location) => 
-    location.photos.map((photo, index) => ({
-      id: `${location.id}-${index}`, // 每張圖片的唯一 ID
-      url: `https://places.googleapis.com/v1/${photo.name}/media?key=${GOOGLE_API_KEY}&maxHeightPx=400&maxWidthPx=400`,
-      title: location.displayName.text,
-      rating: location.rating.toString(),
-      location: location.formattedAddress.split(/[0-9]+/)[1].slice(2, 5),
-      mapUrl: location.googleMapsUri,
-    }))
-  );
-};
-
-// const initializeItems = () => {
-//   items.value = fakeLocation.map((location) => ({
-//     id: location.id,
-//     url: location.image,
-//     title: location.name,
-//     rating: location.rating.toString(),
-//     location: location.city,
-//     mapUrl: location.google_map,
-//   }));
-// };
 
 // 計算欄位分佈
 const calculateColumns = async () => {
@@ -70,8 +44,8 @@ const updateColumnCount = () => {
 };
 
 onMounted(() => {
-  // fakeLocations.value = fakeLocation;
-  initializeItems(); // 初始化 items
+
+  initializeItems(); 
 
   // 監聽外容器大小
   resizeObserver = new ResizeObserver(updateColumnCount);
@@ -83,6 +57,50 @@ onBeforeUnmount(() => {
     resizeObserver.unobserve(containerRef.value);
   }
 });
+
+const props = defineProps({
+  placeId: {
+    type: String,
+    required: false,
+  },
+});
+
+// 使用 place.id
+console.log(props.placeId);
+
+const initializeItems = () => {
+  if (!props.placeId) return;
+
+  const targetPlace = places.find((location) => location.id === props.placeId);
+  if (!targetPlace) {
+    items.value = [];
+    return;
+  }
+
+  // 找到該ID所有照片
+  items.value = targetPlace.photos.map((photo, index) => ({
+    id: `${targetPlace.id}-${index}`, // 每張圖的ID
+    url: `https://places.googleapis.com/v1/${photo.name}/media?key=${GOOGLE_API_KEY}&maxHeightPx=400&maxWidthPx=400`,
+    title: targetPlace.displayName.text,
+    rating: targetPlace.rating.toString(),
+    location: targetPlace.formattedAddress.split(/[0-9]+/)[1].slice(2, 5),
+    mapUrl: targetPlace.googleMapsUri,
+  }));
+};
+
+
+
+// 如果照片不對就打開這個
+// watch(
+//   () => props.placeId,
+//   (newId) => {
+//     if (newId) {
+//       initializeItems(); // placeID如果改變就重算
+//       calculateColumns(); 
+//     }
+//   },
+//   { immediate: true } 
+// );
 </script>
 
 <template>

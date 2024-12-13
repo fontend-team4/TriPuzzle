@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, nextTick, defineEmits, provide } from 'vue'
+import { ref, onMounted, nextTick, defineEmits, provide, watch } from 'vue'
 import {
   StarIcon,
   MapPinIcon,
@@ -12,9 +12,6 @@ import { useRouter, useRoute } from 'vue-router'
 import AddPlaceBtn from './AddPlaceBtn.vue'
 import DefaultPlaces from '../../places_default.json'
 
-// const route = useRoute();
-// const selectedPlace = ref(null);
-// const placeId = computed(() => route.query.placeId);
 const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 const { places } = DefaultPlaces
 
@@ -75,13 +72,10 @@ const toggleFavorite = (item) => {
   item.isFavorited = !item.isFavorited
 }
 
-// const openDetailModal = (detailId) => {
-//   emit('open-detail-modal', detailId)
-// }
-
 const openDetailModal = (detailId) => {
   emit('open-detail-modal', detailId) // 傳遞地點的 ID
 }
+
 </script>
 
 <template>
@@ -166,4 +160,6 @@ summary:active {
   background-color: transparent !important;
   color: rgb(55 65 81 / var(--tw-text-opacity, 1)) !important;
 }
+
+
 </style>

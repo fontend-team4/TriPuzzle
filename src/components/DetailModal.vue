@@ -27,6 +27,7 @@ const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 // 愛心顏色的切換可參考PlacesComponent，為避免重複同樣功能這邊就不放了，之後可統一做移動到stores去
 const showPhoto = ref(false)
 
+// CSS區
 const isPhotoShow = computed(() => {
   return showPhoto.value
     ? ['h-screen', 'md:translate-x-0', 'opacity-100', 'bottom-0']
@@ -39,7 +40,6 @@ const isPhotoShow = computed(() => {
       ]
 })
 
-// CSS區
 const overflowStatus = computed(() => {
   return showPhoto.value ? ['overflow-hidden'] : ['']
 })
@@ -47,14 +47,21 @@ const changeShowPhoto = () => {
   return (showPhoto.value = !showPhoto.value)
 }
 
+// 接收PlaceID
 const props = defineProps({
   place: {
-    type: Object,
+    type: String,
     required: false, // 改為非必需，避免報錯
   },
 })
 
+const placeId = computed(() => props.place?.id);
+
+
+//關閉detailModal
 defineEmits(['close'])
+
+
 
 </script>
 
@@ -69,7 +76,7 @@ defineEmits(['close'])
       @click.stop
     >
       <div
-        class="bg-black md:w-[calc(100%-368px)] h-[360px] md:h-full md:overflow-hidden flex justify-center relative group"
+        class="bg-black md:w-[calc(100%-368px)] h-[360px] md:h-full  md:overflow-hidden flex justify-center relative group"
       >
         <!--輪播圖  -->
         <!-- <DetailCarousel /> -->
@@ -85,7 +92,7 @@ defineEmits(['close'])
         <button
           for="showPhoto"
           class="absolute flex gap-1 bg-gray-100 py-[3px] px-2.5 rounded-full top-4 right-16 h-[32px] text-sm items-center bg-opacity-75 bg-white md:right-4 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
-          @click="changeShowPhoto"
+          @click="changeShowPhoto" @updatePhotoCount="updatePhotoCount"
         >
           <PhotoIcon class="size-5" />3
         </button>
@@ -259,7 +266,7 @@ defineEmits(['close'])
         </div>
       <!-- 照片區 -->
       <div
-        class="absolute md:top-0 right-0 z-40 w-screen h-screen transition-all duration-300 transform bg-white md:w-[368px] md:right-0 overflow-hidden"
+        class="absolute md:top-0 right-0 z-40 w-screen h-0 transition-all duration-300 transform bg-white md:w-[368px] md:right-0 overflow-auto"
         :class="isPhotoShow"
       >
         <div
@@ -273,7 +280,7 @@ defineEmits(['close'])
           </div>
           <button><XMarkIcon class="size-6" /></button>
         </div>
-        <Waterfall class="mt-16" />
+        <Waterfall class="mt-16" :place-id="placeId"/>
       </div>
     </div>
   </div>
@@ -322,4 +329,8 @@ img {
 img{
   object-fit: contain;
 }
+
+/* 禁止滾動 */
+
+
 </style>

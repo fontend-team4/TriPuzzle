@@ -1,6 +1,5 @@
 <!-- 右邊側欄 -->
 <script setup>
-import NewScheduleModal from "./NewScheduleModal.vue";
 import { ref, computed } from "vue";
 import { XMarkIcon, ChevronDownIcon, ChevronUpIcon, ChevronLeftIcon, HandThumbUpIcon  } from "@heroicons/vue/24/outline";
 import { PlusCircleIcon,  MapPinIcon} from "@heroicons/vue/24/solid";
@@ -59,9 +58,8 @@ const switchToPage = (page, tab) => {
   selectedTab.value = tab;  // 設置選中的 Tab
 };
 
-// 關閉backdrop
+// 關掉Modal
 const closeAddPlaceModal = () => {
-  console.log("關掉");
   modalStore.closeModal();
 };
 

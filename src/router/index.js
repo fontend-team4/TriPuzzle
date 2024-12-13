@@ -38,6 +38,12 @@ const router = createRouter({
       component: () => import('../views/CategoryView.vue'),
     }
   ],
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition; // 返回上次的位置
+    } else {
+      return { top: 0 }; // 默認滾動到頂部
+    }},
 })
 
 export default router
