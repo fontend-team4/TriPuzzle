@@ -1,6 +1,5 @@
 <!-- 右邊側欄 -->
 <script setup>
-import NewScheduleModal from "./NewScheduleModal.vue";
 import { ref, computed } from "vue";
 import { XMarkIcon, ChevronDownIcon, ChevronUpIcon, ChevronLeftIcon, HandThumbUpIcon  } from "@heroicons/vue/24/outline";
 import { PlusCircleIcon,  MapPinIcon} from "@heroicons/vue/24/solid";
@@ -59,9 +58,8 @@ const switchToPage = (page, tab) => {
   selectedTab.value = tab;  // 設置選中的 Tab
 };
 
-// 關閉backdrop
+// 關掉Modal
 const closeAddPlaceModal = () => {
-  console.log("關掉");
   modalStore.closeModal();
 };
 
@@ -87,7 +85,7 @@ const selectCard = (index) => {
 
 <template>
   
-  <div class="absolute top-0 z-50 flex items-center justify-center w-screen h-screen bg-black bg-opacity-25" @click="closeAddPlaceModal" @click.stop > 
+  <div class="fixed top-0 z-50 flex items-center justify-center w-screen h-screen bg-black bg-opacity-25" @click="closeAddPlaceModal" @click.stop > 
     <div  class="pb-10 w-full md:pb-0 h-full md:h-[calc(100vh-160px)] lg:w-[1032px] mx-0 md:mx-auto  bg-white md:flex md:rounded-md md:overflow-hidden overflow-auto relative" @click.stop  >
       <div 
       v-if="currentPage === 'page1'"
