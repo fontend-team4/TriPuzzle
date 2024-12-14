@@ -3,10 +3,10 @@ import { ref } from 'vue'
 import { XMarkIcon } from '@heroicons/vue/24/solid'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/vue/24/outline'
 import axios from 'axios'
-import {useUserStore} from '@/stores/userStore'
+import { useUserStore } from '@/stores/userStore'
 import { LoginModalStore } from '@/stores/LoginModal.js'
-const LoginStore=LoginModalStore()
-const userStore=useUserStore()
+const LoginStore = LoginModalStore()
+const userStore = useUserStore()
 
 const showPassword = ref(false)
 function togglePasswordVisibility() {
@@ -22,6 +22,39 @@ const name = ref('')
 const email = ref('')
 const registerPassword = ref('')
 
+//成功、錯誤訊息彈窗
+function showMessage({ title = '訊息', message, status }) {
+  const typeClasses = {
+    success: 'bg-green-500 hover:bg-green-700',
+    error: 'bg-primary-600 hover:bg-primary-700',
+  }
+  const buttonClass = typeClasses[status]
+  if (document.querySelector('#custom_modal')) {
+    document.querySelector('#modal_title').textContent = title // 更新標題
+    document.querySelector('#modal_message').textContent = message // 更新訊息
+    document.querySelector('#modal_button').classList.remove('bg-green-500', 'hover:bg-green-700', 'bg-primary-600', 'hover:bg-primary-700');
+    document.querySelector('#modal_button').classList.add(...buttonClass.split(' ')) // 更新class
+    document.querySelector('#custom_modal').showModal() // 顯示 Modal
+    return
+  }
+
+  const modalHTML = `
+    <dialog id="custom_modal" class="modal">
+      <div class="modal-box text-center w-[450px] h-[250px]">
+        <h3 id="modal_title" class="text-xl font-bold font-bold mb-4">${title}</h3>
+        <p id="modal_message" class="py-4">${message}</p>
+        <div class="modal-action justify-center">
+          <button id="modal_button" class="btn ${buttonClass} w-[80%] text-white py-3 rounded-full font-medium  mt-4" onclick="document.querySelector('#custom_modal').close()">確定</button>
+        </div>
+      </div>
+    </dialog>
+  `
+  // 動態插入 Modal 到 body
+  document.body.insertAdjacentHTML('beforeend', modalHTML)
+
+  // 顯示 Modal
+  document.querySelector('#custom_modal').showModal()
+}
 
 const loginSubmit = async () => {
   try {
@@ -38,19 +71,25 @@ const loginSubmit = async () => {
       }
     )
     if (res.data.status == 200) {
-      alert('登入成功')
       identifier.value = ''
       loginPassword.value = ''
       userStore.setUser(res.data.user)
       userStore.setToken(res.data.token)
       LoginStore.closeModal()
-
+      showMessage({
+        title: '登入成功',
+        message: res.data.message,
+        status: 'success',
+      })
       console.log(res)
-    } else {
-      alert('登入失敗')
     }
   } catch (err) {
-    alert(err.response.data.message)
+    const errorMessage = err.response?.data?.message || '未知錯誤'
+    showMessage({
+      title: '登入失敗',
+      message: errorMessage,
+      status: 'error',
+    })
   }
 }
 
@@ -63,13 +102,14 @@ const registerSubmit = async () => {
   if (!hasAgreed.value) {
     errorMessage.value = '請閱讀並勾選使用條款'
     return
-  }  errorMessage.value = ''  ;  
-    try {
+  }
+  errorMessage.value = ''
+  try {
     const res = await axios.post(
       'http://127.0.0.1:3000/users/register',
       {
         name: name.value,
-        email:email.value,
+        email: email.value,
         password: registerPassword.value,
       },
       {
@@ -79,26 +119,29 @@ const registerSubmit = async () => {
       }
     )
     if (res.data.status == 201) {
-      alert('註冊成功')
       name.value = ''
-      email.value=''
+      email.value = ''
       registerPassword.value = ''
-      switchLogRes.value = 'login';
-     
-    } else {
-      alert('登入失敗')
-    
+      switchLogRes.value = 'login'
+      showMessage({
+        title: '註冊成功',
+        message: res.data.message,
+        status: 'success',
+      })
     }
   } catch (err) {
-    alert(err.response.data.message)
+    const errorMessage = err.response?.data?.message || '未知錯誤'
+    showMessage({
+      title: '註冊失敗',
+      message: errorMessage,
+      status: 'error',
+    })
   }
-  }
-
+}
 </script>
 
 <template>
   <div
-  
     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center overflow-auto"
   >
     <div
@@ -148,7 +191,7 @@ const registerSubmit = async () => {
             <label for="identifier"></label>
             <input
               type="text"
-              placeholder="請輸入帳號/信箱/手機號碼"
+              placeholder="請輸入使用者暱稱/信箱/手機號碼"
               id="identifier"
               class="w-[80%] h-[48px] py-[12px] pr-[20px] pl-[16px] border-solid border border-[#EEEEEE] rounded-lg mt-1 mb-1 text-sm"
               v-model="identifier"
@@ -186,7 +229,7 @@ const registerSubmit = async () => {
       <div class="flex justify-center items-center">
         <div class="text-center w-full" v-if="switchLogRes === 'register'">
           <h2 class="text-xl font-bold">會員註冊</h2>
-          <div >
+          <div>
             <p class="text-sm pt-2 pb-[20px]">
               已經註冊完成?
               <input
@@ -208,7 +251,7 @@ const registerSubmit = async () => {
             <label for="name"></label>
             <input
               type="text"
-              placeholder="請輸入帳號/暱稱"
+              placeholder="請輸入使用者暱稱"
               id="name"
               class="w-[80%] h-[48px] py-[12px] pr-[20px] pl-[16px] border-solid border border-[#EEEEEE] rounded-lg mt-1 mb-1 text-sm"
               v-model="name"
@@ -233,7 +276,7 @@ const registerSubmit = async () => {
           <!-- <p class=" text-red-500 text-sm font-light" v-show="isSubmitted&&email==''">
             信箱不可為空
           </p> -->
- 
+
           <div class="relative">
             <label for="registerPassword"> </label>
             <input
@@ -252,11 +295,10 @@ const registerSubmit = async () => {
               <EyeIcon v-if="showPassword" class="w-5 h-5" />
               <EyeSlashIcon v-else class="w-5 h-5" />
             </button>
-          </div>       
+          </div>
           <!-- <p class="text-red-500 text-sm font-light" v-show="isSubmitted&&registerPassword==''">
             密碼不可為空
           </p> -->
-
 
           <div class="flex items-center justify-center mt-10">
             <input
