@@ -11,6 +11,8 @@ import {  HeartIcon,
           XMarkIcon,
           PencilSquareIcon,
 } from '@heroicons/vue/24/solid';
+import { LoginModalStore } from '@/stores/LoginModal.js';
+const LoginStore=LoginModalStore()
 const closeEditmodal = () => {
   const dialog = document.getElementById("Editmodal"); 
   dialog?.close();
@@ -213,7 +215,7 @@ const closePersonalInformatioMmodal = () => {
               <p class="text-sm font-bold">旅圖會員登入/註冊</p>
               <p class="text-xs">成為會員，即享會員專屬功能！</p>
             </div>
-            <button class="bg-secondary-500 p-2 rounded-full">
+            <button class="bg-secondary-500 p-2 rounded-full" @click="LoginStore.openModal">
               <p class="text-white text-xs">立即加入</p>
             </button>
           </div>
