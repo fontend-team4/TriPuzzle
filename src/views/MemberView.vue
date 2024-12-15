@@ -126,10 +126,17 @@ const updateUser = async () => {
     await getUser()
   } catch (error) {
     console.error(error.message)
+    errorMsg.value = error.message
+    UpdateFailed.value.showModal()
   }
 }
 
 // DELETE User Profile
+const DeleteUser = ref(null)
+const deleteComfire = () => {
+  DeleteUser.value.showModal()
+}
+const deletedSuccess = ref(null)
 const deleteUser = async () => {
   try {
     const config = {
@@ -142,9 +149,13 @@ const deleteUser = async () => {
       config
     )
     console.log(response.data.message)
-    user.value = ''
-    alert('成功刪除用戶，即將回到首頁！')
-    router.push('/')
+    if (response.data.message === `成功刪除 ID:${userId.value} 使用者`) {
+      user.value = ''
+      deletedSuccess.value.showModal()
+      setTimeout(() => {
+        router.push('/')
+      }, 1000)
+    }
   } catch (error) {
     console.error(error.message)
   }
@@ -393,7 +404,7 @@ const closePersonalInformatioMmodal = () => {
           <div class="text-center py-5 mt-1">
             <button
               class="text-[#369ad9] underline text-sm"
-              @click.prevent="deleteUser(12)"
+              @click.prevent="deleteComfire"
             >
               刪除帳號
             </button>
@@ -425,7 +436,7 @@ const closePersonalInformatioMmodal = () => {
         <div class="space-y-4">
           <div class="flex items-center justify-between">
             <p class="text-sm font-medium">暱稱(必填)</p>
-            <p class="text-sm">0/50</p>
+            <p class="text-sm">{{ userName?.length }}/50</p>
           </div>
           <div class="relative">
             <input
@@ -487,7 +498,7 @@ const closePersonalInformatioMmodal = () => {
           <div class="space-y-4">
             <div class="flex items-center justify-between">
               <p class="text-sm font-medium">個人簡介</p>
-              <p class="text-sm">{{ userDescription.length }}/500</p>
+              <p class="text-sm">{{ userDescription?.length }}/500</p>
             </div>
             <textarea
               id="nickname"
@@ -673,13 +684,80 @@ const closePersonalInformatioMmodal = () => {
         </form>
         <WarningTriangle class="mx-auto w-14 h-14 text-primary-600 mb-3" />
         <h3 class="text-xl font-bold text-center">用戶資料修改失敗！</h3>
-        <p class="py-4">{{ errorMsg }}</p>
+        <p class="py-4 text-center">{{ errorMsg }}</p>
       </div>
       <form method="dialog" class="modal-backdrop">
         <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
           ✕
         </button>
         <button>close</button>
+      </form>
+    </dialog>
+    <!-- delete user 的 Modal -->
+    <dialog ref="DeleteUser" class="modal">
+      <div class="modal-box w-[384px] p-0">
+        <form method="dialog">
+          <button
+            class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+          >
+            ✕
+          </button>
+        </form>
+        <div class="py-6 px-5 object-cover">
+          <img
+            class="w-72 h-36 mx-auto"
+            src="https://web.chictrip.com.tw/assets/master-img-warn.198cfcdc.png"
+            alt=""
+          />
+        </div>
+        <div class="text-center">
+          <p class="text-lg font-medium">確定要刪除您的旅圖帳戶嗎？</p>
+          <p class="text-sm text-slate-400 pt-1">
+            請注意！刪除後所有行程將一去不復返！
+          </p>
+        </div>
+        <div class="w-full flex gap-3 px-5 py-6">
+          <button
+            class="w-full h-12 px-5 py-3 border border-primary-600 text-primary-600 hover:bg-primary-100 text-center rounded-3xl font-medium"
+          >
+            取消
+          </button>
+          <button
+            class="w-full h-12 px-5 py-3 bg-primary-600 hover:bg-primary-700 text-white text-center rounded-3xl font-medium"
+            @click="deleteUser"
+          >
+            刪除
+          </button>
+        </div>
+      </div>
+      <form method="dialog" class="modal-backdrop">
+        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+          ✕
+        </button>
+        <button>close</button>
+      </form>
+    </dialog>
+    <!-- deleted success 的 Modal -->
+    <dialog ref="deletedSuccess" class="modal w-[384px] mx-auto">
+      <div class="modal-box">
+        <form method="dialog">
+          <button
+            class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+          >
+            ✕
+          </button>
+        </form>
+        <UserBadgeCheck class="mx-auto w-14 h-14 text-primary-600 mb-3" />
+        <h3 class="text-xl font-bold text-center">用戶刪除成功！</h3>
+      </div>
+      <form method="dialog" class="modal-backdrop">
+        <!-- <button
+          class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+          @click.prevent="closeDeleteModal"
+        >
+          ✕
+        </button>
+        <button>close</button> -->
       </form>
     </dialog>
   </div>
