@@ -14,7 +14,8 @@ import {
   ChevronRightIcon,
   XMarkIcon,
   PencilSquareIcon,
-} from '@heroicons/vue/24/solid'
+} from '@heroicons/vue/24/outline'
+import { UserBadgeCheck, WarningTriangle } from '@iconoir/vue'
 
 const router = useRouter()
 const API_URL = 'http://localhost:3000'
@@ -69,10 +70,13 @@ const getUser = async () => {
   }
 }
 
+// 因應 input:date 的格式做調整
 const formattedBirthday = computed(() => {
   const dateString = userBirthday.value
   const date = new Date(dateString)
   const year = date.getFullYear()
+  // date.getMonth() 返回的月份是 0 到 11,而不是 1 到 12,所以需要手動加 1
+  // .padStart(2, '0') 確保字串有兩個字元，不足要補 0
   const month = String(date.getMonth() + 1).padStart(2, '0')
   const day = String(date.getDate()).padStart(2, '0')
   return `${year}-${month}-${day}`
@@ -87,6 +91,10 @@ const userBirthdayInput = computed({
     ).toISOString()
   },
 })
+
+const errorMsg = ref('')
+const UpdateSuccess = ref(null)
+const UpdateFailed = ref(null)
 // PATCH User Profile
 const updateUser = async () => {
   try {
@@ -99,7 +107,6 @@ const updateUser = async () => {
       name: userName.value,
       email: userEmail.value,
       // profile_pic_url,
-      // phone,
       gender: userGender.value,
       birthday: userBirthday.value,
       description: userDescription.value,
@@ -109,8 +116,14 @@ const updateUser = async () => {
       updatedUserData,
       config
     )
-    user.value = response.data.data // 更新後的資料
+    if (response.data.message === 'User update successful') {
+      UpdateSuccess.value.showModal()
+    } else {
+      UpdateFailed.value.showModal()
+    }
+    user.value = response.data.updatedData // 更新後的資料
     console.log(user.value)
+    await getUser()
   } catch (error) {
     console.error(error.message)
   }
@@ -163,7 +176,7 @@ const closePersonalInformatioMmodal = () => {
 <template>
   <SideBar />
   <div
-    class="flex flex-col min-h-screen bg-white lg:ml-16 transition-all duration-300 ease-in-out"
+    class="flex flex-col min-h-screen bg-white lg:ml-16 transition-all duration-300 ease-in-out text-[#2d4057]"
   >
     <div class="ml-5 p-2">
       <img
@@ -186,10 +199,10 @@ const closePersonalInformatioMmodal = () => {
             <div class="sm:mr-0">
               <div class="block mt-2 md:mr-20 pl-4 sm:mr-0">
                 <p class="text-xl font-semibold mt-4">{{ userName }}</p>
-                <p class="mt-4">0行程 ・ 0旅遊小書</p>
+                <p class="mt-2">{{ userEmail }}</p>
                 <div class="flex justify-between items-center mt-4 gap-4">
                   <button
-                    class="px-4 py-2 border rounded-full hover:bg-primary-100 hover:text-primary-800 transition flex items-center"
+                    class="px-4 py-2 border border-slate-400 rounded-full hover:bg-primary-100 hover:text-primary-800 transition flex items-center"
                     onclick="document.getElementById('Editmodal').showModal()"
                   >
                     <PencilIcon class="w-4 h-4 mr-2" />
@@ -198,7 +211,7 @@ const closePersonalInformatioMmodal = () => {
                   <div class="dropdown">
                     <div
                       tabindex="0"
-                      class="p-2 rounded-full border hover:bg-primary-100 hover:text-primary-800"
+                      class="p-2 rounded-full border border-slate-400 hover:bg-primary-100 hover:text-primary-800"
                     >
                       <Cog8ToothIcon class="w-5 h-5" />
                     </div>
@@ -246,29 +259,13 @@ const closePersonalInformatioMmodal = () => {
               </div>
             </div>
           </div>
-          <div class="flex mt-4 pl-10 pb-0 md:pb-0 lg:pb-20 lg:pl-0">
-            <div class="flex gap-6">
-              <div>
-                <span class="font-semibold text-3xl">0</span>
-                <span>粉絲</span>
-              </div>
-              <div>
-                <span class="font-semibold text-3xl">0</span>
-                <span>追蹤中</span>
-              </div>
-              <div>
-                <span class="font-semibold text-3xl">0</span>
-                <span>影音</span>
-              </div>
-            </div>
-          </div>
         </div>
         <div
           class="ml-3 p-1 rounded-xl flex items-center bg-gray justify-between w-auto lg:max-w-80"
         >
           <div class="flex flex-col ml-4">
             <p class="mt-2 font-medium mb-1 text-sm">想要更多專屬功能？</p>
-            <p class="mb-2 text-sm">快速登入/註冊旅圖會員</p>
+            <p class="mb-2 text-sm">快速登入 / 註冊旅圖會員</p>
           </div>
           <button
             class="px-6 py-2 mr-4 bg-secondary-500 text-white rounded-full transition"
@@ -278,9 +275,9 @@ const closePersonalInformatioMmodal = () => {
         </div>
         <div class="p-8">
           <h2 class="flex font-semibold text-lg">
-            <HeartIcon class="w-6 h-6" />收藏
+            <HeartIcon class="w-6 h-6 me-1" />收藏
           </h2>
-          <hr />
+          <hr class="border-slate-300" />
         </div>
 
         <div class="text-center p-6 rounded-lg">
@@ -341,61 +338,61 @@ const closePersonalInformatioMmodal = () => {
             onclick="document.getElementById('NickNameModal').showModal()"
           >
             <div class="p-2 flex flex-col items-start">
-              <span class="text-xs">暱稱</span>
-              <p class="font-bold">{{ user.name }}</p>
+              <span class="text-xs text-slate-400">暱稱</span>
+              <p class="font-bold">{{ userName }}</p>
             </div>
             <ChevronRightIcon class="w-4 h-4 mt-5" />
           </button>
-          <hr class="w-11/12 mx-auto" />
+          <hr class="w-11/12 mx-auto border-slate-300" />
           <button
             class="flex w-full justify-between p-2"
             onclick="document.getElementById('ProfileModal').showModal()"
           >
             <div class="p-2 flex flex-col items-start">
-              <span class="text-xs">個人簡介</span>
+              <span class="text-xs text-slate-400">個人簡介</span>
               <p class="font-bold">有趣的介紹可以吸引更多人追蹤喔！</p>
             </div>
             <ChevronRightIcon class="w-4 h-4 mt-5" />
           </button>
-          <hr class="w-11/12 mx-auto" />
+          <hr class="w-11/12 mx-auto border-slate-300" />
           <button
             class="flex w-full justify-between p-2"
             onclick="document.getElementById('PersonalInformatioMmodal').showModal()"
           >
             <div class="p-2 flex flex-col items-start">
-              <span class="text-xs">打造你的旅行名片</span>
+              <span class="text-xs text-slate-400">打造你的旅行名片</span>
               <p class="font-bold">修改個人資料</p>
             </div>
             <ChevronRightIcon class="w-4 h-4 mt-5" />
           </button>
         </div>
-        <div class="mt-3">
-          <p>帳號綁定</p>
+        <div class="mt-4">
+          <p class="mb-2">帳號綁定</p>
           <div class="flex justify-between p-4 bg-gray rounded-xl">
             <div>
-              <p class="text-sm font-bold">旅圖會員登入/註冊</p>
-              <p class="text-xs">成為會員，即享會員專屬功能！</p>
+              <p class="text-sm font-bold">旅圖會員登入 / 註冊</p>
+              <p class="text-xs">升級會員，即享會員專屬功能！</p>
             </div>
-            <button class="bg-secondary-500 p-2 rounded-full">
-              <p class="text-white text-xs">立即加入</p>
+            <button class="bg-secondary-500 py-2 px-4 rounded-full">
+              <p class="text-white text-xs">立即升級</p>
             </button>
           </div>
           <div class="flex mt-1 justify-between p-4 bg-gray rounded-xl">
             <div>
               <p class="text-sm font-bold">其他登入方式</p>
-              <div class="flex">
+              <div class="flex items-center text-slate-400">
                 <img
                   src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSC8fFURU-S1FRIkYCVhF6LbBB0BQUbGd6bQ&s"
                   alt=""
                   class="w-4 h-4"
                 />
-                <p class="text-xs ml-2">{{ userLoginWay }}</p>
+                <p class="ml-2">{{ userLoginWay }}</p>
               </div>
             </div>
           </div>
           <div class="text-center py-5 mt-1">
             <button
-              class="text-blue-500 underline"
+              class="text-[#369ad9] underline text-sm"
               @click.prevent="deleteUser(12)"
             >
               刪除帳號
@@ -438,13 +435,13 @@ const closePersonalInformatioMmodal = () => {
               placeholder="輸入暱稱"
               v-model="userName"
             />
-            <!-- <button
+            <button
               type="button"
               class="absolute right-3 top-1/2 transform -translate-y-1/2"
               onclick="document.getElementById('nickname').value=''"
             >
               <XMarkIcon class="w-5 h-5" />
-            </button> -->
+            </button>
           </div>
         </div>
         <div class="flex justify-around space-x-4 mt-4 pt-6">
@@ -458,6 +455,7 @@ const closePersonalInformatioMmodal = () => {
           <button
             class="p-3 w-full text-white bg-primary-600 hover:bg-primary-800 rounded-full"
             @click="updateUser"
+            onclick="document.getElementById('NickNameModal').close()"
           >
             儲存
           </button>
@@ -489,11 +487,11 @@ const closePersonalInformatioMmodal = () => {
           <div class="space-y-4">
             <div class="flex items-center justify-between">
               <p class="text-sm font-medium">個人簡介</p>
-              <p class="text-sm">0/500</p>
+              <p class="text-sm">{{ userDescription.length }}/500</p>
             </div>
             <textarea
               id="nickname"
-              class="w-full px-4 py-2 pr-10 border rounded-lg"
+              class="w-full px-4 py-2 pr-10 rounded-lg focus:outline-primary-600"
               placeholder="有趣的介紹可以吸引更多人追蹤喔！"
               v-model="userDescription"
             >
@@ -510,6 +508,7 @@ const closePersonalInformatioMmodal = () => {
             <button
               class="p-3 w-full rounded-full text-white bg-primary-600 hover:bg-primary-800"
               @click="updateUser"
+              onclick="document.getElementById('ProfileModal').close()"
             >
               儲存
             </button>
@@ -554,13 +553,13 @@ const closePersonalInformatioMmodal = () => {
               placeholder="輸入Email"
               v-model="userEmail"
             />
-            <!-- <button
+            <button
               type="button"
               class="absolute right-3 top-1/2 transform -translate-y-1/2"
               onclick="document.getElementById('PersonalInformatio').value=''"
             >
               <XMarkIcon class="w-5 h-5" />
-            </button> -->
+            </button>
           </div>
         </div>
         <div class="mt-5">
@@ -629,12 +628,54 @@ const closePersonalInformatioMmodal = () => {
           <button
             class="p-3 w-full rounded-full text-white bg-primary-600 hover:bg-primary-800"
             @click="updateUser"
+            onclick="document.getElementById('PersonalInformatioMmodal').close()"
           >
             儲存
           </button>
         </div>
       </div>
       <form method="dialog" class="modal-backdrop hidden md:block">
+        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+          ✕
+        </button>
+        <button>close</button>
+      </form>
+    </dialog>
+    <!-- update success 的 Modal -->
+    <dialog ref="UpdateSuccess" class="modal w-[384px] mx-auto">
+      <div class="modal-box">
+        <form method="dialog">
+          <button
+            class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+          >
+            ✕
+          </button>
+        </form>
+        <UserBadgeCheck class="mx-auto w-14 h-14 text-primary-600 mb-3" />
+        <h3 class="text-xl font-bold text-center">用戶資料修改成功！</h3>
+      </div>
+      <form method="dialog" class="modal-backdrop">
+        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+          ✕
+        </button>
+        <button>close</button>
+      </form>
+    </dialog>
+    <!-- update failed 的 Modal -->
+    <dialog ref="UpdateFailed" class="modal w-[384px] mx-auto">
+      <div class="modal-box">
+        <form method="dialog">
+          <button
+            class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+          >
+            ✕
+          </button>
+        </form>
+        <WarningTriangle class="mx-auto w-14 h-14 text-primary-600 mb-3" />
+        <h3 class="text-xl font-bold text-center">用戶資料修改失敗！</h3>
+        <p class="py-4">{{ errorMsg }}</p>
+      </div>
+      <form method="dialog" class="modal-backdrop">
         <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
           ✕
         </button>
