@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import{ MagnifyingGlassIcon, PuzzlePieceIcon } from "@heroicons/vue/24/outline";
+import{ MagnifyingGlassIcon, PuzzlePieceIcon, MapPinIcon } from "@heroicons/vue/24/outline";
 import PlacesModal from '@/components/PlacesModal.vue';
 const map = ref(null)
 // 預設經緯度在信義區附近
@@ -54,6 +54,34 @@ onMounted(() => {
   initMap();
   // setMarker();
 })
+
+// 定位功能
+const locateUser = () => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const userLat = position.coords.latitude;
+        const userLng = position.coords.longitude;
+        // 更新地圖中心
+        map.value.setCenter({ lat: userLat, lng: userLng });
+        // 新增使用者位置的地標
+        new google.maps.Marker({
+          position: { lat: userLat, lng: userLng },
+          map: map.value,
+          title: "您的位置",
+          icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 8,
+            fillColor: "#4285F4",
+            fillOpacity: 1,
+            strokeColor: "#ffffff",
+            strokeWeight: 2,
+          },
+        });
+      },
+    );
+  };
+};
 </script>
 
 <template>
@@ -63,6 +91,13 @@ onMounted(() => {
   <button class="bg-white inline-flex px-4 py-2 rounded-full shadow-lg fixed left-1/2 top-[100px] -translate-x-1/2 text-sm font-medium hover:bg-slate-100 transition-all duration-200 leading-6 active:bg-slate-300" >
     <MagnifyingGlassIcon class="mr-1 size-5 text-primary-400" />
     <p>搜尋此區域</p>
+  </button>
+    <!-- 定位按鈕 -->
+    <button
+    @click="locateUser"
+    class="bg-white px-2 py-2 rounded-md fixed right-3 bottom-28 hover:bg-slate-100"
+  >
+    <MapPinIcon class="size-5 text-primary-400" />
   </button>
   <!-- 地點卡片 -->
   <div class="absolute top-1/2 left-1/2">
