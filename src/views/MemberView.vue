@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 import SideBar from '@/components/SideBar.vue'
@@ -19,15 +19,18 @@ import {
 const router = useRouter()
 const API_URL = 'http://localhost:3000'
 const token = ref(null)
+const userId = ref(null)
 // User Login 還未完成前端登入註冊功能，故暫時寫在這
+// 之後會從 pinia 去取得 token / id
 const getUserToken = async () => {
   try {
     const config = {
-      identifier: 'Emma@gmail.com',
+      identifier: 'user@gmail.com',
       password: '12345678',
     }
     const response = await axios.post(`${API_URL}/users/login`, config)
     token.value = response.data.token
+    userId.value = response.data.user.id
   } catch (error) {
     console.error(error.message)
   }
@@ -42,19 +45,22 @@ const userBirthday = ref('')
 const userDescription = ref('')
 const userLoginWay = ref('')
 
-const getUser = async (id) => {
+const getUser = async () => {
   try {
     const config = {
       headers: {
         Authorization: token.value,
       },
     }
-    const response = await axios.get(`${API_URL}/users/profile/${id}`, config)
+    const response = await axios.get(
+      `${API_URL}/users/profile/${userId.value}`,
+      config
+    )
     user.value = response.data.data
     userName.value = user.value.name
     userEmail.value = user.value.email
     userGender.value = user.value.gender
-    userBirthday.value = user.value.birthday
+    userBirthday.value = user.value.birthday // 2000-12-12T00:00:00.000Z
     userDescription.value = user.value.description
     userLoginWay.value = user.value.login_way
     console.log(user.value)
@@ -63,17 +69,47 @@ const getUser = async (id) => {
   }
 }
 
+const formattedBirthday = computed(() => {
+  const dateString = userBirthday.value
+  const date = new Date(dateString)
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+})
+
+const userBirthdayInput = computed({
+  get: () => formattedBirthday.value,
+  set: (value) => {
+    const [year, month, day] = value.split('-')
+    userBirthday.value = new Date(
+      `${year}-${month}-${day}T00:00:00.000Z`
+    ).toISOString()
+  },
+})
 // PATCH User Profile
-const updateUser = async (id) => {
+const updateUser = async () => {
   try {
     const config = {
       headers: {
         Authorization: token.value,
       },
-      data: {},
     }
-    const response = await axios.patch(`${API_URL}/users/profile/${id}`, config)
-    user.value = response.data.data
+    const updatedUserData = {
+      name: userName.value,
+      email: userEmail.value,
+      // profile_pic_url,
+      // phone,
+      gender: userGender.value,
+      birthday: userBirthday.value,
+      description: userDescription.value,
+    }
+    const response = await axios.patch(
+      `${API_URL}/users/profile/${userId.value}`,
+      updatedUserData,
+      config
+    )
+    user.value = response.data.data // 更新後的資料
     console.log(user.value)
   } catch (error) {
     console.error(error.message)
@@ -81,7 +117,7 @@ const updateUser = async (id) => {
 }
 
 // DELETE User Profile
-const deleteUser = async (id) => {
+const deleteUser = async () => {
   try {
     const config = {
       headers: {
@@ -89,7 +125,7 @@ const deleteUser = async (id) => {
       },
     }
     const response = await axios.delete(
-      `${API_URL}/users/profile/${id}`,
+      `${API_URL}/users/profile/${userId.value}`,
       config
     )
     console.log(response.data.message)
@@ -103,7 +139,7 @@ const deleteUser = async (id) => {
 
 onMounted(async () => {
   await getUserToken()
-  await getUser(11)
+  await getUser()
 })
 
 const closeEditmodal = () => {
@@ -360,7 +396,7 @@ const closePersonalInformatioMmodal = () => {
           <div class="text-center py-5 mt-1">
             <button
               class="text-blue-500 underline"
-              @click.prevent="deleteUser(9)"
+              @click.prevent="deleteUser(12)"
             >
               刪除帳號
             </button>
@@ -421,6 +457,7 @@ const closePersonalInformatioMmodal = () => {
           </button>
           <button
             class="p-3 w-full text-white bg-primary-600 hover:bg-primary-800 rounded-full"
+            @click="updateUser"
           >
             儲存
           </button>
@@ -472,6 +509,7 @@ const closePersonalInformatioMmodal = () => {
             </button>
             <button
               class="p-3 w-full rounded-full text-white bg-primary-600 hover:bg-primary-800"
+              @click="updateUser"
             >
               儲存
             </button>
@@ -528,65 +566,56 @@ const closePersonalInformatioMmodal = () => {
         <div class="mt-5">
           <p>性別</p>
           <div class="flex gap-2 mt-2 mx-1">
+            <input
+              type="radio"
+              name="gender"
+              v-model="userGender"
+              value="Male"
+              id="male-radio"
+              class="hidden"
+            />
             <label
-              class="p-3 w-full bg-gray rounded-md focus:ring-1 focus:bg-primary-100 focus:text-primary-600 focus:ring-primary-600 hover:bg-primary-100 hover:text-primary-800 cursor-pointer radio-label"
+              class="p-3 w-full bg-gray rounded-md hover:bg-primary-100 hover:text-primary-800 cursor-pointer male-label text-center"
+              for="male-radio"
             >
-              <input
-                type="radio"
-                name="gender"
-                value="male"
-                class="sr-only peer"
-                checked
-              />
               <span class="block">男</span>
             </label>
+            <input
+              type="radio"
+              name="gender"
+              v-model="userGender"
+              value="Female"
+              id="female-radio"
+              class="hidden"
+            />
             <label
-              class="p-3 w-full bg-gray rounded-md focus:ring-1 focus:bg-primary-100 focus:text-primary-600 focus:ring-primary-600 hover:bg-primary-100 hover:text-primary-800 cursor-pointer radio-label"
+              class="p-3 w-full bg-gray rounded-md hover:bg-primary-100 hover:text-primary-800 cursor-pointer female-label text-center"
+              for="female-radio"
             >
-              <input
-                type="radio"
-                name="gender"
-                value="female"
-                class="sr-only peer"
-              />
               <span class="block">女</span>
             </label>
+            <input
+              type="radio"
+              name="gender"
+              v-model="userGender"
+              value="Other"
+              id="other-radio"
+              class="hidden"
+            />
             <label
-              class="p-3 w-full bg-gray rounded-md focus:ring-1 focus:bg-primary-100 focus:text-primary-600 focus:ring-primary-600 hover:bg-primary-100 hover:text-primary-800 cursor-pointer radio-label"
+              class="p-3 w-full bg-gray rounded-md hover:bg-primary-100 hover:text-primary-800 cursor-pointer other-label text-center"
+              for="other-radio"
             >
-              <input
-                type="radio"
-                name="gender"
-                value="other"
-                class="sr-only peer"
-              />
               <span class="block">秘密</span>
             </label>
           </div>
-          <!-- <div class="flex gap-2 mt-2 mx-1">
-            <button
-              class="p-3 w-full bg-gray rounded-md focus:ring-1 focus:bg-primary-100 focus:text-primary-600 focus:ring-primary-600 hover:bg-primary-100 hover:text-primary-800"
-            >
-              男
-            </button>
-            <button
-              class="p-3 w-full bg-gray rounded-md focus:ring-1 focus:bg-primary-100 focus:text-primary-600 focus:ring-primary-600 hover:bg-primary-100 hover:text-primary-800"
-            >
-              女
-            </button>
-            <button
-              class="p-3 w-full bg-gray rounded-md focus:ring-1 focus:bg-primary-100 focus:text-primary-600 focus:ring-primary-600 hover:bg-primary-100 hover:text-primary-800"
-            >
-              秘密
-            </button>
-          </div> -->
         </div>
         <div class="space-y-2 mt-5">
           <label class="text-sm">生日</label>
           <input
             type="date"
             class="w-full p-2 border rounded-lg"
-            v-model="userBirthday"
+            v-model="userBirthdayInput"
           />
         </div>
         <div class="flex justify-around space-x-4 mt-4 pt-6">
@@ -599,6 +628,7 @@ const closePersonalInformatioMmodal = () => {
           </button>
           <button
             class="p-3 w-full rounded-full text-white bg-primary-600 hover:bg-primary-800"
+            @click="updateUser"
           >
             儲存
           </button>
@@ -614,4 +644,17 @@ const closePersonalInformatioMmodal = () => {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+#male-radio:checked ~ .male-label {
+  background-color: rgb(253 228 227 / var(--tw-bg-opacity, 1));
+  color: rgb(152 38 35 / var(--tw-text-opacity, 1));
+}
+#female-radio:checked ~ .female-label {
+  background-color: rgb(253 228 227 / var(--tw-bg-opacity, 1));
+  color: rgb(152 38 35 / var(--tw-text-opacity, 1));
+}
+#other-radio:checked ~ .other-label {
+  background-color: rgb(253 228 227 / var(--tw-bg-opacity, 1));
+  color: rgb(152 38 35 / var(--tw-text-opacity, 1));
+}
+</style>
