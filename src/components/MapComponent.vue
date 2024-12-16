@@ -38,7 +38,7 @@ const setMarker = () => {
     // 設定想要顯示的內容
     content: `
       <div id="content" class="w-96">
-        <p id="firstHeading" class="firstHeading p-4">台北市立動物園動物區</p>
+        <p id="firstHeading" class="p-4 firstHeading">台北市立動物園動物區</p>
       </div>
     `,
     // 設定訊息視窗最大寬度
@@ -82,11 +82,15 @@ const locateUser = () => {
     );
   };
 };
+
+onMounted(() => {
+  locateUser(); 
+});
 </script>
 
 <template>
   <!-- 地圖 -->
-  <div class="google-map min-w-screen h-screen" id="map"></div>
+  <div class="h-screen google-map min-w-screen" id="map"></div>
   <!-- 搜尋此區域 -->
   <button class="bg-white inline-flex px-4 py-2 rounded-full shadow-lg fixed left-1/2 top-[100px] -translate-x-1/2 text-sm font-medium hover:bg-slate-100 transition-all duration-200 leading-6 active:bg-slate-300" >
     <MagnifyingGlassIcon class="mr-1 size-5 text-primary-400" />
@@ -95,7 +99,7 @@ const locateUser = () => {
     <!-- 定位按鈕 -->
     <button
     @click="locateUser"
-    class="bg-white px-2 py-2 rounded-md fixed right-3 bottom-28 hover:bg-slate-100"
+    class="fixed px-2 py-2 bg-white rounded-md right-3 bottom-28 hover:bg-slate-100"
   >
     <MapPinIcon class="size-5 text-primary-400" />
   </button>
@@ -122,7 +126,7 @@ const locateUser = () => {
       </button>
     </div>
   </div>
-  <PlacesModal class="hidden md:block  "/>
+  <PlacesModal class="hidden md:block "/>
 </template>
 
 <style scoped>
