@@ -1,4 +1,5 @@
 <script setup>
+import axios from 'axios'
 import { ref, onMounted, nextTick, defineEmits, provide, watch } from 'vue'
 import {
   StarIcon,
@@ -13,13 +14,15 @@ import AddPlaceBtn from './AddPlaceBtn.vue'
 import DefaultPlaces from '../../places_default.json'
 
 const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
-const { places } = DefaultPlaces
+const  places  = DefaultPlaces
+console.log(places[0].name);
+
 
 // places是陣列形式
 // console.log(places[1].photos[1].name)
 
 const router = useRouter()
-
+const API_URL = 'http://localhost:3000'
 const defaultPlacesData = ref([])
 const items = ref([])
 const columns = ref([]) // 每欄
@@ -28,14 +31,15 @@ const emit = defineEmits(['open-detail-modal'])
 
 const initializeItems = () => {
   items.value = places.map((location) => ({
-    id: location.id,
-    url: `https://places.googleapis.com/v1/${location.photos[0].name}/media?key=${GOOGLE_API_KEY}&maxHeightPx=800&maxWidthPx=800`,
-    title: location.displayName.text,
-    rating: location.rating.toString(),
-    location: location.formattedAddress.split(/[0-9]+/)[1].slice(2, 5),
-    mapUrl: location.googleMapsUri,
+    id: location.place_id, // 使用 place_id 作為 ID
+    url: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference=${location.photos[1].photo_reference}&key=${GOOGLE_API_KEY}`,
+    name: location.name,
+    rating: location.rating || 'N/A', // 若 rating 不存在，則顯示 'N/A'
+    location: location.address.split(/[0-9]+/)[1]?.slice(2, 5) || 'Unknown', // 確保處理 undefined 的情況
+    mapUrl: location.placeUrl,
   }))
 }
+
 
 // 瀑布流
 const calculateColumns = async () => {
@@ -75,9 +79,35 @@ const toggleFavorite = (item) => {
 const openDetailModal = (detailId) => {
   emit('open-detail-modal', detailId) // 傳遞地點的 ID
 }
+
+
+const getDefaultLocations = async()=>{
+  // 拿取MapComponent的判斷是否定位，以及預設經緯度（信義區）
+  // 如果使用者允許定位，那就搜尋使用者經緯度附近的20個景點
+  // 如果使用者不允許定位，則設定信義區作為中心點去渲染地圖id
+  console.log(123);
+// http://localhost:3000/places/search?latitude=25.0329694&longitude=121.5654177&type=餐廳
+  try {
+    const defaultLat = ref(24.998564)
+    const defaultLng = ref(121.576222)
+    const response = await axios.get(
+      `${API_URL}/places/search?latitude=${defaultLat.value}&longitude=${defaultLng.value}&type=餐廳`,
+      // ScheduleData,
+      // config
+      // type : "景點類型" , latitude : "地圖中心經度" , longitude : "地圖中心緯度"
+    )
+    console.log(response.data)
+  } catch (err) {
+    console.error(err.message)
+    alert('搜尋失敗')
+  }
+
+  
+}
 </script>
 
 <template>
+  <button @click="getDefaultLocations" class="absolute top-0 z-50 left-16">按我取得資料</button>
   <div class="absolute top-0 h-auto pt-20 lg:ps-28 lg:pt-24 pb-14 bg-slate-100">
     <!-- 瀑布流 -->
     <div
@@ -125,7 +155,7 @@ const openDetailModal = (detailId) => {
               <h3
                 class="text-sm font-bold text-gray-700 md:text-lg text-ellipsis text-slate-900"
               >
-                {{ item.title }}
+                {{ item.name }}
               </h3>
               <div class="flex justify-between">
                 <div class="flex text-slate-500 text-[12px] md:text-base">

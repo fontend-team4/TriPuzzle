@@ -4,7 +4,7 @@ import DefaultPlaces from '../../places_default.json'
 
 
 const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
-const { places } = DefaultPlaces
+const  places  = DefaultPlaces
 
 const containerRef = ref(null); // 參考外容器
 // const fakeLocations = ref([]);
@@ -71,20 +71,20 @@ console.log(props.placeId);
 const initializeItems = () => {
   if (!props.placeId) return;
 
-  const targetPlace = places.find((location) => location.id === props.placeId);
+  const targetPlace = places.find((location) => location.place_id === props.placeId);
   if (!targetPlace) {
     items.value = [];
     return;
   }
-
+// 
   // 找到該ID所有照片
   items.value = targetPlace.photos.map((photo, index) => ({
-    id: `${targetPlace.id}-${index}`, // 每張圖的ID
-    url: `https://places.googleapis.com/v1/${photo.name}/media?key=${GOOGLE_API_KEY}&maxHeightPx=400&maxWidthPx=400`,
-    title: targetPlace.displayName.text,
-    rating: targetPlace.rating.toString(),
-    location: targetPlace.formattedAddress.split(/[0-9]+/)[1].slice(2, 5),
-    mapUrl: targetPlace.googleMapsUri,
+    id: `${targetPlace.place_id}-${index}`, // 每張圖的ID
+    url: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference=${photo.photo_reference}&key=${GOOGLE_API_KEY}`,
+    // title: targetPlace.name,
+    // rating: targetPlace.rating.toString(),
+    // location: targetPlace.formattedAddress.split(/[0-9]+/)[1].slice(2, 5),
+    // mapUrl: targetPlace.googleMapsUri,
   }));
 };
 

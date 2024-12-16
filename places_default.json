@@ -1,529 +1,551 @@
-{
-  "places": [
-    {
-      "id": "ChIJn8OsIpmrQjQRN6elIsDgR74",
+[
+  {
+      "place_id": "ChIJmQrivHKsQjQR4MIK3c41aj8",
+      "name": "臺北",
+      "geometry": {
+          "lat": 25.0329694,
+          "lng": 121.5654177
+      },
       "types": [
-        "ramen_restaurant",
-        "japanese_restaurant",
-        "restaurant",
-        "point_of_interest",
-        "food",
-        "establishment"
+          "colloquial_area",
+          "locality",
+          "political"
       ],
-      "nationalPhoneNumber": "02 2729 9866",
-      "formattedAddress": "110台灣台北市信義區松壽路11號B1F",
-      "rating": 4.2,
-      "googleMapsUri": "https://maps.google.com/?cid=13711174706372388663",
-      "websiteUri": "https://ichiran.com/shop/oversea/taiwan/taipei-honten-a11/",
-      "displayName": {
-        "text": "一蘭 台灣台北別館"
-      },
-      "currentOpeningHours": {
-        "weekdayDescriptions": [
-          "星期一: 00:00 – 05:00, 10:00 – 05:00",
-          "星期二: 10:00 – 05:00",
-          "星期三: 10:00 – 05:00",
-          "星期四: 10:00 – 00:00",
-          "星期五: 24 小時營業",
-          "星期六: 24 小時營業",
-          "星期日: 24 小時營業"
-        ]
-      },
+      "address": "台灣臺北",
+      "phone": "N/A",
+      "website": "N/A",
+      "opening_hours": [],
       "photos": [
-        {
-          "name": "places/ChIJn8OsIpmrQjQRN6elIsDgR74/photos/AdDdOWopQCSonlUqsbJvB0cEaYq5aNEEX-81D0Vdf28Wd6DVqsvy70AaTMdampmUePMTX3x4An3RTE5xkwolmmw0WJFDaPPpYwHslfKweUaGx0uRALcw62h_5yK-G0BvRR_5DeeZQyu5_kBSjL3qObrao9Rq6xCUre0COcmI"
-        },
-        {
-          "name": "places/ChIJn8OsIpmrQjQRN6elIsDgR74/photos/AdDdOWpdqK0-pZIQbRXzs5xio-2mbGTd8ZVnkvBCa6IOAmX1Vj0LUG_bnw0kg2FQr4pgVLJ0IBFez3Ge8X8W-MCQQT02R344x0r20itbtBTbsuWvkC-iddSX-Bv2MRrVgF5dYu155jWykS2qngTDr6lqKstUx3WcwFmTcrYB"
-        },
-        {
-          "name": "places/ChIJn8OsIpmrQjQRN6elIsDgR74/photos/AdDdOWpfxcSSEJabIA05I40GXU4w4EQDZGI6gY5Mr1oG554CmTowFMzeO878mOzKEY19-KYr2LR6q_Z18-J7Jmwm64rVc3icpRH-wWcykf_NQxGjeTQ8miENpWel-7_famrJlB0MxYIB52lzuwkuUtVs0ME_mTcOVuIurq7c"
-        },
-        {
-          "name": "places/ChIJn8OsIpmrQjQRN6elIsDgR74/photos/AdDdOWrHxl91E8Z5sXdJRRiPLw57SIgHS6gC2N0yW-vJLPwph2S0xXJsXoAtG6whiwfP0b_odj74vHaFegUGhwoEIHKvCdQV7d3MwPGLZIzRPVWiFOJ4jYVKbf6L4tGfcX0Gv9lIeFrLGsRLF0ePG1RAm4_5u7y6spyBD4DE"
-        },
-        {
-          "name": "places/ChIJn8OsIpmrQjQRN6elIsDgR74/photos/AdDdOWoXmXBt-cpcScXd_okkpZZ0gfh_DkZS03Gd-1g_BThL1adnKWORgVbz42Bx6S_KhgwNl1NYWO3w_2lX6x2mrRT6cE73WkEsfCMmWDw6rU_Ph47Q3uWAEGNyTxgUeDfT0eE82I5m1fpSLxwDWxXw1iMEDJlBmteu8otN"
-        },
-        {
-          "name": "places/ChIJn8OsIpmrQjQRN6elIsDgR74/photos/AdDdOWr4EzzLTgvrDDecBlbqLbE8wJGrOTh8m4ogRChZgi8pPNUNNUqOueh_hfmw7P0qRAU44-t9DkGHQtKAN8r9bBWUR_PQMfKIALjHjRJV3I1Js5LaW1s4os4cG67Yr4e9UD9pnP9_iGqnp89_PxjYqykU1Dn3nowxxZ3d"
-        },
-        {
-          "name": "places/ChIJn8OsIpmrQjQRN6elIsDgR74/photos/AdDdOWpqG9x51ND4SkOFTHg8H8pKVT6BuT1UMd6dqpWVs7ev_DqgZiDEZavAjVhcnsZvs40UMiQPD55-K8WV1KGNIc5872-pCCMbOMhPkorv5472p-B9fKxU0ZhYjKtB_FzyA2fLQDjl4pjBqMtPDea5I_sArWNMlTzhg2yC"
-        },
-        {
-          "name": "places/ChIJn8OsIpmrQjQRN6elIsDgR74/photos/AdDdOWqqYDceKjZLERWetJZsKPp_Hv1s34P7V7KizCT6v4H1A354cyRPC9gZ0Tsb_gDs2HULzXiBELiBF5naOLAijMWEb_Ubg6bbveRbMKogzHy-huZ488gbnBut6wzwkLziM9Vd67UKldUPVX72-mUQI4biRWyvTyqmD67A"
-        },
-        {
-          "name": "places/ChIJn8OsIpmrQjQRN6elIsDgR74/photos/AdDdOWot00MlEYXFI-QqG60beFefedGocl7jpLX_6PkgXTPc-fQpjuiSTUTvl1Pt6H2LcZi2JUdVH01OxZLfmQBNZpNdH45rExuJPPkVuwBeLWDgCGmOFqJOCiCPcse43PWNSOs-QkjHjl7tPg291-mTlWl1GEvPHtokHr97"
-        },
-        {
-          "name": "places/ChIJn8OsIpmrQjQRN6elIsDgR74/photos/AdDdOWocaymgDdeFobo6H2bnagX1F_-5Jzshenf2CThJsPCjSyfaPULAUS1kcH6RlLRTwiDJeTkvVnR53QZljQxpP0UIMv3ySPjxd8TT9LE4qcCX1VInuMyiPro-DIiUND0Ufa4wTcKbW1JI4lRZdRzrNEXW7zuUGuPYNmwc"
-        }
+          {
+              "photo_reference": "AWYs27ygK4Rq-VqTZvZdNrAe7SlXBmH38_F5LwJlie_31iiOakqR_0T5dO1mUV8pUWDDJh91qxBrJ14Rnw8shMXLguVVQEnghVp4S7vH-DGdlyUXoKPL3f0fKdE18gzdwrOt5exiHOlh643gM4n4Zio86J8ElF8XiwIV4megAKTwpsfnwp7N"
+          },
+          {
+              "photo_reference": "AWYs27zpnD9BeKRgBaodtC_WpISTIWl7TcRmCvWNavG8WilkTcbsj4yBfZxAyZvhxJFZYoAApBnBGn8rEqSoffCD8vDUoJg8yxA4eicWN0Q67agmqqhhtNXhuU3FZtgnn8Qin8gNjqPFOS2Zz1JqBSz1v7FUueqJ3km2dxHLXK7JlK_TC-YZ"
+          },
+          {
+              "photo_reference": "AWYs27wt0yu4SXdsjtlzpTmjkbXvYDZ9AoPObWVU24385LWMvnq_OZLM2dcOJZJt4dM7ReEJdEh0eYw8-VFSxV-SsGjT_A78z9iGzWvVkYDDBke5XpJ2tMcz2cCV9nw2U4DkPauf8cz9ayvPmG9ypNc6P0qNrQ-Nt_bLXG9HTzLf-4x9nFJb"
+          },
+          {
+              "photo_reference": "AWYs27xstkj2UqLMjPfRW8oFgOWRaFZy2jqI2a9Jk2wMM_osotyaOHQP109AbXDvUVfeKKM87Rg4bP_52IN8u8RUpQVA_FmXIXV45w7VqnCueCuUROqGeQ6VnTwyhgVK08Kg4Dz2LfItRCtldVPs8TD-tVHnS9iZo9Ze1Tf_B4WgdSl8pjWW"
+          },
+          {
+              "photo_reference": "AWYs27x6PTJ4v-077b5hDpDdAj6pywtfEIgOeIkUZeRoz4dc3fwq4puCJ1Tr7V6b27YQpk7C7Lnp9MKP2vEzX7KMsL4uYX0-B8VbXWK4HYC-BkLItWQEeCtr0II368IAZb5NRyC5578GimwOz89w2N5derz1jYjdfIy4fdsHYXto8Kw_uO3i"
+          },
+          {
+              "photo_reference": "AWYs27zrqFjjXiBa59hesvVEM621hjU84BsR-VowUwK2ExAfWYGu8SqifiiLNpULQcIyxdw2c5ZzsDsWgzTv8otV4KxVeogH-byTBI6Mh29OvS-DC6m7-V8bv9RLblZbB_0sc_7FKugHNjWLFiNgP41YO4vAs69w5WUEvsJteto_s8O-xwB-"
+          },
+          {
+              "photo_reference": "AWYs27x-uTgH4wGMf6fa9mIwxgRz2QFp6UOq2cRrTIBRdRwdpSz_xRJYHVFub63oByRV55R8214WJQHg_mNO4ToK2nl-vkMl-pPP80LhJsw0RPuXt0EyrXlZKN75-AGHwSxi-WAo3WZbGtselqL7x24sM_2BQ7uSvy2iaVIuH9_SK5_sqIPA"
+          },
+          {
+              "photo_reference": "AWYs27ziGWZZmAXiM2_OUVdvjNGo2a_xgWf4NRyqhdhnx7OU47Ein3oYbBaHGl9MoHMu4Fm72jQVq5MpGyqFOwBWbL_ESiHf7Ldvjw32fmW25wWYvzMljJQS44WZufm71bx_j9CokUd-pp4k2YKs3FVWAkmRwYnrN9RTK1-f_91DIfI58BJe"
+          },
+          {
+              "photo_reference": "AWYs27z-cdK0_yUhbaNZ7KVpHNyfsHC_VBvdiKLrlyKXqaYanUDUNvGVAE-VVluhalKNIgSSmZsTWyTjZwFE2EyUmWcrQLGGivSgqU7PR4tBi7Db8Kvr_EjqFb1DpvILLBTqZulEcZPJGL6pAMkBDzcfplmmWhTpbRjDQxqMz3wBjfDWztNr"
+          },
+          {
+              "photo_reference": "AWYs27xJWHeH8lO_Z37zbAP-k0k6r5fx37XtJL6OwS_namnbSMmApUvEu-hhj_zw-98XHX36YKMj38mChvTVVyZ7bQ6i9-6D95XrpZHOE-5Hnwgg-eU8YN3UZrYoOwUcsAHZuveuk_PEtwgSyFNqkIY6SCDfktkPeHDBSrttv-_q9oKB0H4J"
+          }
       ],
-      "googleMapsLinks": {
-        "placeUri": "https://maps.google.com/?cid=13711174706372388663",
-        "reviewsUri": "https://www.google.com/maps/place//data=!4m4!3m3!1s0x3442ab9922acc39f:0xbe47e0c022a5a737!9m1!1b1",
-        "photosUri": "https://www.google.com/maps/place//data=!4m3!3m2!1s0x3442ab9922acc39f:0xbe47e0c022a5a737!10e5"
-      }
-    },
-    {
-      "id": "ChIJswdFHsSrQjQRzJ9ivQqM3VA",
-      "types": ["restaurant", "point_of_interest", "food", "establishment"],
-      "nationalPhoneNumber": "0989 711 178",
-      "formattedAddress": "106台灣台北市大安區忠孝東路四段299號",
-      "rating": 4.3,
-      "googleMapsUri": "https://maps.google.com/?cid=5826967470642208716",
-      "websiteUri": "https://m.facebook.com/PinDuSkewer/",
-      "displayName": {
-        "text": "品都串燒攤 忠孝"
+      "placeUrl": "https://maps.google.com/?q=%E5%8F%B0%E7%81%A3%E8%87%BA%E5%8C%97&ftid=0x3442ac72bce20a99:0x3f6a35cedd0ac2e0",
+      "summary": "N/A"
+  },
+  {
+      "place_id": "ChIJj4EySmCqQjQRZte0Cf0G_qo",
+      "name": "臺北市立動物園",
+      "geometry": {
+          "lat": 24.9985635,
+          "lng": 121.5809857
       },
-      "currentOpeningHours": {
-        "weekdayDescriptions": [
-          "星期一: 17:30 – 00:00",
-          "星期二: 17:30 – 00:00",
-          "星期三: 17:30 – 00:00",
-          "星期四: 17:30 – 00:00",
-          "星期五: 17:30 – 00:00",
-          "星期六: 17:30 – 00:00",
-          "星期日: 17:30 – 00:00"
-        ]
-      },
-      "photos": [
-        {
-          "name": "places/ChIJswdFHsSrQjQRzJ9ivQqM3VA/photos/AdDdOWqodVDC30F1OflfnLPXME2vGFVRWFppZuga3XEKWysPxJrscbcEeKjds3_OrLGStutWkhE5n2UoL4QAVfmgi13xDrwovTREn7fZZgZ0aJVFHZy5wahgiaNorLIUVBLsklqjAThO4oNvRoyA2f71kicjOzY1wTZZYwhN"
-        },
-        {
-          "name": "places/ChIJswdFHsSrQjQRzJ9ivQqM3VA/photos/AdDdOWqiMwTcFnX5VFxE-R7-ufoyIFCxXN9oaTHU1hXBPkwc_DvDZCN-jGaRlRlg0gVH6AGhSaeN-_s0_VX2-nr_uFEu2nsYO8MYglIDa0yvIFNhLWXrPOYsvVBOAGFbN-L_5MwsLlzXBZJs3pryrSOkUjdhnk-EDV4WdZb6"
-        },
-        {
-          "name": "places/ChIJswdFHsSrQjQRzJ9ivQqM3VA/photos/AdDdOWrdWHxy3uM5od4wr8za33iP9FI8Gys_UIutEC3EZJCEzNPJHWhKNbnMMHtawRzo30_H7UtDFAwX1k1s7pkFuvv46qbynbrNwWwviMlNxiyygGhZBKum7RLzIpUzOcSUXfmjlWXSRbErr6zIfBK-Ba0MIdQbUnyGPBzN"
-        },
-        {
-          "name": "places/ChIJswdFHsSrQjQRzJ9ivQqM3VA/photos/AdDdOWotG9kGVVF4ouLbr854YU6PG7HPAGijzWysT89XRQt27mWjCzj17cP2xQsEakLrQ_TwzGl4ZWJTZlyjv-YnL3DVdBTHXuUlBpljK7JITC-eH2VpJTcWZfxslyM0jux2CAAddw3tvl5h1Sp134JFs5unbEoJ2UJtBn_E"
-        },
-        {
-          "name": "places/ChIJswdFHsSrQjQRzJ9ivQqM3VA/photos/AdDdOWr0JIVYSgKIIOK1SDTGZC2AuZfMhnExu45UHvkEkNhOpmaFIibvqeQRaSxshH_P1rJm2l6q0bZMeniOwfcIG3VhpEnr-WyQEKAs3k-liwrIs559p4GhASdKOtIcIJkFFH59NDCXnalmkpHrnIALFDqC8vgIxEjhCu_p"
-        },
-        {
-          "name": "places/ChIJswdFHsSrQjQRzJ9ivQqM3VA/photos/AdDdOWrk5bK0OqUbY-46dkYIsHr2TijvKAodwa_N3hC2tswcVtBTTjRhKFXYVJCrfcsQuwko-y3hp6_EJSzRZZHX8Ib07sonBqL5dpApOzjZQPIB18pVePD3e60AS_Dy4DfWrd17mFATkzDkzXbYelbRhvyN-lIy-tQ7af3_"
-        },
-        {
-          "name": "places/ChIJswdFHsSrQjQRzJ9ivQqM3VA/photos/AdDdOWrxAAOeJwOpSJmT479KUpHXvwv4ad2Qz0c9C2zt-K3e5tF5_EE3demt1ExQcIoCGyGTC5gLuwidCRgUmd9hrk18XwupVUhrL5QV2Cen11_ZrKecAgGhI5LOaKkSH1l9A72FVrLmQAQQbCY8i0MaYQVbVCKj_ZgLlGaA"
-        },
-        {
-          "name": "places/ChIJswdFHsSrQjQRzJ9ivQqM3VA/photos/AdDdOWrRrMg0dseR9rVw_4md2tM_SGlYsOVxo9CYv_jvQpwQC4leOuhy5NNQ2ZEh96myFz-QCQG7_sD_lcImCnZYarWg9PZjeNu31qKhmHE09Zq-fq88q1oBn5t0HMp3uI3HKnWNh3Lu5byuag3vUC5L8KJ3uTP7zVv50wWA"
-        },
-        {
-          "name": "places/ChIJswdFHsSrQjQRzJ9ivQqM3VA/photos/AdDdOWq1qwYzqIoWvt9_Lu75xmmMHYX-UEATXIeuF5miItBBbeRf2mqSmN85vlhfQeedOTdf38GQY1-w6PAi-biqM_Sygz--ViuehzRWWR52QS6Ka_RwUH9psYHHqjKlV96wDE9QurgPkpny2C8WpRh4ZMyiqrSotL_qZAds"
-        },
-        {
-          "name": "places/ChIJswdFHsSrQjQRzJ9ivQqM3VA/photos/AdDdOWpgQy1RXUqXub-oDM2uXa5BOXY5Gzvczveu5Ycr9ZUYEXDdFMF86zGfSpuI7qdPz6Yn_T9KYfbnHhgV55syVo8ikKNW82Gtf1awvB0jJAiJYrM25X16z7cj7ItFqtHqxQE4xoe-PMsKk-r38_FoLVnRVErZ_jFRbBZu"
-        }
-      ],
-      "googleMapsLinks": {
-        "placeUri": "https://maps.google.com/?cid=5826967470642208716",
-        "reviewsUri": "https://www.google.com/maps/place//data=!4m4!3m3!1s0x3442abc41e4507b3:0x50dd8c0abd629fcc!9m1!1b1",
-        "photosUri": "https://www.google.com/maps/place//data=!4m3!3m2!1s0x3442abc41e4507b3:0x50dd8c0abd629fcc!10e5"
-      }
-    },
-    {
-      "id": "ChIJ6ere6rurQjQRCmicPiS523g",
       "types": [
-        "buffet_restaurant",
-        "cafeteria",
-        "restaurant",
-        "point_of_interest",
-        "food",
-        "establishment"
+          "zoo",
+          "tourist_attraction",
+          "point_of_interest",
+          "establishment"
       ],
-      "nationalPhoneNumber": "02 8780 9988",
-      "formattedAddress": "110台灣台北市信义区忠孝東路五段68號46樓微風信義",
-      "rating": 4.2,
-      "googleMapsUri": "https://maps.google.com/?cid=8708757869771384842",
-      "websiteUri": "http://inparadise.com.tw/",
-      "displayName": {
-        "text": "INPARADISE 饗饗 微風信義店"
-      },
-      "currentOpeningHours": {
-        "weekdayDescriptions": [
-          "星期一: 11:30 – 14:00, 14:30 – 16:30, 17:30 – 21:00",
-          "星期二: 11:30 – 14:00, 14:30 – 16:30, 17:30 – 21:00",
-          "星期三: 11:30 – 14:00, 14:30 – 16:30, 17:30 – 21:00",
-          "星期四: 11:30 – 14:00, 14:30 – 16:30, 17:30 – 21:00",
-          "星期五: 11:30 – 14:00, 14:30 – 16:30, 17:30 – 21:00",
-          "星期六: 11:30 – 14:00, 14:30 – 16:30, 17:30 – 21:30",
-          "星期日: 11:30 – 14:00, 14:30 – 16:30, 17:30 – 21:30"
-        ]
-      },
-      "photos": [
-        {
-          "name": "places/ChIJ6ere6rurQjQRCmicPiS523g/photos/AdDdOWrtMWwCK93LeKf5zbJjjYcX8NTaflkJw3OSWVEIn6yLFv_pCKzj5NyRy-2pINQYR50LWTlg1-Ll_7qho_uW4siCSHozgnqXy-wHnhw5jD6upvXwwY9cObGBbZkyFPkSEVuTE3nrw1fkkEyeWIPNVTeMNEbgecgb69Ne"
-        },
-        {
-          "name": "places/ChIJ6ere6rurQjQRCmicPiS523g/photos/AdDdOWr9qhozc3ZqdmT96LDTCJqlWkNpZwwwJB0ssUQoeK1k9rom2a-z_Sag_rYmNVYgVCuzAmtiprW_XkYtgi6qLgSIMy0WyDjcQpylO_n_Gu5JmhJ8GabTzGmiX068qRqvGlB65dztbvKjHqvrH2_I7gpxl4DTLJU1kbB8"
-        },
-        {
-          "name": "places/ChIJ6ere6rurQjQRCmicPiS523g/photos/AdDdOWp8Kn-BaoHSZoQsi_dZ3zY44yJ5ZqhCjWhyB0j0hqy5vh7i5vbU2QiMQVK0MH2S4E2FZRLKGzC1Nl4mJUAVW3CgxBOyOEb1TluMqgRjg9NhfW5k2aaOjwvyo9vc75s0_ZPQvJZR3KyTubKU3diVOjhaWxbZmwMBV3H6"
-        },
-        {
-          "name": "places/ChIJ6ere6rurQjQRCmicPiS523g/photos/AdDdOWoqYmW4ZGqyvUVt_k5rhcQiWnxBgNY33ekhukckf_NTZGEyz3D4ayAYLxlGd-spkZ0zFr-PixUI5QyJzxqtBcYk-8MJYsMl29OJnxqt8NDGEcuhiNi5YfxP4lkjJ1MicO146FlMxFv1kqtqUU-34c2706sdJE1Po7l-"
-        },
-        {
-          "name": "places/ChIJ6ere6rurQjQRCmicPiS523g/photos/AdDdOWqTz6EVljjYnHaUfllY0-LBlTSzGD6ZTjIiUE7K317BdS_56QK_4El0QEnZ0IVCIhqDpZt5V_3ontXGikG35WV_G6Y9HSpJY-CRK1avmaDNSmFO9Rlsy3CN5bkfL6-RZa_4GJWg9wWGEx9MjR-ABZOw7d_Fr8qpjG13"
-        },
-        {
-          "name": "places/ChIJ6ere6rurQjQRCmicPiS523g/photos/AdDdOWo4B-wD0whToSsUqWoMQ80H4UUO25VBidELeBQGw6uxH_wQkNdZzIiPbk9YTlS47xYRJg5AF0HT8PcCWbmHiP1Mxc0z8wA1mSVCKmOUtGzvkRWjmBBGNwx2og666ncZaNTMgL9hzJEAM_vZaWCixHkFW2LEQ3iZKvCL"
-        },
-        {
-          "name": "places/ChIJ6ere6rurQjQRCmicPiS523g/photos/AdDdOWqxDjXkwXtKu3FzJkTUzo5IlzOTHu_zXhHlXR-RTg_nFSNbEsVTrPnjPQtXQ16POYv7vbrzSnYG9FmPj0odbUFZPjucncAk9Y2FjlCbQSTp6IV8eBDYaGc1ZcJgZXT9tE1-Hocoyrs_eB3kC1B0XzmkI_KDZmYKlBHB"
-        },
-        {
-          "name": "places/ChIJ6ere6rurQjQRCmicPiS523g/photos/AdDdOWrzFMBy2zLLzLANYKTW99e_kFGYYFRdB_eHROM5tlO79r2mH08iII0tM6tfhYCYUzz9gdxfBdttHMTSd4RfWVmU5XLxkOqzUKe40jyPxxYLuGse2XQVE4nHI8dPN1sVTRBp4SF-y1HmNG8bUYoRZ5czCboZQYCPUsXe"
-        },
-        {
-          "name": "places/ChIJ6ere6rurQjQRCmicPiS523g/photos/AdDdOWpV2k1dsuGrdAnxDkgpOpp5bQ3S4wzYo2HDfQB8PINC1mJHGBT1IR51Ru5q75kr6Ma_MpLC_oxbXvSoWy85W7HJRxS7cTP-Fen17tdZUkPV9UyYaJeKSbYSK4BRfINAItiy2KneUg83KgJYs6DxjMknSLLtzPexNgyP"
-        },
-        {
-          "name": "places/ChIJ6ere6rurQjQRCmicPiS523g/photos/AdDdOWrSVQKRvJvWhBs_NIdCn4RjPRc5eyr2PVavvCZy_uaKOSP1SoB5PLV6Rehm6uVzwyF1RJluRfN5INYJ6j5AZDJ2wScATakevt7EXYzW6iMjriFxu7imIGQ0pwM9DM4hRe9kanik8oj4I_9qYLzbM9fsiupiZG9g2nSb"
-        }
-      ],
-      "googleMapsLinks": {
-        "placeUri": "https://maps.google.com/?cid=8708757869771384842",
-        "reviewsUri": "https://www.google.com/maps/place//data=!4m4!3m3!1s0x3442abbbeadeeae9:0x78dbb9243e9c680a!9m1!1b1",
-        "photosUri": "https://www.google.com/maps/place//data=!4m3!3m2!1s0x3442abbbeadeeae9:0x78dbb9243e9c680a!10e5"
-      }
-    },
-    {
-      "id": "ChIJucJi0cerQjQRFkntsjnV2U8",
-      "types": [
-        "pizza_restaurant",
-        "restaurant",
-        "point_of_interest",
-        "food",
-        "establishment"
-      ],
-      "nationalPhoneNumber": "02 2740 2328",
-      "formattedAddress": "106台灣台北市大安區光復南路300號",
-      "rating": 4.2,
-      "googleMapsUri": "https://maps.google.com/?cid=5753864442734266646",
-      "websiteUri": "https://www.facebook.com/Auntsupizza0316/",
-      "displayName": {
-        "text": "蘇阿姨比薩屋"
-      },
-      "currentOpeningHours": {
-        "weekdayDescriptions": [
-          "星期一: 休息",
-          "星期二: 11:00 – 22:00",
-          "星期三: 11:00 – 22:00",
-          "星期四: 11:00 – 22:00",
-          "星期五: 11:00 – 22:00",
-          "星期六: 11:00 – 22:00",
-          "星期日: 11:00 – 22:00"
-        ]
-      },
-      "photos": [
-        {
-          "name": "places/ChIJucJi0cerQjQRFkntsjnV2U8/photos/AdDdOWonH-EpZF71o4BGszUM9nAxwnj-W38E-K1z5YrgEFILHR-oA-ZkeIPqXOe5RX6PNFZIuY44_EtOPOcZFNAEft3cgli0Zmp5tOyiqpN6_u-W0LF8f_Rzop8KxRhW1zxmVaSM70E_rCYz54DG7gkTK43zaS7SMajdOd4"
-        },
-        {
-          "name": "places/ChIJucJi0cerQjQRFkntsjnV2U8/photos/AdDdOWpIxNeOFpSzSEtYSBgHHu1dhcBiV2iq1Dks9HtaTqmhGf9LqnBxzZ-Mu5leabeF5VnPzI2uR9dlTHYK9texgbxyx1G61Od6frkY6_MTN3TIncCRlP6DYpwqAE_TtLHUx6uZuEdVvH-ISeWEAq8sS_7t3M786vir1t6L"
-        },
-        {
-          "name": "places/ChIJucJi0cerQjQRFkntsjnV2U8/photos/AdDdOWobt0PMnrcigjdhv_z76331W080Djs0HmJmOsjU1Eb74OTM1HDokd_AMX_RhLmspyOENdEimMtKQm78GeOJjL2yLnZVFyM7rRd398Rpjf54oQFH0_1HsivvKlbm4Fao9dLIGYAvISnFbm1sZK4fdAmxSUvLnHk6kYZW"
-        },
-        {
-          "name": "places/ChIJucJi0cerQjQRFkntsjnV2U8/photos/AdDdOWpqSvV1bFFlnm5inTD8GYPLRZLWVWaf_IiKpK9KIpzABqriKVLGk8Q5WSXOXA_nN6hjpFKMveD2N-f3-v6uM0jGyI-jz3d30M3FMlLNfoftvSS-rf4_qMaWc9geJkm6aEthuRqcCyRp_IIOKj0thuwQCkn3nspD08_6"
-        },
-        {
-          "name": "places/ChIJucJi0cerQjQRFkntsjnV2U8/photos/AdDdOWpH4D9bYcTsClELRkI57v4YE851zvf5YmlWWp1L9NLeNitIFyc_Ou6sZT81Hzqa1F-y7-bgNwa6ird0qTomGqhk4SgBymVxdZE757DreElVuf8Div_lZfR56yE_IY3gaq65yEFB2lI0CZ8EuUTXHm0oaPYu8lf5-V70"
-        },
-        {
-          "name": "places/ChIJucJi0cerQjQRFkntsjnV2U8/photos/AdDdOWr0n-a6l6GdiuI1NVVByYm_TTaMZMrmIHs4nCDYnIy-aqnirFy8eC2hzfdrcwnY2ysc1Wq0G18S-W0MdgLGtn4S7YT8bwJqAn6cCL8kcaPPUaKispaZblDY18np9ClT_CkWhr13MHi_QJuBt5TrDGtYLFilceeSDf5K"
-        },
-        {
-          "name": "places/ChIJucJi0cerQjQRFkntsjnV2U8/photos/AdDdOWrjg6vrWflqvl_Omx9FggzAp0A5FAZp0bxi1ezlCa13MTsaWpXDsP4_qPVWih46r7iivu1CW6gtpOuf6a6jhczbw8nqGvixixMLp-j_Gsdpd2hvkY3xlxEPdszAv_rNZeZAzNvC5TMHfS5ZhezITmolpGH1W0vDDgI"
-        },
-        {
-          "name": "places/ChIJucJi0cerQjQRFkntsjnV2U8/photos/AdDdOWr5dQy4EJdlB7qCZO7kt84sOb5ybcDZvIlchWClM151aiWGo6izF1Eq7nQffEml4DDCYjBaFFGmdeqBhHUcqssUh23AYPdNHLzfGcX1Obc-GkSEuJwptDDas2ls_JuzmSNhVWZDhs4La1hFCPPIrbZR-XR3MuIA2HW-"
-        },
-        {
-          "name": "places/ChIJucJi0cerQjQRFkntsjnV2U8/photos/AdDdOWqOQHUbTIC8w-yMdzMRc57EHxBtJoRVZs0qw80aBEnhVD3ipgrOXMMCKwYsVuFZX1c74Efpjz6T2Ngbm36l1azsGKm2N9hcIRwqFW_R5efT2nEi6ROL-OrBi1Lu9p9hEU5axax23kL8Y-wY5s-NhAs65jyOW0IgrsFP"
-        },
-        {
-          "name": "places/ChIJucJi0cerQjQRFkntsjnV2U8/photos/AdDdOWpVT3QPXb1WwOdZpSop8rrtIvspEzSFcCL_FZvkNPgstUm3S9aR1XXdXahWGfwrbAMD452h1ZR3eVBk78VjuL70uEXVbB6rotsR-JtJptwTL5zHsoWUc1jKAreYp3_5T0Ugyrh8RdkK39XkPbo0y-RR6relAp0u3lv-"
-        }
-      ],
-      "googleMapsLinks": {
-        "placeUri": "https://maps.google.com/?cid=5753864442734266646",
-        "reviewsUri": "https://www.google.com/maps/place//data=!4m4!3m3!1s0x3442abc7d162c2b9:0x4fd9d539b2ed4916!9m1!1b1",
-        "photosUri": "https://www.google.com/maps/place//data=!4m3!3m2!1s0x3442abc7d162c2b9:0x4fd9d539b2ed4916!10e5"
-      }
-    },
-    {
-      "id": "ChIJG5Z7DLKrQjQRV6xtWQx_TYk",
-      "types": ["restaurant", "point_of_interest", "food", "establishment"],
-      "nationalPhoneNumber": "02 8772 0659",
-      "formattedAddress": "106台灣台北市大安區光復南路100號",
-      "rating": 4.9,
-      "googleMapsUri": "https://maps.google.com/?cid=9893703647419542615",
-      "websiteUri": "https://www.facebook.com/chinhuajiao/",
-      "displayName": {
-        "text": "青花驕麻辣鍋 台北光復南店"
-      },
-      "currentOpeningHours": {
-        "weekdayDescriptions": [
-          "星期一: 11:30 – 01:00",
-          "星期二: 休息",
-          "星期三: 11:30 – 01:00",
-          "星期四: 11:30 – 01:00",
-          "星期五: 11:30 – 01:00",
-          "星期六: 11:00 – 01:00",
-          "星期日: 11:00 – 01:00"
-        ]
-      },
-      "photos": [
-        {
-          "name": "places/ChIJG5Z7DLKrQjQRV6xtWQx_TYk/photos/AdDdOWqbtzUb-JPFNTrrK5Wo5YgDG98GGIu6NYmjmXXMknRVa6i-N_ac07FMMA7ACy5OuyMmEy1nsICtnMh31Cu6BJilM_Jf2p9IOj7g-6Ps7hLjQaoT64SIdR6iRXTD77xIDFwRgWKaKSeM37CWWkDo-dHc3bVTdPtBIhIP"
-        },
-        {
-          "name": "places/ChIJG5Z7DLKrQjQRV6xtWQx_TYk/photos/AdDdOWrdO37p0i7g0dLVXdjkQo6kRUIpSZ1_lTtKTPDEA65FwSuiOmvDRj0U455eYW1ZEtsfVnQhd8bBQJCQrMN_UrBtNYSHuMDRWYNZYVUr_nx4c7wsfqe_U1Pv1CqBNdwjGTOdibAicto9ugUWX_QvDjQpz5XUL4zE6RJi"
-        },
-        {
-          "name": "places/ChIJG5Z7DLKrQjQRV6xtWQx_TYk/photos/AdDdOWo-wPp-UtyFN0dNG2safOKf_X5r9AExTFJ-56Fw4sQaIR6zPjgE1gxwoo0VVUVEefl5ukGel8-tsqGA-Cs9tleSdCZbcIKe_Jkv9QxWsmTjbJXxgsPc3clNGitbn9lB6Qj8BZ0OYld-1LyQNj9_EBAWwgxZl5FXoR-C"
-        },
-        {
-          "name": "places/ChIJG5Z7DLKrQjQRV6xtWQx_TYk/photos/AdDdOWqCTvcTYecs3YtabVqu2OOMW31ZZIAsDOqtVpqOnMsYfW_nzrGTWtQZhq15sPGCbGIYhcBNNtKHGGXpF_1O1g5538fDv79oYU5pPrgdjeTJSYZVyY_Kpy4zbOgzVx1t6sCbS-gR4TNmgdrEEZIoKQO4ARmXCXm0FAp2"
-        },
-        {
-          "name": "places/ChIJG5Z7DLKrQjQRV6xtWQx_TYk/photos/AdDdOWpDmZbAfIWXLPo7fspQJ6E0oWT4y4piceIHG49DwKtgj6rI_JoOku6rr1q0JM7r2KHhX-FUGaqfaBELC2B5w8jn2HXwWSRKBvHVJtR5U-tHQD9IYDRkS1ThC3bk4lGSpPm_LdLjei-PNULME7offiDO5i7tY5bvNJxC"
-        },
-        {
-          "name": "places/ChIJG5Z7DLKrQjQRV6xtWQx_TYk/photos/AdDdOWqP4nhKUeZZMiveXdOjktPkIwBF6WNxmH1WoJv6R1mC05tyxZrfMLq6EaZ2r6_buw-gGcjdnUrYWVWcMW8ddtiG3zmzYPo5lGtX8sG1gKssXHOMahAgev-01AtVruK0sqs7dPiMckRnuXzxQ28WlRqb7vaV5cb1X_kc"
-        },
-        {
-          "name": "places/ChIJG5Z7DLKrQjQRV6xtWQx_TYk/photos/AdDdOWooAWBZlNC8lNLjSFqw3yinVnKAY4cOsihziv2bS0l7Vxq_2ajXCE5Jqz9dxABFJWjiWbdjEjXcLmfw3-dA0xhskNQ0TIXM8qDKaY9vmLA4Vv4zitkgxZvq7BMURZFgJq1z-IsGc_lyb_t20tna37sxAWB9-scYAryS"
-        },
-        {
-          "name": "places/ChIJG5Z7DLKrQjQRV6xtWQx_TYk/photos/AdDdOWopkAXv9gU0mj-g-qHh8PrB7b3mmiIwWLahbeyFUpy2SHnUI81xEJrZIgWC13imJAszZWnZ3QZawkNVdYwfT52UJ0GAKxxCxJ_oj0zYXsyg8Zdv_thONmK5ODKn6xuq6NvsmBUL68_TPU-aGoQ3X7gQaJM5CEySKPm6"
-        },
-        {
-          "name": "places/ChIJG5Z7DLKrQjQRV6xtWQx_TYk/photos/AdDdOWq1kebZ5CR6fDOyjo1znbxH1JH--PjLXU0A64QlNJiAREyzu_4nxx6z7XEpS5U_NkhgR0mKBCesUvO5G91nm9aWrZ8DWSvO6NGytw1vDaWPV4heAEWFhICU5ga1qmecS9mvehRBjnVXSkQ4yG1GWS8l3PawJLDN_Z3F"
-        },
-        {
-          "name": "places/ChIJG5Z7DLKrQjQRV6xtWQx_TYk/photos/AdDdOWri9o35TwLuMkxQ3yu8V9Vh0CC89MmAeTdppRvQeb1v2HVwROSC4m-Z8al0mLNZiSoPykj7W4hKU2rJgOhPQZJiyqWhebMlBY1rj2QTcURfFKPgNxPKKrL1368Y6XlZDArPOZmZyAaYRCHZGSEWo2gVBnTuznxpZsPH"
-        }
-      ],
-      "googleMapsLinks": {
-        "placeUri": "https://maps.google.com/?cid=9893703647419542615",
-        "reviewsUri": "https://www.google.com/maps/place//data=!4m4!3m3!1s0x3442abb20c7b961b:0x894d7f0c596dac57!9m1!1b1",
-        "photosUri": "https://www.google.com/maps/place//data=!4m3!3m2!1s0x3442abb20c7b961b:0x894d7f0c596dac57!10e5"
-      }
-    },
-    {
-      "id": "ChIJcXUAHc-rQjQRbrHnBNwNyLs",
-      "types": [
-        "ramen_restaurant",
-        "japanese_restaurant",
-        "restaurant",
-        "point_of_interest",
-        "food",
-        "establishment"
-      ],
-      "nationalPhoneNumber": "02 2755 6705",
-      "formattedAddress": "106台灣台北市大安區仁愛路四段228-6號",
+      "address": "116台灣台北市文山區新光路二段30號",
+      "phone": "02 2938 2300",
       "rating": 4.6,
-      "googleMapsUri": "https://maps.google.com/?cid=13531080319060914542",
-      "websiteUri": "https://www.facebook.com/sobashinncitrus/",
-      "displayName": {
-        "text": "柑橘Shinn"
-      },
-      "currentOpeningHours": {
-        "weekdayDescriptions": [
-          "星期一: 11:30 – 14:00, 17:00 – 20:30",
-          "星期二: 11:30 – 14:00, 17:00 – 20:30",
-          "星期三: 11:30 – 14:00, 17:00 – 20:30",
-          "星期四: 11:30 – 14:00, 17:00 – 20:30",
-          "星期五: 11:30 – 14:00, 17:00 – 20:30",
-          "星期六: 11:30 – 14:00, 17:00 – 20:30",
-          "星期日: 11:30 – 14:00, 17:00 – 20:30"
-        ]
-      },
-      "photos": [
-        {
-          "name": "places/ChIJcXUAHc-rQjQRbrHnBNwNyLs/photos/AdDdOWouCFjdm5IwqClERe2fLd4AJALgNEOAYeXpqs_iTg4nZWag6XDisCInavB49xXEwjlQ4Aab6BqtsOREQdD-wr4XjKKU81fYV7hEgmFKsRNxH6uSk-H0Zt_8IldxJrbyECOIYP7txzsT1fazOlrrMsm9aGUc8Tb82xq_"
-        },
-        {
-          "name": "places/ChIJcXUAHc-rQjQRbrHnBNwNyLs/photos/AdDdOWoDyO3Y_gesKnGIbfvi0LwufJM2BoiRfXottLXMR8YgDkpVzaXKpOvwbl1rYtX-JbJ9oTnSye2LNtmLU4C3i8orz0ns-wWrgtCNpKpbsYkx0Ysz36Mzhn3cM_5Wr9k-qu5WVazlY1nXrJte9OlHk65pBDMvVR6HUYJV"
-        },
-        {
-          "name": "places/ChIJcXUAHc-rQjQRbrHnBNwNyLs/photos/AdDdOWq5es-lSLs7WesuFN9beGDCdZ4itJptOxm4uHucrbsPvrTrlwdXdTnuNCFFuQ4xCpJeQHWJmcBzOFNKEC8y5DLKcmzvHMdd3M4nE6FZvCUDxGii-LWxxkN2X3c2guZFRxntN7f5fjz3JKi4043z6Vce8ksv49sXNCuj"
-        },
-        {
-          "name": "places/ChIJcXUAHc-rQjQRbrHnBNwNyLs/photos/AdDdOWpSghFO3E6HQrvM0OwESI3bPAT12DOEy4bIJ0Kw7Qi6i5WnLjdcwqjLeUeCHLLChwBSQqRWcGHrtK9xy4cYXW7VXZTI0voRU_WFBlK1tFvOxRu4V33W0m6gd7N79yjRifFZ7cFr5Ek18LMONg4lg9_Mku7cYAv0_IsM"
-        },
-        {
-          "name": "places/ChIJcXUAHc-rQjQRbrHnBNwNyLs/photos/AdDdOWqEhAhl2l9burnI69idPeT79GwK9BEcLs6JnrMKE3xUGA5HPc_gxDizkuPgubysfjCa-y2VEzWQbDo5Xvl4x8rrKYkQSkNPedmBFrriy3ZJ-B1KkDXt65Epx8_sBQ-nQcFmxvzuUqcI6bnLeihtLAJyqXAKOo7g97R9"
-        },
-        {
-          "name": "places/ChIJcXUAHc-rQjQRbrHnBNwNyLs/photos/AdDdOWrfmVYJk217OnAgnCO2s5AQvv5ywDa1C81Cf5yok5EhSsaYcnmLt1BOQcozyqr3q6yOVgiQ8PvqWC4a-Vg7s56tFq5II0viLq8z2t6HpLfYGeI1RVaqjCEgetemAvMVB4aiQIyhDQ7uFSu05imemuNqJqNWN-vCi8mD"
-        },
-        {
-          "name": "places/ChIJcXUAHc-rQjQRbrHnBNwNyLs/photos/AdDdOWqItqNm4fLgTabV0-75a78evWyEVKwnOmANNiPFqhtivWtbzax5sdouC2XMzEpKXbg5gCcvYr-Q9_5AwTefm8R4-dyDkdcB6K9tszbWiJXYD4Vl7CzQjHgzB-VPKVVcZrBhE4skNMYW3obBZjvb6E4oHA6693ARsBo"
-        },
-        {
-          "name": "places/ChIJcXUAHc-rQjQRbrHnBNwNyLs/photos/AdDdOWoN85o54oZTMYjzFyKTFvnWbAcdX91wT7HTlh1Ew_uqN528tHx75TlmUn2opj-G-EemQIygY8gUgLENAZSZljHLQodQwzzYhFCK4E6-6b0-AHfgaLm4jCQl2ew29r8vIt3qbP2x9txtAbLJntqudjzTmvc35yrgYi2i"
-        },
-        {
-          "name": "places/ChIJcXUAHc-rQjQRbrHnBNwNyLs/photos/AdDdOWqv8M3XW-mT91ZiAhklrxbC122tb3Hy8zIkfRgPQylHoKW4sxVE9gU-nsoDH8Ot0OGVvzqSc2AerO2OteKGPx5ZLfXdOLqxKEcO6ofRsYGLjAFNFkKBYMjw0uicY6gP_vuj-_RDQfVAhuU0LECP-8WEOElRya_IMDXA"
-        },
-        {
-          "name": "places/ChIJcXUAHc-rQjQRbrHnBNwNyLs/photos/AdDdOWqE-mdmPrnBe3Kv2K0rZrklJStcpApK7YiqV3ATKMLlObfdlINcpTvgE0YbH0385HbB27bBadPdkjVNiQHe3LTCD3EY2frnQBXcMSY8ogLABWtdtUDqyBsr-ng26hvoISFEqh9Mw3DdfGtkiBUxvQpzcF2TM_julN_A"
-        }
+      "website": "http://www.zoo.gov.taipei/",
+      "opening_hours": [
+          "星期一: 09:00 – 17:00",
+          "星期二: 09:00 – 17:00",
+          "星期三: 09:00 – 17:00",
+          "星期四: 09:00 – 17:00",
+          "星期五: 09:00 – 17:00",
+          "星期六: 09:00 – 17:00",
+          "星期日: 09:00 – 17:00"
       ],
-      "googleMapsLinks": {
-        "placeUri": "https://maps.google.com/?cid=13531080319060914542",
-        "reviewsUri": "https://www.google.com/maps/place//data=!4m4!3m3!1s0x3442abcf1d007571:0xbbc80ddc04e7b16e!9m1!1b1",
-        "photosUri": "https://www.google.com/maps/place//data=!4m3!3m2!1s0x3442abcf1d007571:0xbbc80ddc04e7b16e!10e5"
+      "photos": [
+          {
+              "photo_reference": "AWYs27xsZeRXAoKrZUJGebQGdDD2k1v--D0lNApX8QI_2sM2LeITJ13upQANBurNR2NloBH9a0iwRTd24idSi4cirzkG5oHYAy9ISF84kmUAoftOCR597XUHaOg7gEpFlJNjeoOQ8zCLEcAvu0O4jepXBjI0QgMZmtabW0HwUflV617gjEAR"
+          },
+          {
+              "photo_reference": "AWYs27w9hqAFLpTzO_lWJrVrOoII0r0UC_p6fGTf0vi5DbEpw_DoJ347_8cRsncwQcVdo86krNC1JvuCrQaNFotK7Vp7lyT2y3U4tKLq45vn6wP7tRoMmBq23m2vlUqy1o_YHeFKi4ja79BbQE9YRO0ijwn0xiEcJ_Tsav2Opji_10r0bL-M"
+          },
+          {
+              "photo_reference": "AWYs27zFn5nNvrsZNDFgsZUCYgz0UV-JO7SY7ibYYaMiOSOO-RuPUGBdmxk0xgLGX3qpJL1u4a8XTF8kGBV7qpRndTpiRpWHI-SEg2nJYD1lJVMeY32bKEgnRSbFozmzNqVIOMEq20IvqXDf8AZ9kEKIkeQTdCgL6LSNN6H_UzJpkdZmc2eZ"
+          },
+          {
+              "photo_reference": "AWYs27yGUvNutTCsLxScDaeUcL21j-JZi69rFP-ZrSkqlc8xC8wAZysQ8A9WLnArvEAGwezpofuJ0_Utv1nsu4nLVaLo6Hi8kOBun1ZTMoFS5N4n1_dgkPpBlbqRL2TPNn56LwFR83SCHlNBPHvKW_sPdu9N-58meBayZ533-6JjjUD89CHq"
+          },
+          {
+              "photo_reference": "AWYs27zs3mhMFBDPClWFCZ7OxWNXoGrD-WDzFc9e27aXPd59DMUOseV8CKwbCkvl1FhmZDAnrMymiNv4gmDQhdvADxuXldi0cA1LvgdyN3yXccHi3WrEXMmfSPbuN8WxXkTN1RosAeZ2J_6LN-7lYBGc4LasWdTKQ_C4Ah882tKfVa6wDAWf"
+          },
+          {
+              "photo_reference": "AWYs27yUHJRdtwV4dMP92Ywdr9m-vBVkjCYTCW-O3n6bOJ3n8Wsa3BJEYKkU8tL6zPHuPskN-Yweo5vNCoJZCEAmz56ar8BV5dxNJSy3E3BQdNuXYhnRuhoEVwLWAljfnQeAUr5WEdNiaPzcjWwfNBDJhr0n6RNIQ-2uXHQJ0jbVVH_xNwcn"
+          },
+          {
+              "photo_reference": "AWYs27xz2dllQIWKwvfXES30ra04iGzRflbcOiDR-ieHBGVVJnCFvPEI7GIsJfiAgTqkH3sUYdZawc9nJjwMhCsRJ5UM0lLoM6q_N0TR1XRAoW2mWNO2l8xxXHZuLRhCaQ-xmUQtW246qX1xRFQQlXPMglNDsksEFiTew-AFr6j9HOxHrLQu"
+          },
+          {
+              "photo_reference": "AWYs27wqdCVfElWXdMR_W87maIRVE04AxZxxwYl17b3dx-KNaf-V13Jx5uP4A5DBKGy67Q_Thq2qD5ZMaTMy4r0OzdLOdiivOfz70LNJA6Iz7NvWWWvr7VBs4s8dNiw9TyNlv0Il0naH_gKmr5ROAyR_J7eEeZJEi06Bqeb2_oUYbMTxNP2B"
+          },
+          {
+              "photo_reference": "AWYs27yJe0iR8gcLiTPeICZpbg5zxJCwr77_kFZEhS1dBiVxaLkI5v-atQ1wGuUXx1aWSk0t_ogciqZxcDomuqvciBKO1A8Bw_1F0h0dvi4qsR8UeJfBX5Lvo92Nai3S9alAutFo_gh5TR8PVUC1eujOCPvnhQ1OqL8GXpSeCccpZenN_d9u"
+          },
+          {
+              "photo_reference": "AWYs27zI70HShg4ChlQFgwvUTQzQDN1QEZxA1LUWI-L3tMPbTC24SXhLe8Iu3e5EAMcgI0n8KgOwhMBwB4FVK8cfSCS8oZiL6BiqNKFLa7NsCKWtr8i_d3nBY4JhlmUdmUROpzK9XuLuX1pRM7jHyWLIFpPYba-IHotWq5v2KNmsrl8Cbztc"
+          }
+      ],
+      "placeUrl": "https://maps.google.com/?cid=12321293314391594854",
+      "summary": {
+          "language": "zh-TW",
+          "overview": "大型的室內外動物園，附近風景優美，設有兒童區、纜車和接駁車。"
       }
-    },
-    {
-      "id": "ChIJBc6Vf8CrQjQRQuI3orYB4lE",
+  },
+  {
+      "place_id": "ChIJ0aTeDWSqQjQRU2CpRjozvqQ",
+      "name": "動物園站",
+      "geometry": {
+          "lat": 24.9960345,
+          "lng": 121.5762835
+      },
       "types": [
-        "deli",
-        "korean_restaurant",
-        "restaurant",
-        "point_of_interest",
-        "food_store",
-        "store",
-        "food",
-        "establishment"
+          "transit_station",
+          "point_of_interest",
+          "establishment"
       ],
-      "nationalPhoneNumber": "02 8787 2093",
-      "formattedAddress": "105台灣台北市松山區市民大道五段37號",
-      "rating": 4,
-      "googleMapsUri": "https://maps.google.com/?cid=5900280345726018114",
-      "websiteUri": "https://m.facebook.com/profile.php?id=158304127704238&locale2=zh_TW&refid=17&__tn__=C-R",
-      "displayName": {
-        "text": "劉媽媽涼麵"
-      },
-      "currentOpeningHours": {
-        "weekdayDescriptions": [
-          "星期一: 21:30 – 05:00",
-          "星期二: 21:30 – 09:00",
-          "星期三: 21:30 – 09:00",
-          "星期四: 21:30 – 09:00",
-          "星期五: 21:30 – 09:00",
-          "星期六: 21:30 – 09:00",
-          "星期日: 21:30 – 09:00"
-        ]
-      },
+      "address": "116台灣台北市文山區新光路二段8號",
+      "phone": "N/A",
+      "rating": 4.2,
+      "website": "http://www.gondola.taipei/",
+      "opening_hours": [],
       "photos": [
-        {
-          "name": "places/ChIJBc6Vf8CrQjQRQuI3orYB4lE/photos/AdDdOWqV4tz3JD7BzM64YOf0o2UPmxQ6TvfpEQw9lKnyuPkkbUjr8rFR9CI8GNsDI55RO3pxH2LS4XkRpXya_oKTT6fMh2X9SvQ4ETypoeC56_xeTaz37ZM9Jlj6Iw9_5qAOcVfgjxDgdgTb7u8EEa8IRUBnAmz-gkiTsPqq"
-        },
-        {
-          "name": "places/ChIJBc6Vf8CrQjQRQuI3orYB4lE/photos/AdDdOWqhO4mVHkI5rQuhZntZnO9but8s3_Tzv9r1TN118RHHn2nedyi62V5c6MzY4Cdm4vueawEdC-npvwzET-JYXMcTeeL-IBsIznZV7Y8osLTFE4FmsOdQO6FxYiAXrfshfwXNhoyq2v6gwrnXLkxAl9Ih41FJsAMAEICu"
-        },
-        {
-          "name": "places/ChIJBc6Vf8CrQjQRQuI3orYB4lE/photos/AdDdOWo6XKeleJ4Q5lFtFF25yQdMClsyxrYc-0xHkrqooFrj44btFLfXApaGhjLoFaxnjfaPViSZ-CFsGs9z4X-Ns9Qwt_P3YQ9sCPEqFOrquLJ6ifwmXPCczgC3MtOQUdUWmUHi_K1YJpBNb8AZVj4eVS7SVz_pNDyrhtDa"
-        },
-        {
-          "name": "places/ChIJBc6Vf8CrQjQRQuI3orYB4lE/photos/AdDdOWphoLeJG9iE3UCVdZKyx32T9GleXx4IVQZqgVbdwpr5es4SeAQ76CdxRleZc62tkKF8nw7Fj6377YPEp-o_VzsMnijLHE7dRQWuRIOltPbEmJIjTl4M-mBDK3lPZagEm5jID8poRUn0C4B1UuxzI0Jj-7zggH7SsGkb"
-        },
-        {
-          "name": "places/ChIJBc6Vf8CrQjQRQuI3orYB4lE/photos/AdDdOWrPWwW5gh4V_cqhUIhMyP9t_rHHT3t_bKn37RfvCVVKm6m2h8lMGIoho2OXYFaB2kQki7d6wVI7f_cvoHzgkaA_wTIytJa500s5yQfiYlOA7Yj_TuSM6LJDlfA6eQTtXvN1qUMsAZWAj634wC7Kp37eoeGqCdDPlySJ"
-        },
-        {
-          "name": "places/ChIJBc6Vf8CrQjQRQuI3orYB4lE/photos/AdDdOWoW4pvIndvS9YpOATKOMjBWLdyVE3eXl8-Os0rsg5HVeGUOsOBg4P1QN_r6gs-8HQNr0pAu2O3Rbb-81wfDOpjEFkUsAmu0d7BePOC5DTP17H1qdgOJTMVypIzZHxyvAgFEsnYUJIs81XjPpRoeM5ggb0GPv5SIA9Dx"
-        },
-        {
-          "name": "places/ChIJBc6Vf8CrQjQRQuI3orYB4lE/photos/AdDdOWqf27PKmZYp6eEw3qpFXtQ0mmyfVtemGrMcNTGwM4SW4hAiKTsnDR7Vi7BkD6J_2u2DX7OaagAVnKMpl1Shg7Kh1iqkwwyIN4ns0ZDeAigNOGcTal2QPQ84_q6lE1_bSOPVb0uDOOmbWGw6t56hcp4Lw2ryZHM0sCLY"
-        },
-        {
-          "name": "places/ChIJBc6Vf8CrQjQRQuI3orYB4lE/photos/AdDdOWqcmevUdP4v8_hHFrVPMhtUsFFnMgzXymMsdkWytL-CSKMTEepE-5C0Bf-VJKg5elRhFe8S4LXcoonWXbvQvBByhs6lkOIcKz39a5wapNL0PeVBiYiApiI_tuxjlG7J9Mb0F9-mps1hHQzXS_ov8MN7Px6HfvBNJ583"
-        },
-        {
-          "name": "places/ChIJBc6Vf8CrQjQRQuI3orYB4lE/photos/AdDdOWrNhK9mxq5PH1jQwxTBml9syq0qcfhKQG3aCnOr4Jsg8aY9AWRTWpl5qHA5Pp8hxSCp8Up8NFiATTE2T1BY4-Sm_G66nYU4MrFUh8xgusfyYzvBkB-qsOeN7bvzoAGJFhl6nNFBPVmFr3fDm448a7j33-Jx-3cUgrI_"
-        },
-        {
-          "name": "places/ChIJBc6Vf8CrQjQRQuI3orYB4lE/photos/AdDdOWo4WS_zE_yrZGuxBDZC7PuF39r266YXdOsrSw16zJFHfX4fmy_8hoPfFCf_HHjDYZZl6z6hKWtZHfxVXzxthmZqeRS_PsyOA8ZtHdTzCo_l73UhDhQmoi0P6mi3dIqxsIXY_19eT1TLyrj53sF0m1v-V6wgHTjBu5jV"
-        }
+          {
+              "photo_reference": "AWYs27yxkY9cA32SjdNy90EIzZTo0BjJIy1AV1O9V_7-24js9z-WcmCflZBvW9bk02WmVE3t_OMBVwvFpoLZwvXovMhec3NPBTMXBiX9zSALVtGNYAtGEh2UkrwmXtguZEY6puqnAy1otAGpXFlNoMwv57bB6JZtJNbOVTjxQUNF2UrF5WNH"
+          },
+          {
+              "photo_reference": "AWYs27z29uWE66BtstbFXxnB_NIVvcohhvmT4ai8rlbqByMTHvI2IlqM5O1Vy4EcrED3l5EMb8sBQ_ylkjJbCT-wpePkjGrY8Whz0A6cQ08lxV1pJaoZcCZbhxPHX6WLuFUo8MOsZQWfRf86_CMzQu0k6G2X_hVESE6K4qTWYWnFJV-OFIJy"
+          },
+          {
+              "photo_reference": "AWYs27x_wH1KflQyHDUFWkhxD2AEik50u1BEzZbdTCAeQMNFw1IrB4uHSXr6ndBnEnXOnYpfZ8L1rOVsDObpGoIQAyOUcy0jBZ8EX4FheyeGO0Js4SzrsC6_x9l2IhgdKQxF3nMkbZJ0G3xaAmfvYOIWibSeSiP_bDCVlZf0L4DmgvAIGuH3"
+          },
+          {
+              "photo_reference": "AWYs27w58ipFTLIjdkgyP91_YbYegK3nB0QrtvtyksvaegLB61LJCI13iKy-fGjPowQ2cFNDAKGcdDZ8tSJFqWjpKV2vgVYWf8nNM8Ta2B6spNRUS6NxtBRJYNnPhlC7QPrE5u84DO1Bu34CLVOT6Y6ugi8y1Ph-44V1gFJQG9NMy7tpbeWi"
+          },
+          {
+              "photo_reference": "AWYs27wz8frh1cjUzfJu-r74XpDVivTewX6Ft5LwmkcUxLszGDIR8JDzvs28FzbIRKKuDe-QAIPW66goie_hCry4HlRhJE11-XWPe-pXBET4RGewrfQa3fqEs4cO0jg7nG5IX8f1pF6lVnI5Fq69lB54M8QmZmdg4ttuDCylZo_LlN9VX-8X"
+          },
+          {
+              "photo_reference": "AWYs27wElXDm3ou4rDV8oRRKwGkRnSX9dMe9ah2lzIzYR86TqGkDM6gGLm3FJpOwXPK-4wa9F2JkOe3-cbMdxLLFh_pVTeY1GrwvanqH-bW7oXMgSWkstDycUVVVgjFBictrp9WX1RQnUilVH76aB9R58KWoxhyNjXmM6t-LIenjAj9oJxhU"
+          },
+          {
+              "photo_reference": "AWYs27wwz-h6zQmck_EEJrMXyhpv7UBAIZVw0T16mZmstN54NtGzCwGXKBXcidDBKRyA4UWT0xgvpAA7RJ_9U1HN9OsHWJWcWJQa9qyX7ybQ7V9ECxrmrDZ5jr_4uilAwYNzIatKtIuu-lZXybTBVISGFWz79UTkC9uh4Y_rVh5UC-pup70U"
+          },
+          {
+              "photo_reference": "AWYs27zCD-_ZsFjI9SBhPM-C37uJpjEw6tEbKno4cY3lzKgrRXCvYG1J29e1Z8hgy86YzdvSMcOF0f0mdM2bHmmfgWhTA4teCs1qZJWThqhzjaM_vDcremfOHmXO_IwwPR7A6oArKu1DkOSchGtbcCSgolNXmuF9A46xQ-iEMoV_tJB839bb"
+          },
+          {
+              "photo_reference": "AWYs27zf32Jfp3f-a-jWrTfVoCdjb7n16ue4ON2WBUERHfERy2cs5F3xYL-NpDgGHJbNMx3mRjW_h2tTheDGqiVKmzmb19A9fIlPjbRI-ZAUCkkV4MAsZZfjkkdT9YS0oDu0AeyBFEDejE4was7oAqe9yytBJQxgW7djvKYnjOEYxuV61VE_"
+          },
+          {
+              "photo_reference": "AWYs27yVpKHXOI9gl3KdpXp6gt_GEAev_XJ1FN6dH5UL6JcGZAqnm8FNGUG9VBbOwmMKaHp86XwBpG4GP2n0Tms_2jhpuyxRDrnA392wNoPNjrmO_nLOgOLBZJBehL8TaDU8YGvLWCNRCso4x5Cv8tTtJWlaA9Vg2r8XU3ldnTbvyhcjxFZS"
+          }
       ],
-      "googleMapsLinks": {
-        "placeUri": "https://maps.google.com/?cid=5900280345726018114",
-        "reviewsUri": "https://www.google.com/maps/place//data=!4m4!3m3!1s0x3442abc07f95ce05:0x51e201b6a237e242!9m1!1b1",
-        "photosUri": "https://www.google.com/maps/place//data=!4m3!3m2!1s0x3442abc07f95ce05:0x51e201b6a237e242!10e5"
-      }
-    },
-    {
-      "id": "ChIJpyouMgCrQjQRocdee3Y41-4",
-      "types": ["restaurant", "point_of_interest", "food", "establishment"],
-      "nationalPhoneNumber": "02 2720 1234",
-      "formattedAddress": "110台灣台北市信義區松壽路2號",
-      "rating": 4.5,
-      "googleMapsUri": "https://maps.google.com/?cid=17210286582546745249",
-      "displayName": {
-        "text": "君悅飯店"
+      "placeUrl": "https://maps.google.com/?cid=11870981993181831251",
+      "summary": "N/A"
+  },
+  {
+      "place_id": "ChIJOdr16XuqQjQR9DtwP0olppQ",
+      "name": "小公寓Apt.cafe",
+      "geometry": {
+          "lat": 24.9876541,
+          "lng": 121.5754547
       },
-      "photos": [
-        {
-          "name": "places/ChIJpyouMgCrQjQRocdee3Y41-4/photos/AdDdOWqJvw_H1X6LlnAP06n4wAiLJXq75e4CgBkK2W0t3XgOIR-gzE9IwwC3me8lINxnXdCYZTWijTslLBDWdESz6U2tCd6NpE9xAzhmbPDvv-uO-vTPDr5q8OF_03qRVMF25QYop4A2C7sAdUpVihxkOFN7MlQknOg6Iw73"
-        },
-        {
-          "name": "places/ChIJpyouMgCrQjQRocdee3Y41-4/photos/AdDdOWr6kTMuj2RNCRjpaG1-mozuaw93SulJKwgZTxySU4KEwOBIrT9jz9rB8EbERi-sZmvBaB5NFdQ6GM5YTaaG1UuDTVPMhJr9QOcD1nwX9T8QEDZCc0et5fu9tcPKX5zBfK_VhlONGRi52rulf_RqWKoMPwNI5w75niV2"
-        },
-        {
-          "name": "places/ChIJpyouMgCrQjQRocdee3Y41-4/photos/AdDdOWr-lLJWVFnK3bze2Q_l123Yx2mMIyVDKzKvLRDdgKhIki7EKE4GLUAHbsYD_9VYzOV_iJZaEjPuU_k0bMijBv6aM4QAu04nW3OFfh2vAbA0WrCvBG1s3mcYcW0HgSKCwZ7YYXf3oadigYcMNqGhb0g-d2CM13OHJYyP"
-        },
-        {
-          "name": "places/ChIJpyouMgCrQjQRocdee3Y41-4/photos/AdDdOWrWSYPnhGn43jI23r1qwaQ5InanAtrz_gTqkpDH20Wdf6vvFhTDmbKgTPXEn2damMkWpJq3cQZT76uOsvbn5-TbSWoOMIAXzGNbB1yReYMKrDuXODP41Qc3fr_WGcJKr6Enm7n5u_LTBQeUWnllcbvksQ51H-vkG6EA"
-        },
-        {
-          "name": "places/ChIJpyouMgCrQjQRocdee3Y41-4/photos/AdDdOWqndYUKHPjjse7rvxP-vo_AazwlKN8cjJwpdLzU6I29qGGXGiKnlQ2zdmyeTCHwgHo6lXhdI2-qdj6xKm-3ZkgvMeLgf8V0UWiKk-FxMTBVVEMZW1z_S7y_zHmkC9lNvPcd70M3wkOxoa_E9if0osmZ5JFSU1GhdKa0"
-        },
-        {
-          "name": "places/ChIJpyouMgCrQjQRocdee3Y41-4/photos/AdDdOWp9LdRKIHAwQGiyNnZ7McLmfMm25ybUFBoMBnuJ57XEroPfA0bMAGaysanlNtYf5su8_85ELBCj8xk1lkv2p7It86jTuBYAWfMhthLKpvIbRS_6Ebap8PBGnNWgV86n7vxLhFzfEhnBBkS4Y0CYJWBUTXu9XTaEKh3d"
-        },
-        {
-          "name": "places/ChIJpyouMgCrQjQRocdee3Y41-4/photos/AdDdOWqdaetYI0RGCdMEj2_pwoDqjWpyY6mvtkR5ANBsTNOSw66r8kGQlkCDlAXuSvmcdc59v-xnZ4L2lWyF0fR5K0Fz3RIrb1QcFUsGOcDogGBX3Uuvn3snKK-n9z-jxa0jb56HaGN7E4NzCKNKilFLqDmmeH2F-gADljsi"
-        },
-        {
-          "name": "places/ChIJpyouMgCrQjQRocdee3Y41-4/photos/AdDdOWoKgKL0AIs6ZXHjjzWSQi6D4yswnfYvbNWc6Wq-C4RMHm9qP0Ao0MJUI5w0lGWpwRtCxck8VHrGqRXgF8bMlbDMoBNO867T8Q3jPaJ0rZHy_M-eoxyT6WjzRhVIqPMWQMZ6UrVYdHTVuxWi1FITj8rqEtVyqXs7wa0x"
-        },
-        {
-          "name": "places/ChIJpyouMgCrQjQRocdee3Y41-4/photos/AdDdOWocEGAF6UH2tjg_1TqjnKvY56mvUDNLiw9HWtu5tIpO1bpBy7PfCLWbUk7NfztstvyvtmmIQLbh67AM1tjDdqsJPBTIKaRv3nuREuDlDq9B49T_ayG90wqY9A6Q7qKYtVIZHj35yj_sxkR5dG8vxYtD6N6-oYD20mat"
-        },
-        {
-          "name": "places/ChIJpyouMgCrQjQRocdee3Y41-4/photos/AdDdOWrWKR-BVVnNeeHpSqgtnzRExLoTILbPX4pn-L7OMpNrxA77V9psp1eQIzcmWaltxjWbDtyD34-MIvyINZTFnDyPPUza3kfb_GVMO98i2mVlHGJ76RQ4OM6RrO0XubuX_crzVSCfR22MsVG4Hd6gf5R5hUsOR_BCBBI7"
-        }
-      ],
-      "googleMapsLinks": {
-        "placeUri": "https://maps.google.com/?cid=17210286582546745249",
-        "reviewsUri": "https://www.google.com/maps/place//data=!4m4!3m3!1s0x3442ab00322e2aa7:0xeed738767b5ec7a1!9m1!1b1",
-        "photosUri": "https://www.google.com/maps/place//data=!4m3!3m2!1s0x3442ab00322e2aa7:0xeed738767b5ec7a1!10e5"
-      }
-    },
-    {
-      "id": "ChIJy-PoScKrQjQR3u-gUa_kcPk",
       "types": [
-        "hotel",
-        "restaurant",
-        "lodging",
-        "point_of_interest",
-        "food",
-        "establishment"
+          "cafe",
+          "food",
+          "point_of_interest",
+          "establishment"
       ],
-      "nationalPhoneNumber": "02 2578 7728",
-      "formattedAddress": "10559台灣台北市松山區八德路三段76號1樓",
+      "address": "2樓, No. 56號指南路二段文山區台北市台灣 116",
+      "phone": "02 2939 2790",
       "rating": 4.3,
-      "googleMapsUri": "https://maps.google.com/?cid=17974117554475560926",
-      "websiteUri": "https://artreehotel.com.tw/",
-      "displayName": {
-        "text": "arTree Hotel阿樹國際旅店"
+      "website": "https://m.facebook.com/%E5%B0%8F%E5%85%AC%E5%AF%93-153345818089728/",
+      "opening_hours": [
+          "星期一: 11:00 – 20:00",
+          "星期二: 11:00 – 20:00",
+          "星期三: 11:00 – 20:00",
+          "星期四: 11:00 – 20:00",
+          "星期五: 11:00 – 20:00",
+          "星期六: 11:00 – 20:00",
+          "星期日: 11:00 – 20:00"
+      ],
+      "photos": [
+          {
+              "photo_reference": "AWYs27xicimkIeP5Uj9TEUQoayMnaeHQA-YrnK3VtEhQvSmY7PgqHPftzzjfV0G-dJMfeF7GWzpyLTQUlXTQ4hZYz69ZoGCSaGldWa_sJX0YnwIGLDEc61IyIqXYtKvASENSWOmqV3UNxmKYps9i6EYAtFIayD1vCcm6Mh4M3NlMBcU2G39G"
+          },
+          {
+              "photo_reference": "AWYs27zQo-cOc-NT5mhIMGhxjnBViYlbNaX9XP1-RZHMF5-vdsOXEGFcgqNeoz1Ltsu1upbbP8vxaXKsse8CQ-u9Gt3C0bh7yWOUgrpikggNxzrMuEB4Z48Z1oMqxdEvY_OkZhNjHUG3fH1cIiuwvgeI_n7Qc5vNkjSUDsLT08W-v7DIS2bt"
+          },
+          {
+              "photo_reference": "AWYs27zakUF0R7bm6Hn7gXZw9kxaPLu4fLxr7JLd2JzNIlkexE4OAVLNlopZr7n8MFmoqXJb3OnfkGrCbSwQpsKJQ8hRlZhS8Du-bAKqhkLhBxKnxGCJLcJjjaVGZw7emOm8VymgK9q9Hdkdtv9mksHd_IZYIro89qhFp8MjYs2XIyPB0O3t"
+          },
+          {
+              "photo_reference": "AWYs27yYHea0RUZMjTtI-1tZokURy4AZTNURiZubGpjbFhbLv_VGlxTyyKHs_4pUUCjhAHnTbYsUDJ0RrnSVhoRK2cdZ83lSMRJGt_3UNt27ZShc79-BcT53qDwIzaeLkwLzpbp7Ab4vbXYbOKHASEGc1l6Jm8z4iqUila0zlzyCU5zGr0kJ"
+          },
+          {
+              "photo_reference": "AWYs27zY564jjzMYxLRpC7_mppNGXHJsVcWJEvozEmG1jdywrDf0x026Ckoloi2gu77PCh6_6hxO_RedjOqVAVzuHl5dAtomZV9gboLerXLcdmQ8H7ClgjXKl5zDGnuE80sbBQ1YsewgNt_7nXXYDM13_ZTKiKYPAlD4e-468vn2lLMUrOpe"
+          },
+          {
+              "photo_reference": "AWYs27yfPuIj1_SxW7gog60YBwQ-P_7jB0EdwvlSoJFz3ItN14kgBfdzJmbxHIJ42lyoeuKqD54a9pc2bb2hhYmq0V9z13otKq8DMj2eBPUNyFwvSb7d0fkPHDCjhpUcIISd3p_9XIXOwITVqbD5SxHsgk5EY252tt2p0PCfgXS7CS-BevVm"
+          },
+          {
+              "photo_reference": "AWYs27yazACl1cLtbddpe_zFSGvyEZdZsVuo56Cjr9xvfsjzyD6QCZtNpeoHdkPX_aKYK_93JW42s3ri3VUhma53pMhhm-0-kdiYgkjsiyFIN_X3nt4w6Ny6HwgtHnRVI8fWPR5JR6NG5Be10uRmdqEUiv1MqswgjOMqaVOov0iUI6ur_quj"
+          },
+          {
+              "photo_reference": "AWYs27xBgw7xFXHV7tpa2KHJtSCz18cwrBVUXIEEtAjyTbBqXfDbLzoBnHvJJW4C4kdg3b-1Bd3ZHqswCFvlaAhwLs1jB9JrxEmWOaXLHvs9q3g3VtnH0dU1t6OZGL2eZwAFnYTctJMKBfVAt_4gjyx5W-FI3LPiLogg4U4GknMxPQ8cBWQh"
+          },
+          {
+              "photo_reference": "AWYs27wihFVVDZjYaSfZoYoFNBN8wpXAsO0_qL8Z-A6wu2n1B2xih3GYXa_gLmupCk4_2KolcmxO1F7KpPph0DsRk-h12kuR9yplcUC8EnJuAeLci-iSgG6d-zoefi_f7eQDLH0VBTLThcKTZhwmAJD77t6xyJmpzx14nb9XgJUo12jXCxm5"
+          },
+          {
+              "photo_reference": "AWYs27xvuXMblsk06l1yoS2kdNlrjC-fjsRabVaOC-AqJitIhdPgQnKDrIIn5IaMS3C6y-MXyuj6MXChEqjGgvqeTaSZVt24HP5rNocLpCYfa2VNsLncLqjgGyxmG4pGTHPU2MQFE3lpnfaOaDsBDqwxdw5FrUIiORW28R0F59QAzKELzlQ6"
+          }
+      ],
+      "placeUrl": "https://maps.google.com/?cid=10711289764569431028",
+      "summary": "N/A"
+  },
+  {
+      "place_id": "ChIJVztw6IGqQjQRzHe2LA8qrj8",
+      "name": "指南宮",
+      "geometry": {
+          "lat": 24.979824,
+          "lng": 121.586626
       },
-      "currentOpeningHours": {
-        "weekdayDescriptions": [
+      "types": [
+          "place_of_worship",
+          "point_of_interest",
+          "establishment"
+      ],
+      "address": "116台灣台北市文山區萬壽路115號",
+      "phone": "02 2939 9922",
+      "rating": 4.5,
+      "website": "http://www.chih-nan-temple.org/",
+      "opening_hours": [
+          "星期一: 06:00 – 20:00",
+          "星期二: 06:00 – 20:00",
+          "星期三: 06:00 – 20:00",
+          "星期四: 06:00 – 20:00",
+          "星期五: 06:00 – 20:00",
+          "星期六: 06:00 – 20:00",
+          "星期日: 06:00 – 20:00"
+      ],
+      "photos": [
+          {
+              "photo_reference": "AWYs27wFaoYlEXXAVrxfjL0sTBcbVCyIYM7lLrNOXNvcf2CIZdb1Z8V2tD5eZwu4VEi5Cd47c81CEJUKN4MfawDizoVpcyFagZRbWQNXt-MK5t39g-WO8zu9OXbJ3vObz3qZC5SvYl7xPM8Gfb51jAU2hVN0LAvRt7F_PwV-XyJG3OeV0e_l"
+          },
+          {
+              "photo_reference": "AWYs27xSHKkx_HfB1-n9u7IZbXyR0xWsBvYYq8H-kYA0-6_rsNdulQH4vn4TdBGqvoCWHBYFfe9lP4By7iqx2A0hcJ99Q-89TwPkdTdDtQBtgEesVDmfX0Lna9-sAocv9H8XQYw1gRwzfWVg582tKiCUi6wZ0FfkNI_0PTysI3fgNhaLe_7t"
+          },
+          {
+              "photo_reference": "AWYs27xHBkEmKzHCkcHEaYTzMiufnVHUq3YIITKYyKyhb_UwM_cbJ6kARimSE1aolVX9xk5NxTFiKbikSaB-hFK7djZvpXZQuj4HAql2BAU7-TeLU8G436mnKI-0BPsB8Q0dnckKNu_4HuPCEYh02H7pcODssusPxUmRp_eHFaTfalLqBtyR"
+          },
+          {
+              "photo_reference": "AWYs27wrZY2Jneaf0Mp6oZU6mhxesAejtTOe5LkRDVludHjrKAtKYgH720z9DU5TXd9R40U__uWggPWl5TFPDYb6yqp0U4h8P5T0f9a-pyZU_t2pr2SlzcG_XoLe9HUELTumihEy6fNHO2IFGKFQgJOH3qz-rYv8czhDPjBQEF9ou0cHNY-s"
+          },
+          {
+              "photo_reference": "AWYs27x4IGsz2E-KVsUpN7oMXNesVwne_S8zEfxxiTmzrocfuY31YnzzoirKKd6ynh70szDxI4kRKEWyhuMXXNXOg0ttlATzOMTBHwacZNJle7inejBoDmlTCQ9ZXO-nI6pP1OFuhlTC8USbNHA3EsDi07HORnwfAND8gSzK8Yxes6oZAWku"
+          },
+          {
+              "photo_reference": "AWYs27zREQjMB96V0j6p03FzsxKMJOyscXmX4KBmcOyZm-snEp6yMnkuMQnfWcpII-puQiEznpTVqyL6SArHCpf6FR4MoeBZvdN1NgAu-US9jo9o_0_Hiwh93UFoIG-h6vEv6A0IOkiGWw8ER-yhLq6dhXGFMv_P3Gbo2YEGJN-g5sBYFvQ6"
+          },
+          {
+              "photo_reference": "AWYs27x0G3hCmLFGP7SgDJrVI1rC-u9aiCkNZX94WrytJg1-K845USLSefv5HEqfvcpJWtQsED0yh20cNbzKGKCGI55w2GmahrFhhsPgtpz8cQhdY9pKo0T6Acg2ZUM9uDgVq1ZvuToeqLqnNN3F-UnL9UwHvQAWU5dITXh7FXojO13bdN9s"
+          },
+          {
+              "photo_reference": "AWYs27yoU-LCg8FO1MuloUChOtb6NltOzN-4qRFL8u11kWFdjm_qQkONvH2EHCyJPDCmcbu9viioT9kC1YPXpICbsh25cyA-8h8N6uwQaUih7588Aix0xx1g9RSFdBkMMSNb_gfoi9aEpSH6h8qrq9V83OWxPzr9yAaiFsdKXdgkzrvb3Qgv"
+          },
+          {
+              "photo_reference": "AWYs27yPKxPLGwYhzPwWwt7ZceV64X-sAvTIbqRNLNS1Kf-OGX6oOiv5WqXmxE5YglSpZF3d116CNsUoh-gkWR4u64NcAp16_URVxyamQSYA7But4GBxj8KxhHb0RLbBqQOEVwmyhhsQzalK9EP71XciNKjORb-vsXbimvQX_3rx7EmUdqdY"
+          },
+          {
+              "photo_reference": "AWYs27xZOR9p-We0M7XjHGU2F6rig5h4kgHWH7RsA0Y1_UcJnWP7TQfrn9fiGq9hTeW2GNCmAK1P1-aM7wm6BOULcVoWZ_iFr3gENXTTaRrU2ycozARL6nq0g3GOExonBWonjS41HApvwplDolH017hwlbUADgMWtgmP-O4xqjAygcU4wJwD"
+          }
+      ],
+      "placeUrl": "https://maps.google.com/?cid=4588651315000145868",
+      "summary": {
+          "language": "zh-TW",
+          "overview": "山腰上的 19 世紀大型道教寺廟，有壯觀的樓梯、雕像和宗教文物。"
+      }
+  },
+  {
+      "place_id": "ChIJQwmQY3WqQjQR__dW7rWHmQk",
+      "name": "石二鍋 台北興隆店",
+      "geometry": {
+          "lat": 24.9848357,
+          "lng": 121.5617507
+      },
+      "types": [
+          "restaurant",
+          "food",
+          "point_of_interest",
+          "establishment"
+      ],
+      "address": "116台灣台北市文山區興隆路四段149號1 樓",
+      "phone": "02 2234 2838",
+      "rating": 3.9,
+      "website": "https://www.12hotpot.com.tw/",
+      "opening_hours": [
+          "星期一: 11:30 – 22:30",
+          "星期二: 11:30 – 22:30",
+          "星期三: 11:30 – 22:30",
+          "星期四: 11:30 – 22:30",
+          "星期五: 11:30 – 22:30",
+          "星期六: 11:00 – 22:30",
+          "星期日: 11:00 – 22:30"
+      ],
+      "photos": [
+          {
+              "photo_reference": "AWYs27zt50SceC_50E9RdLiThqTDTkRGwOIhc4hzhf2pB-0dBt3TeDYjL7v5D2EEl6uM090UL8PWA2hEwOw606vXIbgtCLYQ2fQfEZm1-yeuiHZJTc1cOcTWdxnZjpWZT8ot4PUI9QNTpZJsWtst9ShxLVd8OWH36hxW8nTXe0CmIIjXRT_r"
+          },
+          {
+              "photo_reference": "AWYs27wRx_FGLfou-HnopV1vWHisNHZUs3wtxWdrdXakIXpxowA7wRGx-TfQk8iHwkxSOv_ms9FoO2QI2LiDbH63Eh8085KP9AkzfMzH-Uf2oyCKiEm92OTfgMg1mGS2DA_AwQIWdHob9ogkPzTXFrywdyIZimzGQELDtLcRjfU0jXuo_suJ"
+          },
+          {
+              "photo_reference": "AWYs27z6lO3DqUfM_jg-jySfOctgb9FCNda9CfLs_q_xdjuV960lOfBg0H7-R2Jt1szmLim90erygol87LcrJnc2eyEVmHRThGX8hx3ULFd9LhGDgchYEHFUmV5s9M0w3PaIg7_5SHFzlI9P6UBWHB7hhUfkMHpj9PI5i2wYiJUjvdLmI5XZ"
+          },
+          {
+              "photo_reference": "AWYs27xAO1ivPm_7rkS3zNPhUg5buuo35zLKzX92hUFJfSACJuK_gEtLKKVkNTNZeBnip9XSFQZS4YLuy3UD9oVdo50ZLs31JkrFr1lh2QWXFES--sleGkSATdV78rf00IDhMoZ5djX_2xXdEm9jniSKpq02T07QhEgs9C65W8OPro5UcIST"
+          },
+          {
+              "photo_reference": "AWYs27zcbDAS5VuA_27gLjpVoWs1HAr5oNPcWkl55iiankHKQ-Of3HINEZAzRbhWViZDEB3Wl9skuahby9cudF_K11tvtv64c9fv9CeOpA17wz_3u_nFnghbxvocKcxXzxNjvDaLlZULwL6JBmaZO66ulPFOcq1JD9DJAhWs3X-kbrTxns0v"
+          },
+          {
+              "photo_reference": "AWYs27z3KjkX87qvrDeTVs1xmn_Oq-bkrRSUmHcdWE-ccXg7_K3-YR3uPmJxDsJeSJpr-qdOo2HstrFhTPgoQikHZMT-ym3wcTe52bgiKxepNjDUsn_XJa1OnXt_WroIuRL41qNTJn6fdxHW2aQchVLsGFYeTSRM252oVCbXV_Rl9QPD1BWC"
+          },
+          {
+              "photo_reference": "AWYs27xchgwHhljSDchGHvyD5Dj70xBbqqYv9l0R6D3HWFTsj2yshnkK9QqfrYqEZ-AgQAORFSqLNPslDkizEP_Ar7ia8m0egEBcofollG1M1j5nH6GkRAsAaNG9qIjao9899g2gkdWRclEKDN20p1x4Kp-6zshh6v-rEO_KetHnGZOJ-psN"
+          },
+          {
+              "photo_reference": "AWYs27y1EYzdFVjfRGBsOJHePdWxyYmaaHPqVBceZF1klmJHeFDhc1WD6xTWUuZe4mLp581v8R9xNlc5LsmUAFMSnRYB6P3TAWiWIpq3MbUVH68REZLWu6tJB1be4Dy0H_GarSIrTRGNnDvWWfqywy3kJrn72mWsOlN453V9O_fOeSyPiarR"
+          },
+          {
+              "photo_reference": "AWYs27zI1cKJ0ZcjLRpKBG78MfsP9QSJ4lBvaNeYIin2BkjSzdqEVrhWqt_trT0LNgAsh9NQHLWD6ZK0HLRI5wOG30jNTOt-jx90a1y-S28caUkkm2_zTAIizuW1dbB4E12MHp4iuVkiOIGClQAgAjG8xnfRpv8A3bhSI15L6kQSNUn-fRS1"
+          },
+          {
+              "photo_reference": "AWYs27zB812x96hlb9XTayKxJZJX9BhN3BlttU7yAfY7mHveBe4IfAFl4YxeQsFUZ3mbxRkS09nrC6vn4vTwIvtCKsNloLVTcJTLD1ihnMwkQcIIFzYdv3tiRSq6AEeV7MiepFR3WTu6QByEM8NzLw0wqJHvL2RWBni4-96sujHN9TqescOy"
+          }
+      ],
+      "placeUrl": "https://maps.google.com/?cid=691733233235589119",
+      "summary": "N/A"
+  },
+  {
+      "place_id": "ChIJSS8sRXmqQjQRB_U7jlAHjZ4",
+      "name": "國立政治大學",
+      "geometry": {
+          "lat": 24.9878632,
+          "lng": 121.5774304
+      },
+      "types": [
+          "university",
+          "point_of_interest",
+          "establishment"
+      ],
+      "address": "116台灣台北市文山區指南路二段64號",
+      "phone": "02 2939 3091",
+      "rating": 4.4,
+      "website": "https://www.nccu.edu.tw/app/home.php",
+      "opening_hours": [],
+      "photos": [
+          {
+              "photo_reference": "AWYs27wUUWwyZrW4B_duckoQtywzO2DFF8N-bpo9L6MQlA-bttCO6s_5Ql75x3DnTyJ3-zrbGAbuF9cQJ5OkbjfbKtWGAnJ763mSh0KhoIPO4Uq0HDlalEAwoG_cybGwqLYhdFg71x4E4NwC0cE-GV2NFC1F0rKmnDevNZIV5WM-_7KlOBBx"
+          },
+          {
+              "photo_reference": "AWYs27ye9dsvBVX8yaMnLlQ9Yb11GZf4rH99C9QrWYY6wK4ExySp0LqojSFphroszkZFLqC4JQcuk82qNWZRpUyH0dBqVJKeAw4SzHhroBODW3sIvZRsB8mR3qxfU-j66d_A6Ql9NeFz1BULIRd_g3m5uEMdbaSP6Ya2CHUEcoAyEi7w-CDq"
+          },
+          {
+              "photo_reference": "AWYs27xL4SlqH_OIBuRVn5rj81uXGSu9SnPlZoj5AyTyJbG_-2Z0uLyk0td50adr2AFhwy8JoA2nIk_2sigbqlfWGywCASZ5ORuH3rUWqeMyifwQNIFB8LFFjkeEm6LGd6yhXGuVDSMyR7TrqfBcH73ZVgy9tU_w-Vtq6WjfMf6yKyvtVKYv"
+          },
+          {
+              "photo_reference": "AWYs27zOD4BSPS8J0xZHApO6Y8H5OYBMxx7t4XfBA1V3WqQ_cGZUy4Vj6EyhApgsbBG-amTKAr4Y62EB9hJqhph_Xut2gysfdAM-y37kkETrWMLJo73Op_IPu7xIpAeWjzayOeW_a875Oe9laE4UCXlmBoG3XiRyVgaa_RLzUEAyp53brdTs"
+          },
+          {
+              "photo_reference": "AWYs27xSTIntmHEGufJO3XjEG812hndSVRoDSgZeL8ID7fEHIOB73YYsqlqP_3SEsODfDJPwjGJG7wG63bhB-yJeb0YfxizM7hPE9UFi_clqpflQDGfQ0-aD4ZWylDAHWgHx0cfI5IQ96i7SsWaaZ62xHoi2ZCqpCUjJntC3_Sw6MHZst0t8"
+          },
+          {
+              "photo_reference": "AWYs27z59U9YPNkmjdDTLOtFmo1_BwmuVvIjLmOaSs1JkMONTmlOYR5vthPjs6LiqrHO844oYy-AxE4MU84njBNpk1kTnK5btL8WA3Y1c321vBs-cDiEr_AR8GMc_ZXcZpghsQo0PqVeWr6tRrPbo4M30xxSMtp7Wo4_y0DGtV4wWsofhcKE"
+          },
+          {
+              "photo_reference": "AWYs27y_wzU8QcPG0jgoBJO7uS4k0Ox1fTdjjAHMGU7ir80oZWeoBHz6gPAnz-b_BXuGXQ0l4Y3LBZEah1j4S1tVqNXKRsV1NrmWsWVNmh5OytpLStZx_bTPRqzh8G4V8ltQ4CpQlRpuqDnQjF6pto63YeW8GlE8mqWHqP4jPxTEpkxjfNAX"
+          },
+          {
+              "photo_reference": "AWYs27yB7ScLGMFixHyN_uBy0ZwNVmBVIfGBZmGX6SsUWlxnLvc-kIVr8JgWNbxivtwTMynuaoO_4_NH5ENAvHzL5xVt0zjmjlbEXVEkJmNi7ExbbtL-o9HwPkaBo4EiHW8uDlmgIaoMd3lwBU7dXpHjXOdLdhyQWsFNaSdA60QMkQt72uSU"
+          },
+          {
+              "photo_reference": "AWYs27wg7wZ-CXqC_Q5zD77T6_kZKLXiePgxJ5bC3eNGl6H7QYom8nf3uIMbJia_qUqbOQTtr4NnGS_oSSCNXM-cSgkvnyMRPcD64ol7T-xs11or2fdp8wvyWiJMEe1oZBlo1UypFCiCMaJod77jve4pa2jclfw5Ocz3gyhnicqcprLtFa16"
+          },
+          {
+              "photo_reference": "AWYs27y1eYDHoK95vRT5-K4d2FyleVUw4uRLPAA0Hch9S4XZm0LcuJI2nQ24Z8FZL4lzHnzMI3Z-gRRKONZ2T88_qG7eZgw45rf0KtLIjfl7963TpOdaLQbTiBcTzwiraoslpyhQYLXIsENlU6ohrg3imFh2JNKdJFJV1CN0Z-nfQvhbGIa9"
+          }
+      ],
+      "placeUrl": "https://maps.google.com/?cid=11424795872273888519",
+      "summary": "N/A"
+  },
+  {
+      "place_id": "ChIJCaAXznCqQjQRdD2DN-tIl7Y",
+      "name": "品三仙扁食之家",
+      "geometry": {
+          "lat": 24.9886219,
+          "lng": 121.5692729
+      },
+      "types": [
+          "food",
+          "point_of_interest",
+          "establishment"
+      ],
+      "address": "116台灣台北市文山區保儀路13巷3號73攤(木柵市場1樓)",
+      "phone": "0932 006 107",
+      "rating": 5,
+      "website": "http://www.pisaxian.com/",
+      "opening_hours": [
+          "星期一: 休息",
+          "星期二: 08:30 – 12:30",
+          "星期三: 08:30 – 12:30",
+          "星期四: 08:30 – 12:30",
+          "星期五: 08:30 – 12:30",
+          "星期六: 08:30 – 13:00",
+          "星期日: 08:30 – 13:00"
+      ],
+      "photos": [
+          {
+              "photo_reference": "AWYs27xzTk-HP4Fq_p0VIUm4bpSXYjRv3vxS5T1Xr5tFR5kEhKWQUfAY0srCRoyxaUtKRv1CWJrNzx105PaQHJMHwFvNnejs91QKcTrPvCSOC0dO2lfW5kxOVUF7_Ae_szfRbANcsJAOI8URilQUX4GbYvEgA8GUSW4j8OAD395J5QIvK2qF"
+          },
+          {
+              "photo_reference": "AWYs27y2IC1XuC63lojUN35wDda19BKfgQIuNSZsqqO9itZefpOUkjyWE-Ei2bzyzJi3v3Ga65TYb2wU59JD_kEzyu_ktsTi8k0_-pyz7GXggmPNuFJI2PZQ-S52LMl33xQRBHr5wN49sYWGNixFLwWJIwHL7kUi5Ytf7TMUVYJ4CRxoNxoY"
+          },
+          {
+              "photo_reference": "AWYs27wT69_qmZETcYNc0OzeTAtNwWVqPVkOAjjc4-Gx1PJmCAApzIHa8y63Uj2aHi3vf0AIOAsODjsnFA70AkYckT5nSHpjdNMxDCMDheVyyD8HBeSEKNtMnKWD3L8TXF2bb56AnCE809zL6ArPr-NNHLYGh3HxQ4b7hY87R3VNH5x18A_L"
+          },
+          {
+              "photo_reference": "AWYs27yrccBiUxihu8Ks7L50CQTfbKOUOTfpbVsymDaeYpQQZsjiWuGQCcECEtdiR92CKPqnfaFOu-LKm5xuYhcmqAbWdp9z4aABiqEJGqeolY9cWY2VGVV_CyA86HePbnbzjyFVWPuOlWzO2ESHjldn5gl__q7scslM_mqo0eB-mwFPvCBf"
+          },
+          {
+              "photo_reference": "AWYs27wPLcBqbXKhBKdCThhQu65tKJs2qdRUC2ynHVCaL_T45uZGW-TAvDJ2krUbHARMmb_2K4UBeCco2Qpq0ZVfmR1YmWT44NenfPceFOJA576UQjsFmA9KLFBXJqE7qBcdupXldvlLEf5fc6QR_uT0x0TftRZx7rwvJwYOMsGzF5hNzmzm"
+          },
+          {
+              "photo_reference": "AWYs27xDJqYOdkGjmr4ovTPr9rwRN99utH6vyr8D8QAMtWXCR1ME4m1rw8M-8CduPlUQXcDjPJYc2QR3g5qJ4Gsvoqt3AJv1P6gIcTYAZ2OXErfrOoGY0fMAbwkvRsT60TpBd48geRTdH0ZV2Tm8d1rjiYro0V2u63V2hndvG5rdU3lik7Jl"
+          },
+          {
+              "photo_reference": "AWYs27zXA6-ZbHVwYS2qTSehexQhergyBnVpIN_k_OsFe7BcT-_RE6Uw-KZAhd1EAF6wjLV_iRSRJoHCEV6dyzxsVKlp44DEFAKTVcI3zMwh_CnsiStTUjxNKNi5069paxTZWXl1sdb6uxvUgen9uAqEHG7EdtGArDsWTWOrSd_-Z2cT9vU0"
+          },
+          {
+              "photo_reference": "AWYs27zCcpPxliDrr9dWxvmMfDNXrD9w03zLV0mObqyNZVB2QUsPZI9fwjAulgAaK5yYvtN2yql2eft6fzWTPYv-LiSdK9XTBuczg_uH0Txelo-lbFmcpwouc_a7incfhKOVzOFQpyErYlki_A1kePY0xk5pUtw4XUqH2WXpI4JNj0rLhEys"
+          },
+          {
+              "photo_reference": "AWYs27x8N3JzXdZJ4C701W9b1--Wu9KsHzSbzucbuPetCHTVT7ayeTD057NJGMvoAcXc-RzVZdEnKK-wCmMFSWw4jqKEzqxcYygYZIEAvuBQQOmT8N5ssQIMgWVikRJ1kHuLlTAwsSh6hrTVWiR_r2vUH1K4xNZU1-bbdYtqZcC3eeGzNA82"
+          },
+          {
+              "photo_reference": "AWYs27ytkEbFkyg2l9_R6SfPIsJ7uTGZzRgM5BpMeK6qYz1WYMIrAhbfM1fFBmqjXR6e2PraIFpfY4rftudZLNI2EPdRvYZgXPvJpKssQ_mLtZTi80Wiu1CEvFVllQGHhMNoPzUXT6TXY0x2gRt3EAxz-YPMYvPFv__jORi0wVElObe3jo5j"
+          }
+      ],
+      "placeUrl": "https://maps.google.com/?cid=13157065011472055668",
+      "summary": "N/A"
+  },
+  {
+      "place_id": "ChIJL-BJs3aqQjQRLgXRc-JrSIk",
+      "name": "麥當勞-台北動物園三餐廳",
+      "geometry": {
+          "lat": 24.9986582,
+          "lng": 121.5819061
+      },
+      "types": [
+          "restaurant",
+          "food",
+          "point_of_interest",
+          "establishment"
+      ],
+      "address": "116台灣台北市文山區新光路二段30號",
+      "phone": "02 8661 7111",
+      "rating": 3.9,
+      "website": "https://www.mcdonalds.com/tw/zh-tw.html",
+      "opening_hours": [
+          "星期一: 09:00 – 17:00",
+          "星期二: 09:00 – 17:00",
+          "星期三: 09:00 – 17:00",
+          "星期四: 09:00 – 17:00",
+          "星期五: 09:00 – 17:00",
+          "星期六: 09:00 – 17:00",
+          "星期日: 09:00 – 17:00"
+      ],
+      "photos": [
+          {
+              "photo_reference": "AWYs27zUtmiGvIBuZZ1Oxauc0gaGzTPz3GNeaxh2nrm31oIQnzyRb7re4ZTr1GKujD4maE7vh3oy6yjzfmsXWP9vjNHCEZhqZMiLRbjtg3yHmRxxBbbig4gmNr4w0cRhyCwISubh8RbQLgkFo5PGr73_sJhLp1sRzgTt4FYZE04MDOhfgD81"
+          },
+          {
+              "photo_reference": "AWYs27xFj-l91iJd97TEY0NNjGS2bXK9ZWgS0V93_87vNJ4wTYb3F4sppwd8BDRhpLpoVQgLjFnyVfzQmJ1WpTsPa-G0BuzGtpKyLvZPZAsax3xQZSPernlLaHIxrPKvSUCMNTmTtV4564njEAGdWSpS38K0NXchWLJUZcUPtWOHLi94sQWp"
+          },
+          {
+              "photo_reference": "AWYs27zRlT9DrHgzAbJ3uqiyH_jqlj18l9nm0O8vDuG1rxoKXhDPiwQJMjDaVa64dFv6to000yPXAilOXkrIpMjgt9padEfu8VmZSv11LF49gNfxapFhoX376Sz6YBXdDFnZ0_WXocrPUn8U1kotDn7-dd85_Xuw7uvZEKgKwt9x3Li8rFzq"
+          },
+          {
+              "photo_reference": "AWYs27z5OHiWBtIW8Pmb05ichR_UrzkNM-rqg5HRgy3Vg9kzV1w3aO8__d8_ChZadpOXvvkEUrvpFiYJJTdZAkyQ2_yUK_EREeIOJVtRZaGdMNO7ifCSIU4O5WDoiga1MDbEcK5zHTqIbP-7vins42OfnYNCDuq1_6jcBoJaBfGHbTtjo02S"
+          },
+          {
+              "photo_reference": "AWYs27zr1e8g5hufVu8uJkqtb1rRr2FoclStnxm1LXffYsWjQK75XachMq1kP2eySLq5iyzRpqpiQUNxaHuY2s884fi1W66nYG-9oCLHCS_CGgO_nJHrlc1a4wFzTFOziq9UDWLO6BfoGu568xHemcXL9NvWhO7kMznlwXwTFrFN8FHYcQc"
+          },
+          {
+              "photo_reference": "AWYs27xxPvpf8Jk3eytHjfps2CYZuHJDn4E8DfjEPocIrXPrcsj47xlxTpAchqytBgDLamJcHfP4sYFaa0PhS4_JWsp7XmZ9sYB7QAaiIImvQ0LkSJOVmp2bVeoqo-PS2dFOWg26pG9nV4hBIStvBQ0-GniedV-n38QEFsvQt47501uZ-bNn"
+          },
+          {
+              "photo_reference": "AWYs27yNW30nWEjFDIbNcciL31kktyvaKqfYWY6ACgd6wqgaTmoPt06AmVW4CSWxyjhlSESLUvqlIc2Pn7gUWHLn8FEAW_-hETuNKwXXqfm62NA0erNdg9Ejwd6vHUQjl6KPkn7S56BzT21GFbjhS34lrW5l9QR0mwFOyA09SQEpD51wBjKN"
+          },
+          {
+              "photo_reference": "AWYs27z6QRxautCS91vU6kxb_J0qQVR7LWB-lc6H48f244fOK_cOI1hCujBd6wvwTlNvjVyRZMlqGY2dLRJPobT9Hc-if9iOTxuBxfR8NyesAy3iF9XUIOVG659X963-2K4zYI1U29_UeIqIYdtBDOZWGHoN4xEerP-N3jBUqqXs0_tSMCKL"
+          },
+          {
+              "photo_reference": "AWYs27zJUYPEC2g5DZw2_cyI2lAa1-lUXf2nY2RqjLFh4j5RpyMUsy_50Zlp_U418p0VhE3L3dsFFZf5YzP_pyGWn2ciceixmyBTmEm1LpDW86EgnZEmJCA736T3n7Uv8XrMFNsxGDUtBvqrV4EeKYn2MHgzDKN0Q5rmpO28wWRq_6QhXyNy"
+          },
+          {
+              "photo_reference": "AWYs27winXldnVPzrJuwSdV4xd9NYEIliDE8uwzgbSOXfOqd63UaB-kTnbVVZtRb_KF87oC9OEcoecriX_lmphQkSiOWuglh0HWdujVlmLuD5NeI47oAfZfD-_FvJdb6rh-qiLpRNpdtcJD66L1uQ2gO6V-vCgVeYAgA9zj-HJ_UcMbxD18-"
+          }
+      ],
+      "placeUrl": "https://maps.google.com/?cid=9892275201869153582",
+      "summary": {
+          "language": "zh-TW",
+          "overview": "老字號的經典連鎖速食店，以漢堡和薯條聞名。"
+      }
+  },
+  {
+      "place_id": "ChIJy3gG2-6qQjQRhcojBWHBiGE",
+      "name": "HiONE Holiday Hotel 海灣假日酒店",
+      "geometry": {
+          "lat": 25.00426999999999,
+          "lng": 121.598712
+      },
+      "types": [
+          "lodging",
+          "restaurant",
+          "food",
+          "point_of_interest",
+          "establishment"
+      ],
+      "address": "222台灣新北市深坑區北深路三段265號",
+      "phone": "02 2662 8000",
+      "rating": 3.8,
+      "website": "http://www.hioneholiday.com.tw/",
+      "opening_hours": [
           "星期一: 24 小時營業",
           "星期二: 24 小時營業",
           "星期三: 24 小時營業",
@@ -531,201 +553,250 @@
           "星期五: 24 小時營業",
           "星期六: 24 小時營業",
           "星期日: 24 小時營業"
-        ]
-      },
+      ],
       "photos": [
-        {
-          "name": "places/ChIJy-PoScKrQjQR3u-gUa_kcPk/photos/AdDdOWo7P5rMOLW40o3fSZaiLgnVTiPA3XF-fZsNj6BYu8efIRrXLz0bGekcqGOGC0ZVuxnywxTntZHFOiL8_8eHqZpFbWfMuccQ_cimXlCbBSl7kt3siWrcZZl5RUQeWA6XosUgGGy71ET1X34SmpncEEdgiHGeLOV7sAmk"
-        },
-        {
-          "name": "places/ChIJy-PoScKrQjQR3u-gUa_kcPk/photos/AdDdOWo1C008mXsJiqOr0xKNRQnyEqnwID2gFY1PxNT-YGbE5TfkQpwVrFV2tu80G3CvnakD7gfKd6ukFxMs_X16SrZ9FIw3aL9p2cQlgoZ1K-R2B5QkhQ0uOH0_vnTHFq802hFvpu_6Ym_Igsgw8nT6KbPOsFBe__vlhGyJ"
-        },
-        {
-          "name": "places/ChIJy-PoScKrQjQR3u-gUa_kcPk/photos/AdDdOWootD4qWZ1zuno8qhdKMefnVIEDJ5tVt3pH8l7KNHr-jartyuv9wCGQI6y68nTOc7OxYXRC_eiqMnhAx3V7d10yFHBDXipdS26RrBsKem3dyUBC_Q0ordflasKPC7XWv2pBtGRllLYVM6EWC-TsCZff7FMnIDdD9DrD"
-        },
-        {
-          "name": "places/ChIJy-PoScKrQjQR3u-gUa_kcPk/photos/AdDdOWqNYzBxJoPbe-3lYxODmaJkyIjJrUgusGVUhVczQQ1ByTFgpfHSZNJNc-B2gDNwYRpDeubou74XLlTEUjlpN4wSWFvTRB_IaI8Pxw1VioBCrx83z7bG_3j4xxiQhyub2jcXDWP9ssnTzi51c35eiC5jfm3woc4PIz9m"
-        },
-        {
-          "name": "places/ChIJy-PoScKrQjQR3u-gUa_kcPk/photos/AdDdOWqsaOYdb256NvUiTanvXyYFNs50UQDh0aah-qw1ZB2o3HZvUTwmsbM4xdUuwwKDF9a4zTbwapGKwZIkcm0jhuxWq7swBt8OZp3zGxwpGZlF6tBeyjvIg0u41w6Zf8i7XX7F8KfByAPeEQ3NdWPLgya5Ub1vrc8Q3Iy3"
-        },
-        {
-          "name": "places/ChIJy-PoScKrQjQR3u-gUa_kcPk/photos/AdDdOWp9CXwF6hgpZkyNNq0PArTngzJjpzJKrCCBTx2C17CNPpMs3Q0KZSLHySlGfB0ZlRukDqDjMuk3N4Qs7OnzpjjOvHxw4X_uFP6sG6ErfuhC9Q8qP8ScSif_lKTAA8EWzy-_-2xslTtNlsCQlWP2NB-_gS0jJ6N5gWY"
-        },
-        {
-          "name": "places/ChIJy-PoScKrQjQR3u-gUa_kcPk/photos/AdDdOWoB-bOTJFlTPrCo4-RAxXnk8CHvD9tyhx4Jvtsfujqs6wsX_u4Sw3I1ujQnQkg5HYo3BuGjrvWS-b3qM3xgRPr812Fqe5O2KLcnPaUKel7RblHZL7NuG9UzeW5GfDFWv-_foTjdy6JDh7dYzhe-DrJlhIQkg_8_5Blz"
-        },
-        {
-          "name": "places/ChIJy-PoScKrQjQR3u-gUa_kcPk/photos/AdDdOWpc1pp-aA06DxPv46A2aNdDNAysaIms2freTDQNFGiEWXcTxEaR5bkg2FShsknntooGXlaBxHos9ZUcX8unX8ZDfN8Y6uoRfsQv-WNtEclkK5NowmRMq1jXyKzqToeiTdD-bEOJTNO57DQ-s749R6Q7memeu7jnp_kn"
-        },
-        {
-          "name": "places/ChIJy-PoScKrQjQR3u-gUa_kcPk/photos/AdDdOWrT8wz3XC7D3RpqYbpnIL2_zucHPxFDo3B6x2mmuygpc7Fu0YJaOU2o82tBV0NrOIBRUZBn_bZaJ6Ppmi_vYmuknidN7ifyF-qac5ORHi9-W682Mx4QKTiYQKTblw2fxtiQYek5OKrgZ35X44J5PFccbfZPaR7IdKaX"
-        },
-        {
-          "name": "places/ChIJy-PoScKrQjQR3u-gUa_kcPk/photos/AdDdOWpaP2QxvPFvREsLh4vl6644gZdMkX6MVB3EWpv8GUx0fJ1aLY6AeUK4ykwnhf6Zrj6uYU1KS1ZFJfzzr-xIi3V8NweynqipcASpRmd-4dC-Jz2CBnlfalD1hui5YgsLZ_7eij7rNRE8qw-Mo4S-D6w32Ql6toxWA3BG"
-        }
+          {
+              "photo_reference": "AWYs27zB1gExjr78kFW08H8ZdqWde_9cuioHZWEPIO8yB_ibUP8OVvoZrkcD01C35v8ne2fqR7wO7MiENhNUFLaGjGcuqSj5QnXIZd86uX9i3kU8BJMs7eZcAPdzSwEymjNclj8NrLlQi8fVV4JuyHp7MNgZjZQqHWla0FADW2hQ4fbNEAFu"
+          },
+          {
+              "photo_reference": "AWYs27w2mqZUrQPMOrldNOfkPss_AjBBZvEONPw7DNsuE45FRWql44fXOaJgYpM8OtBYRkEG1asggZe9Z47DjKxnNFeLF8h01htdxGqUwyxdBx7q_vDf0AiGC2z4HDnKdnxKqgauRjpKt4BNYVKDEhKeQYQJRuOKy7laL-ybALvx--7NQzZs"
+          },
+          {
+              "photo_reference": "AWYs27xFM0fTV7E03XxwVybUui3JEp3mL7ugwoPpvq3czeXTuv23-6t5qOMpH_ar8t9yyi3CguIncps-6JOSiqydBJThTHwRhPQbTlFUxq8UKZu5Vb9q1du_k2BmSJJA1nXKn95WJm7Z8m9YL1_lNOV62NjgDPsjab9f4SJbaEWna9Cy70xg"
+          },
+          {
+              "photo_reference": "AWYs27zVahADuRQosfaTuC7hTVsmC0s3SE17c-zPmW3wE6Em05Kc8sH8zHWUlxMiKmKu02Zxw6Y-SqREi8BJI-xVK0H3jEgWS_e_z5U6Z80cki5NpjIUOQ5uwAFTqUQAQz5nflVYI8ZCULUCmIuGNRvZW7BggPMS2QNHOkPFw7ikrv2OR6n1"
+          },
+          {
+              "photo_reference": "AWYs27ziQQHMO_Rut0d9hXHbTuJ-NHOO0keOvKmbvQHYKqdbTFPV-KHYwycV9okNlo4StEjqWJWnhfOSfzR9ZVkrBZOE1lKszcJxD0SWPUMRlkRnEvjfHQM-ELWmWqlcatWOjA5M8teAT7HGnxYaSZ1nhK69v7nzpM9i9GSTeDukSD029002"
+          },
+          {
+              "photo_reference": "AWYs27wuUwdRt6LXAzkmnc2lgvTNGgGV1jjhDRfpneM5zAUi-vdCTuS5Wq2Tcqq12GMOSg-Wz1taH8HKIa7ERSSBIbXLmx98BFb4hurBxPddPabMQ-IIMIGmrTViJM0PESsLOlijxZZKvaCW-UK5yuFhy56NPkaT9vaHRgI5gdUuHfvUVQuG"
+          },
+          {
+              "photo_reference": "AWYs27x-89U6N5oEDEwLylAdhZxCzpq6KjfW7-cH_FD9ZD48fbYdi9opssXEWxLSPcMeSHlTnSZYz0qEZI-TOo2z5p-sI5Ed2T-NRS6DJqD7hCxN5pY1AluhigvruH8FKH9VFPHrwt80dyxFScMqAgGjOtTsDqcAjSpMC_2jynLUNsWtzIdP"
+          },
+          {
+              "photo_reference": "AWYs27xaEwwLZPRfuEXm7vYL-FFAmr3YW7V8VIgGdiS82BLF62lk_HfkwarXscEHkzsND4p24xiDYfVZwWxH2Q0BpDqFF8i3CSBbbCsDbiJmE89YS1Q-04qa8PEkEwHcXXFmLQhodOGSWigT3Sdhc7P1cuj_GsjnMCNsCiLj0QsP8vILvKZI"
+          },
+          {
+              "photo_reference": "AWYs27yAAz4lIfpN95Jt_Mal0YnFgr9Z2pZxgsObUFVdhe2FkkTFn2uYsrnKf-NrlQvuq-DajX7gnX5rY_enblCTM42vRbZYEjNsr6H8VfSL22lDrZRY8beWQ1ouXaADzwMW4obyyD7F5DJu_I-BERfYf3B7MJxlpEjZmeXLzvzmtRmS3X2h"
+          },
+          {
+              "photo_reference": "AWYs27yguY8XPvxliLi6tEuZB1ekD2bAFkMr0FbH8cWfuTAomdBWOPx56kp8eva8R-Gkb0y4ewRwxukY2btplhDnsaIEeF8HFWsuPUT-5kniiIvMn5c87q4IhQwQdxCo_UT5bdAvuOd5Br1bHUy1H3wBVxPtI0CMvCOrleP55k00aucx0Pxr"
+          }
       ],
-      "googleMapsLinks": {
-        "placeUri": "https://maps.google.com/?cid=17974117554475560926",
-        "reviewsUri": "https://www.google.com/maps/place//data=!4m4!3m3!1s0x3442abc249e8e3cb:0xf970e4af51a0efde!9m1!1b1",
-        "photosUri": "https://www.google.com/maps/place//data=!4m3!3m2!1s0x3442abc249e8e3cb:0xf970e4af51a0efde!10e5"
+      "placeUrl": "https://maps.google.com/?cid=7028079840953879173",
+      "summary": {
+          "language": "zh-TW",
+          "overview": "舒適飯店提供裝潢簡約的客房，可享河景，並設有 2 間餐廳和 1 間賭場。"
       }
-    },
-    {
-      "id": "ChIJwQPcmc-rQjQRtXDQA__PPwg",
-      "types": [
-        "italian_restaurant",
-        "restaurant",
-        "point_of_interest",
-        "food_store",
-        "store",
-        "food",
-        "establishment"
-      ],
-      "nationalPhoneNumber": "02 2775 3645",
-      "formattedAddress": "106台灣台北市大安區安和路一段29-1號",
-      "rating": 4.5,
-      "googleMapsUri": "https://maps.google.com/?cid=594422370023796917",
-      "websiteUri": "https://www.facebook.com/solopasta/",
-      "displayName": {
-        "text": "solo pasta"
+  },
+  {
+      "place_id": "ChIJGfimJemqQjQRnpgZTJtcO34",
+      "name": "福容大飯店 台北二館",
+      "geometry": {
+          "lat": 25.0042127,
+          "lng": 121.6003293
       },
-      "currentOpeningHours": {
-        "weekdayDescriptions": [
+      "types": [
+          "lodging",
+          "point_of_interest",
+          "establishment"
+      ],
+      "address": "222台灣新北市深坑區北深路三段236號",
+      "phone": "02 2662 0088",
+      "rating": 4.2,
+      "website": "http://www.fullon-hotels.com.tw/sk",
+      "opening_hours": [
+          "星期一: 24 小時營業",
+          "星期二: 24 小時營業",
+          "星期三: 24 小時營業",
+          "星期四: 24 小時營業",
+          "星期五: 24 小時營業",
+          "星期六: 24 小時營業",
+          "星期日: 24 小時營業"
+      ],
+      "photos": [
+          {
+              "photo_reference": "AWYs27wIHPbF1MCn77Y50xWOnTz2C-4vGYn94GNdsTrIRjpzO3FHfWlOhpRPHffinqaNo57klAVMLauUKtgCc316piUBDRUIX9G_kY85GkGc_haL8NaVQGkkDHqN47nxHtF-8MpJsLxuRfTTu_LF4MkcCGe0f8BHn3LzvokuW5aMYwqYhX_d"
+          },
+          {
+              "photo_reference": "AWYs27z5wv0xi0Uqfb6i5O3TcK-YpBuyelfMBmJasCZLExSOJubHyaVaXVP2IEQFnbWXuFV1FZ0IcF9IVrqF-mewVmSCpcLNaErfQUT7cWv5KrHcrkflXJOR2ELSs3ZQ6odtxC9q1SNVLwRoIYDwhhOTjNVHwv1DG1nbW9D7SiqFpUF-1Ogz"
+          },
+          {
+              "photo_reference": "AWYs27zSYIMjXUeDCw3CtnQPC4QuBGDyJVyvSf0ZRxt8iLI3A3_1rO4Af3Tplh9UJXmjFzM4IEOrI1UrXXWlcJNhYIVcpNMoEW6B2cvx28Y7lG4nZMtokVssIfEXVtUlj5N55K6n5W1_lOoqYODXFunxZOZ5sk4Lfwrnkrp2TeIFw9T4FiV4"
+          },
+          {
+              "photo_reference": "AWYs27yr5AroaGLZ2zsIDaAXht3iM9KN959tA6V8vzCLkeHqsd1hztbtYgGgKzEeX4vLpi8XhD-tTMvRMb3Sl_xI4Q-KFqXb1kO39eY1Kbxzguz4xGZta5HMCF5Lcy_dR2ksbcj69B6D2YpydPtMeeiHZxUTyfYUap8ckI0uZRemlJMyWXBq"
+          },
+          {
+              "photo_reference": "AWYs27zUnuU1yq_wlqRruzNXSrNu61tNprZvb5S_Z1P1u2jeG2Hc1LAgmG_F5yxTuJJCstb5-twqjEzM6PRxhq5xFuWq_etvZ92IldiRkLWpR1itDYXNby1B3FdS42oXOYY8f5FVT8b0dkqq7qAp0yELXbOwKz9q3R9gYJXzDJNXhp1v04wr"
+          },
+          {
+              "photo_reference": "AWYs27y1vrbJJ7skXrj6DQTiWZJICy7K-pACeb_GvYlPkg3ZikOYjTXgL_JtJHbIrWbx11D-DnzF6KMYB0sKXu_oANV7rkYn3edFGcXTnqY2t17XCoVTB7J4rnUOncj381euo18r0kuu81v_ZEVsUnW8D5hvDyQve2k65sjvBsn6GtzIwKBF"
+          },
+          {
+              "photo_reference": "AWYs27yXSAB26jWzT7kU3IrvU_nWyW1vYoMWUB7XPbYoC-cv6wrz2MFxoFx5C2G3BN-Yh-H0TO41WG2J_vExukpym_iuP2gbNf8cwMTyYhAn-a6uWcZQ2a_bcYiPTePaHlg6xfOc60Asr2jmGgykvOJGr_INsda1Tjn6ZWuITOQ-bxt9q27e"
+          },
+          {
+              "photo_reference": "AWYs27yIogy73a83nrLMZVE5DHli_L2K8qs47gcB-9LPkOZFTecl46pamoDTMAtIhBxTq7YXJWSQqqeVyFoj_3EW-BFcnkQRNHOzkPsxysaXhklxHUY6-wrxEWoh7TxNyLVEUoDw9FDZaT2yn_ubwBW59yQ3kLH3sjo2KHuNwVGY9q4gXaiG"
+          },
+          {
+              "photo_reference": "AWYs27w5d8B6BNYTPKvuuY0s1apXU2nRRf-g9lq2EsTjiNfUz9vwnlC2ZHE-uusbFDH-udcBn-9gWGoyljt0Y9uveBxKgTl4HK2ztoXbLpKH3UrrxFPhqd4ttOebmP3x-G2FYAusV0I_Qs6ioGL6-0VY_yIuvpLnS6-0ditfH5QSzWyRGWY-"
+          },
+          {
+              "photo_reference": "AWYs27yKgWhJx5y-9HIaBoxwNrxghA48LnTpwFpDI9YroUtDKGl3FX1Pk-7d0tzGezKdwLkP-ZoEjJyHydAhe1plEIXIlq12at4flLUZbyZXp7WBTDnLZK7PHKcWXVvg4VggBxDtF52dY1iAPihB5RiebRXsGemBdFtyQ_hiRH-JKHnKIWL7"
+          }
+      ],
+      "placeUrl": "https://maps.google.com/?cid=9095965694471280798",
+      "summary": {
+          "language": "zh-TW",
+          "overview": "精緻飯店提供時尚客房與套房，設有室外泳池、多間餐館和酒吧。"
+      }
+  },
+  {
+      "place_id": "ChIJjeYFGHSqQjQR2lF22e6zzLM",
+      "name": "御神烹-原香日式私廚",
+      "geometry": {
+          "lat": 24.9878238,
+          "lng": 121.56488
+      },
+      "types": [
+          "store",
+          "restaurant",
+          "food",
+          "point_of_interest",
+          "establishment"
+      ],
+      "address": "116台灣台北市文山區木柵路三段48巷1弄9號",
+      "phone": "02 2938 1086",
+      "rating": 4.5,
+      "website": "https://www.facebook.com/muzhaokami",
+      "opening_hours": [
+          "星期一: 11:30 – 14:00, 17:30 – 21:00",
+          "星期二: 休息",
+          "星期三: 11:30 – 14:00, 17:30 – 21:00",
+          "星期四: 11:30 – 14:00, 17:30 – 21:00",
+          "星期五: 11:30 – 14:00, 17:30 – 21:00",
+          "星期六: 11:30 – 14:00, 17:30 – 21:00",
+          "星期日: 11:30 – 14:00, 17:30 – 21:00"
+      ],
+      "photos": [
+          {
+              "photo_reference": "AWYs27zTlyzOT5nzFj47JUlg89mm2_dkhAoWutwR8KT6BVjZxZ8zTbJsvGc7cxmC6XAHPYAMjWRWfHDtG2zCzEd1zAvoyNfsTmYmy-ldpAJ34IE189TabixSPp8FL34cuPXKQ1TD6TFy2VFUDUE4FgIny_d0z8DAWXIaROa8D99Ya89FUY7F"
+          },
+          {
+              "photo_reference": "AWYs27wYgUdeHuqoGiTIQrDMOE4Tmjkz5RwLLsfyIUDvB5fAeXk5KARsHTRgY5GI3yfRBculxxaUgn1GdCy6_ZoisLZwLsGwf1wKkzHTSdbL9aROT3AitRoAvoZ-dvFwDmjvKKlc23vJ_1XrsNePcm8hE9U_Gvn5usI7na3vL-q0iJ4fFATh"
+          },
+          {
+              "photo_reference": "AWYs27wnFtNPs_jD98lueZozT9yfShR6V3h41VaN3KvmtNTz68XEqMYgqBUyDEtrWSadL9h_Um2-lP52G9VzNBdY2J-6nUuNKMFA_dOnGl4FDNimGdoxPjsOgvqDDMOmTkyZGv1hPU02orYkUi8iIX_wWiWcd7VsraFreBzAUqh5vNyXZELC"
+          },
+          {
+              "photo_reference": "AWYs27xetvzlvo5BfclKYFL7fzkJznJduaXMCDshga40L3p5xf3nJj3uc5ZzhBbtkpqP0ZJnBCwlhl-o0s4SKi5chtDNDj5v0IxqMFQAzSTLiGe1nF3pyo9cTDYm2vstZyd0yhF03-IZD6k8HlZff-Rr_zTCbER78IxkXZHtHwkJvxocdR8K"
+          },
+          {
+              "photo_reference": "AWYs27zCswhcL13TlCEQurFIOlPU7rD8nE_YfEQYSHdS3uVSQ0Te9WbV1_ZGv3xK3T8v2x5snW4ZLDmjbAuVd-BOF4tc-6suU68Z7YJY4lAM8tWInbDLBPrfRP-PWT8hReBjQlmomBJaQTLXsLfbr_cXXksvVi4Di0xU0VV2E6P8MUiA-hVJ"
+          },
+          {
+              "photo_reference": "AWYs27wWUyBKfySGepggg8NbBRIqEmBxISIz04MSj59fJoX7T3TH60qscpPNj01_Vy1rT6HHmzUE1DySUA4SnuuCQGP6xUFE3rBseigW3cFcpm5131EhPIc9dpZNJ59dF4Ek3t4TzJCCByE3qECYs7dFZxPKHkXr7jWYF9b9L8HasvUiXZZa"
+          },
+          {
+              "photo_reference": "AWYs27w1FlhY5Np9cRG8yqYLi1_for3weGxaGb7Aop_4CNxXfl7wJSRo157Xj8TTyXJrUpBwPnzX9E08NDDzCVOx8H4HWQTJ_Jc5UHT9CNBsWEuC-GgIOaaCV9eNaoJ7HbGIPeWqFZZE-9Aivgd29r2UzfVEpcOQkpiH-N249JBqFt_Rq7xC"
+          },
+          {
+              "photo_reference": "AWYs27y2ROnKNMz6u6lBywVId1Y8HEfJ4HMAnvJoamnIBo0f5w7uKhI0oy134-jr9sh3s4ZR0QjmI8bL9yBTbV2NHKZtAz1vgT5K6FfXEqy5RDLVB_WPew1W0KkT_hOa_aAjoEQY-8VsQM-2VdlDwHKLpqwFG_3QZjK35P8MIC8HNGNcLPnR"
+          },
+          {
+              "photo_reference": "AWYs27zfsAmUR3Ba407RdBTHLQrTSf60waT6mqTUATjzEXBwI4EDKuSx5yCZoJVYlaT1WmdZBDNs-XE9mswGMhJ8jLsx7sL9YwMWk9LqDzgRyuCfj0J-TpXccIT2-qXz7JD9mfbq3fPqZ4vLN-dBxJLW62MWS1eaZ-N6iDy3jPTuYwlm9-eE"
+          },
+          {
+              "photo_reference": "AWYs27wrTxE3_sZIyYrHoP-7ywPIyj_bHcAqqoSX7URtZcCssKGbN2YfFDDbjkkBb5eqBL_ZuBKL8hIetwEBB1RrOT3XAmqm4LGEjsg9pU8brGIuZGu-I5-aILQRvikEpZcdcPK25BtfI3C8sPNUiGSTJ3h_GWjUlkG6rXgIR59k0_oH66-D"
+          }
+      ],
+      "placeUrl": "https://maps.google.com/?cid=12955928066470072794",
+      "summary": "N/A"
+  },
+  {
+      "place_id": "ChIJe2aXGHSqQjQRZMvvNiXB9Ic",
+      "name": "阿段烘焙",
+      "geometry": {
+          "lat": 24.9890167,
+          "lng": 121.5698385
+      },
+      "types": [
+          "bakery",
+          "store",
+          "restaurant",
+          "food",
+          "point_of_interest",
+          "establishment"
+      ],
+      "address": "116台灣台北市文山區開元街38號",
+      "phone": "02 2936 1341",
+      "rating": 4.5,
+      "website": "https://www.facebook.com/aduanbakery",
+      "opening_hours": [
           "星期一: 休息",
           "星期二: 休息",
-          "星期三: 11:30 – 15:00, 17:30 – 22:00",
-          "星期四: 11:30 – 15:00",
-          "星期五: 11:30 – 15:00",
-          "星期六: 11:30 – 22:00",
-          "星期日: 11:30 – 22:00"
-        ]
-      },
+          "星期三: 09:00 – 18:00",
+          "星期四: 09:00 – 18:00",
+          "星期五: 09:00 – 18:00",
+          "星期六: 09:00 – 18:00",
+          "星期日: 09:00 – 18:00"
+      ],
       "photos": [
-        {
-          "name": "places/ChIJwQPcmc-rQjQRtXDQA__PPwg/photos/AdDdOWqIN-Jlc2nQvxlbjqr89vck1wYtklEBmE0slEWuv7Tw04UeMCX6gy2ebuqSmtM1LvEqV6ir74_20L2WpKhRYYIYOp1XHveQOa0vHxeOVPZVKruRVvwV5ASk7wMITi6hOd6d0e7ekN7rk-R3stzZQtcFkBCzQWdD9EOz"
-        },
-        {
-          "name": "places/ChIJwQPcmc-rQjQRtXDQA__PPwg/photos/AdDdOWpPUFssu1PCVpx3R8vTOCKM8RDEc__PwCHLH59J-NWqY2IqLRZij5EtGskZqdbCivje3TMmaT2mZjkrkFsuJDm36BHErG7Yo6e7sveDU0x1GZUzDom06faTbp5AD6AI5r2uscSSiXITl32HAF4t-Tnxzu8c-qUqCsg7"
-        },
-        {
-          "name": "places/ChIJwQPcmc-rQjQRtXDQA__PPwg/photos/AdDdOWrIBRUVRWZcxSktOIH_zLJbYsor2cejVNTy5-EjEoX3JpUeRPdID_cBkYJHXqq6lAh5yGp0J2pruCCpqpaj43gA7giMJ3M2iUn0IKH_X6Sdhsvfcf-zIR75DAkHWrDuKOhrHNzt68hUDa6O2mwWJCxxT35Ef-3mhaDq"
-        },
-        {
-          "name": "places/ChIJwQPcmc-rQjQRtXDQA__PPwg/photos/AdDdOWpZuLnBl-N-imlYBKlMVYntHZYkmoB3B6zVq5NABRylBOAcZ0-ahmDOftzjPjn7AZcJjx2cNHxU7BmvPvkbw5WelC_zNwFJF645jpPqN7eNNOipBOAA3BZqnOHAyQLzP6uN5m2UFQJnD4RGazmB4kvZCoIkdusX-adN"
-        },
-        {
-          "name": "places/ChIJwQPcmc-rQjQRtXDQA__PPwg/photos/AdDdOWoSMzdOKswpM_rAmlAYO5Nd0MSCtLfzJctsb5Z6qtr8nAFUPOgwhA5Umzqmeb8xo8zqHnP9f1f7e8CDiNswP9NFn9orAALAyPe4zQhEc0Y6e1UgF8gZ01GtEkchZgo5K6c0Z8YOzb-jv7gnTaHP9pee01miiAgt3M_C"
-        },
-        {
-          "name": "places/ChIJwQPcmc-rQjQRtXDQA__PPwg/photos/AdDdOWoGf3cAtKYX0KpT4m5fCzv-FNxmRJUcs0KNOPiPGiqGzlbAdieMkCRTF4OOyqjWhxet7axsjMoQSibeJRMDFeP5i5fachy71YlnRXtmHWSxHKAF89uNufnKCY_Pce8pMc57gNbTkya9hX2KVCv-xwotwiRQ8ndz00I3"
-        },
-        {
-          "name": "places/ChIJwQPcmc-rQjQRtXDQA__PPwg/photos/AdDdOWoTWXIH9t9yHbntrtxnt7D11znhLiofVAAIj79G0ndhC7rDghvT1nqo3ZG1EthtHCQnxl_vnBNWvcS0p3eD9wPIZGmssqghXtMarxYBZvkTAXMyQRKdgLj6-BFLSOna8NB1UPR0qUBHuj6SXTHeTJ4FTnZxRH1ViaAI"
-        },
-        {
-          "name": "places/ChIJwQPcmc-rQjQRtXDQA__PPwg/photos/AdDdOWr8Qw6pVgj59IBv0Lt8EtkV8tNo5CcBSbKy6tGeC42kyQhMCd1aDb60t0q31-tcNIl0xWP9aB3UuHib_ETmRiM4sUumYgeKo2os8F7WMgFXWJ7dnXuzo-pjUTZvvwcu_3tHtXXjDFbv1Y_mKA9DwW4Ae7fmaap1s7jR"
-        },
-        {
-          "name": "places/ChIJwQPcmc-rQjQRtXDQA__PPwg/photos/AdDdOWqKbBSbsZuHH90ncoeUVFjAEHZloNmw7sFJPjToGdESgwdyj5dUQGn6aHDr9YxrN0c4GuWQqATY7gOP9EPaGuYrfUbvENJt9hZHPUMLcNZ2_xaYWG-h53dXr9acl3_W-DJnwkl6ROkmeM7jmZBvWUI2-RHCDP7dBE7S"
-        },
-        {
-          "name": "places/ChIJwQPcmc-rQjQRtXDQA__PPwg/photos/AdDdOWowDH5B6-3G9ANqO2xhrkU3qURImjO3u2Ls-nxdxk58RUek-nf9UWzg5deIbnMmn8TqVw2fqwvu4FPPcYA6tGH5HnzRzCofhPDpp5zozXPL1e2Eo0pYo09W4HIqGDLnx6YyJ3Zu-DyXXWuz6psIU7DyzsUPD88A9bB5"
-        }
+          {
+              "photo_reference": "AWYs27wn17DRO4DHPgQEq2rWXA7ToiFzqjBe3RLvO6RQ9Hky9mKavVsz3nNs744vZr46DF2bKxjnc_x7Cg51BNGfFFkLLOdYwejl9e17M3m3A6OsrQ1Chf9ZERZrLNV917JXTxgatzPf-HvFTHAEFipMP4kDQl4BYcmQKBCRNEoHeCSvr4c"
+          },
+          {
+              "photo_reference": "AWYs27xkiGhJFCHoyIZkYleVhXQ0j0SPl0AYc1zZRZKAw8_vLqNpgGEQ4e23ICZLJRlvgM82IpxWxMSs17-s5_hRgSKy9buIzEtYUdHsWg6R-LEyVw4ZLez6uFDZfXsCpbw6Jr938nT8O6BRhwiAe4BV3bPGGSmyHb2n29eMFQRb0WTIF0Q"
+          },
+          {
+              "photo_reference": "AWYs27wY0FButh2eghAzlUjGR41-6mHqyEBeRQqwMkEnAW00WV1X1efjhdFJ1r3YPiWVGM40rOtD2se6s26vMhQqQ4erUVrtFCDLa56jwjCEwLrV3iWKcePJ7hE4ap8_Brpm0KIQHgW0eNHsliwWvu9Flvd4BGCqu-zFuUmvfNW5jZu6OJhk"
+          },
+          {
+              "photo_reference": "AWYs27zGM6uaAY8cv87mC4XTGYU0YERfcqnad2-4gewYqdTOzCeaPddysLYF7R3i_xmIrN7C3gBAzrfnWpEnhFfWHF7HqhthyzTLr6FMxn_ZNg3ef9q21lD88x-L6zL7mfnzrfM8hmpPiz7iLn-tfKWd5cpHzietonyDr_SP51It4CSKW22x"
+          },
+          {
+              "photo_reference": "AWYs27xnyjepvhRGaTJ7gbY0zn-K8WAQNPqKetuctn-UCuwNWvRzmX6so40dETukImZmp1aD3LlzQiRx6VDP2a534RzBEsgQFAKR-8FJp8WyCErKZK3DIg0KewvJdjxTqpBGGDP8mNj7QVGEkYfyS9g6f14pSl5HwQmCbiMX32sRCBbmJnA"
+          },
+          {
+              "photo_reference": "AWYs27ziNp7K2umgjs2UPR3KT3GBkOa7VKRGNfrkLUIJTslRjVjtkJ19m2P3JceCM9twkXpHuPMvJwc1DBo51jMmYVkQU1pZUPwpJls1Wf9XsCQb15ACnCjB98AMXyy6CXLG5y43UpO__kHMDzX8lgardn_wtsNbyKh3huSsTs_ssTbf1s4"
+          },
+          {
+              "photo_reference": "AWYs27yiUQckG3ey3OCDDW25Nssj60Wd2WKcy8JMBGzPabXUp6URYDjtzkuCTw4jKtAhQDoqMdBgsGHkGxY1i-8D523O2sayM1kB137Veog60Q8L81DbdHe_FuNhDZ15ytKHglQTgtaQxk_ZHTzmQ2lfoWVixnE68fLbbr97Ed3EkPCp8cY"
+          },
+          {
+              "photo_reference": "AWYs27xUO8CHuPDqQPD4_N1OmH9w2Sx1I81qoLrDQjstXOGAmZrH6z3icwsMHKv_CUvI_sr_m7Jw_w7I4u7eiq28FwjUYCzoHvEWmsE7GyawNJtTQ99ohYl_PeiSmFvkgZWPSVF7TjPh4EqiCOjcn7N0NG9VsXMD2pDJwPRR6vNSDN11oCsc"
+          },
+          {
+              "photo_reference": "AWYs27yjB8108ndYOTK_uQzujR59H2INbB5cucKTdO6cXKjeUYDh2ZmGvRLmKtSOTpvY_oWD7ABiUIXdc9rkH_IXJOiMWVZhIsCyAhGSQJ6P6Ojfatw7-j4I2oLVSeHssVSZCNpm7jyz7gW8CkmjKIQxT89P3qVThDYCSA0jknAC_fnRs9iv"
+          },
+          {
+              "photo_reference": "AWYs27yKm5ip7uRwv8mwZKs4cyZ1MJ9WaZeoDtqtTOpOrj0FcV8s1ZLs0e7FlCZmA-c9B8LXmwIdiM7gSV3nc684Lh1LfrLf_Ejlwk1ggPImcLt0suyRPApFjzglHc-KxNqKajkMIfWynIHHyf0UIkQkv1UnGV9hu2C-JBSmIGB4iHXXPIG9"
+          }
       ],
-      "googleMapsLinks": {
-        "placeUri": "https://maps.google.com/?cid=594422370023796917",
-        "reviewsUri": "https://www.google.com/maps/place//data=!4m4!3m3!1s0x3442abcf99dc03c1:0x83fcfff03d070b5!9m1!1b1",
-        "photosUri": "https://www.google.com/maps/place//data=!4m3!3m2!1s0x3442abcf99dc03c1:0x83fcfff03d070b5!10e5"
-      }
-    },
-    {
-      "id": "ChIJ01XRzrurQjQRnp5ZsHbAAuE",
+      "placeUrl": "https://maps.google.com/?cid=9796667455017306980",
+      "summary": "N/A"
+  },
+  {
+      "place_id": "ChIJ6d_-ymSqQjQRCkNLpJf9KqM",
+      "name": "印石時尚旅館",
+      "geometry": {
+          "lat": 24.9923012,
+          "lng": 121.5754951
+      },
       "types": [
-        "chinese_restaurant",
-        "restaurant",
-        "point_of_interest",
-        "food",
-        "establishment"
+          "lodging",
+          "point_of_interest",
+          "establishment"
       ],
-      "nationalPhoneNumber": "02 2345 2528",
-      "formattedAddress": "110台灣台北市信義區松高路19號Ｂ２",
-      "rating": 4.5,
-      "googleMapsUri": "https://maps.google.com/?cid=16213733224484544158",
-      "websiteUri": "https://rsv.skm.com.tw/groups/skm-xinyi/companies/-KNf3CgtuFU5cea5_nVg/restaurants/-KNf3CgtuFU5cea5_nVh/preorder",
-      "displayName": {
-        "text": "鼎泰豐 新光A4店"
-      },
-      "currentOpeningHours": {
-        "weekdayDescriptions": [
-          "星期一: 11:00 – 20:30",
-          "星期二: 11:00 – 20:30",
-          "星期三: 11:00 – 20:30",
-          "星期四: 11:00 – 20:30",
-          "星期五: 11:00 – 21:00",
-          "星期六: 10:45 – 21:00",
-          "星期日: 10:45 – 20:30"
-        ]
-      },
-      "photos": [
-        {
-          "name": "places/ChIJ01XRzrurQjQRnp5ZsHbAAuE/photos/AdDdOWo2-r6DV5PUWb3sSHs-Us06gJ22mwQfhAnBjsuo01SHhMj9Hptjj1CdI-toY1G3jJLjQE3MIh-97GaixCkzQQlFaMHJGAWO1fY9reAxZx7wehlF395KJF1fRqOgJQuE0sgChFURwuF3RAW-XT2fmcrBLRIxQ4VfgFlX"
-        },
-        {
-          "name": "places/ChIJ01XRzrurQjQRnp5ZsHbAAuE/photos/AdDdOWpFWofUcVU-AzKva6qQd6DFABwdT6VYBfGRcTf7lZYV5wVhqrtbd2e2DVM6aZmuBQmnwLPusICf6ezOhK5xGb1EbcHNkylr2lC_5ACTx5bhbiloS0quGcvPWob5DM51l_8LDaWDKOn7nfKa30QZopjI_J4Wi1mh6SQx"
-        },
-        {
-          "name": "places/ChIJ01XRzrurQjQRnp5ZsHbAAuE/photos/AdDdOWpRZjZ_9NKjzre90GzfVksSv-Lc-sfbfPiKz4CYbEZWYBvg9N5uXyrxtMKanp0V6NK4o5GVFlZf5liPLcgFZff8qdZgEgcg8YVZ3RPLKrwmmRypLqcFZQvCE5lbqdAc8yx17edbacUNoon8PYAX_K6Dc4ec5dfvA1nB"
-        },
-        {
-          "name": "places/ChIJ01XRzrurQjQRnp5ZsHbAAuE/photos/AdDdOWrHJI0ZrJ-5QQPC2nmOkxd5pc3zbYFV9VdYzgCoFXwATT7jOs8f1stnjBQLmDYIGVQb4gWwDPawMKyU9vIaM0J7NPZIbp3mSEEkSI9NUHvdPINzLYDbE-jDmjFC7ABYZ3RAgcGshqsBodl1KeQtoSq2X22AsbCpN8FZ"
-        },
-        {
-          "name": "places/ChIJ01XRzrurQjQRnp5ZsHbAAuE/photos/AdDdOWoSWpbo-fRx-iniNqogIupaJrsQqAX78Po6ceofCnPwkm7IbE7P9t5MrDHkLcWacJlduXh14e1OrhgCaXsylx9NbEytaBOq8Wuyk5EO6CWUAa_kaviONBS9uu-bsI3clddLwB3Em8Mz-Tt_ZE3ORaw2FCFkXl1oK5CS"
-        },
-        {
-          "name": "places/ChIJ01XRzrurQjQRnp5ZsHbAAuE/photos/AdDdOWpKPrKsW5YNysgW146F-ruGI1MVRX6j7Brn0WqYLIcb0xZPXY8Hnr5t3RZdSOl3T9va0un4RtxUhBnxNo8jXR73W9fpjQeBTcB4hvui3_4w57cpMwx03x7zWQxV16Ps0CxdBpw4qlx26PSo0fm4yAGsdLu4q5YSsEaB"
-        },
-        {
-          "name": "places/ChIJ01XRzrurQjQRnp5ZsHbAAuE/photos/AdDdOWp-krXx9XHeeV1FHUeJ4wljw4z6aIAEEw1P87XpssJcgFgFJdPhTlM-fanNkYfylaU358TPN0x446yLw6I2mDmCQbFzY5owQriw7rgwiytWDvWut_zd9B3Y9BcYMteNn7ghq_R9VxnTPwK1-wyh774MlMAStyda38hE"
-        },
-        {
-          "name": "places/ChIJ01XRzrurQjQRnp5ZsHbAAuE/photos/AdDdOWocvn44VPEAS6fdrRFcQLZVoYkCbd25rH5OqT2yvVYY5gbKq_SkGR2u7eAR1TQ7wYZHmlwbBpHZb6RedcXIeRJRvGOdB7InHb9D4mXxMCMoUQVUKL79n6SasKv76RBcLI8Gds-kRZn3XHfA5hR-d0wylU_aBq7BKfl6"
-        },
-        {
-          "name": "places/ChIJ01XRzrurQjQRnp5ZsHbAAuE/photos/AdDdOWqI5cmiyKq1YjIDwGE-lnng8Qc6P8-lrh3HmR245RMlvL59y0G7wFP_JLAy4Xfb_W0boPEXsobq2qnI1bdiVMzsoZN9bQ5V2LXqSyrmHkgNnVC2K-kVmzLobf0Q8Q9TK4vrPgFoqspw8kxcrEk1DPJYRW1SnbLEbjp6"
-        },
-        {
-          "name": "places/ChIJ01XRzrurQjQRnp5ZsHbAAuE/photos/AdDdOWr_wpVAkwyCdBEt1terC9Rcqyl_ypA0hd25r1eD__w1ckR3GHyeUKjN7yg-jeLyu0l3dpD5wwZg3l7cb-HWsJ0jj-AlvSdlp0qHFgO_iV0Wi__QFGnEW8_pm94x2uWx9yHdXe2XCVau8jE6Dy-OIPosgkvhdlpJkhqX"
-        }
-      ],
-      "googleMapsLinks": {
-        "placeUri": "https://maps.google.com/?cid=16213733224484544158",
-        "reviewsUri": "https://www.google.com/maps/place//data=!4m4!3m3!1s0x3442abbbced155d3:0xe102c076b0599e9e!9m1!1b1",
-        "photosUri": "https://www.google.com/maps/place//data=!4m3!3m2!1s0x3442abbbced155d3:0xe102c076b0599e9e!10e5"
-      }
-    },
-    {
-      "id": "ChIJCx45neqrQjQRfoMcWYuCToQ",
-      "types": [
-        "internet_cafe",
-        "cafe",
-        "book_store",
-        "restaurant",
-        "point_of_interest",
-        "store",
-        "food",
-        "establishment"
-      ],
-      "formattedAddress": "105台灣台北市松山區光復北路28號",
-      "rating": 4.5,
-      "googleMapsUri": "https://maps.google.com/?cid=9533700996197024638",
-      "websiteUri": "https://www.lhhcybercafe.com/",
-      "displayName": {
-        "text": "麗華行電競旗艦館"
-      },
-      "currentOpeningHours": {
-        "weekdayDescriptions": [
+      "address": "116台灣台北市文山區秀明路二段15號",
+      "phone": "02 8661 7070",
+      "rating": 3.9,
+      "website": "N/A",
+      "opening_hours": [
           "星期一: 24 小時營業",
           "星期二: 24 小時營業",
           "星期三: 24 小時營業",
@@ -733,561 +804,396 @@
           "星期五: 24 小時營業",
           "星期六: 24 小時營業",
           "星期日: 24 小時營業"
-        ]
-      },
-      "photos": [
-        {
-          "name": "places/ChIJCx45neqrQjQRfoMcWYuCToQ/photos/AdDdOWpCqQ8Vs-rkpxt8z898rxpKh0rURrdkfsv7a0Is5CVaNH_xmX6EgDAMYxgObL0lTWefzEPJUP-V_RhsweeZo8v6-V21LbdxKk63gJ9gw-PUoKyqhTtOUKOmhxTDhc8fFPiMjuPd7Wg6jswxFSylOsMhjbehEA62SuSS"
-        },
-        {
-          "name": "places/ChIJCx45neqrQjQRfoMcWYuCToQ/photos/AdDdOWq2YZF_qykKSOvwz3C5bChGNM3x5SZeYR2j2i7EHzsOP3fvBYJthos01t7-JeQ0Sc6_XbrwrJnGgpc6IQPwzYxcliqq7DetWIgT0Qc6ERKBdbT9UmGNDBY5RMimTZ5KCeQJdwJL3lTzQ9-C2oQ8EFNJjICkbGWTraA6"
-        },
-        {
-          "name": "places/ChIJCx45neqrQjQRfoMcWYuCToQ/photos/AdDdOWq390Z--Y78P5tGWlBbMFhYhAzO8rQmazTxnN1pkP37-BPLa7Y2HslTkDOsACjCuW8EPC0PyE3ZtvlkT7g57pxTc0FqvRD2w3GMN_rU0JOWKzU8rEirC92O04ToBsXFLMDs376Kli4Uab656zBmlffD1627LOoJYa-a"
-        },
-        {
-          "name": "places/ChIJCx45neqrQjQRfoMcWYuCToQ/photos/AdDdOWozm_hyCzIc7SAIT3YQxyOGbOb21FRjCAvuFJ5CgcJqeRjI_Bv23rAvsGoQHOpYqCAHo1pM9yLjhNoM3Y608f9LMchXp7-MJAXYbkV18j6ZGSrk5GX8woLf0ox_IaC2n4mX2QhSNqG7JOQri9xSyAtIThWNKGutkpsw"
-        },
-        {
-          "name": "places/ChIJCx45neqrQjQRfoMcWYuCToQ/photos/AdDdOWrUzGm3T5hXw1aF4K4xs-d3RU1CLm8cLfWW4K3nOQ6GCFEjSeopTKLAe88Ym8N3BIC1msdWYdqQ83yMDyvU7sybyP2yV4Odm5rLq6TyCr42qkLHIhGZbtfkwTRdd532ZzFFfw7RGZ-i2tlC8tB0bK-dHw2xdAB5eJSJ"
-        },
-        {
-          "name": "places/ChIJCx45neqrQjQRfoMcWYuCToQ/photos/AdDdOWq--dSs-ZlIDEfS1RdEfex06sns1H_zQ_ZEyD_IWu90iJ-PZM6EbwchluefNGpqilXKMaa3ier6aBoamVSeU1sxXigBwgVU5fUxCQh_oc3m7BWbV2lmEC5hWneVnOaraGqdDGSLnn7qyIneTlDvZzlMydTeYuM1s8Wl"
-        },
-        {
-          "name": "places/ChIJCx45neqrQjQRfoMcWYuCToQ/photos/AdDdOWpIOj3GSWpYsOWgN1p6m9O7wqH7WG15jB90fUmpe-HYdDcCpavsw-cxbtIp6QwR9geSpALjGqp8dTyssPb86q6mdccPvvxovtsyefLIC72-tGCrwto8gZYhuD3qNzpB__wEXpbnUkQ4Xt0-Hl8mq8zcAeqAFpnsNFbk"
-        },
-        {
-          "name": "places/ChIJCx45neqrQjQRfoMcWYuCToQ/photos/AdDdOWprmyrrCKgmK5n55U-zbqH5GjGvKQjQ2cf-XqzEIX5VI62OW83RbcNFwwWq7xJs9_DLUXdljs7xfOZ7tIR75h_uvikltW-78-_T_2IPFdxM09eMvWP3EZQG99Cs9VhpxDMm-CgPo6sBy0mvA0GAFn9VCDKqC4NdYka4"
-        },
-        {
-          "name": "places/ChIJCx45neqrQjQRfoMcWYuCToQ/photos/AdDdOWrkllU-AEWCf8Qa_MyQqOfnvEtwXBHzC7t8BhxH55QTspoGLTO_gJA_psup2wTLp6V8RmJXHCuqRvaTh2fVHIIxuuuE345a3uBcFG3IciqugHJ0cIWgfirw_CaheejdzV6CO6VTfY1Uicr7rG2iSpV9esvvT8oUV-om"
-        },
-        {
-          "name": "places/ChIJCx45neqrQjQRfoMcWYuCToQ/photos/AdDdOWpiIhBy661ZPwoFvjyDQgpWdiB0Gwdkp4qJX4HwRqB8BtV7VXgPO2NrCnWZjVNu6S0dxxrjvG4TwepgHnqGQ-QPbRAXqaauRGxSBP-_xQfrDkwRNZpF-b3ymS4pHyB5kjEcDeh-bReFfpI9XrOOA-ZqmKFEFJujr8o7"
-        }
       ],
-      "googleMapsLinks": {
-        "placeUri": "https://maps.google.com/?cid=9533700996197024638",
-        "reviewsUri": "https://www.google.com/maps/place//data=!4m4!3m3!1s0x3442abea9d391e0b:0x844e828b591c837e!9m1!1b1",
-        "photosUri": "https://www.google.com/maps/place//data=!4m3!3m2!1s0x3442abea9d391e0b:0x844e828b591c837e!10e5"
-      }
-    },
-    {
-      "id": "ChIJ0_ua_cWrQjQRIbUBC-UUu_E",
+      "photos": [
+          {
+              "photo_reference": "AWYs27yOV_7o8PpHA2JyS_9nNRRW5dKcR-zZ6_jTWM94lmQyU5Sf8DaojCNPDxKBN-VrSN5BK5Ju0CLF69Sj7SR3LMha9cpA8DxnDiqc1jO-fi39nXFQh0Q5OgJBotNAa1QjuNNCPe7z--DaNhkEJEpZK3cYJhz25ap9YcZDkT97lbC169yf"
+          },
+          {
+              "photo_reference": "AWYs27x2P4-2yuhMdz1Og4pEpqjCge5i8zAH-AYEsjlL_yWiW1RSoGITyazSq9b-ys5ExUlbKne8cVToFwzYnS81G1mJtLZZvvkIc0ezhoseDgToOkZ5eD9cOVyih176ibMwTwsFyUFo8eWP52GiqpXl3qBUxV7Pz5AxQG9A6JdNZC9c-4R4"
+          },
+          {
+              "photo_reference": "AWYs27zOUpDw-eg_V1xGmUdVcT_seezH1BVXya4PXZZBC1tUIYD8sZp2EBPi4hOUI2acd9WqLDucSZk064quKqxMTkL6QVYCRXgllhMDE9UO0go-Ecbs0uGeZGidiICWHb2Mxu4O4PuMO1w9-lmpp6CCZOgPLynvFW21-kLzljqtONeLVBIF"
+          },
+          {
+              "photo_reference": "AWYs27xduDb-jUqvakvD6W-w_1FlcMNDkl2BKxkxYwtX7M3cGvBCWPHMLr_Qzn5ai8SJ2v7-PHFtAsvjKGOf82m5N-2p5ugDogr_HVKKI140USyAhjvHrrLdDq8JxiR_QVfYif10MBfKuEpeI9GDoCN1BsZoyUGbn1tOkYqQuh_Y5Gwp6Mxv"
+          },
+          {
+              "photo_reference": "AWYs27yOcNzMuiqT3rPUUZhFyjQ5opoB4ceRopNnw4x6nXLLc6zz3R6YO8TBKp35YRAD2w1sVGf1Ck6zdBq9Ta8k4_JiU7hL5Hw76ZTRqXty1BuZE_9Ogwo_edRUnnz6whxS8uDshDhz3_Mg0Y6LEwE4b6QDkm3LWagRyREM14sP8L30Kkft"
+          },
+          {
+              "photo_reference": "AWYs27xkvmoMSBSZgvUUBQg-M8ESajN03_l3BMNt5byFeE3Y0z3rb4km2Eir7Js7jo2zU11wFdhkTDvecnQ6-lY471nN-FTn6SHsETKjHrQCFi3vh-_6cZX1UbgPzIsyO3YLMfz9r4Xg0hbDOCIiQxHKJ-qoKvYsz_kGQtiIkUpVbOWE0Aqn"
+          },
+          {
+              "photo_reference": "AWYs27w5UdCQkbGATP790srpRqVyDo2LsCdvMI_0zG88iqcecRKhPhDrZpEdF8f0hg0w7RGVbKyUMSPTZFUojxl_QM-IoZZy1FgX9yT0QkSfQYyBNlqnIRBwhN4h7jWnBoOJHtnaC96xoKrdwP24Pm-QqgO_tP6mpsqWr3v7m6olni_UwZds"
+          },
+          {
+              "photo_reference": "AWYs27wfYejLfGV0oBLvOiEbPs2_1i4EzUc0SddDPJ52AfI8umfQu5vIeXYRkw7q9J_PrwxwUlkDXDbf9V4WEMNse0XhIgtk6_z4wQRo40Gi4wOCTJOO-_tvWVTiNQP3YZiq3CYYDJy2v6ndFfkSBEzok1yWkZGvi3FpKtHpUlEZ0w3Jj3yN"
+          },
+          {
+              "photo_reference": "AWYs27xuisck59ZUnDxRE3OTeavFGF7bYSVSD-lKo_jArSvzhozRLlhGMHLt3Qlb7d_qqd13oHi95jix8tgMeqyfPu24bYJbbo8_P2ag4qAjcwm_ucyc5Yl5xMLOJE7viq1KKzTbQPGL0SYi02H0d26U1Dg3rMKWLx6TyHefyM85EctkNXPS"
+          },
+          {
+              "photo_reference": "AWYs27xPQQnM6dHzj2zZcnZvkt21zoyk1Ms-Zy6sBAPtbBORcZb9X1aXUOMZfvY9sMPR4TmBXPd_70m1JSaMUjDGOD4lt4oIU756YgYuu0RMC0nnC4bA-ZV95SC1DByc2H21lnLVnv_z4B3oqjFu62LJ27O3OqkKyMeC43JgS6u6QmIrz2nD"
+          }
+      ],
+      "placeUrl": "https://maps.google.com/?cid=11757488604942385930",
+      "summary": "N/A"
+  },
+  {
+      "place_id": "ChIJM3hYDXyqQjQRHKN-JPRfxzM",
+      "name": "滇味廚房",
+      "geometry": {
+          "lat": 24.98740189999999,
+          "lng": 121.5776291
+      },
       "types": [
-        "asian_restaurant",
-        "chinese_restaurant",
-        "restaurant",
-        "point_of_interest",
-        "food",
-        "establishment"
+          "restaurant",
+          "food",
+          "point_of_interest",
+          "establishment"
       ],
-      "nationalPhoneNumber": "02 8771 3288",
-      "formattedAddress": "106台灣台北市大安區延吉街138巷2號",
-      "rating": 4.5,
-      "googleMapsUri": "https://maps.google.com/?cid=17418538957750252833",
-      "websiteUri": "https://www.qinshanshi.com/",
-      "displayName": {
-        "text": "秦味館 Qin Wei Guan"
-      },
-      "currentOpeningHours": {
-        "weekdayDescriptions": [
-          "星期一: 休息",
-          "星期二: 11:30 – 14:30, 17:30 – 21:30",
-          "星期三: 11:30 – 14:30, 17:30 – 21:30",
-          "星期四: 11:30 – 14:30, 17:30 – 21:30",
-          "星期五: 11:30 – 14:30, 17:30 – 21:30",
-          "星期六: 11:30 – 14:30, 17:30 – 21:30",
-          "星期日: 11:30 – 14:30, 17:30 – 21:30"
-        ]
-      },
+      "address": "116台灣台北市文山區指南路二段167號",
+      "phone": "02 2938 4788",
+      "rating": 3.9,
+      "website": "https://www.facebook.com/profile.php?id=100068100758260",
+      "opening_hours": [
+          "星期一: 11:00 – 21:00",
+          "星期二: 11:00 – 21:00",
+          "星期三: 11:00 – 21:00",
+          "星期四: 11:00 – 21:00",
+          "星期五: 11:00 – 21:00",
+          "星期六: 11:00 – 21:00",
+          "星期日: 11:00 – 21:00"
+      ],
       "photos": [
-        {
-          "name": "places/ChIJ0_ua_cWrQjQRIbUBC-UUu_E/photos/AdDdOWoBaFndXA63HRxhAkhM3ZK4h7l2O5n9TDRq4M6uNB0RdfOhENEcm8D7K3-aJ__56RdBzs0Va5wwHacp1X566giRm0pXj21O0812BRJ-TkSmiX26RpeeFzpXKYELUyYC0IBOqKuoDMLnRfiITBmoZfjx8fpH_va2MA8v"
-        },
-        {
-          "name": "places/ChIJ0_ua_cWrQjQRIbUBC-UUu_E/photos/AdDdOWpQ2Rnh_ibAKGkzJXFwZ15je8GuaORt8nIlofKkSMgOVPtlkqn-WqZ3scHfL0yta3jlOxda-7Qq5_RfopG0tt9ofn8gkripdIORkKngKEecSPNJtt0ZBK9bZqGTvutsndJFHlGiQGhJTx2VikJSoAu1bLGZmxvz1sv0"
-        },
-        {
-          "name": "places/ChIJ0_ua_cWrQjQRIbUBC-UUu_E/photos/AdDdOWrOrCVindd9DYLJf9qKVmClYFwMqKveUQ20_YTrsXeAj_OF4D4dF7CiW1jLT9miaUh-NGE9r6FgCv6NJklNXyIbo5Ec49kgBgZqD-llG-4TVQG740mbacnLYkgFC61JZzEeJ-TQX7ZYu4wz0BzKlQZI72kfx4Q92NOu"
-        },
-        {
-          "name": "places/ChIJ0_ua_cWrQjQRIbUBC-UUu_E/photos/AdDdOWpmpXFfAsljS7usp22IApGRpom9Nou2XPm8NGNcnLSIFqwDUams8qp7bVOhneKpipbE1N7u3ZlXpl-cgg_0Kv-IDPqtRR2mQQkr7AWAs3H-JwSXLd-DYammo9vnz2IZ9T_Nh7tXKgk2bg879r7iE3-W1dN-VWzb5SRg"
-        },
-        {
-          "name": "places/ChIJ0_ua_cWrQjQRIbUBC-UUu_E/photos/AdDdOWrZNW8rKifsqDhxOGfWghY7YnfzMEuUNATdUJUHGLMGLhBpH7j7Z-fMdt-9zaMONtV1WAziDJUL19pyhFl1TUTpzEVROthbZ9xHYX7aTrQwxjRJz5Yf6UUWt_SNt8bvqYo_9I-jm3h6LTQj2akZMgf81in85fSHKHgo"
-        },
-        {
-          "name": "places/ChIJ0_ua_cWrQjQRIbUBC-UUu_E/photos/AdDdOWrBc-SPdXJH7mUFugt1hKR9wmbrEvmeL3YKZktts8pk0KSA-mtPjVVuaLTiVj5ZnWxJ8cFTwvuHdfkKLgWhiM6HrhdY9sxg7EQCbd_GjUV9s-L5unf1HTPlSfbRke77bdXVZaHo63EfKcrPzfnQOJ3thWSnE7fduUdV"
-        },
-        {
-          "name": "places/ChIJ0_ua_cWrQjQRIbUBC-UUu_E/photos/AdDdOWq6XGMZy8LkfbpckrH2XKBX7xA1PyO3QwcfoXR7XsMB3tq4kuXB4RPCtzrmPtYkfNserYnsfTeX1E3URNnFUoTdnowpMk5QDLv3NBhX4VEEchIRIbtdfGACtX_CADhGSW-PdWBrUebFkxAjcWw1JlULxciky5BJwovE"
-        },
-        {
-          "name": "places/ChIJ0_ua_cWrQjQRIbUBC-UUu_E/photos/AdDdOWq218NytZb2Aa7ar5NQt2iKbftX3B5EW5JkD1dd5CeJETgQdAMWjOrLAq82Z3O-vYtFrxmVIzIuGLVLqVen-Ug1OKS-A_uDuz8GGrm3jNt7FpdvVJPH732G383pzVNgCkUrhxruI6t2vIG5gENQ3zDMJC_UE0yGb6-H"
-        },
-        {
-          "name": "places/ChIJ0_ua_cWrQjQRIbUBC-UUu_E/photos/AdDdOWrQ_0cBkBoMF_lBuW170OUs78XNOcJ8KL4gj8pEO3XddpJsjkIWbiWVRx9hwCm8TruWhMmQCxxJpgErYpoct8maq4opr5qMwUlV4NZdVRl2xR_FTQvOwBcjPAUFORI8tge_7_1pNI957SgDdDaM8Yw0cudupYWTzQyM"
-        },
-        {
-          "name": "places/ChIJ0_ua_cWrQjQRIbUBC-UUu_E/photos/AdDdOWqEncthaTBev6bp2B3ZwGuiWRuVseO1VevPyskWtfkLp8goQ3U35AbNzqq102rQsHuj3jbktMCcUNqBSrwcjsnQteYJaia_cJ6dG8NNhJcrKzEL7qaJr7JKlQQbPs7kBihxyO6JH-cFqOw-m7kET9syGm2oMf_eGMD1"
-        }
+          {
+              "photo_reference": "AWYs27znn8TALunfnB4jCJZWN5hMGW5ZtUaNlUCDo_FWWseMRYl6Is-j1vxBDaX0abOaEVNkhata4bpRSh0CwBgR6xWiPwSHG3tSshTNAA79d3OcXZFeAKXG6dRWZ2OJcwAs3EaVc0HuGebRIm-fNFe7o4x7Ffqyo6aJ9piQ6eH2hXM6e8N7"
+          },
+          {
+              "photo_reference": "AWYs27zD5Cb7U98XU9ROW-FSXfrnRFGCbVGe8gxzNRnsgpnI55XhOo5h0qRZOC3KklKABeCyK2gnbtAC36CqY0QkSVyn4FwMMd4ytSQ_s24moWovgn3rT-rk9CDXMUCQcS94dOL2wS4VwNdjOuS577S-p4wIgGK0s5BWAcVhJQrLaIYCrc8O"
+          },
+          {
+              "photo_reference": "AWYs27wJ4sba_9iXDiL2wB-wN-UOfTmpxEt_wukSKc7j-wQ3ro_-MbhivevWMbFwzdQwuRaoC5p_wn-_bSBTkdd7WUHS3VuhBaCmOch8VSTq1M9EoCZvAgOWG_1G0MqtdXpMCV4QSlmmNYqdcja0wGLj8IqTwsclYKllYledgZnptFJxcku0"
+          },
+          {
+              "photo_reference": "AWYs27wVziLx-vQkSBRZ1ZWXAU3XkIF5i3rJRRJVZxc-lCYdUUkPjvolEqU3i4mdwKkkJQc9zGfZxA0shMY1MWrd310YAzhe4aP31rqyUtYdaI-3v4smlYJ6VQYUDfeyoxr9MoxETShbmkyHri81HW8RWuxfjP4miJEtVfUMspG5vo2C5lOB"
+          },
+          {
+              "photo_reference": "AWYs27zF5V5NYHEwfbR93KCpPUT83ZEYiNIh05ypYQ8YQQezQq78Z14iB8lcDWktbz8j9yqCH7bP-mm8Mm5lgT7p9cEV9hO43uegVDodD1lEqKvQWq2OcvA6lqNyeo7O9jtiMJxf37U28Fq35U4iRSFk8O5jFiZIegOHvSnXt4FCAJPefdtr"
+          },
+          {
+              "photo_reference": "AWYs27wUwCdV6aK19PHK1azOfKVVZPCStbS3E_76g4yzKo9mVLv-LcuhNxfzSwF4euSw58o75sUXpKnLkhoeVJJpihlqWRr8xh1KBShWoqgePsRaz7zBDqWWGZmbW6wMqdy0nqf8kyDjzjBI4BEDQSDEUZHJrOASYZbIma_ZHE6cTw9hGv4E"
+          },
+          {
+              "photo_reference": "AWYs27zQllXDtb31UPStt6s9lJVtXkTyDiaadAJyssY46o56gGyp50ui_5BkER4gpQiCyoY80IcnlODAye3KKpUgRELTGS7IR-5o1DEVgfwo71GOeDI1NX3-tFwFQsXIKaYL01Blej7qyXkmiigaRB64SSwqGAYQrYK8vvdfwifftzzsJpKT"
+          },
+          {
+              "photo_reference": "AWYs27yLKl9Wq25QtJdFMJ4KcteT6OwP33BqMy6BN5g-y5ZBjmeJ6F12MEolZY53A2AnZTc9Vre4ak-z4W_h2hFRV68aiknNHqLXi6UWcwwMKB-4VVTMpLL7SYok-mLcil7NDNiERRiTK9rnDSnCRmaq-hKUrkRIua_y5QEArdKNsUqxD7Bp"
+          },
+          {
+              "photo_reference": "AWYs27zcanNUbDPXCGUeb1fxISbfHL6cRPFnyMlbtp8N23h8ucvHt7kXta1j4csev9XmJG-nn3fxysemNr-Sbkych97atTY3_zhxMAHJ8MYkDW5uj_J5FuTv63sV5jHVDaDMx3PP__y3gakhq-UY-OhPDi_qcNA0Sttz3JUiuKqvWhGh60CW"
+          },
+          {
+              "photo_reference": "AWYs27xumwgVPEYXAIHgu3MUg-dZ8giwCxKLoMKBbgwLrIcPtJA0pZvknJgdgwqDKdfC8VNWfpfaPTnXT1tUqtv8gBZ75CABllDUgf9wUv2K6spnq9zZNgWI3YkpcA2QGba-xRhX_ePJS2LAQdrUNHhAX_sXxe8W8q1LIDPx7_jHdmQkWc2o"
+          }
       ],
-      "googleMapsLinks": {
-        "placeUri": "https://maps.google.com/?cid=17418538957750252833",
-        "reviewsUri": "https://www.google.com/maps/place//data=!4m4!3m3!1s0x3442abc5fd9afbd3:0xf1bb14e50b01b521!9m1!1b1",
-        "photosUri": "https://www.google.com/maps/place//data=!4m3!3m2!1s0x3442abc5fd9afbd3:0xf1bb14e50b01b521!10e5"
-      }
-    },
-    {
-      "id": "ChIJl92ABjKrQjQRUGV4VQcIRaQ",
-      "types": ["restaurant", "point_of_interest", "food", "establishment"],
-      "nationalPhoneNumber": "02 8772 0358",
-      "formattedAddress": "106台灣台北市大安區延吉街131巷35號",
-      "rating": 4.7,
-      "googleMapsUri": "https://maps.google.com/?cid=11836876023204963664",
-      "websiteUri": "https://inline.app/booking/-NEtNQZKrBhDKgQRt11e:inline-live-1/-N_XVJqxvJ-8m_V88HLV",
-      "displayName": {
-        "text": "嵩SUNG 台北大安"
+      "placeUrl": "https://maps.google.com/?cid=3731056318488683292",
+      "summary": "N/A"
+  },
+  {
+      "place_id": "ChIJQ1jvPnyqQjQRbwfSpTCf8GQ",
+      "name": "金鮨（ㄑㄧˊ）日式料理",
+      "geometry": {
+          "lat": 24.9870762,
+          "lng": 121.5785991
       },
-      "currentOpeningHours": {
-        "weekdayDescriptions": [
-          "星期一: 12:00 – 16:00, 17:00 – 23:30",
-          "星期二: 12:00 – 16:00, 17:00 – 23:30",
-          "星期三: 12:00 – 16:00, 17:00 – 23:30",
-          "星期四: 12:00 – 16:00, 17:00 – 23:30",
-          "星期五: 12:00 – 16:00, 17:00 – 00:00",
-          "星期六: 12:00 – 16:00, 17:00 – 00:00",
-          "星期日: 12:00 – 16:00, 17:00 – 00:00"
-        ]
-      },
-      "photos": [
-        {
-          "name": "places/ChIJl92ABjKrQjQRUGV4VQcIRaQ/photos/AdDdOWo7j0wRIzcYxtgAfmXr6UoShTN-4m10s_p6RcO-i5-Hn1v4le90klNi9-XNqT8CcIBKr-TJuT8RnHDB0uaYUYdKEz8iYtINJg4OWDt2VB2KQ82XlJebrYhI12uxjbOCU7NKLORvbmOr1oe_wtAqqdBStkn6yVma_HLs"
-        },
-        {
-          "name": "places/ChIJl92ABjKrQjQRUGV4VQcIRaQ/photos/AdDdOWpROD-Vng96_5zjGezf391j0JZ077OLrH5yFLmVpw_l5ezjRd7xAf-MZf8VSsZFaKRbD7JZjvlmwqQXZJCSA1jrzh0TemAz_iPu1Ud4nDekrfURES2IBrQNh2mALb080yWA8SfH3WRKwgBnFv1C7LPf4Mxl8Uw0i956"
-        },
-        {
-          "name": "places/ChIJl92ABjKrQjQRUGV4VQcIRaQ/photos/AdDdOWqZgxv3TkYWaaJb96g8QuqtUjBf_2s_mM0FT0nm_WIimPkiQ2-bymcYnU1RXoMkXkT9PmS40a7tBeRzFT2ArpNVP4tSsJhrbi57xt9gvU2fFpr8lpQQ5s9rE63g8qWO98dv2g9Q5cNTPcAhlkua6WhR8w8dSzIjkpV3"
-        },
-        {
-          "name": "places/ChIJl92ABjKrQjQRUGV4VQcIRaQ/photos/AdDdOWrnrBoR5hwgeNjCpa7amozxgB13j1YnoO_b5r06w1jEexbzodQVb-AqKXZmEAG8nvO3DQzbGwAy6XRrBaz6gxmWDisE0Qx95JsFW8ifwnxDvJwcXl70O_6EZ9amuJPYEi3QRPhLF4nPq13M7zhr43Epr46eqtTC0dml"
-        },
-        {
-          "name": "places/ChIJl92ABjKrQjQRUGV4VQcIRaQ/photos/AdDdOWr8qlYM_Ix793p4bbxbWORvgcTdD3kF21Hhb3ajQhEthlMwKCnV1VhySMrrFRAxclyiCDHZ1GO8YxWTTgEfl54cEsertHXUeuLZ9qziAlnvdxr4Yrk9fwNcpMz5Xvya6GjyY6nePTg6EZz1A85P9YEAYHkQp3laC7XY"
-        },
-        {
-          "name": "places/ChIJl92ABjKrQjQRUGV4VQcIRaQ/photos/AdDdOWpnXW3ICFFOBWdCtIYjrxxfzhr49idlPATRkrdeOXa-KaukZf7GPEbLTBcKTv41hpsSwZN3stPkZmpREbDaoKVEHPt29t7JV3kWqM4X9uELksTImGj2Bvu8ojlf7R5XTu3Kfvo0pVpJpZX3hfiUgnAlRj5XaBcPEyQL"
-        },
-        {
-          "name": "places/ChIJl92ABjKrQjQRUGV4VQcIRaQ/photos/AdDdOWow0VBPvZSS-T5BiwnahTSZkP5NkeZb7Xj_Tc3wuXryFfwcDjIvddb_cPl3oHN2FS3BG_2k_7qeAxqOYswv65USnEDH1Eq-fthbY11ICRpxXmcCoIhhtnfT1yrCjilaievEc5toJnfxtnQ73HJehkrO8IlgKotK9xa-"
-        },
-        {
-          "name": "places/ChIJl92ABjKrQjQRUGV4VQcIRaQ/photos/AdDdOWqkLgmsY7UFwwuro8DQVEyOAC3de_nY9QL7XVfQaQth3VfzpQpB8Bp5ULYBQpGvO32FAUnuJdocrrBx_pDkZ_jgwb7chhTr0BtMMrMQeVRxXqCHj3XrVdaOZuoERaAzL2aejRMnHQSvbCfHqCcuu8MmBDGd1ac3zQGD"
-        },
-        {
-          "name": "places/ChIJl92ABjKrQjQRUGV4VQcIRaQ/photos/AdDdOWrIIAPa48CQI2YiCzykbHWH-FaDXcLcPGxYomdfdeGVMkjvPed_B6CJljSHi9TTJkCsmJ1WBfKLJQ1ttiD-UL4fIaGfJSQiX6vYEdWajMFEIgDeA43XPUOb5FY85GaJJ-Urc0-Oanv5eq1A7rnx4dDKMbl0VUgp5Ib2"
-        },
-        {
-          "name": "places/ChIJl92ABjKrQjQRUGV4VQcIRaQ/photos/AdDdOWqOPKspCWSG11i--btXv9WtLHOjzBhWEHjBkmYXeLt8TxtEbf9oN0KFzLU3JG1_ysGxwvAltc0_0y0fV-oJJdsU3G7b8Sjdq6R-MDsZolMPWsbOS2k9eHbYpzi4I2y7WH2kZixrcJSbruFIpRUlYT_VayHC0pG3Mr8A"
-        }
-      ],
-      "googleMapsLinks": {
-        "placeUri": "https://maps.google.com/?cid=11836876023204963664",
-        "reviewsUri": "https://www.google.com/maps/place//data=!4m4!3m3!1s0x3442ab320680dd97:0xa445080755786550!9m1!1b1",
-        "photosUri": "https://www.google.com/maps/place//data=!4m3!3m2!1s0x3442ab320680dd97:0xa445080755786550!10e5"
-      }
-    },
-    {
-      "id": "ChIJ5SSP_XWrQjQRC_HHQ6igu0g",
       "types": [
-        "japanese_restaurant",
-        "restaurant",
-        "point_of_interest",
-        "food_store",
-        "store",
-        "food",
-        "establishment"
+          "restaurant",
+          "food",
+          "point_of_interest",
+          "establishment"
       ],
-      "nationalPhoneNumber": "02 8786 0518",
-      "formattedAddress": "110台灣台北市信義區逸仙路42巷17號",
-      "rating": 4.5,
-      "googleMapsUri": "https://maps.google.com/?cid=5240959235927830795",
-      "websiteUri": "https://www.facebook.com/HANNAPastaCafe",
-      "displayName": {
-        "text": "HANNA Pasta Café パスタ カフェ"
-      },
-      "currentOpeningHours": {
-        "weekdayDescriptions": [
-          "星期一: 11:30 – 15:30, 17:30 – 21:30",
-          "星期二: 11:30 – 15:30, 17:30 – 21:30",
-          "星期三: 11:30 – 15:30, 17:30 – 21:30",
-          "星期四: 11:30 – 15:30, 17:30 – 21:30",
-          "星期五: 11:30 – 15:30, 17:30 – 21:30",
-          "星期六: 11:30 – 15:30, 17:30 – 21:30",
-          "星期日: 11:30 – 15:30, 17:30 – 21:30"
-        ]
-      },
+      "address": "116台灣台北市文山區指南路二段205號",
+      "phone": "02 8661 6436",
+      "rating": 3.9,
+      "website": "http://www.facebook.com/jinchinn",
+      "opening_hours": [
+          "星期一: 11:00 – 14:00, 17:00 – 20:00",
+          "星期二: 11:00 – 14:00, 17:00 – 20:00",
+          "星期三: 11:00 – 14:00, 17:00 – 20:00",
+          "星期四: 11:00 – 14:00, 17:00 – 20:00",
+          "星期五: 11:00 – 14:00, 17:00 – 20:00",
+          "星期六: 11:00 – 14:00, 17:00 – 20:00",
+          "星期日: 11:00 – 14:00, 17:00 – 20:00"
+      ],
       "photos": [
-        {
-          "name": "places/ChIJ5SSP_XWrQjQRC_HHQ6igu0g/photos/AdDdOWrHhiEofiaehgaE_DVy7NUvy6VE2-VgvQkzjWgSD1UqD_1rIWxSxOnlpbGheBvUJ6Xc7lkqrAxBDDSADwXIyvpWuMFqj3D9dqk2gY-_Vp2a6seDOjnAXGTnYfXE37XD7qGDSJU4Wr725F8376QVKHKT5czh_RBhxEQh"
-        },
-        {
-          "name": "places/ChIJ5SSP_XWrQjQRC_HHQ6igu0g/photos/AdDdOWpz5PGofQ6x2AxfCt3UMsFwkgUZhS6pH10JYhRSrDu3TiJv-xDd6bf_jGd1bNQF1cG2x_FznXflLuE02Ec-fofDXc904YkUhrdrz3aFrAA0cZfb8SX0QcdQZkeVE3EPbS7pDokI_mwbG6L2lIcVHSUlCljFHFlxkhlw"
-        },
-        {
-          "name": "places/ChIJ5SSP_XWrQjQRC_HHQ6igu0g/photos/AdDdOWof90X0QkaApj00CTlQC7TwtODwpfI8-9T6jOhYZrgiEKDS1-2Zpjmqxdqv9wDD7ukcru7ghPEt_-FrR8Y7cgW20cjrMKg_RJII7nj7SY9q9UDenakVcaWrwnWKV2UMgFZ2toSDlnC1mewflPJ8_hxNDHZIRcCU510A"
-        },
-        {
-          "name": "places/ChIJ5SSP_XWrQjQRC_HHQ6igu0g/photos/AdDdOWqHJzv-0t7PpwKVYWZIp_m8hQoeCZGtbZohnRtpCMmDAgLUTyaQlVaAruAqu3BAlJRnL2qflYMoU1k3oj0WIuYVFFPbxxae0LTAXP6LOKLVfBsrXoTb0zAeOJXHNVxqDB3SZrKBFRn9eknxg2XzAoJDQfdgmgh63tnm"
-        },
-        {
-          "name": "places/ChIJ5SSP_XWrQjQRC_HHQ6igu0g/photos/AdDdOWpnATE3ujSKDKrMqV4KdGpJNUN8_pagXjnMt_6SfCDRiHN_eMKGeXXUNQYwIWEEHDD5hxmRghxCxCxvJkLhFBsCbJCBebZpwwiaTFxayFOlaXaBRep55v-L-6Lhy7M1orjX4sP16FmLn-sZ7Eb3v_lB68nQjb6qScJ9"
-        },
-        {
-          "name": "places/ChIJ5SSP_XWrQjQRC_HHQ6igu0g/photos/AdDdOWoJ1CAVlIXJFMC1_9W5kCsZ9Za4x-juIcwc087VC5qKWgIrESvtwHYygtyuAC01H_iwPuzwo0NyLNmO9B_-zPT9giociuWTHyBVeT7Yl-PJ7mdI3zijvbITemTut0rBRmMDnLcWJlbyhHYa-Ij9R_M0rdt4GCeFKZjy"
-        },
-        {
-          "name": "places/ChIJ5SSP_XWrQjQRC_HHQ6igu0g/photos/AdDdOWpS8fkayiA6gCMxVm9MwkqGu94maVSA_07HIxaD5NyurJ6PsXn9WPr-nCWkYr9zHrKwwbAUAYyrCCNENERKMdx9y6Z2-vmd_MUZLScklffOdJAxNF8-BEv32MjPpbvDXa2Nws8kX-I7dGsCMWJ-ImLWDmQQ9Hk6C8Sy"
-        },
-        {
-          "name": "places/ChIJ5SSP_XWrQjQRC_HHQ6igu0g/photos/AdDdOWrXgtsSQFLkeqNZPgcRWX5XQ4GOYMV6axWeCCGJiYWEH6mbR9K_439Ev-GZi9bkfmPxtT2qHia9usnu2N0ZQF_WBxz-y3N45Ilb5phLATACTuHlkZL3nagnChGAnP-yvsgJci06t3qxSS4SlEz2awQSxk-xZywJpDwy"
-        },
-        {
-          "name": "places/ChIJ5SSP_XWrQjQRC_HHQ6igu0g/photos/AdDdOWq8ineLaFhcVTtq5MM6aMGQbw81Q3XWmd65wPe9nYfusk_g-nALjVXOaC3bd2315D3Vvi4FL46G6pYrnNbEJEnJ0tKrdebq1xEKHao-dsB8XncLlM2IabVmWSoZXcv8w3Qvk2ZxI31vFALGr8PUcYCuGy-nn83bgA0a"
-        },
-        {
-          "name": "places/ChIJ5SSP_XWrQjQRC_HHQ6igu0g/photos/AdDdOWpC7Hrsn9HGwxOoY7_khUGX2PYW6sZohQkxDGD5IuXH9sY7M4gQf9k7ba644ItLM7C52xjQpHWIt23eacFejExun8DX3kq7_wOgun4vHQ_ehpdQHnb1tBWDiiUqsRILcCNJ4eWO4yf2cOjRvvmSQllPNLIcXoq_8FpL"
-        }
+          {
+              "photo_reference": "AWYs27xMSq2iYpZIj3JOpIeE-RS_BP6wJmFAUNzX7iExZdbEfKWvuW3pR2zO72RYvfcm0XEazpFDHLdTvSCM6egpR5vM2enS1yPpp0BvOHx28K7-pXvwQOjF362p65Q71HN12lN3720M-LST6ZMcIcrmzrp67zEV0CqT0F9p-FgvSPKqBktb"
+          },
+          {
+              "photo_reference": "AWYs27zXnILs4HftjU5cOzneZ3KDHuwiNxt9WxyFRvh6R7XsimaUVIbAKWzeCqoGogwgLoDrTUCIIT5WKnJn27eBt9hJEPqPuju3yJwV64qQk62XIFz_m6Tf940xuw-65-VHL-nV8biX1c4Ygiu7xlDajhQzh_V8XeAm_lo59UGoFPWYonfr"
+          },
+          {
+              "photo_reference": "AWYs27ytjzRb4Ao8kDb7J6D3sC5egMnrADp6A0LDvZDu-sZzG-bfeNh9hwzpkOq4HBL3OIcrvyLVJ3tOkYaBoypONQWOMtTRiJvg0lupRXg0FCkpadM8b0pKlAOx7b5V2FJN-3baTt_m1YyZ8g4NHX8FUUR_sslhRx7jLr5NFBzVm2YzRChi"
+          },
+          {
+              "photo_reference": "AWYs27z7Z_lysIjCno14oDdNvs3lPV5fK_ar0uid-_EEqIBUUgPb9LQTw8dCmGmJ9mC2ZJGvUCHx94QO9o2TIvad5baeD2xEU5jzLP_P5_nQ9MlF8w0TjL9FlZ3OBfOHBOc0k6tHtReXsC3zI3H8TzPEQyw-rMKAJkZv4n16BaGEoqc97sci"
+          },
+          {
+              "photo_reference": "AWYs27xVvgHY2UMCaiIDQEXyFLpPmxS_lJgsnmyHBil9J4SgKy0lLIUJJhTbtLZ-hTRw769DfPL23he10Ex3nVXaCFeA-zNmhgvzbgFw8f5Mo-jUwy16_ZioxKshpcwWMFs1sloJ9OjYun5xSr3ksx5qrDXcEQNWvRpr1oSOa5khhLeEBfIB"
+          },
+          {
+              "photo_reference": "AWYs27z_XcHKGffakfawI_uf8KPtSWoezQ127Q6BTOcvRKcWxp3UreUO4xID3cNZP-fTdaf7m0hVRbgxtbk3GjcODdfH2_GTZC0NgF-iV2_D87xd6VYpZWFpN7QJHQmXLzU0-dCLGso2GtWeg10Q_hvMNCEUKP5pGxsKduMOnsRy0hGFp0fV"
+          },
+          {
+              "photo_reference": "AWYs27zMa2pqLSls5jXdELZfIEmRb8aTl_3bpQz9kynU66LTI7mgVCx10nz7XAcg1o9cDCq4_hQ9wKZrCkeeySb2coqEn9OsQUv5ZU2wPsACnNU8jZ3xn4fdQ0LS7m6kYOhWbgF1AIO8l_QxVIbc4dtFp_CC_6kO3Cbkw7RRoCVTJXL4oM8i"
+          },
+          {
+              "photo_reference": "AWYs27xoPe9Vzd9JSwq0x1G5SJavLKYDfXDWvnlzhdgD0YUmNo7rrI10VUptAgSZlkXsB4O3XchMagn90jrQkd8IJs76qvc1lyrPEZyNKsxQInNRHFXjnOBWxKuAwW8hQL4L-Zp_VxGMyI8_1g9x2ght3uMoIFUDpfUvvzDmYKFr4ZKlhzzt"
+          },
+          {
+              "photo_reference": "AWYs27zEO_uHIBMaGe4LwwkGBavRIfUGcgY5RibrnDuxAcNmyhgR5dEIi5IEuUgSVgagNLn_wSdg-VvkD1QxCBrYKVkZeXWvMxW76BGAvZeleitJfEEh4FrxWObmqkTl9sOTgrSPCxe9obcI6CzMmd3_oq3Z4GQWAaWy7CJPQRp5IMvuhdfZ"
+          },
+          {
+              "photo_reference": "AWYs27z-VpZm_PqTbXMIF_7W9IY605D0t5kuSmeji_YH6Kxe0L6O_4yGgio_YZ2yCf3CvrRAI-L2e0WDzsEUUHr1TJBacX3KZi2kEKzBdkTETEX4nT2aiPD0K7Cz8pcJR1gJW7-3SAhvbJOy9BGXGm2MnyQUwGmAacUGWq_4Vv66Q6nk1_50"
+          }
       ],
-      "googleMapsLinks": {
-        "placeUri": "https://maps.google.com/?cid=5240959235927830795",
-        "reviewsUri": "https://www.google.com/maps/place//data=!4m4!3m3!1s0x3442ab75fd8f24e5:0x48bba0a843c7f10b!9m1!1b1",
-        "photosUri": "https://www.google.com/maps/place//data=!4m3!3m2!1s0x3442ab75fd8f24e5:0x48bba0a843c7f10b!10e5"
-      }
-    },
-    {
-      "id": "ChIJD2QAcsCrQjQRsoPgiqP9iBU",
+      "placeUrl": "https://maps.google.com/?cid=7273488429492602735",
+      "summary": "N/A"
+  },
+  {
+      "place_id": "ChIJ5STCsXuqQjQRc3buWK6H2GM",
+      "name": "Arty Burger 政大店",
+      "geometry": {
+          "lat": 24.9887213,
+          "lng": 121.5745576
+      },
       "types": [
-        "chinese_restaurant",
-        "restaurant",
-        "point_of_interest",
-        "food",
-        "establishment"
+          "restaurant",
+          "point_of_interest",
+          "food",
+          "establishment"
       ],
-      "nationalPhoneNumber": "02 2767 2407",
-      "formattedAddress": "105台灣台北市松山區八德路四段72巷10弄16號1樓",
-      "rating": 4.3,
-      "googleMapsUri": "https://maps.google.com/?cid=1551768950480602034",
-      "websiteUri": "https://www.facebook.com/%E5%9B%9B%E6%B5%B7%E4%B8%80%E5%AE%B6%E9%A4%90%E5%BB%B3-%E5%89%B5%E7%AB%8B%E6%96%BC1970%E5%B9%B4-440807629442521/",
-      "displayName": {
-        "text": "四海一家"
-      },
-      "currentOpeningHours": {
-        "weekdayDescriptions": [
-          "星期一: 11:00 – 14:00, 17:00 – 21:00",
-          "星期二: 11:00 – 14:00, 17:00 – 21:00",
-          "星期三: 11:00 – 14:00, 17:00 – 21:00",
-          "星期四: 11:00 – 14:00, 17:00 – 21:00",
-          "星期五: 11:00 – 14:00, 17:00 – 21:00",
-          "星期六: 11:00 – 14:00, 17:00 – 21:00",
-          "星期日: 11:00 – 14:00, 17:00 – 21:00"
-        ]
-      },
+      "address": "116台灣台北市文山區指南路二段45巷10號",
+      "phone": "02 8661 9920",
+      "rating": 4,
+      "website": "https://www.facebook.com/Arty-Burger-215084711859562/?ref=bookmarks",
+      "opening_hours": [
+          "星期一: 07:00 – 14:30",
+          "星期二: 休息",
+          "星期三: 07:00 – 14:30",
+          "星期四: 07:00 – 14:30",
+          "星期五: 07:00 – 14:30",
+          "星期六: 07:00 – 14:30",
+          "星期日: 07:00 – 14:30"
+      ],
       "photos": [
-        {
-          "name": "places/ChIJD2QAcsCrQjQRsoPgiqP9iBU/photos/AdDdOWquCpkYghtucH5E3H9u7keOb-_M6Ol7B70g15dlmnMFLGDhSD65uS-EdsQC4uABAegU7odCXTu0eB77mwa8y4nhe-2Seh5yjMqM0T2LnkVG06yXEk45PzRVazst2b50mzZJ2_qnIfBQUtdejiDFATsLOeaBduRk7fP4"
-        },
-        {
-          "name": "places/ChIJD2QAcsCrQjQRsoPgiqP9iBU/photos/AdDdOWr5IcEjnwdeBGyH0uRLyey_E40iBeFo1wS1cybp2zti8mW0tv6_GMZHZQHsm3pg3n5Gi4F8D6r6ptXPgJQYOMBFh4eTSQD09U7aq-2FV6SBt1RRMBV-A9mbBd3KLBw4T3y6nLCqmLW7JJkgMVXZTG615mTXvXGO5VGu"
-        },
-        {
-          "name": "places/ChIJD2QAcsCrQjQRsoPgiqP9iBU/photos/AdDdOWomJEhJuV_ObYgCJqWH_LlBmnrBD-CFVUgrW9Wca8e1YgR2NgYjpCFNfNZF76sHgfaYisPtr36Xv0HdCJJ1hEUW59CB8fXgE3aILe_lmNyQnUSlbmloIG7mz1ovzSY9pasSY0w-ak8W89HbdcuP8YIHshkoA7foS9UK"
-        },
-        {
-          "name": "places/ChIJD2QAcsCrQjQRsoPgiqP9iBU/photos/AdDdOWqzKf2aoRHTVVOcKxrseA65B6hYrPHFBol_0Y-VuQCVxCQob1kuCw9IJSyYsI_rqbi-AfDnjmPLmiC_1zMeKRnm2MHITCQ3KJZrIF1z5o6L-QUaRyhJNIVqrFpDkG1CMSOtK_AcpjrnxHzYSOUR-H0Z9nv1iuRG8d1Y"
-        },
-        {
-          "name": "places/ChIJD2QAcsCrQjQRsoPgiqP9iBU/photos/AdDdOWqGFEKaSDPqyf3YgTYXkcYFme6Kl4-X71Iw2CYBXbYHPEdTKMyJI-J5D6tWJSjdzAioz6iHrcRhd_tr6ORSYx2YzzMPg-ggosSxDfTISYI-ToYIZJ7p7F8Eh67MIomPul-36sVAJmBgJLr1rK9VPPq7_OAFWgnUWNHU"
-        },
-        {
-          "name": "places/ChIJD2QAcsCrQjQRsoPgiqP9iBU/photos/AdDdOWriKDAQvlDYiN2FKbuHtAEvS44cHiEGWwpngoo9ZFUcN8fMLxU7KY5EOT5ImPXJmfeBaah3OKIiv_iUW5cjR8lNk8QzF_KqsYYhWBs_pUt-_IZjN9NFw6cdsEPnLsKYQ_-7LOQU4IX4UPmVJISPmQZBe1Nf2SBW2tQK"
-        },
-        {
-          "name": "places/ChIJD2QAcsCrQjQRsoPgiqP9iBU/photos/AdDdOWqC7v3TfgvI5pYwW2cyL5003I-_N-Bma0XX0xe-4BypFzkrSUCmp4R5AaKTTSy_PdB_7HS1k3T-gnfoakOgJeq1ex-RlvMQFZbkzGzlkicAr9demktdNqiXNn_ZKaHSdcGl15LCvvLyhQ3cZU3U4Af8tARQxEvhtWLV"
-        },
-        {
-          "name": "places/ChIJD2QAcsCrQjQRsoPgiqP9iBU/photos/AdDdOWrsnVHZnFH4JJrnTeyczbp_Snss2x8Xa6b6pwi7P1KiUhkpAElylZfj6BvoGPNhI1YbSlUu7zmHy_P9LlBmAK1IDMUMpVmVuxCpDlgxlF5gDtjrCakJCIag8_i_QC0c3COeqY_8pci09HsdOBrEN5YdBN2xJrHcTeJg"
-        },
-        {
-          "name": "places/ChIJD2QAcsCrQjQRsoPgiqP9iBU/photos/AdDdOWojra6wcC_xGwu3ST6AytieWVl3K-juiezXadH4WIJuBg136Cl2fAGRSYPmmirTnWXfh1aqmJbZoXo-Yr1UtqalV4ISoSCWH2BCXHtyEImXNgS_u7oCywd9lbUheCnc7ySPz2CKif_zYRgI7jwttNs3bPkODneyfMTE"
-        },
-        {
-          "name": "places/ChIJD2QAcsCrQjQRsoPgiqP9iBU/photos/AdDdOWqeWoSTD-iz708HT60lTW84jtpP56YXAppxhGg3A8NNGWIR86wODspusw-JKrs__SemJGT8vqT99XCnA6zVNt9QETGjXFEebUgqPbQmHZn9M1V67Sfc5ew4mDGW4WKi97Lh9Rofytofu62DAwmjJuPRiTp72QFv-Z9_"
-        }
+          {
+              "photo_reference": "AWYs27wc-WtN16PdjXJ6v8U9CWHtvtRfWo77tl6Rx97pN-Pf6onR-DE5w6RPa4-7j5voKfMCEIwisAQpp-nJgdNDEU6BG0mQrOpDFT7TtKBG1fm2KQsWBz-WTJc5ZOK_j0RDFisux8amcjg2ZEFTNbTZ-FVNVg8zGd-wUG7e5rRLYUMdBAVd"
+          },
+          {
+              "photo_reference": "AWYs27yB7YP4vmBHT75MwWGuGU6wBbEoWwAt6pRE1jTKR--tXv5zp5bL2u_szwpbzYvsioM7oL6upJ13-eDJgdZCIFfl7OOoDGECA3UQEFb_MSRAb1eRPkxTlFSUuI2h6vsvj3OL4csYkd5oKg3MS2nLXOLde0pYq5pcnLpElhF7AK82Sfhh"
+          },
+          {
+              "photo_reference": "AWYs27yFM0KWrisBUvnEmRf7XKo_qCnxFzrK1QoBBRUTC8Hidl6McPT369BaF2HXaq99iXiesaBTVytANtQ3sYiYjYjOWQWYKtiOD0-uPJ3EVQtJ2B5JUb_xMFX64RVrjpNwFDocMTRXHdgCE-pReoxQf2Kk3KN9eamy_4qNW58wliGen6jr"
+          },
+          {
+              "photo_reference": "AWYs27zT_pvybfEWMY9L3UkXq8icccqbsEDz9oOt2S4XH_dUJJuSG75odx-oDhbucvkTJH21K945Jt_b7kuWM3Dlf8c3RXe5rY8g7fYwhBqqcAmMPhS8WLh4Y9NOQiamQDL2WisKACsA5ZIXslYfU1q5WG5DN-9X-uv5TcVyawJikRSSEssX"
+          },
+          {
+              "photo_reference": "AWYs27zOlbjworRXvn8KV23eCUd6KfVGyCklPi-NZf7bx9x9OSo2nvH1d0DaT1b0iVwSIHB7lVSoRfSDsIHaRAgYMeCNXTpmsbvL9ENAbWXuXajddWWQdW_u-7SaFW3Vg99s08s6C-sFanpTUcNShizE_S2ROY0Esbj1mbz1Tu93KqJjfCZO"
+          },
+          {
+              "photo_reference": "AWYs27zuvmM9FVqW6TKqMMn6wEA_N8uu5Fcjf7_Zq0g-4qUouVj7aT36psb03exgtNTxUBG1SEpjjU3RXhHs15OzpDfO16EYV7tKR1_h_cY6aKoTclBeuaalcYLLMJuWykckEB7IGckUaWCZUwwuurv9pfhj2I4tNylpaFdi6kdGQ-v1hZFD"
+          },
+          {
+              "photo_reference": "AWYs27w3rzHlOSabZJ_NQL_eCwQgTNs1aUna6tD4SfYlYVViSZ8xFusnCxEY6Y3OKJquqjy04BoF1CcATsFX8uVtSP6VN1bteJMpiW95ll5nTwGjVQC_SqvcAWXPGim8MeXe_0Q3AONBpajpgvkY3emjJPtEjn-_nBtEqG_IepMDy0r0g-VI"
+          },
+          {
+              "photo_reference": "AWYs27zBe8gmkIjedDNcZZ01JmNkGrK67_MIHirQv7TBp4A3kiFs7jq3UoE2D6JykdzPqo7PS7zyB2hbgVqVrqJt-mtVSrJyFp031SrwG0Zkml5HAxein2g2uIcFv8wQ0Pw2alcIdr8UXj8iSAFpuninQRfqjDwuS8RmT-j97Fg2GAFhOcRn"
+          },
+          {
+              "photo_reference": "AWYs27ysNoIsXJR9-jDaymQrSHj5gKzvRzn1c6c_xCsJ-yMU-HUltezIlxePAX8yF5GzECqetIbuN6Vb3fYfrDIu8ASpvYQTFQnVxjc08-dI-8vKsqMTF7B4AKl-Fo8XPYveGdjp3Xoh30B-F8pOf4zq3Qh7hxrz9lLrXgPdbXvyBY2ixthr"
+          },
+          {
+              "photo_reference": "AWYs27zn3cVndGRc1NxOUTYDBnYWiGJSgkihp5WEUar2I7iu_Tsym25o5u4PYnKNFemqjtXzlOxJ0urZDuDTxzu3kTbwDEPyLzccFiQHZksznHh67q1t-1djqdQdwdveVtYv-q9JIzznhZ4SRk7teeiw4-HV6G50-rZjOObMPPyv5EnL5N2w"
+          }
       ],
-      "googleMapsLinks": {
-        "placeUri": "https://maps.google.com/?cid=1551768950480602034",
-        "reviewsUri": "https://www.google.com/maps/place//data=!4m4!3m3!1s0x3442abc07200640f:0x1588fda38ae083b2!9m1!1b1",
-        "photosUri": "https://www.google.com/maps/place//data=!4m3!3m2!1s0x3442abc07200640f:0x1588fda38ae083b2!10e5"
-      }
-    },
-    {
-      "id": "ChIJ13TOiMarQjQRGCtxcxV5rUo",
+      "placeUrl": "https://maps.google.com/?cid=7194649587610449523",
+      "summary": "N/A"
+  },
+  {
+      "place_id": "ChIJlVNNNHqqQjQRXL9yiUysvlo",
+      "name": "阿里郎韓國小吃",
+      "geometry": {
+          "lat": 24.9881587,
+          "lng": 121.5738649
+      },
       "types": [
-        "chinese_restaurant",
-        "restaurant",
-        "point_of_interest",
-        "food",
-        "establishment"
+          "restaurant",
+          "food",
+          "point_of_interest",
+          "establishment"
       ],
-      "nationalPhoneNumber": "02 2721 4771",
-      "formattedAddress": "106台灣台北市大安區延吉街137巷7弄1號",
-      "rating": 4.2,
-      "googleMapsUri": "https://maps.google.com/?cid=5381090262815681304",
-      "websiteUri": "https://www.facebook.com/halal.chinese.beef.noodle/",
-      "displayName": {
-        "text": "清真中國牛肉麵食館 (大安)"
-      },
-      "currentOpeningHours": {
-        "weekdayDescriptions": [
-          "星期一: 11:30 – 14:00, 17:00 – 20:30",
-          "星期二: 11:30 – 14:00, 17:00 – 20:30",
-          "星期三: 休息",
-          "星期四: 11:30 – 14:00, 17:00 – 20:30",
-          "星期五: 11:30 – 14:00, 17:00 – 20:30",
-          "星期六: 11:30 – 14:00, 17:00 – 20:30",
-          "星期日: 11:30 – 14:00, 17:00 – 20:30"
-        ]
-      },
+      "address": "116台灣台北市文山區指南路二段31號",
+      "phone": "02 2939 0084",
+      "rating": 3.7,
+      "website": "https://elijah888.pixnet.net/blog/post/43712548",
+      "opening_hours": [
+          "星期一: 11:00 – 14:00, 17:00 – 20:00",
+          "星期二: 11:00 – 14:00, 17:00 – 20:00",
+          "星期三: 11:00 – 14:00, 17:00 – 20:00",
+          "星期四: 11:00 – 14:00, 17:00 – 20:00",
+          "星期五: 11:00 – 14:00, 17:00 – 20:00",
+          "星期六: 11:00 – 14:00, 17:00 – 20:00",
+          "星期日: 11:00 – 14:00, 17:00 – 20:00"
+      ],
       "photos": [
-        {
-          "name": "places/ChIJ13TOiMarQjQRGCtxcxV5rUo/photos/AdDdOWos7LSn7fQ94QXcvngkDwrzwvRVi7LTzJU0w1GraSVaeo7WQV-G8XCyzC9nIV0UBwOyfSABRDivE0dN_AOFVF6eHunSS2Wj-jiSFxfX-eiPMfS8nzkPk6LpI0u4WML68WymL_are5TjXgn9V5_5Sc1Lx3VtpeUbjrlh"
-        },
-        {
-          "name": "places/ChIJ13TOiMarQjQRGCtxcxV5rUo/photos/AdDdOWocEHK6jQrU3SxZbdtJ55PpvEAPl6yhOimDAraAdunBGXpgcbNUlk-wH6End5vyNpiU8Xrj-I0gHAmYRnaLFRXvbJkOO1IfOrMuC96Hw0FZGT4RH2zmwDwbj8PyLT6qAXSznlU8_bHq5vuDkXqe0Kk_7dJJrDtqMeI"
-        },
-        {
-          "name": "places/ChIJ13TOiMarQjQRGCtxcxV5rUo/photos/AdDdOWpzjERhAqO2wr4LMEuHOQQPCPr_NedxV11NldeckQhlI9S2MubeH8WfB0Lt80S35WjHwhZYoPrxJK_j7exZmNDo1caajipXRn7bvqoOAgCdb_r7tefgTT6vzABSwY-rJETQLbbll5tK1Ee5Qgkq1VNBmbLm5mm-wFtt"
-        },
-        {
-          "name": "places/ChIJ13TOiMarQjQRGCtxcxV5rUo/photos/AdDdOWqR55_Lk9m0zDzp0iURTOyk1AgplGLvR_RPyavNXhYqeHToVRASwTenXNklrVsdbHKOdbSwKV6lW5zqn90ODvOTHD8HbT2vRVU1PlHvkiKZWz-rxPch5qN0tVEm5n9jWgeNZxnW0O-4Frvk6tYlf-vjYEJ5I9LahL4"
-        },
-        {
-          "name": "places/ChIJ13TOiMarQjQRGCtxcxV5rUo/photos/AdDdOWo_WdSbhu3Pxr2Xcg2E_x8lbgIfVgKRDbsok60AAviUGVOBNFdGLHKtMNvJFJ2FiDnWt6onudqicsQJjRwPYpb82beGp40CdlYp9LUyU-iiDShn9FwXWXsZcGXGKB_WhXlACOy5snsF_KZ1bg2CIS54igxBqosrto0"
-        },
-        {
-          "name": "places/ChIJ13TOiMarQjQRGCtxcxV5rUo/photos/AdDdOWrT247xSoZm8y-OqIjjulbyvWywnvxZqakrs-MBOkA7884CHLYI_GOnRws5_GLl6e8hKA4BlmIC6AIQRIk6xqL0wWjki_eRaDRN2jYCFR9J8c4zoS_jKH00OLMuVvK07Ad9IY6FHgoEU5hvnRyRFyigtetj0HPln620"
-        },
-        {
-          "name": "places/ChIJ13TOiMarQjQRGCtxcxV5rUo/photos/AdDdOWrHEuUyeLz-tfyPYXVcsA3O81Y9T1ax9Hq3h4QTtnap9B5z1D9hDgmTgRoGpa_vRMTnH-zYqsbnLymOrO2b0quXSbsyXMjy8TyN9hnQZsRXw-FJYXpfIcvMPyljmAV7Em3mHHcmefuhiCWo5F3gGdyfv-KgW8w3KxEB"
-        },
-        {
-          "name": "places/ChIJ13TOiMarQjQRGCtxcxV5rUo/photos/AdDdOWplbkIm3iSs7FnLQIFZt5sUtGF77pnHJTVy5fdM1vJq9AAUBfW__Yqz4pjXanXK1vIYcME704jUPbo3yeRct8VGZ8JUxGWztmcklTOk0VS1M2Yh8olqDg3jELIe6W7g6RGlxlP0l-uxzJ7NHz3LtubsfquMWYJn3qNS"
-        },
-        {
-          "name": "places/ChIJ13TOiMarQjQRGCtxcxV5rUo/photos/AdDdOWqRoJmt0yTZAur5fnSYWBwhdYEupHf9K_Wu40C3Mga6eZcuFW2Y5DiLsBzR9RrAruDboYMgm3BCG4ZYZcnDrz5MFSiL4q_i7VZ1EcX-EpFdaA9yS-dNhGiCnWOufYzT221-Mh69B2n4WZlOedqYXqmWxX2C6S0Efwuo"
-        },
-        {
-          "name": "places/ChIJ13TOiMarQjQRGCtxcxV5rUo/photos/AdDdOWpPT5XlO3Eg44aP5RmbjS24JomWGWB97LiiC-tN_jipHSJGTxYI0Y573euTBqzZKvabt7SJkBlDdR00WQN3zFQGmQczqyZjf1Q5xUP9v7CnMVMeKqAb7NLcMaoLa2jkmOLJRH2eoXM9CEHgLIM5TWqMmp5WLz7v-qFW"
-        }
+          {
+              "photo_reference": "AWYs27xrWsACEEPEumegWby1ew_fEZJ41KxwnQ33K-mc8jBap54NxW9NN4nCLV32EEk1DK184f9Mv6REeYJSIGmazJmDpzv6UpFVPAJM3VgkYT49LGlu70C01Tvr3zNCZzAnn4ZpJ-YE1OL-8x65nK4ilNWu_fRLYLMJVZvAggPvSjT751xP"
+          },
+          {
+              "photo_reference": "AWYs27zVwCtgLPs76R3oQG_ZZcfuv4CM686cKvtjqoFbIlyKeR7m3So2k6z8FtCqmpIJJiuKUXIFRyWAV6WXW06S530G9IAn9P_byLA2bmKP3pBk5jCGJQgY8-IMXwUaObzinfa1XA57r3FiKOuKI6vuyOtasVYSybL1I4ve79Pn4bqM3W5b"
+          },
+          {
+              "photo_reference": "AWYs27yfcWXNCak63xMTUunmxUvG0j65jUyzET2sWYM1zyudDObn4X29H3ILjxhtyeM9s3EUxNXQB3YPpmr2l1TRUsgbFqoBq0bmkVx31AFQ8rAALjPxT64_4g1y-mNgpe9HNbcezztw2n13hhaEbY9EMAwMOWbCDxvgMduSgdoj-Vwe3O6O"
+          },
+          {
+              "photo_reference": "AWYs27x0OCI03ZlOD_riLZcQGMNWozCcyCzoIxwmRBAEdOsoZ_6lWEYpGRi1ki-MX29CUnDyq087bUqT1zTfsS5ovMkoP14Na10G3mkkdg-8nTrekcdOfgd3UegjN8pHHhFiun2pbMhbnyvJvb3urTwPFowIXVkppMnEsuwK_px3gce0-6Ln"
+          },
+          {
+              "photo_reference": "AWYs27xJ6NqxhY-jYlUxNFRgEjV_lpLKGFkF7EZaUkcaUM3DgsXlYmaMtic7HhL_robSF7LLwj9Xd1b56E7gBwwx4WexjYMnSv67zi6XwDPygDVHoK_crVer6284hTH--I6L3V8mA2N0LyDiwuVQqO00HQxchH9z8JCT68D5hzW8ekh7yO1W"
+          },
+          {
+              "photo_reference": "AWYs27yI30Dt9_XnMWDP0oziVcLJqUbHH1lqIwb163AB0iQNcFEw-_WWeIEFXY_GrTw_r54cwRRvTBLuD0L0H75MxQJXmmuog27G5yKP1d__-c1h-SqP-JSx4MgEaEJChBwjLcrZrGHHFz10oGZhP6LJaG1QNRnG4Q4jpXqp0vMLnr6MCxqw"
+          },
+          {
+              "photo_reference": "AWYs27wba_MoyM__VyTkoomCWWqr-5mb137w-y5tC3-d5XaWartucLcgf26cV1WC9cQZUlDwOafzs7iNgVrN2mEtzXgCey1L8ix9nvSalgiEmb5BmU5VwOmmbO7jJ-d7Ff_bX-W0Y7rTxIAxTwIl1yfJuKelHtttkXJKWYJNuTf5X6dWviGW"
+          },
+          {
+              "photo_reference": "AWYs27y3yKVqlf3v1CWG7htrwMmn-OtYlHeZtMPoHjKgP5fVS9XQ58mqD7Aqo5Calj-wO9Tlknii7F7AaCPNa_vSF_q9iH6E-3osD4sznaXSSxhL5UEBNtZQvNcLCHOjmY0TMDUbz1_WQNHRznhLIeKMUjiHnGQrIXVJgmKZuLXMm0teDkkL"
+          },
+          {
+              "photo_reference": "AWYs27yfnOLYUOQLBABRpNCwG21VSaTXIuWbGX2ku-1fERK6qlxYKuJ4zg1tnJuT2Gmq7ppDneYFH-ik3ABj4JP4sejosBusdKg0wzR9jMe6jfVe16mr7_5QnZN4YUTFk-O1tTkmfFACGmLPHkDmF0byE_GN0aOhSH7AzY4m09xc2_zg0f6a"
+          },
+          {
+              "photo_reference": "AWYs27zZjQ07WJmXMhv4RhJ_flXaSXYE3vq1vZwW8PK8pf-s9kM4DLcqaDr8u2hQ894q7RwNf3MS_8j2cvGqX3ipUR1Q_mFWbt6AKvLk-onEt3k7Pd-i_pWFoIcKb1BGALK_UfdNv6sDqm_94crZAMpM_ol8ZQYZoNvpvKGcoPxTXYnjRtTt"
+          }
       ],
-      "googleMapsLinks": {
-        "placeUri": "https://maps.google.com/?cid=5381090262815681304",
-        "reviewsUri": "https://www.google.com/maps/place//data=!4m4!3m3!1s0x3442abc688ce74d7:0x4aad791573712b18!9m1!1b1",
-        "photosUri": "https://www.google.com/maps/place//data=!4m3!3m2!1s0x3442abc688ce74d7:0x4aad791573712b18!10e5"
-      }
-    },
-    {
-      "id": "ChIJ5Zls-surQjQRvDrz7KyVZRw",
+      "placeUrl": "https://maps.google.com/?cid=6538853153712029532",
+      "summary": "N/A"
+  },
+  {
+      "place_id": "ChIJuR4UvROqQjQRRWgNyXirXoA",
+      "name": "福勝亭 興隆店",
+      "geometry": {
+          "lat": 25.0003913,
+          "lng": 121.5560998
+      },
       "types": [
-        "fast_food_restaurant",
-        "hamburger_restaurant",
-        "brunch_restaurant",
-        "american_restaurant",
-        "restaurant",
-        "point_of_interest",
-        "food",
-        "establishment"
+          "restaurant",
+          "food",
+          "point_of_interest",
+          "establishment"
       ],
-      "nationalPhoneNumber": "02 2741 5210",
-      "formattedAddress": "106台灣台北市大安區光復南路286號",
-      "rating": 3.8,
-      "googleMapsUri": "https://maps.google.com/?cid=2046206175652035260",
-      "websiteUri": "https://www.mcdonalds.com/tw/zh-tw.html",
-      "displayName": {
-        "text": "麥當勞 台北光復餐廳"
-      },
-      "currentOpeningHours": {
-        "weekdayDescriptions": [
-          "星期一: 04:00 – 03:00",
-          "星期二: 04:00 – 03:00",
-          "星期三: 04:00 – 03:00",
-          "星期四: 04:00 – 03:00",
-          "星期五: 04:00 – 03:00",
-          "星期六: 04:00 – 03:00",
-          "星期日: 04:00 – 03:00"
-        ]
-      },
+      "address": "116台灣台北市文山區興隆路三段63號",
+      "phone": "02 2930 5090",
+      "rating": 3.7,
+      "website": "http://www.tonkatsu.com.tw/",
+      "opening_hours": [
+          "星期一: 11:00 – 21:00",
+          "星期二: 11:00 – 21:00",
+          "星期三: 11:00 – 21:00",
+          "星期四: 11:00 – 21:00",
+          "星期五: 11:00 – 21:00",
+          "星期六: 11:00 – 21:00",
+          "星期日: 11:00 – 21:00"
+      ],
       "photos": [
-        {
-          "name": "places/ChIJ5Zls-surQjQRvDrz7KyVZRw/photos/AdDdOWrwlJpvgnbXtIT166-Xph0hHujDoG8kvGifYlY_5FApE-NN4issvg7as3Yy4TdHynH7PB-PhRx1TQlgazQVZhm8-JM-E0ZlqcrJLXLI3b6wx8LVt537A6DHTxsPk6siSMCHqpJitDeOlaeEa4Qg1ZLmATvYwsCg0fQt"
-        },
-        {
-          "name": "places/ChIJ5Zls-surQjQRvDrz7KyVZRw/photos/AdDdOWpp6IZHtqf5uCu3d7QZvxi13VTeXteq1Z-OPkcMbsn8TkS1e5GAy3QlhbnLwbNGcFnL86aY4dm3ioGqGNlYWa3_tNoZbzLF0hyb9uBhVFkigMcD4rAwfibUVn9YZ5AMQ8bsmjy40JXxMvP2zdZfVN--j7Pftgl-Onw"
-        },
-        {
-          "name": "places/ChIJ5Zls-surQjQRvDrz7KyVZRw/photos/AdDdOWoG3hh1tXcbl0kCb-2fA5solAEGaCjLD3uRXv96IgJshBvcK5eWqlitjdCZmDwF6tjmNtDBmqYFxF2LS_0xDKO6d56qg4QXHRKaoc5wtoV6QYagVw5dfN8r0ENV2GChqCFd8GsE77OPdEvn5EVs1r6wzu7mp-bn_jim"
-        },
-        {
-          "name": "places/ChIJ5Zls-surQjQRvDrz7KyVZRw/photos/AdDdOWqzT2attdj8N4ilU8fQdsVYmtdQ-KjLaGiqRXqXTGdRU_Z-HQWmAnjJv4afUvztmRRiesGV1jGoJrb_PdUE41izaApXNHeo2_17KIG1Rn9J_-vnjv23u37xjnVCmGDX_N25b_RojqO5DFHIj0ClFfxfQwV-o4MTJ5Mp"
-        },
-        {
-          "name": "places/ChIJ5Zls-surQjQRvDrz7KyVZRw/photos/AdDdOWpTgP4t5tzthgLyfiEPy9zJWPgEjNblTSPG4s4fauAqZ0_1qqz7cqCWThLfaIITIAPvVgdUAzksQ9rMJ1-Scdnh7zfXPbTIDHgCWZCaLPZZjOpSH2i64qB825aiu47WAqm0sJfY85ofmTH21M75jnhmfhr5kzdzDWH0"
-        },
-        {
-          "name": "places/ChIJ5Zls-surQjQRvDrz7KyVZRw/photos/AdDdOWpma1FKybaf0d_p5WnBokaBcM3vBIKRUtUqCCn9oijS9EgRSAM6Rx7-t09uICqbYpw97tDgggBzfIJGGmKtwEUKpgXhPkT8rUVua1MCPggdSKeQvvSF8QuwV0EswZXhkB4V8nW3TdH30spEprrIsGCgrFz-_Ud_Ns8"
-        },
-        {
-          "name": "places/ChIJ5Zls-surQjQRvDrz7KyVZRw/photos/AdDdOWoBur5x4bKHfZUMGeXP3Zx9U6BOV7koz58CcPgGypYEkfUU6skjuYsUFGbaEfBNfsT461o71oX4p74kTYIhTuYTBd4rOH6fhCCyKjzV6XbJp4B_ERso4GV19APjkHLiSxBaWUhuUXZBH-JIgoCTF-jz0LMf-jXUXNRP"
-        },
-        {
-          "name": "places/ChIJ5Zls-surQjQRvDrz7KyVZRw/photos/AdDdOWpNrdJE2wlE6QcJlvsxsHWvlzSRBZtu6Xick2m5LhvwK4cxwojEp9Hn7USAsOuoeJsFe6ddKCqIjfH_bYEfY2xPLblzZfZyLMs_rVcYNFRk7oZdVMWMjrMD-j1T4mM6zXDiAA5jvm1JXC6FqaLIlLA3awZuIOx6ANql"
-        },
-        {
-          "name": "places/ChIJ5Zls-surQjQRvDrz7KyVZRw/photos/AdDdOWqQTHRPmK4q47LTonepuWcMq-ZTvJghOEnntVQgjqUN5Hk0sZTfkrdJXfkZBFRTv73VNYvs_9j9D9XtsNDptbJLE-Il-cLPxupDuRzBpd75JBfNgHkf9MTQLJYTbEIaJhhRMwsYN9TdxxjT7m3O8I9PS1vL9y1uPHbl"
-        },
-        {
-          "name": "places/ChIJ5Zls-surQjQRvDrz7KyVZRw/photos/AdDdOWrndDwhQ2fu-DdNBYqNTeILN9v-XIQxyleSoxo39GuNWXxVZAjXYdcMzz4SLWo59ahBON1fO_517Mm3vhToyMoMXT2p4jdkAcFYPN3qmveYtV4_1coI00vRTmNAuGExnm8aMz_Ujfn98_nE_w-gW08IsOwgY5Mboc6G"
-        }
+          {
+              "photo_reference": "AWYs27xjG15AZ2he4L2zEvPWOpDN2hTXWvRKvvGAS2P7spBzh_Eb5SQl6YHCyrCSxds46-vC4BBaemJ25JH-RnK97qKD8_eTEaNw8zF1zPmwi2ApTeGgPFJf-neGyTaqFQkvWTg3q8abKSGd5-DCi7D6cex19Z7pFNtpmvaqEY1K5b85mB1X"
+          },
+          {
+              "photo_reference": "AWYs27ybpik0Vl7KE6kNfHnHQSuXV7a7YrotXwcQFHTuszzg5G0_NwQY2eXaxfggj8QHRELlyod8KntlkFDKi6SOj5eGm6sPH1qFSXP_8uxBBgs4Uzo8w4qADKI2c_uYVnACob9CModGnei20DJ4bCLilUqZz2CjIcfQIC8-JFEvG2t7rvQM"
+          },
+          {
+              "photo_reference": "AWYs27zgf_mWhnyR5ZKaT71IVacmGygWotjCYZ981saTJvCqWg4IB0pb9kaxYEN0CXkRTIHwX60fCkJwmZEiYo5sacG16IiE6QZIXX6Z1eBCpDcbA-oGDSdZ6SnFMTBOivKOy_RFN0jQJudmQwo2zjdhK3QoPk0wEAxzXZGWfvHfbgwhl0P-"
+          },
+          {
+              "photo_reference": "AWYs27xkwbh5Tjy0eGfPvVPtcAiPhGWyLPL0_GrzdhxyfkmfbI3kquYLSFms1fFbJZypIeFwvst0ddhQup2kTP188K1qDHkx-sNgQVdIcMK4Fhj_2rJUG6HqSH7LCNKJfH3kaSO7QXjEYSS3mabpfcVfejoNpyiwRkg9j0H1-DuL5LA7mGEO"
+          },
+          {
+              "photo_reference": "AWYs27yf7EBE7a7ry-hRYbc9ASqHyrsUPzKJpP1h5dwyvJGZFwW4lAGoelgvBi_Z9PKvu8KfFeimJPz5fDCRkV9o734JzKwlXU9QPBpU-OZOU-DeYuwHxCa1cBcmRE8v-bCRmdM30GQGimSChu2YYAKD2S5q8WOljO-h5DokM0Or6cFwpbfy"
+          },
+          {
+              "photo_reference": "AWYs27wGWZ4Km36QoYSewGQu0aSOk-I9B3desrjrMBuuMWpMR34Y6nxjWilWEvbNlhDMTYt8QF7W9F_mtjV85lRLvM8oXAdkYTM9OAkoV_tocRJvdHOMD64z3ehJDNKb2OCkicQxGeM4AFaOH4kG_xraNbSqf3lM684lNGcD95wOJ2T7fa2D"
+          },
+          {
+              "photo_reference": "AWYs27yNayUkYhchmfBCfpqEIQgmkkl-T8NvlmxMVz8rz6-mh8ugVx1acJVhkhZXgZIHg7G5HGISxF37DQUCA1KxXwKmuJ_CGs6CpJjGCBUtEwPk4lkVnxrztfoH5VZHzb7Jp-HMjO92PgPjdMgdNT4bYMPPGivlTatHDmwcuyZSpJ9rO0k"
+          },
+          {
+              "photo_reference": "AWYs27zGWcDzOhYjpBtcdwxxAyUFWRF7ted4XFcnyHwBE2GN0j_E_hTIto4p9caxSxPsD8zfTL2jFYlorzIm6etcy-ipP8BRR3ZI1N4tfWAEhN1ObGR0yfoNwgHH6kxtYadlKiVhv_3k1Bz6xLD8-UReZVSIPwcF6QR7dgf98j8FOufsuaVZ"
+          },
+          {
+              "photo_reference": "AWYs27yFB2wVLbvVyQSb_x1tx_19I--AS7DyHQL9uF2cMC2YPuioAV3UT8noKV36oPAJQGNO-3g5YcC5edTDodHM92_UJ4OAo7OCKrlsr6auMCVEiT_XD2aBF0ThR9gd6czT7Ug0j-TIMMNyFC2fMHqWyb4QKVoD9PF3NahM0o1Rx9zOAJ4k"
+          },
+          {
+              "photo_reference": "AWYs27zPaZxJLlP_k_to7anCJm1W-ZeD2USHSE5vsMGOB9jMt6qKaXjTZA-51Yt7cRHsmHDpwBr7kzka0M1tvsnee9poPrbLgx5G6L2qHQ_8YlllkHwLV2geWLzQJA5g29p3N5zHgoxDUFEMAAWzLbK-J5PycSMHGd8u2NnHpKCSvIV5kqCk"
+          }
       ],
-      "googleMapsLinks": {
-        "placeUri": "https://maps.google.com/?cid=2046206175652035260",
-        "reviewsUri": "https://www.google.com/maps/place//data=!4m4!3m3!1s0x3442abcbfa6c99e5:0x1c6595acecf33abc!9m1!1b1",
-        "photosUri": "https://www.google.com/maps/place//data=!4m3!3m2!1s0x3442abcbfa6c99e5:0x1c6595acecf33abc!10e5"
-      }
-    },
-    {
-      "id": "ChIJxVRtzAirQjQRqeZznUjrGb0",
-      "types": ["restaurant", "point_of_interest", "food", "establishment"],
-      "nationalPhoneNumber": "02 2748 5133",
-      "formattedAddress": "105台灣台北市松山區八德路四段217號",
-      "rating": 4.5,
-      "googleMapsUri": "https://maps.google.com/?cid=13626180844697937577",
-      "websiteUri": "https://wankeshabu.com/",
-      "displayName": {
-        "text": "萬客什鍋 八德店"
+      "placeUrl": "https://maps.google.com/?cid=9250019219923101765",
+      "summary": "N/A"
+  },
+  {
+      "place_id": "ChIJowet3KQCaDQRN0rk-e5iXV4",
+      "name": "新北",
+      "geometry": {
+          "lat": 25.0622095,
+          "lng": 121.4570447
       },
-      "currentOpeningHours": {
-        "weekdayDescriptions": [
-          "星期一: 11:30 – 02:00",
-          "星期二: 11:30 – 02:00",
-          "星期三: 11:30 – 02:00",
-          "星期四: 11:30 – 02:00",
-          "星期五: 11:30 – 03:00",
-          "星期六: 11:30 – 03:00",
-          "星期日: 11:30 – 02:00"
-        ]
-      },
+      "types": [
+          "colloquial_area",
+          "locality",
+          "political"
+      ],
+      "address": "台灣新北市板橋區新北",
+      "phone": "N/A",
+      "website": "N/A",
+      "opening_hours": [],
       "photos": [
-        {
-          "name": "places/ChIJxVRtzAirQjQRqeZznUjrGb0/photos/AdDdOWq50XczrCyESmeQQdRN8Lig8FPFdZyhqzu29RlVVY8TDXImgHIln7Sz5HalAlJfMjfETMFwzCD_4G2PO_MjzyavGYw1ILDQ-3IXO5CxKClXa7UBSUDCytC6sFYMHS__W0Bpy6t0yjMyLa9tDRliSKYBVwuV22kRJFMB"
-        },
-        {
-          "name": "places/ChIJxVRtzAirQjQRqeZznUjrGb0/photos/AdDdOWo0Hham-o23_YINPDjbXRqPLUgjxI7kLBFYYWUFhoxq5ZO7kSFt2BfHrcpufLhV-o3phruX31hpUfn0anhXXwYI4LF4TcMEmZSfbF62794rduYJp-1yff-X-HgBF8BTqIeFmzl2wgKB6KcJpe5rB0mnEWPu6uNwoak5"
-        },
-        {
-          "name": "places/ChIJxVRtzAirQjQRqeZznUjrGb0/photos/AdDdOWpWx4tHJNUZOP8ekTdOtFtZyPskuNyOqPkAStTyphvZBMFoYim8JywHlN6NRIG_7t18wZtdGPfuzrD-DWWzqCHvfDHx1igHMCccUkbQiotS_yNnsU4SA9hBEJvSmrXPBt_Oiv0jGPaJKnZx4g1OqpY1Z52DGasItclX"
-        },
-        {
-          "name": "places/ChIJxVRtzAirQjQRqeZznUjrGb0/photos/AdDdOWoKrAggoQX5H8Csy6FXTGxVlROXbXQyuNPrMPpWYI1KU3PSY9oFfQoMkMqBUfKj263MHxxxjHzuhLVW4OZIrrkOF50tA4iDfCaEcVxoortjqfU8EO0IEuy1_luZ_mzVM9maJbeYNXz43XQCMhvRfXi7eT4LiPNvLRuP"
-        },
-        {
-          "name": "places/ChIJxVRtzAirQjQRqeZznUjrGb0/photos/AdDdOWrCRYsup3d_QcqgqROHfkLh11BjwUkqCx9OZo4h6wAJKSQMZJ5JJH6Yo9i_6HS40uyG8LFP2Gyjs6zsPTKQ5BO58Rp8Lc0GWbkWqOkbkzqRnBREsfvdgwJq-6nnaGlwhTUQH9lOwBAAY9nZYJNLbsLuRjJAVebWN2Re"
-        },
-        {
-          "name": "places/ChIJxVRtzAirQjQRqeZznUjrGb0/photos/AdDdOWornpQSIg80vR-2t-Wwxj2dHfDy6Cj9ChpsJuI2VrAqCZVHAIRRrNFcvQyJb8R7xSlEz6IOuwYAdCo4LWUZhOsA_HtNFnZyDfzSpk0PY9l7Aja6erUGlSOfEFVt0fzCZeusUN5NKrcPzQMY5Ex5y_YASfJ28ahrYvj9"
-        },
-        {
-          "name": "places/ChIJxVRtzAirQjQRqeZznUjrGb0/photos/AdDdOWpWpfs4x5iBj4XLwzMlnz9x12cboKW6uaxkDMA0GF-cWfnMpgx4vX_0MqK7BMjQlqX42REtum4zUbvDHrChVaD4zosXOqrOqq0oeQLoTLsVU9IzZ59tiC9lwuqUGj3cSqwWoZtrLS5ifpuqS2cE0ZEQFU9bLX2OzJij"
-        },
-        {
-          "name": "places/ChIJxVRtzAirQjQRqeZznUjrGb0/photos/AdDdOWoSNuySrBWY4-Mo8aAVyKzZowsXLEil4r1MkY_MQpjaU8LCb-m3wm7SlvLrReFI84_3a60T5DrcvDX-kc5s7zKDCqoZcOFGo9UuTzI-9Ha1RpXiJsw6obsXbBadOgm0SHKMHumoJaufxYvxSwAzdFIxyoDIfhmLsPSY"
-        },
-        {
-          "name": "places/ChIJxVRtzAirQjQRqeZznUjrGb0/photos/AdDdOWqLvI-DfQRmhMM_4R3SkrWn7ARGv9vZIFXSiiJsg-oS_J-uTVy0ncA9ylBL1GMRHb04oMZdl5wxcNl0kwNbDJUTI0oivCwTuDNnJrkLfiRMYXFB-WmQExyi6mkaf__q-fFh2VmbtpTm_YzNpna1A50oa-kG2Yf1pCwY"
-        },
-        {
-          "name": "places/ChIJxVRtzAirQjQRqeZznUjrGb0/photos/AdDdOWpQDq-MKt_nw0iW3wcMIJ0jAlB7I-3SLdpNni7Wl1Y8-lfyj7TL1j-ch3Db64yuUa0FnukU3O9aShdqF8reWmJ71GK-G7K6UYicvjaLMJSVJqJJ9BbnBbqW4RV0gH-BbePKwZ_vLyAsnjqRBFPLtTm7yRTjqCQfHbbf"
-        }
+          {
+              "photo_reference": "AWYs27w05cCXY6TxcqnhNIzD3Gwg3z7OBjzL7YaJAtU6Ndy9MmJXr1SAbA4pPbeMhO5lPTQufvSzZDQwf0n7aJ4acJQKD1YUgtnZsj77tYE2EDMNW441AUowPAdVpSi43xnLaWy3EXGv3LphprtCaQESKh9t0WoYmxPUH7pTmjUlGVDxN3-i"
+          },
+          {
+              "photo_reference": "AWYs27yz28WxFOUHBTp0ArX5k5K0P_r3W3xH0XENl5k13H30I1kTQPBIwCTUX4xc9YI0A9MCwDj_CLN4ofga1PsTfenqig7qWw6sCQsrapjuSdLz5mzB7UrqmXT4RRwGtUMnrOstaQbs3qqHC2xMWwyk_VLnxYm5wKTOS7Xb7aSh0qOKo_SH"
+          },
+          {
+              "photo_reference": "AWYs27w4mFwO1hqbnjfc5j9qPanfKjGobF9xjfWpyNoPaofg1L1B-iCbgqt5t8VohWFnti8ebJj5KsNx7sAXOMZBri3VDuChxL8PKzdSHFp1CxZzOSNnmod07NBuatKBK56xqfxmHPKYs6v3jzU7noqPyOjzk_GFB0PrblyG43RwzACkjp_o"
+          },
+          {
+              "photo_reference": "AWYs27xzPov8QZuQCxRv8UdZTa3KK0SfaYiHnJ4p1ERHnHm882mW98TmKMVDQVzyc4JoElC32TCVUD5uRWybjApUE5U457HiAaQmOuMQwTJPLrWZMUu_VAgJUunQr_3D2tVzSbpoUWcMCQyq4ASlluHDPp-cSXBmHTjRcL6qtoL0TDFH-r_E"
+          },
+          {
+              "photo_reference": "AWYs27wEnhyKkPyQTlJkfMsljC7Wob2PO0pxhGHxod1bdC2_CYvo-o4sF57-wtWvcF1dwq1dfN4CgT1qH-EqmEnjIPdZoiO163qF0nA34D0YhpoeXZ6Y12rDpP8PSQjbT6lH_Y_c07bRcoiF-ii6gGBJa6zt85vCfyA5ZtIbPJf1Yw9EnLNl"
+          },
+          {
+              "photo_reference": "AWYs27yjnJ1NryTl9lK0kkslcDoZ08lFJO-QUmqmSF7eRA3wM8EsljMe5pZ1x61nGxXMuf8-d-eFYsW8vki9bdEwmSXTadttxqaraAtYJPh9cIkqo2C_VKpWpqbKaES59Pk132d9vtTTTF9aQeS2zggaKovf6qxxN8C-CObAKmd9DU1SE3bt"
+          },
+          {
+              "photo_reference": "AWYs27wsVGRoRIWh1kpJI9W4Eh2z3zuhnpyjqe_n07NvRXlqZXtjk818mrc-f659Cm7Wwo7mIRWDIALQBtX_trRINO21k-OzNXqio6V5WShw_dAKrxMai_7RVxZ5sj0S_SKi0ioPbXQ8Pqc3Sa21qQb_loL_-XN7LzkECrfMS1_SzcYGQ-kp"
+          },
+          {
+              "photo_reference": "AWYs27xUAZvQryf2WZp2BYLk8GpbyQPVvMMHYBWj3mfHO3oZ37PcRV1gcBPskiCPoRASMV6xV9FDVv3UoYphcmhavfe_xfxqkpUZoqFJvBPavTf3OD0ic6uR1SCzqdIUwq7N6rl3yUQkEaFE3ToP0iwMqRKp-lOpK6mA4y75no6ENXwG_D66"
+          },
+          {
+              "photo_reference": "AWYs27wQbtDbCNjcC91birYpmbD_HU__f0Dmz5w139DWNljOgFHgtTYSm4i53-6TzKGKVqJCP3RFbHubrdseup477SWugZxlPJpxMKncyEfkWgWO7_gD64mRQbGcdxVhaI738-SirG50oTzHijDqUFLAAZyhuGc-COj7LXgLnvj-QR6V5Q3D"
+          },
+          {
+              "photo_reference": "AWYs27y19zkgAgD_PVhj2-cQJACna_LUEKF8OScyVyrHvmiHMqFN2nxZ2jpJdnVTdjBg7ilEQyVVJiVBClkYlUJxRX5UxhS9uoUP0bkOzbqp_bpV0WvbPbQYFp1O-4JoBd1rvg_rY-h_w4BmUjK2Os8ts6Nqq0iqiE0i95nd83YleQ_TVtOt"
+          }
       ],
-      "googleMapsLinks": {
-        "placeUri": "https://maps.google.com/?cid=13626180844697937577",
-        "reviewsUri": "https://www.google.com/maps/place//data=!4m4!3m3!1s0x3442ab08cc6d54c5:0xbd19eb489d73e6a9!9m1!1b1",
-        "photosUri": "https://www.google.com/maps/place//data=!4m3!3m2!1s0x3442ab08cc6d54c5:0xbd19eb489d73e6a9!10e5"
-      }
-    },
-    {
-      "id": "ChIJSeEGna-rQjQR67y_sDHUntA",
-      "types": ["restaurant", "point_of_interest", "food", "establishment"],
-      "nationalPhoneNumber": "02 2779 0528",
-      "formattedAddress": "106台灣台北市大安區忠孝東路四段177號2樓",
-      "rating": 4.4,
-      "googleMapsUri": "https://maps.google.com/?cid=15032685916093136107",
-      "websiteUri": "https://www.tripodking.com.tw/",
-      "displayName": {
-        "text": "鼎王麻辣鍋(台北忠孝店)"
-      },
-      "currentOpeningHours": {
-        "weekdayDescriptions": [
-          "星期一: 11:30 – 02:00",
-          "星期二: 11:30 – 02:00",
-          "星期三: 11:30 – 02:00",
-          "星期四: 11:30 – 02:00",
-          "星期五: 11:30 – 02:00",
-          "星期六: 11:30 – 02:00",
-          "星期日: 11:30 – 02:00"
-        ]
-      },
-      "photos": [
-        {
-          "name": "places/ChIJSeEGna-rQjQR67y_sDHUntA/photos/AdDdOWothCincBtCs-CXrpctpXyHuhdk2X0trNzmEGLgdikCy3GcM5AcmDHq_EFfRWIJthX2m9rMLBjRhmjuHsNwprpiS7Voo5K6AM1LlWKEjhpUnbbHFvHrKlPj7yrZB4sP_FkYErJ8n2QoAz5MYtNkB1vR60OVbFH1RNEN"
-        },
-        {
-          "name": "places/ChIJSeEGna-rQjQR67y_sDHUntA/photos/AdDdOWoVHVcMGkBLXtXrJM7CQwTQSNIYcT7dSA3XCj2eYHWv73QxSezlEZfWHCAMyMYeYA31TjDIhwa-VtLoZkNkLBNICD3y-gWFlZ7P17dnl5m5x2LQpvrUn22uni33Y_icCOHpIvbJB-fXXtN6oBA1KX17hu_DDCt3qLUv"
-        },
-        {
-          "name": "places/ChIJSeEGna-rQjQR67y_sDHUntA/photos/AdDdOWoNgTxvelUfqS_kPZoBo2O0WxQ0BZdd3BGYSupUQtNNFyPgsy_T6K3Xt6sghl0LxN7wy-xR9ciYLdy_ot7bjCpI0bUQRskF1joDnmM3igPes-6_WIiT2fbsT7LsWqXvyW2AMRCclee0H8N9Y62SCXrlsRusDcCelRzN"
-        },
-        {
-          "name": "places/ChIJSeEGna-rQjQR67y_sDHUntA/photos/AdDdOWoCHYUX0gChlOn9R5t8IFeUvceJWV0IMPI7yYVGw8_br2D9eqANS2_FUSYmGvQnTebgX1UFJZLKTkf5HaIYXrkXossbJI12IjeTCzwlWHtSoNpwesFfgTIaGkAu1BBg-VAEKqLNckj_VMTqj7PASTUxhkVuWn2D9iEB"
-        },
-        {
-          "name": "places/ChIJSeEGna-rQjQR67y_sDHUntA/photos/AdDdOWpdBZ8p6KnGQaNnIRRk2U7UIbFEfmAt1rX5AgAKIO3pHqbftwtf1gv1D-nUVvYuzq0JBsNsBSFlmq_nwKl1ZSWSQ7j1BDdW78r1xV7DedY_9GaiU6HMLrKe_cWCzA75rjmvUPQQXEhjYgS4VaW84FqXgNjWVyFGGZU4"
-        },
-        {
-          "name": "places/ChIJSeEGna-rQjQR67y_sDHUntA/photos/AdDdOWo8QwT6-_Tcr6_B3XvxjEl7VEcEDDn8-pavGTjtE_Pe7kUheZe77JA3QtQmReydTDWff91Iyr3gldVMVEQk1iaSOVbVHH4kYovviDa1aJ9x_Qjp29p0p9ba3tlksA8Rr0Qp8Pmxj-fjoK51-DfUT6vLg4wnfV8O4aYH"
-        },
-        {
-          "name": "places/ChIJSeEGna-rQjQR67y_sDHUntA/photos/AdDdOWopePZFqyYvFQwDa4mj7d5sMMPUVWCjVKiEzj3eqq35tCuimNNnt_xfyxxLQj6tVucRpmf0M9pzDvlgLDeIRzFgYLsVF1PYKyuuG2Nsk_LtU_v8k-aUGskSK3ydORY8E8BbZXGtEBQ7ceWI16B5W-N_vKv9PWS6uyAR"
-        },
-        {
-          "name": "places/ChIJSeEGna-rQjQR67y_sDHUntA/photos/AdDdOWpf3Qyq0sz6XLm503iUIhxc7x3tr9xdVLwfxYlOIfTrY6gAycE-atNAWzdEd7qB8WqUsOQdEFd_Nt3pvkllw8HAzT0bI1mt5x0QFeXwXaGdigmFJN4j3Vz8GjI0bnh5Z_joBW7xWdV7OCLIGW_AxLwvpKme9fIruT97"
-        },
-        {
-          "name": "places/ChIJSeEGna-rQjQR67y_sDHUntA/photos/AdDdOWrlvNYbvgROfrPi3U2U2gEK4n1kk4NWgdljHY3mVjTMWOjLji4KRFrIHLw2UNPcgp2tsc7V225mpGFOxgnTuV_j9f9CerPP4ynrp2RsaZKQvOtdktab9TFBM2lcCaizGgYsjfsBqAON9pf2xatcqRtUwoqNg9SQ-msm"
-        },
-        {
-          "name": "places/ChIJSeEGna-rQjQR67y_sDHUntA/photos/AdDdOWo0u0Qp4J7O7CmF4DmChD2nRB3jaAfuOgBEyl5v9F5OSGSIBwsg52jkJFuyIZA0sn1xw1ARsttrA-SxfTfwWssx7Tw5G3lGAF4Q4ntmCKoTge5sw_E6V8UxNLG1cMj5_odTXuC4q-ocLRhx8R2NNyLPBPoyXXjPHPxX"
-        }
-      ],
-      "googleMapsLinks": {
-        "placeUri": "https://maps.google.com/?cid=15032685916093136107",
-        "reviewsUri": "https://www.google.com/maps/place//data=!4m4!3m3!1s0x3442abaf9d06e149:0xd09ed431b0bfbceb!9m1!1b1",
-        "photosUri": "https://www.google.com/maps/place//data=!4m3!3m2!1s0x3442abaf9d06e149:0xd09ed431b0bfbceb!10e5"
-      }
-    }
-  ]
-}
+      "placeUrl": "https://maps.google.com/?q=%E5%8F%B0%E7%81%A3%E6%96%B0%E5%8C%97%E5%B8%82%E6%9D%BF%E6%A9%8B%E5%8D%80%E6%96%B0%E5%8C%97&ftid=0x346802a4dcad07a3:0x5e5d62eef9e44a37",
+      "summary": "N/A"
+  }
+]

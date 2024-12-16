@@ -18,7 +18,7 @@ const router = useRouter()
 const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 
 
-const { places } = DefaultPlaces
+const places  = DefaultPlaces
 
 const defaultPlacesData = ref([])
 const emit = defineEmits(['open-detail-modal'])
@@ -95,11 +95,11 @@ const openDetailModal = (detailId) => {
             key:item.id
             class="w-full mb-3 transition-colors rounded-md p1 bg-gray hover:bg-primary-100"
           >
-            <a href="#" @click="openDetailModal(item.id)">
+            <a href="#" @click="openDetailModal(item.place_id)">
               <figure class="flex p-1 group">
                 <div class="w-40 h-auto overflow-hidden rounded-md">
                   <img
-                    :src="`https://places.googleapis.com/v1/${item.photos[0].name}/media?key=${GOOGLE_API_KEY}&maxHeightPx=800&maxWidthPx=800`"
+                    :src="`https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference=${item.photos[1].photo_reference}&key=${GOOGLE_API_KEY}`"
                     alt=""
                     class="aspect-square"
                   />
@@ -109,9 +109,9 @@ const openDetailModal = (detailId) => {
                 >
                   <div>
                     <h3 class="font-bold text-slate-900">
-                      {{ item.displayName.text }}
+                      {{ item.name }}
                     </h3>
-                    <p
+                    <p v-if="item.rating"
                       class="flex items-center gap-1 text-sm leading-6 text-slate-500"
                     >
                       <StarIcon class="size-4 text-secondary-500" />{{
