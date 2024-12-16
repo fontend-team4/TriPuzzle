@@ -12,7 +12,7 @@ import { useRouter, useRoute } from 'vue-router'
 import AddPlaceBtn from './AddPlaceBtn.vue'
 import DefaultPlaces from '../../places_default.json'
 
-const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
+const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
 const { places } = DefaultPlaces
 
 // places是陣列形式
@@ -29,7 +29,7 @@ const emit = defineEmits(['open-detail-modal'])
 const initializeItems = () => {
   items.value = places.map((location) => ({
     id: location.id,
-    url: `https://places.googleapis.com/v1/${location.photos[0].name}/media?key=${GOOGLE_API_KEY}&maxHeightPx=400&maxWidthPx=400`,
+    url: `https://places.googleapis.com/v1/${location.photos[0].name}/media?key=${GOOGLE_API_KEY}&maxHeightPx=800&maxWidthPx=800`,
     title: location.displayName.text,
     rating: location.rating.toString(),
     location: location.formattedAddress.split(/[0-9]+/)[1].slice(2, 5),
@@ -75,7 +75,6 @@ const toggleFavorite = (item) => {
 const openDetailModal = (detailId) => {
   emit('open-detail-modal', detailId) // 傳遞地點的 ID
 }
-
 </script>
 
 <template>
@@ -160,6 +159,4 @@ summary:active {
   background-color: transparent !important;
   color: rgb(55 65 81 / var(--tw-text-opacity, 1)) !important;
 }
-
-
 </style>

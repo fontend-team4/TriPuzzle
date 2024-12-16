@@ -12,9 +12,6 @@ import { PlaceModalStore } from '@/stores/PlaceModal'
 import DefaultPlaces from '../../places_default.json'
 const modalStore = PlaceModalStore()
 
-
-
-
 const { places } = DefaultPlaces
 const router = useRouter()
 const route = useRoute()
@@ -49,7 +46,6 @@ const handleOpenDetailModal = (detailId) => {
   })
 }
 
-
 const currentPlace = computed(() => {
   if (!currentPlaceId.value || !places) return null // 防止無效 ID 或 places 未定義
   return places.find((place) => place.id === currentPlaceId.value)
@@ -60,30 +56,31 @@ const closeDetailModal = () => {
 }
 
 // 避免打開或關掉任何Modal時往卷軸彈到最上方
-watch(() => isModalOpen.value || modalStore.isOpen, (newVal) => {
-  if (newVal) {
-    scrollPosition.value = window.scrollY;
+watch(
+  () => isModalOpen.value || modalStore.isOpen,
+  (newVal) => {
+    if (newVal) {
+      scrollPosition.value = window.scrollY
 
-    const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
-    document.body.style.position = 'fixed';
-    document.body.style.top = `-${scrollPosition.value}px`;
-    document.body.style.width = `calc(100% - ${scrollBarWidth}px)`;
-  } else {
-    document.body.style.position = '';
-    document.body.style.top = '';
-    document.body.style.width = '';
+      const scrollBarWidth =
+        window.innerWidth - document.documentElement.clientWidth
+      document.body.style.position = 'fixed'
+      document.body.style.top = `-${scrollPosition.value}px`
+      document.body.style.width = `calc(100% - ${scrollBarWidth}px)`
+    } else {
+      document.body.style.position = ''
+      document.body.style.top = ''
+      document.body.style.width = ''
 
-    // 等瀑布流渲染完成再恢復滾動（不然會置頂）
-    setTimeout(() => {
-      window.scrollTo({
-        top: scrollPosition.value,
-      });
-    }, 0);
+      // 等瀑布流渲染完成再恢復滾動（不然會置頂）
+      setTimeout(() => {
+        window.scrollTo({
+          top: scrollPosition.value,
+        })
+      }, 0)
+    }
   }
-});
-
-
-
+)
 </script>
 
 <template>
@@ -148,6 +145,4 @@ watch(() => isModalOpen.value || modalStore.isOpen, (newVal) => {
   opacity: 0;
   transform: translateY(-5%);
 }
-
-
 </style>
