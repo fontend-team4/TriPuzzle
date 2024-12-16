@@ -11,6 +11,7 @@ import { PlaceModalStore } from '@/stores/PlaceModal'
 
 import DefaultPlaces from '../../places_default.json'
 const modalStore = PlaceModalStore()
+const scrollPosition = ref(0)
 
 const { places } = DefaultPlaces
 const router = useRouter()
