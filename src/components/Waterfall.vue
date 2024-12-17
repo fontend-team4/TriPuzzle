@@ -2,12 +2,9 @@
 import { ref, onMounted, nextTick, onBeforeUnmount, watch, computed, defineEmits, } from "vue";
 import DefaultPlaces from '../../places_default.json'
 
-
 const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 const  places  = DefaultPlaces
-
 const containerRef = ref(null); // 參考外容器
-// const fakeLocations = ref([]);
 const items = ref([]);
 const columns = ref([]); // 每欄
 const numCols = ref(2); // 預設為兩欄
@@ -81,10 +78,6 @@ const initializeItems = () => {
   items.value = targetPlace.photos.map((photo, index) => ({
     id: `${targetPlace.place_id}-${index}`, // 每張圖的ID
     url: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference=${photo.photo_reference}&key=${GOOGLE_API_KEY}`,
-    // title: targetPlace.name,
-    // rating: targetPlace.rating.toString(),
-    // location: targetPlace.formattedAddress.split(/[0-9]+/)[1].slice(2, 5),
-    // mapUrl: targetPlace.googleMapsUri,
   }));
 };
 

@@ -11,28 +11,21 @@ import {
 import { HeartIcon as OutlineHeartIcon } from '@heroicons/vue/24/outline'
 import { useRouter, useRoute } from 'vue-router'
 import AddPlaceBtn from './AddPlaceBtn.vue'
-import DefaultPlaces from '../../places_default.json'
 
 const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
-const  places  = DefaultPlaces
-console.log(places[0].name);
-
-
-// places是陣列形式
-// console.log(places[1].photos[1].name)
-
-const router = useRouter()
 const API_URL = 'http://localhost:3000'
-const defaultPlacesData = ref([])
+
+// places就是API打回來的資料
+const  places  = ref([])
 const items = ref([])
 const columns = ref([]) // 每欄
 const numCols = ref(2) // 預設為兩欄
 const emit = defineEmits(['open-detail-modal'])
 
 const initializeItems = () => {
-  items.value = places.map((location) => ({
+  items.value = places.value.map((location) => ({
     id: location.place_id, // 使用 place_id 作為 ID
-    url: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference=${location.photos[1].photo_reference}&key=${GOOGLE_API_KEY}`,
+    url: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference=${location.photos[0].photo_reference}&key=${GOOGLE_API_KEY}`,
     name: location.name,
     rating: location.rating || 'N/A', // 若 rating 不存在，則顯示 'N/A'
     location: location.address.split(/[0-9]+/)[1]?.slice(2, 5) || 'Unknown', // 確保處理 undefined 的情況
@@ -64,8 +57,13 @@ const handleResize = () => {
   calculateColumns()
 }
 
-onMounted(() => {
-  defaultPlacesData.value = places
+onMounted(async() => {
+  // const response = getDefaultLocations()
+  // getDefaultLocations()
+  const response = await getDefaultLocations()
+  places.value = response // 更新 places
+  // defaultPlacesData.value = response
+  // places
   initializeItems() // 初始化 items
   handleResize()
   window.addEventListener('resize', handleResize)
@@ -92,17 +90,13 @@ const getDefaultLocations = async()=>{
     const defaultLng = ref(121.576222)
     const response = await axios.get(
       `${API_URL}/places/search?latitude=${defaultLat.value}&longitude=${defaultLng.value}&type=餐廳`,
-      // ScheduleData,
-      // config
-      // type : "景點類型" , latitude : "地圖中心經度" , longitude : "地圖中心緯度"
     )
-    console.log(response.data)
+    return response.data
+    
   } catch (err) {
     console.error(err.message)
     alert('搜尋失敗')
   }
-
-  
 }
 </script>
 

@@ -52,7 +52,6 @@ const currentPlace = computed(() => {
 
   // 把place.id改成了place.place_id
 })
-console.log(currentPlaceId.value);
 
 
 
