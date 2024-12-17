@@ -147,3 +147,30 @@ watch(
   transform: translateY(-5%);
 }
 </style>
+
+<!-- <template>
+  <div>
+    <SearchBar 
+      @tab-changed="updateTab" 
+      @search-query-changed="updateSearchQuery" 
+    />
+  </div>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import SearchBar from './SearchBar.vue';
+
+const selectedTab = ref('');
+const searchQuery = ref('');
+
+const updateTab = (tab) => {
+  selectedTab.value = tab;
+};
+
+const updateSearchQuery = (query) => {
+  searchQuery.value = query;
+};
+
+emit('filters-updated', { selectedTab, searchQuery });
+</script> -->

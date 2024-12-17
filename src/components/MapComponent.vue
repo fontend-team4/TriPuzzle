@@ -2,37 +2,15 @@
 import { ref, onMounted } from 'vue'
 import { MagnifyingGlassIcon, PuzzlePieceIcon } from '@heroicons/vue/24/outline'
 import PlacesModal from '@/components/PlacesModal.vue'
-// const map = ref(null)
-// 預設經緯度在信義區附近
+
+const map = ref(null)
 const lat = ref(24.998564)
 const lng = ref(121.576222)
-// 建立地圖
-// const initMap = () => {
-//   // 透過 Map 物件建構子建立新地圖 map 物件實例，並將地圖呈現在 id 為 map 的元素中
-//   map.value = new google.maps.Map(document.getElementById('map'), {
-//     // 設定地圖的中心點經緯度位置
-//     center: { lat: lat.value, lng: lng.value },
-//     // 設定地圖縮放比例 0-20
-//     zoom: 15,
-//     // 限制使用者能縮放地圖的最大比例
-//     maxZoom: 20,
-//     // 限制使用者能縮放地圖的最小比例
-//     minZoom: 3,
-//     // 設定是否呈現右下角街景小人
-//     streetViewControl: false,
-//     // 設定是否讓使用者可以切換地圖樣式：一般、衛星圖等
-//     mapTypeControl: false,
-//   })
-// }
-const centerLat = ref(null)
+const mapCenter = ref({ lat: 25.033964, lng: 121.564468 }) // 台北101 預設位置
 
-let map
-// initMap is now async
 async function initMap() {
-  // Request libraries when needed, not in the script tag.
   const { Map } = await google.maps.importLibrary('maps')
-  // Short namespaces can be used.
-  map = new Map(document.getElementById('map'), {
+  map.value = new Map(document.getElementById('map'), {
     center: { lat: lat.value, lng: lng.value },
     zoom: 15,
     maxZoom: 20,
@@ -43,43 +21,15 @@ async function initMap() {
 }
 
 const getCoordinate = () => {
-  map.getCenter()
-  console.log(
-    'Latitude:',
-    map.getCenter().lat(),
-    'Longitude:',
-    map.getCenter().lng()
-  )
+  const center = map.value.getCenter()
+  mapCenter.value = { lat: center.lat(), lng: center.lng() }
+  console.log('Latitude:', lat.value, 'Longitude:', lng.value)
+  // return { lat: lat.value, lng: lng.value }
+  emit('map-center-changed', mapCenter.value) // 發送地圖中心
 }
-// 建立地標
-const setMarker = () => {
-  // 建立一個新地標
-  const marker = new google.maps.Marker({
-    // 設定地標的座標
-    position: { lat: lat.value, lng: lng.value },
-    // 設定地標要放在哪一個地圖
-    map: map.value,
-  })
-  // 透過 InfoWindow 物件建構子建立新訊息視窗
-  const infowindow = new google.maps.InfoWindow({
-    // 設定想要顯示的內容
-    content: `
-      <div id="content" class="w-96">
-        <p id="firstHeading" class="firstHeading p-4">台北市立動物園動物區</p>
-      </div>
-    `,
-    // 設定訊息視窗最大寬度
-    maxWidth: 200,
-  })
-  // 在地標上監聽點擊事件
-  marker.addListener('click', () => {
-    // 指定在哪個地圖和地標上開啟訊息視窗
-    infowindow.open(map.value, marker)
-  })
-}
+
 onMounted(() => {
   initMap()
-  // setMarker();
 })
 </script>
 
