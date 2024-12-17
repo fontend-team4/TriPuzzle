@@ -155,7 +155,7 @@ const deleteUser = async () => {
       localStorage.removeItem('userId')
       deletedSuccess.value.showModal()
       setTimeout(() => {
-        router.push('/')
+        router.push('/planner')
       }, 1000)
     }
   } catch (error) {
