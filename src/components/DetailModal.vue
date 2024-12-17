@@ -50,12 +50,15 @@ const changeShowPhoto = () => {
 // 接收PlaceID
 const props = defineProps({
   place: {
-    type: String,
+    type: Object,
     required: false, // 改為非必需，避免報錯
+    default: () => ({}),
   },
 })
 
-const placeId = computed(() => props.place?.id);
+const placeId = computed(() => props.place?.place_id);
+// console.log(placeId.value);
+
 
 
 //關閉detailModal
@@ -84,7 +87,7 @@ defineEmits(['close'])
           class="inline-flex items-center justify-center w-full h-full overflow-hidden bg-black"
         >
           <img
-            :src="`https://places.googleapis.com/v1/${place.photos[0].name}/media?key=${GOOGLE_API_KEY}&maxHeightPx=800&maxWidthPx=800`"
+            :src="`https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference=${place.photos[1].photo_reference}&key=${GOOGLE_API_KEY}`"
             alt=""
             class="object-contain w-full"
           />
@@ -106,13 +109,13 @@ defineEmits(['close'])
       <div
         class="relative px-5 py-5 md:py-16 md:w-[368px] flex  flex-col gap-2.5 md:h-[calc(100% - 64px)] pb-20 overflow-y-auto"
       >
-        <h2 class="text-xl font-medium">{{ place.displayName.text }}</h2>
+        <h2 class="text-xl font-medium">{{ place.name }}</h2>
         <div class="flex">
           <div
             class="inline-flex items-center gap-1 pr-3 text-sm align-middle border-r-2"
           >
             Google 評價
-            <StarIcon class="text-yellow-400 size-4" />
+            <StarIcon class="text-yellow-400 size-4" v-if="rating != 'N/A'"/>
             <span class="text-yellow-400">{{ place.rating }}</span>
             (<span class="underline">34</span>)
           </div>
@@ -120,19 +123,19 @@ defineEmits(['close'])
             加入行程<span>45</span>次
           </div>
         </div>
-        <div class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px]">
+        <div class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px]" v-if="address != 'N/A'">
           <MapPinIcon class="size-5" />
-          <p class="pl-8 text-sm">{{ place.formattedAddress.split(/[0-9]+/)[1].slice(2, 5) }}</p>
+          <p class="pl-8 text-sm">{{ place.address.split(/[0-9]+/)[1]?.slice(2, 5) }}</p>
         </div>
-        <div class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px]">
-          <CalendarIcon class="size-5" />
-          <p class="pl-8 text-sm">簡介</p>
+        <div class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px]" v-if="place.summary.overview && place.summary.overview != 'N/A'">
+          <CalendarIcon class="flex flex-shrink-0 size-5" />
+          <p class="pl-8 text-sm">{{ place.summary.overview }}</p>
         </div>
-        <div class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px]" v-if="place.nationalPhoneNumber">
+        <div class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px]" v-if="place.phone && place.phone != 'N/A'">
           <PhoneIcon class="size-5" />
-          <p class="pl-8 text-sm">{{ place.nationalPhoneNumber }}</p>
+          <p class="pl-8 text-sm">{{ place.phone }}</p>
         </div>
-        <div class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px]">
+        <!-- <div class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px]">
           <MagnifyingGlassIcon class="size-5" />
           <div class="inline-flex items-center gap-1 pl-8 text-sm">
             <div class="pr-3.5">Google</div>
@@ -156,19 +159,19 @@ defineEmits(['close'])
               </button>
             </div>
           </div>
-        </div>
-        <div class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px] w-full" v-if="place.websiteUri">
+        </div> -->
+        <div class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px] w-full" v-if="place.website && place.website != 'N/A'">
           <GlobeAltIcon class="flex-shrink-0 size-5" />
           <p class="pl-8 overflow-hidden text-sm truncate-text whitespace-nowrap text-ellipsis">
-            <a :href="place.websiteUri" target="_blank">{{ place.websiteUri }}</a>
+            <a :href="place.website" target="_blank">{{ place.website }}</a>
           </p>
         </div>
-        <div class="flex pt-2.5 pb-3.5  w-full "  v-if="place.currentOpeningHours">
+        <div class="flex pt-2.5 pb-3.5  w-full "  v-if="place.opening_hours && place.opening_hours != []">
           <ClockIcon class="flex-shrink-0 size-5" />
           <div>
             <div>
               <div
-                v-for="(description, index) in place.currentOpeningHours.weekdayDescriptions"
+                v-for="(description, index) in place.opening_hours"
                 :key="index"
                 class="flex pl-4 ml-4 text-sm leading-7"
               >
@@ -276,7 +279,7 @@ defineEmits(['close'])
             <button @click="changeShowPhoto">
               <ChevronLeftIcon class="size-6" />
             </button>
-            <p class="peer-checked:text-red-600">泰山區</p>
+            <p class="peer-checked:text-red-600">{{ place.address.split(/[0-9]+/)[1]?.slice(2, 5) }}</p>
           </div>
           <button><XMarkIcon class="size-6" /></button>
         </div>

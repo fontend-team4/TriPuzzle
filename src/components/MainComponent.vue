@@ -13,7 +13,7 @@ import DefaultPlaces from '../../places_default.json'
 const modalStore = PlaceModalStore()
 const scrollPosition = ref(0)
 
-const { places } = DefaultPlaces
+const places  = DefaultPlaces
 const router = useRouter()
 const route = useRoute()
 
@@ -23,7 +23,6 @@ const isPlacesComponent = ref(true)
 const schedulesListRef = ref(null)
 
 // search bar 跟著右側列表伸縮寬度
-
 const topBarSwitch = computed(() => {
   return schedulesListRef?.value?.listOpen
     ? 'w-[75%] transition-all'
@@ -31,7 +30,6 @@ const topBarSwitch = computed(() => {
 })
 
 // waterfall 跟著右側列表伸縮寬度
-
 const waterFallSwitch = computed(() => {
   return schedulesListRef?.value?.listOpen
     ? 'lg:pe-[420px] transition-all'
@@ -41,6 +39,7 @@ const waterFallSwitch = computed(() => {
 const isModalOpen = computed(() => route.query.action === 'placeInfo')
 const currentPlaceId = computed(() => route.query.placeId)
 const handleOpenDetailModal = (detailId) => {
+  console.log('Opening Detail Modal with ID:', detailId);
   router.push({
     path: '/planner',
     query: { action: 'placeInfo', placeId: detailId }, // 傳遞地點 ID
@@ -49,8 +48,13 @@ const handleOpenDetailModal = (detailId) => {
 
 const currentPlace = computed(() => {
   if (!currentPlaceId.value || !places) return null // 防止無效 ID 或 places 未定義
-  return places.find((place) => place.id === currentPlaceId.value)
+  return places.find((place) => place.place_id === currentPlaceId.value)
+
+  // 把place.id改成了place.place_id
 })
+console.log(currentPlaceId.value);
+
+
 
 const closeDetailModal = () => {
   router.push({ path: '/planner' })
