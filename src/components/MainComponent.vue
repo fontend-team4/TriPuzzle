@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, watch, defineEmits } from 'vue'
+import { computed, ref, watch } from 'vue'
 import SearchBar from './SearchBar.vue'
 import MapToggle from './MapToggle.vue'
 import PlacesComponent from './PlacesComponent.vue'
@@ -56,22 +56,6 @@ const closeDetailModal = () => {
   router.push({ path: '/planner' })
 }
 
-const activeCategory = ref('')
-const activeMdCategory = ref('')
-const searchQuery = ref('')
-const emit = defineEmits(['filters-updated'])
-
-const updateTab = (tab) => {
-  activeCategory.value = tab
-}
-const updateMdTab = (tab) => {
-  activeMdCategory.value = tab
-}
-const updateSearchQuery = (query) => {
-  searchQuery.value = query
-  emit('filters-updated', { activeCategory, activeMdCategory, searchQuery })
-}
-
 // 避免打開或關掉任何Modal時往卷軸彈到最上方
 watch(
   () => isModalOpen.value || modalStore.isOpen,
@@ -106,12 +90,7 @@ watch(
       class="absolute top-0 left-0 z-10 flex gap-4 transition-all item-center lg:top-5 lg:left-8"
       :class="topBarSwitch"
     >
-      <SearchBar
-        class="flex justify-end w-full lg:ml-20"
-        @tab-select="updateTab"
-        @tab-select-md="updateMdTab"
-        @query-input="updateSearchQuery"
-      />
+      <SearchBar class="flex justify-end w-full lg:ml-20" />
       <MapToggle
         class="justify-start hidden mr-24 lg:flex item-center"
         v-model:isPlacesComponent="isPlacesComponent"

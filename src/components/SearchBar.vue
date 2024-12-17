@@ -1,8 +1,23 @@
 <script setup>
-import { ref, watch, defineEmits } from 'vue'
+import { ref } from 'vue'
 import { MagnifyingGlassIcon, XCircleIcon } from '@heroicons/vue/24/solid'
 import CategoryFilter from './CategoryFilter.vue'
 import SearchArea from './SearchArea.vue'
+import { useSearchStore } from '../stores/searchPlaces'
+
+const searchStore = useSearchStore()
+const inputKeyword = () => {
+  searchStore.textSearch()
+}
+
+const selectCategory = (category) => {
+  if (searchStore.selectedTab) {
+    searchStore.selectedTab = category
+  } else if (searchStore.selectedMdTab) {
+    searchStore.selectedMdTab = category
+  }
+  searchStore.mapSearch()
+}
 
 // 預設為分類模式
 const isCategoryMode = ref(true)
@@ -20,8 +35,6 @@ const Mdcategories = ref([...defaultCategories])
 
 const activeCategory = ref(categories.value[0])
 const activeMdCategory = ref(Mdcategories.value[0])
-const searchQuery = ref('')
-const emit = defineEmits(['tab-select', 'tab-select-md', 'query-input'])
 
 //切換模式
 const toggleMode = () => {
@@ -31,12 +44,12 @@ const toggleMode = () => {
 //活動分類
 const setActiveCategory = (category) => {
   activeCategory.value = category
-  emit('tab-select', category)
+  searchStore.selectedTab = activeCategory.value.name
+  searchStore.typeSearch()
 }
 
 const setActiveMdCategory = (Mdcategory) => {
   activeMdCategory.value = Mdcategory
-  emit('tab-select-md', Mdcategory)
 }
 
 const switchToCategoryMode = () => {
@@ -48,10 +61,6 @@ const updateCategories = (newCategories) => {
   categories.value = newCategories
   activeCategory.value = newCategories[0]
 }
-
-watch(searchQuery, (newQuery) => {
-  emit('query-input', newQuery)
-})
 </script>
 
 <template>
@@ -124,7 +133,8 @@ watch(searchQuery, (newQuery) => {
               autocomplete="off"
               placeholder="輸入關鍵字"
               @blur="switchToCategoryMode"
-              v-model="searchQuery"
+              v-model="searchStore.keyword"
+              @keyup.enter="inputKeyword"
             />
             <XCircleIcon
               class="absolute right-4 top-2 w-4 h-4 text-gray-400 cursor-pointer"

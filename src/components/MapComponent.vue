@@ -1,11 +1,12 @@
 <script setup>
-import { ref, onMounted, defineEmits } from 'vue'
+import { ref, onMounted } from 'vue'
 import { MagnifyingGlassIcon, PuzzlePieceIcon } from '@heroicons/vue/24/outline'
 import PlacesModal from '@/components/PlacesModal.vue'
+import { useSearchStore } from '../stores/searchPlaces'
 
+const searchStore = useSearchStore()
 const map = ref(null)
 const mapCenter = ref({ lat: 24.998564, lng: 121.576222 })
-const emit = defineEmits(['coordinate-changed'])
 
 async function initMap() {
   const { Map } = await google.maps.importLibrary('maps')
@@ -19,14 +20,9 @@ async function initMap() {
   })
 }
 
-const getCoordinate = () => {
-  const center = map.value.getCenter()
-  mapCenter.value = { lat: center.lat(), lng: center.lng() }
-  console.log('Latitude:', center.lat(), 'Longitude:', center.lng())
-
-  emit('coordinate-changed', mapCenter.value)
-
-  return mapCenter.value
+const nearbySearch = () => {
+  searchStore.mapCenter = map.value.getCenter().toJSON()
+  searchStore.mapSearch()
 }
 
 onMounted(() => {
@@ -40,7 +36,7 @@ onMounted(() => {
   <!-- 搜尋此區域 -->
   <button
     class="bg-white inline-flex px-4 py-2 rounded-full shadow-lg fixed left-1/2 top-[100px] -translate-x-1/2 text-sm font-medium hover:bg-slate-100 transition-all duration-200 leading-6 active:bg-slate-300"
-    @click="getCoordinate"
+    @click="nearbySearch"
   >
     <MagnifyingGlassIcon class="mr-1 size-5 text-primary-400" />
     <p>搜尋此區域</p>
