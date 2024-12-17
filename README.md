@@ -19,12 +19,12 @@
 
 
 
-## 此專案為前端專案，後端專案網址 [TriPuzzle_Backend](https://github.com/fontend-team4/TriPuzzle_Backend)
 
 ## Git Clone
 ```sh
 git clone https://github.com/fontend-team4/TriPuzzle.git
 ```
+> 此專案為前端專案，後端專案網址 [TriPuzzle_Backend](https://github.com/fontend-team4/TriPuzzle_Backend)
 
 ## Project Setup
 
@@ -37,7 +37,7 @@ npm install
 ```
 VITE_GOOGLE_API_KEY = 
 ```
-### Compile and Hot-Reload for Development
+## Compile and Hot-Reload for Development
 
 ```sh
 npm run dev
