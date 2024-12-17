@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, computed, nextTick, defineEmits } from 'vue'
+import { ref, onMounted, computed, defineEmits } from 'vue'
 import {
   ListBulletIcon,
   XMarkIcon,
@@ -7,50 +7,47 @@ import {
   MapPinIcon,
   PlusCircleIcon,
 } from '@heroicons/vue/24/solid'
-// import defaultPlaces from '../../defaultPlaces.json'
-import DefaultPlaces from '../../places_default.json'
-
-// import AddPlaceModal from './AddPlaceModal.vue'
-import AddPlaceBtn from './AddPlaceBtn.vue'
+import { usePlacesStore } from '@/stores/fetchPlaces'
 import { useRouter } from 'vue-router'
+import AddPlaceBtn from './AddPlaceBtn.vue'
+
+
+const placesStore = usePlacesStore() 
 const router = useRouter()
 
-const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
-
-
-const places  = DefaultPlaces
-
-const defaultPlacesData = ref([])
+const defaultPlacesData = ref([]) // 存放抓取的資料
 const emit = defineEmits(['open-detail-modal'])
-
-onMounted(() => {
-  defaultPlacesData.value = places
-})
-console.log(places)
-
-console.log(defaultPlacesData)
-
-const sideToggle = () => {
-  sideBarIsOpen.value = !sideBarIsOpen.value
-}
 
 const sideBarIsOpen = ref(true)
 
+// 計算側邊欄樣式
 const sideCls = computed(() => {
   return sideBarIsOpen.value ? [''] : ['translate-x-[-100%] opacity-0']
 })
-
 const hamburgerCls = computed(() => {
   return sideBarIsOpen.value ? ['opacity-0'] : ['']
 })
 
+// 切換側邊欄
+const sideToggle = () => {
+  sideBarIsOpen.value = !sideBarIsOpen.value
+}
+
+// 開啟詳細資訊
 const openDetailModal = (detailId) => {
   router.push({
     path: '/planner',
     query: { action: 'placeInfo', placeId: detailId },
   })
 }
+
+// 初始化並抓取資料
+onMounted(async () => {
+  await placesStore.fetchDefaultPlaces() // 抓取資料
+  defaultPlacesData.value = placesStore.items // 賦值給本地變數
+})
 </script>
+
 
 <template>
   <!-- 漢堡選單 -->
@@ -99,7 +96,7 @@ const openDetailModal = (detailId) => {
               <figure class="flex p-1 group">
                 <div class="w-40 h-auto overflow-hidden rounded-md">
                   <img
-                    :src="`https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference=${item.photos[1].photo_reference}&key=${GOOGLE_API_KEY}`"
+                    :src="item.url"
                     alt=""
                     class="aspect-square"
                   />

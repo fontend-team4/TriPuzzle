@@ -1,6 +1,4 @@
 <script setup>
-import axios from 'axios'
-import { ref, onMounted, nextTick, defineEmits, provide, watch } from 'vue'
 import {
   StarIcon,
   MapPinIcon,
@@ -8,38 +6,25 @@ import {
   HeartIcon,
   PlusCircleIcon,
 } from '@heroicons/vue/24/solid'
+import { ref, onMounted, watch, nextTick, defineEmits } from 'vue'
+import { usePlacesStore } from '@/stores/fetchPlaces'
 import { HeartIcon as OutlineHeartIcon } from '@heroicons/vue/24/outline'
 import { useRouter, useRoute } from 'vue-router'
 import AddPlaceBtn from './AddPlaceBtn.vue'
 
-const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
-const API_URL = 'http://localhost:3000'
+const placesStore = usePlacesStore()
 
-// places就是API打回來的資料
-const  places  = ref([])
-const items = ref([])
-const columns = ref([]) // 每欄
+const columns = ref([]) // 瀑布流欄位
 const numCols = ref(2) // 預設為兩欄
 const emit = defineEmits(['open-detail-modal'])
 
-const initializeItems = () => {
-  items.value = places.value.map((location) => ({
-    id: location.place_id, // 使用 place_id 作為 ID
-    url: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference=${location.photos[0].photo_reference}&key=${GOOGLE_API_KEY}`,
-    name: location.name,
-    rating: location.rating || 'N/A', // 若 rating 不存在，則顯示 'N/A'
-    location: location.address.split(/[0-9]+/)[1]?.slice(2, 5) || 'Unknown', // 確保處理 undefined 的情況
-    mapUrl: location.placeUrl,
-  }))
-}
-
-
-// 瀑布流
+// 瀑布流計算
 const calculateColumns = async () => {
+  // 每次重新初始化 columns
   columns.value = Array.from({ length: numCols.value }, () => [])
   const heights = Array(numCols.value).fill(0)
 
-  for (const item of items.value) {
+  for (const item of placesStore.items) {
     const shortestCol = heights.indexOf(Math.min(...heights))
     columns.value[shortestCol].push(item)
     await nextTick()
@@ -50,6 +35,8 @@ const calculateColumns = async () => {
   }
 }
 
+
+// 監聽螢幕大小調整欄位數量
 const handleResize = () => {
   if (window.innerWidth >= 1024) numCols.value = 4
   else if (window.innerWidth >= 768) numCols.value = 3
@@ -57,19 +44,24 @@ const handleResize = () => {
   calculateColumns()
 }
 
-onMounted(async() => {
-  // const response = getDefaultLocations()
-  // getDefaultLocations()
-  const response = await getDefaultLocations()
-  places.value = response // 更新 places
-  // defaultPlacesData.value = response
-  // places
-  initializeItems() // 初始化 items
-  handleResize()
+// 監聽 items 的變化並重新計算瀑布流
+// watch(
+//   () => placesStore.items,
+//   async () => {
+//     await calculateColumns()
+//   },
+//   // { immediate: true }
+// )
+
+
+// 初始化
+onMounted(async () => {
+  await placesStore.fetchDefaultPlaces() // 從 Store 撈資料
+  handleResize() // 初始化欄數，但不需要調用 calculateColumns
   window.addEventListener('resize', handleResize)
 })
 
-// 點擊愛心切換
+
 const toggleFavorite = (item) => {
   item.isFavorited = !item.isFavorited
 }
@@ -77,31 +69,10 @@ const toggleFavorite = (item) => {
 const openDetailModal = (detailId) => {
   emit('open-detail-modal', detailId) // 傳遞地點的 ID
 }
-
-
-const getDefaultLocations = async()=>{
-  // 拿取MapComponent的判斷是否定位，以及預設經緯度（信義區）
-  // 如果使用者允許定位，那就搜尋使用者經緯度附近的20個景點
-  // 如果使用者不允許定位，則設定信義區作為中心點去渲染地圖id
-  console.log(123);
-// http://localhost:3000/places/search?latitude=25.0329694&longitude=121.5654177&type=餐廳
-  try {
-    const defaultLat = ref(24.998564)
-    const defaultLng = ref(121.576222)
-    const response = await axios.get(
-      `${API_URL}/places/search?latitude=${defaultLat.value}&longitude=${defaultLng.value}&type=餐廳`,
-    )
-    return response.data
-    
-  } catch (err) {
-    console.error(err.message)
-    alert('搜尋失敗')
-  }
-}
 </script>
 
 <template>
-  <button @click="getDefaultLocations" class="absolute top-0 z-50 left-16">按我取得資料</button>
+  <!-- <button @click="getDefaultLocations" class="absolute top-0 z-50 left-16">按我取得資料</button> -->
   <div class="absolute top-0 h-auto pt-20 lg:ps-28 lg:pt-24 pb-14 bg-slate-100">
     <!-- 瀑布流 -->
     <div

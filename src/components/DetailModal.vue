@@ -20,8 +20,16 @@ import { StarIcon } from '@heroicons/vue/24/solid'
 import { computed, ref, defineEmits } from 'vue'
 import Waterfall from './Waterfall.vue'
 import AddPlaceBtn from './AddPlaceBtn.vue'
+import { useRouter, useRoute } from 'vue-router'
+import { usePlacesStore } from '@/stores/fetchPlaces'
+
+
+const placesStore = usePlacesStore()
+
 
 const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
+const router = useRouter()
+const route = useRoute()
 
 
 // 愛心顏色的切換可參考PlacesComponent，為避免重複同樣功能這邊就不放了，之後可統一做移動到stores去
@@ -52,18 +60,33 @@ const props = defineProps({
   place: {
     type: Object,
     required: false, // 改為非必需，避免報錯
-    default: () => ({}),
+    // default: () => ({}),
   },
 })
 
-const placeId = computed(() => props.place?.place_id);
-// console.log(placeId.value);
+
 
 
 
 //關閉detailModal
 defineEmits(['close'])
+// 紀錄：打算改成用網址來渲染detailModal
+// onMounted(async () => {
+//   try {
+//     await placesStore.fetchDefaultPlaces() // 抓取資料
+//     places.value = placesStore.items // 將資料存入 places
+//   } catch (error) {
+//     console.error('Failed to fetch places:', error)
+//     places.value = [] // 防止錯誤導致 undefined
+//   }
+// })
 
+// if (props.place == null) {
+//   console.log("哇咧");
+// }
+// 找到網址if
+// const currentPlaceId = computed(() => route.query.placeId)
+// console.log(currentPlaceId.value);
 
 
 </script>
@@ -73,7 +96,7 @@ defineEmits(['close'])
     class="fixed z-50 flex items-center justify-center w-screen h-screen overflow-hidden bg-black bg-opacity-25"
     @click="$emit('close')"
   >
-    <div
+  <div
       class="pb-10 md:pb-0 h-full md:h-[calc(100vh-160px)] md:w-[1032px] mx-0 md:mx-auto bg-white md:flex md:rounded-md md:overflow-hidden overflow-auto relative"
       :class="overflowStatus"
       @click.stop
@@ -87,7 +110,7 @@ defineEmits(['close'])
           class="inline-flex items-center justify-center w-full h-full overflow-hidden bg-black"
         >
           <img
-            :src="`https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference=${place.photos[1].photo_reference}&key=${GOOGLE_API_KEY}`"
+            :src="place.url"
             alt=""
             class="object-contain w-full"
           />
@@ -125,7 +148,7 @@ defineEmits(['close'])
         </div>
         <div class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px]" v-if="address != 'N/A'">
           <MapPinIcon class="size-5" />
-          <p class="pl-8 text-sm">{{ place.address.split(/[0-9]+/)[1]?.slice(2, 5) }}</p>
+          <p class="pl-8 text-sm">{{ place.location }}</p>
         </div>
         <div class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px]" v-if="place.summary.overview && place.summary.overview != 'N/A'">
           <CalendarIcon class="flex flex-shrink-0 size-5" />
@@ -279,7 +302,7 @@ defineEmits(['close'])
             <button @click="changeShowPhoto">
               <ChevronLeftIcon class="size-6" />
             </button>
-            <p class="peer-checked:text-red-600">{{ place.address.split(/[0-9]+/)[1]?.slice(2, 5) }}</p>
+            <p class="peer-checked:text-red-600">{{ place.location }}</p>
           </div>
           <button><XMarkIcon class="size-6" /></button>
         </div>
