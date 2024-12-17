@@ -1,17 +1,16 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, defineEmits } from 'vue'
 import { MagnifyingGlassIcon, PuzzlePieceIcon } from '@heroicons/vue/24/outline'
 import PlacesModal from '@/components/PlacesModal.vue'
 
 const map = ref(null)
-const lat = ref(24.998564)
-const lng = ref(121.576222)
-const mapCenter = ref({ lat: 25.033964, lng: 121.564468 }) // 台北101 預設位置
+const mapCenter = ref({ lat: 24.998564, lng: 121.576222 })
+const emit = defineEmits(['coordinate-changed'])
 
 async function initMap() {
   const { Map } = await google.maps.importLibrary('maps')
   map.value = new Map(document.getElementById('map'), {
-    center: { lat: lat.value, lng: lng.value },
+    center: mapCenter.value,
     zoom: 15,
     maxZoom: 20,
     minZoom: 3,
@@ -23,9 +22,11 @@ async function initMap() {
 const getCoordinate = () => {
   const center = map.value.getCenter()
   mapCenter.value = { lat: center.lat(), lng: center.lng() }
-  console.log('Latitude:', lat.value, 'Longitude:', lng.value)
-  // return { lat: lat.value, lng: lng.value }
-  emit('map-center-changed', mapCenter.value) // 發送地圖中心
+  console.log('Latitude:', center.lat(), 'Longitude:', center.lng())
+
+  emit('coordinate-changed', mapCenter.value)
+
+  return mapCenter.value
 }
 
 onMounted(() => {

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, defineEmits } from 'vue'
 import { MagnifyingGlassIcon, XCircleIcon } from '@heroicons/vue/24/solid'
 import CategoryFilter from './CategoryFilter.vue'
 import SearchArea from './SearchArea.vue'
@@ -20,8 +20,8 @@ const Mdcategories = ref([...defaultCategories])
 
 const activeCategory = ref(categories.value[0])
 const activeMdCategory = ref(Mdcategories.value[0])
-
 const searchQuery = ref('')
+const emit = defineEmits(['tab-select', 'tab-select-md', 'query-input'])
 
 //切換模式
 const toggleMode = () => {
