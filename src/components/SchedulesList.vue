@@ -1,21 +1,102 @@
 <script setup>
-import { computed, ref, provide, inject } from 'vue'
-import { ChevronDownIcon, EllipsisHorizontalIcon } from '@heroicons/vue/16/solid'
-import { XMarkIcon, UserPlusIcon, ShareIcon, DocumentDuplicateIcon, TrashIcon, BriefcaseIcon, GlobeAsiaAustraliaIcon } from '@heroicons/vue/24/outline'
+import { ref, inject, onMounted, computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import axios from 'axios'
+import {
+  ChevronDownIcon,
+  EllipsisHorizontalIcon,
+} from '@heroicons/vue/16/solid'
+import {
+  XMarkIcon,
+  UserPlusIcon,
+  ShareIcon,
+  DocumentDuplicateIcon,
+  TrashIcon,
+  BriefcaseIcon,
+  GlobeAsiaAustraliaIcon,
+} from '@heroicons/vue/24/outline'
 import ShareScheduleModal from './ShareScheduleModal.vue'
+import NewScheduleModal from '@/components/NewScheduleModal.vue'
 import DeleteScheduleModal from './DeleteScheduleModal.vue'
-import NewScheduleModal from '@/components/NewScheduleModal.vue';
+import { LoginModalStore } from '@/stores/LoginModal.js'
 
-const checkedSchedule = ref('mine')
-
+const router = useRouter()
+const route = useRoute()
+const LoginStore = LoginModalStore()
 const listToggle = inject('listToggle')
 const detailToggle = inject('detailToggle')
+const API_URL = 'http://localhost:3000'
+// 抓取 user login token
+const isLogin = ref(false)
+const token = localStorage.getItem('token')
 
+// 讀取行程資料
+const hasSchedules = ref(false)
+const checkedSchedule = ref('mine')
+const schedules = ref([])
+const deletedId = ref(null)
+const getSchedules = async () => {
+  const config = {
+    headers: {
+      Authorization: token,
+    },
+  }
+  try {
+    const response = await axios.get(`${API_URL}/schedules`, config)
+    if (response.data) {
+      hasSchedules.value = true
+    }
+    schedules.value = response.data
+    schedules.value.forEach((item) => {
+      item.start_date = item.start_date.split('T')[0]
+      item.end_date = item.end_date.split('T')[0]
+    })
+  } catch (error) {
+    console.error(error.message)
+    hasSchedules.value = false
+  }
+}
+// 刪除彈窗
+const openDeleteModal = (id) => {
+  deletedId.value = id
+}
+// 行程分享、共編彈窗
+const activeStatus = ref(null)
+const openShareModal = () => {
+  activeStatus.value = 'share'
+}
+const openInviteModal = () => {
+  activeStatus.value = 'invite'
+}
+const login = () => {
+  LoginStore.openModal()
+  listToggle()
+}
+// 行程列表篩選
+const listsort = ref('newest')
+const sortedSchedules = computed(() => {
+  return schedules.value.sort((a, b) => {
+    if (listsort.value === 'newest') {
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    } else {
+      return new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+    }
+  })
+})
+
+onMounted(async () => {
+  if (token) {
+    isLogin.value = true
+    await getSchedules()
+  }
+})
 </script>
 
 <template>
   <div class="overflow-x-hidden">
-    <div class="schedule-list w-full lg:w-96 h-screen bg-white shadow-xl transition-all relative">
+    <div
+      class="schedule-list w-full lg:w-96 h-screen bg-white shadow-xl transition-all relative"
+    >
       <!-- schedule list -->
       <div class="w-screen lg:w-full p-5 bg-white">
         <!-- header -->
@@ -56,307 +137,239 @@ const detailToggle = inject('detailToggle')
               >與我共編</label
             >
           </div>
-          <div class="dropdown">
-            <div tabindex="0" role="button" class="flex items-center relative">
-              <p class="text-sm font-medium">上次編輯時間</p>
-              <p class="w-4 h-4"><ChevronDownIcon /></p>
-            </div>
-            <ul
-              tabindex="0"
-              class="dropdown-content menu bg-white rounded-sm z-[1] w-44 p-0 border border-gray absolute top-8 left-0"
-            >
-              <li><a class="rounded-none" href=""> 上次編輯時間</a></li>
-              <li><a class="rounded-none" href=""> 建立時間（從近到遠）</a></li>
-              <li><a class="rounded-none" href=""> 建立時間（從遠到近）</a></li>
-            </ul>
-          </div>
-        </div>
-        <!-- schedules list 行程列表-->
-        <div class="h-[70vh] overflow-y-scroll pb-12">
-          <!-- 我的行程 -->
-          <!-- v-if 有行程 -->
-          <div
-            class="flex flex-wrap gap-4 justify-center"
-            v-if="checkedSchedule === 'mine'"
+          <select
+            class="select select-ghost max-w-xs focus:border-0 focus:outline-none"
+            v-model="listsort"
+            v-if="isLogin && hasSchedules"
           >
-            <div
-              class="card card-compact bg-base-100 sm:w-full md:w-[30%] lg:w-full h-[176px] lg:h-auto border-gray border mb-4 relative hover:cursor-pointer"
-            >
-              <figure @click="detailToggle">
+            <option selected value="newest">建立時間（從近到遠）</option>
+            <option value="oldest">建立時間（從遠到近）</option>
+          </select>
+        </div>
+        <!-- schedules list 行程列表 -->
+        <div class="h-[70vh] overflow-y-scroll pb-12">
+          <!-- 已登入 -->
+          <div v-if="isLogin">
+            <!-- 我的 -->
+            <div v-if="checkedSchedule === 'mine'">
+              <!-- 有行程 -->
+              <div
+                v-if="hasSchedules"
+                class="flex flex-wrap gap-4 justify-center"
+              >
+                <div
+                  v-for="item in sortedSchedules"
+                  :key="item.id"
+                  class="card card-compact bg-base-100 sm:w-full md:w-[30%] lg:w-full h-[176px] lg:h-auto border-gray border mb-4 relative hover:cursor-pointer"
+                >
+                  <figure @click="detailToggle">
+                    <img :src="item.image_url" alt="scheduleCoverImage" />
+                  </figure>
+                  <!-- 行程右上設定 icon -->
+                  <div class="flex gap-2 absolute top-3 right-3">
+                    <span
+                      class="w-6 h-6 rounded-full bg-gray-transparent text-white p-1 hover:cursor-pointer"
+                      onclick="shareSchedule.showModal()"
+                      @click="openShareModal"
+                    >
+                      <ShareIcon />
+                    </span>
+                    <div class="dropdown">
+                      <button
+                        role="button"
+                        class="w-6 h-6 rounded-full bg-gray-transparent text-white p-1 relative"
+                      >
+                        <EllipsisHorizontalIcon />
+                      </button>
+                      <!-- dropdown-content 控制開關-->
+                      <ul
+                        tabindex="0"
+                        class="dropdown-content w-32 bg-white rounded border border-gray absolute right-0 top-10"
+                      >
+                        <li>
+                          <a
+                            class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray"
+                            href="#"
+                          >
+                            <span class="inline-block w-6 h-6"
+                              ><DocumentDuplicateIcon
+                            /></span>
+                            <p>複製行程</p>
+                          </a>
+                        </li>
+                        <li
+                          onclick="shareSchedule.showModal()"
+                          @click="openInviteModal"
+                        >
+                          <a
+                            class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray"
+                            href="#"
+                          >
+                            <span class="inline-block w-6 h-6"
+                              ><UserPlusIcon
+                            /></span>
+                            <p>邀請共編</p>
+                          </a>
+                        </li>
+                        <li
+                          class="border-t border-gray"
+                          @click="openDeleteModal(item.id)"
+                          onclick="deleteSchedule.showModal()"
+                        >
+                          <a
+                            class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray"
+                            href="#"
+                          >
+                            <span class="inline-block w-6 h-6"
+                              ><TrashIcon
+                            /></span>
+                            <p>刪除行程</p>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <!-- 行程資訊 -->
+                  <div
+                    class="flex flex-row justify-between items-center px-0 py-3"
+                  >
+                    <div
+                      class="w-4/5 px-5 border-dotted border-r-2 border-gray"
+                    >
+                      <h2 class="text-lg truncate">{{ item.title }}</h2>
+                      <p class="text-xs text-slate-500">
+                        {{ item.start_date }} ~ {{ item.end_date }}
+                      </p>
+                    </div>
+                    <div
+                      class="w-16 text-center hover:cursor-pointer"
+                      onclick="shareSchedule.showModal()"
+                      @click="openInviteModal"
+                    >
+                      <p class="w-6 h-6 mx-auto"><UserPlusIcon /></p>
+                      <p class="text-xs">2人</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- 無行程 -->
+              <div v-else class="w-full h-52 text-center mt-7">
                 <img
-                  src="https://chictirpstorageprod.blob.core.windows.net/system/2bf62bfd-5bbd-47f1-9174-492c7218dcdf.jpg"
+                  class="w-[180px] h-[90] mx-auto"
+                  src="https://web.chictrip.com.tw/assets/monster_empty.3a44f172.png"
                   alt=""
                 />
-              </figure>
-              <!-- 行程右上設定 icon -->
-              <div class="flex gap-2 absolute top-3 right-3">
-                <span
-                  class="w-6 h-6 rounded-full bg-gray-transparent text-white p-1 hover:cursor-pointer"
-                  onclick="shareSchedule.showModal()"
-                >
-                  <ShareIcon />
-                </span>
-                <ShareScheduleModal />
-                <div class="dropdown">
-                  <button
-                    role="button"
-                    class="w-6 h-6 rounded-full bg-gray-transparent text-white p-1 relative"
-                  >
-                    <EllipsisHorizontalIcon />
-                  </button>
-                  <!-- dropdown-content 控制開關-->
-                  <ul
-                    tabindex="0"
-                    class="dropdown-content w-32 bg-white rounded border border-gray absolute right-0 top-10"
-                  >
-                    <li>
-                      <a
-                        class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray"
-                        href="#"
-                      >
-                        <span class="inline-block w-6 h-6"
-                          ><DocumentDuplicateIcon
-                        /></span>
-                        <p>複製行程</p>
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray"
-                        href="#"
-                      >
-                        <span class="inline-block w-6 h-6"
-                          ><UserPlusIcon
-                        /></span>
-                        <p>邀請共編</p>
-                      </a>
-                    </li>
-                    <li class="border-t border-gray" onclick="delete_schedule.showModal()">
-                      <a
-                        class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray"
-                        href="#"
-                      >
-                        <span class="inline-block w-6 h-6"><TrashIcon /></span>
-                        <p>刪除行程</p>
-                      </a>
-                    </li>
-                    <DeleteScheduleModal />
-                  </ul>
-                </div>
-              </div>
-              <!-- 行程資訊 -->
-              <div class="flex flex-row justify-between items-center px-0 py-3">
-                <div class="w-4/5 px-5 border-dotted border-r-2 border-gray">
-                  <h2 class="text-lg truncate">北海道</h2>
-                  <p class="text-xs">2025/12/01-2025/12/07</p>
-                </div>
-                <div class="w-16 text-center hover:cursor-pointer">
-                  <p class="w-6 h-6 mx-auto"><UserPlusIcon /></p>
-                  <p class="text-xs">2人</p>
-                </div>
+                <p class="mb-6">還沒有安排新行程哦</p>
               </div>
             </div>
-            <div
-              class="card card-compact bg-base-100 sm:w-full md:w-[30%] lg:w-full h-[176px] lg:h-auto border border-gray mb-4 relative hover:cursor-pointer"
-            >
-              <figure>
+            <!-- 共編 -->
+            <div v-else>
+              <!-- 有行程 -->
+              <div
+                v-if="hasSchedules"
+                class="flex flex-wrap gap-4 justify-center"
+              >
                 <img
-                  src="https://chictirpstorageprod.blob.core.windows.net/travelschedule/1c4209ff-a961-49a1-bb2f-b21435a8c8b4.jpg"
+                  class="w-[180px] h-[103px] mx-auto"
+                  src="https://web.chictrip.com.tw/assets/master-unlock.990b2501.png"
                   alt=""
                 />
-              </figure>
-              <!-- 行程右上設定 icon -->
-              <div class="flex gap-2 absolute top-3 right-3">
-                <button
-                  class="w-6 h-6 rounded-full bg-gray-transparent text-white p-1"
-                >
-                  <ShareIcon />
-                </button>
-                <div class="dropdown">
-                  <!-- <div tabindex="0" role="button" class="btn m-1"></div> -->
-                  <button
-                    role="button"
-                    class="w-6 h-6 rounded-full bg-gray-transparent text-white p-1"
-                  >
-                    <EllipsisHorizontalIcon />
-                  </button>
-                  <!-- dropdown-content 控制開關-->
-                  <ul
-                    tabindex="0"
-                    class="dropdown-content w-32 bg-white rounded border border-gray absolute right-0 top-10"
-                  >
-                    <li>
-                      <a
-                        class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray"
-                        href="#"
-                      >
-                        <span class="inline-block w-6 h-6"
-                          ><DocumentDuplicateIcon
-                        /></span>
-                        <p>複製行程</p>
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray"
-                        href="#"
-                      >
-                        <span class="inline-block w-6 h-6"
-                          ><UserPlusIcon
-                        /></span>
-                        <p>邀請共編</p>
-                      </a>
-                    </li>
-                    <li class="border-t border-gray">
-                      <a
-                        class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray"
-                        href="#"
-                      >
-                        <span class="inline-block w-6 h-6"><TrashIcon /></span>
-                        <p>刪除行程</p>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
+                <p class="mb-6">
+                  還沒有 <span class="text-primary-600">與我共編</span> 的行程哦
+                </p>
               </div>
-              <div class="flex flex-row justify-between items-center px-0 py-3">
-                <div class="w-4/5 px-5 border-dotted border-r-2 border-gray">
-                  <h2 class="text-lg truncate">東京之旅</h2>
-                  <p class="text-xs">2025/05/10-2025/05/20</p>
-                </div>
-                <div class="w-16 text-center hover:cursor-pointer">
-                  <p class="w-6 h-6 mx-auto"><UserPlusIcon /></p>
-                  <p class="text-xs">共編</p>
-                </div>
-              </div>
-            </div>
-            <div
-              class="card card-compact bg-base-100 sm:w-full md:w-[30%] lg:w-full h-[176px] lg:h-auto border border-gray mb-4 relative hover:cursor-pointer"
-            >
-              <figure>
+              <!-- 無行程 -->
+              <div v-else class="h-52 text-center mt-7">
                 <img
-                  src="https://chictirpstorageprod.blob.core.windows.net/system/166b42c7-fc3c-4708-ab2b-f9730bfd1b8a.jpg"
+                  class="w-[180px] h-[103px] mx-auto"
+                  src="https://web.chictrip.com.tw/assets/master-unlock.990b2501.png"
                   alt=""
                 />
-              </figure>
-              <!-- 行程右上設定 icon -->
-              <div class="flex gap-2 absolute top-3 right-3">
-                <button
-                  class="w-6 h-6 rounded-full bg-gray-transparent text-white p-1"
-                >
-                  <ShareIcon />
-                </button>
-                <div class="dropdown">
-                  <!-- <div tabindex="0" role="button" class="btn m-1"></div> -->
-                  <button
-                    role="button"
-                    class="w-6 h-6 rounded-full bg-gray-transparent text-white p-1"
-                  >
-                    <EllipsisHorizontalIcon />
-                  </button>
-                  <!-- dropdown-content 控制開關-->
-                  <ul
-                    tabindex="0"
-                    class="dropdown-content w-32 bg-white rounded border border-gray absolute right-0 top-10"
-                  >
-                    <li>
-                      <a
-                        class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray"
-                        href="#"
-                      >
-                        <span class="inline-block w-6 h-6"
-                          ><DocumentDuplicateIcon
-                        /></span>
-                        <p>複製行程</p>
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray"
-                        href="#"
-                      >
-                        <span class="inline-block w-6 h-6"
-                          ><UserPlusIcon
-                        /></span>
-                        <p>邀請共編</p>
-                      </a>
-                    </li>
-                    <li class="border-t border-gray">
-                      <a
-                        class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray"
-                        href="#"
-                      >
-                        <span class="inline-block w-6 h-6"><TrashIcon /></span>
-                        <p>刪除行程</p>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div class="flex flex-row justify-between items-center px-0 py-3">
-                <div class="w-4/5 px-5 border-dotted border-r-2 border-gray">
-                  <h2 class="text-lg truncate">新加坡員工旅遊</h2>
-                  <p class="text-xs">2025/12/01-2025/12/07</p>
-                </div>
-                <div class="w-16 text-center hover:cursor-pointer">
-                  <p class="w-6 h-6 mx-auto"><UserPlusIcon /></p>
-                  <p class="text-xs">5人</p>
-                </div>
+                <p class="mb-6">
+                  還沒有 <span class="text-primary-600">與我共編</span> 的行程哦
+                </p>
               </div>
             </div>
-          </div>
-          <!-- v-else 尚無行程 -->
-          <!-- <div class="w-full h-52 text-center mt-7">
-            <img class="w-[180px] h-[90] mx-auto" src="https://web.chictrip.com.tw/assets/monster_empty.3a44f172.png" alt="">
-            <p class="mb-6">還沒有安排新行程哦</p>
-            <button class=" font-medium text-white bg-primary-600 hover:bg-primary-700 w-44 rounded-3xl px-5 py-3">建立新行程</button>
-          </div> -->
-          <!-- 與我共編-->
-          <!--已登入 -->
-          <div class="h-52 text-center mt-7" v-else>
-            <img
-              class="w-[180px] h-[103px] mx-auto"
-              src="https://web.chictrip.com.tw/assets/master-unlock.990b2501.png"
-              alt=""
-            />
-            <p class="mb-6">
-              還沒有 <span class="text-primary-600">與我共編</span> 的行程哦
-            </p>
           </div>
           <!-- 未登入 -->
-          <!-- <div class="w-full lg:w-96 h-38 px-2.5 py-5 bg-white border-t border-gray fixed bottom-0 right-0">
-            <p class="mb-3 text-center font-medium">
-              嗨，新朋友！
-              <br>
-              登入就能查看共編行程囉 
-            </p>
-            <button class="w-full h-12 px-5 py-3 bg-primary-600 hover:bg-primary-700 text-white text-center rounded-3xl">
-              登入 / 註冊
-            </button>
-          </div> -->
+          <div v-else>
+            <!-- 我的 -->
+            <div
+              v-if="checkedSchedule === 'mine'"
+              class="w-full h-52 text-center mt-7"
+            >
+              <img
+                class="w-[180px] h-[90] mx-auto"
+                src="https://web.chictrip.com.tw/assets/monster_empty.3a44f172.png"
+                alt=""
+              />
+              <p class="mb-6">
+                嗨，新朋友！
+                <br />
+                登入就能開始規劃你的專屬行程囉
+              </p>
+            </div>
+            <!-- 共編 -->
+            <div v-else class="w-full h-52 text-center mt-7">
+              <img
+                class="w-[180px] h-[90] mx-auto"
+                src="https://web.chictrip.com.tw/assets/monster_empty.3a44f172.png"
+                alt=""
+              />
+              <p class="mb-6">
+                嗨，新朋友！
+                <br />
+                登入就能查看共編行程囉
+              </p>
+            </div>
+          </div>
         </div>
-        <!-- add schedule btn 建立新行程按鈕-->
-        <!--已登入 -->
-        <div class="w-full lg:w-96 h-20 px-2.5 py-5 bg-white border-gray border-t absolute bottom-0 left-0">
-          <button class="w-full h-12 px-5 py-3 bg-primary-600 text-white text-center text-base rounded-3xl hover:bg-primary-700" onclick="NewSchedule.showModal()">
-            建立新行程
-          </button>
-          <NewScheduleModal />
+        <!-- add schedule btn 建立新行程按鈕 -->
+        <!-- 已登入 -->
+        <div v-if="isLogin">
+          <div
+            v-show="checkedSchedule === 'mine'"
+            class="w-full lg:w-96 h-20 px-2.5 py-5 bg-white border-gray border-t absolute bottom-0 left-0"
+          >
+            <button
+              class="w-full h-12 px-5 py-3 bg-primary-600 text-white text-center text-base rounded-3xl hover:bg-primary-700"
+              onclick="NewSchedule.showModal()"
+            >
+              建立新行程
+            </button>
+          </div>
         </div>
         <!-- 未登入 -->
-        <!-- <div class="w-full lg:w-96 h-38 px-2.5 py-5 bg-white border-t border-gray fixed bottom-0 right-0">
-          <p class="mb-3 text-center font-medium">
-            嗨，新朋友！
-            <br>
-            
-            登入就能開始規劃你的專屬行程囉 
-          </p>
-          <button class="w-full h-12 px-5 py-3 bg-primary-600 hover:bg-primary-700 text-white text-center rounded-3xl">
-            登入 / 註冊，建立新行程
-          </button>
-        </div> -->
+        <div v-else>
+          <div
+            v-if="checkedSchedule === 'mine'"
+            class="w-full lg:w-96 h-38 px-2.5 py-5 bg-white border-t border-gray fixed bottom-0 right-0"
+          >
+            <button
+              class="w-full h-12 px-5 py-3 bg-primary-600 hover:bg-primary-700 text-white text-center rounded-3xl"
+              @click="login"
+            >
+              登入 / 註冊，建立新行程
+            </button>
+          </div>
+          <div
+            v-else
+            class="w-full lg:w-96 h-38 px-2.5 py-5 bg-white border-t border-gray fixed bottom-0 right-0"
+          >
+            <button
+              class="w-full h-12 px-5 py-3 bg-primary-600 hover:bg-primary-700 text-white text-center rounded-3xl"
+              @click="login"
+            >
+              登入 / 註冊
+            </button>
+          </div>
+        </div>
       </div>
     </div>
+
+    <ShareScheduleModal :activeTab="activeStatus" />
+    <DeleteScheduleModal :toBeDeleteId="deletedId" :updateList="getSchedules" />
+    <NewScheduleModal :savetoSchedules="getSchedules" />
   </div>
 </template>
 
@@ -369,7 +382,6 @@ const detailToggle = inject('detailToggle')
 }
 #schedule-list-toggle:checked ~ .schedule-list {
   transform: translateX(0);
-
   /* 關閉按鈕做好之後就可以打開 */
   /* .schedule{
     display: none;
