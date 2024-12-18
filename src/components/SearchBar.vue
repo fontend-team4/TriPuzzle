@@ -5,20 +5,6 @@ import CategoryFilter from './CategoryFilter.vue'
 import SearchArea from './SearchArea.vue'
 import { useSearchStore } from '../stores/searchPlaces'
 
-const searchStore = useSearchStore()
-const inputKeyword = () => {
-  searchStore.textSearch()
-}
-
-const selectCategory = (category) => {
-  if (searchStore.selectedTab) {
-    searchStore.selectedTab = category
-  } else if (searchStore.selectedMdTab) {
-    searchStore.selectedMdTab = category
-  }
-  searchStore.mapSearch()
-}
-
 // 預設為分類模式
 const isCategoryMode = ref(true)
 
@@ -49,11 +35,19 @@ const setActiveCategory = (category) => {
 }
 
 const setActiveMdCategory = (Mdcategory) => {
+  activeCategory.value = {}
   activeMdCategory.value = Mdcategory
+  searchStore.selectedMdTab = activeMdCategory.value.name
+  searchStore.typeSearch()
 }
 
 const switchToCategoryMode = () => {
   isCategoryMode.value = true
+}
+
+const searchStore = useSearchStore()
+const inputKeyword = () => {
+  searchStore.textSearch()
 }
 
 // 監聽 CategoryFilter 的 update-categories 事件

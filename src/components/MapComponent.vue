@@ -4,24 +4,26 @@ import { MagnifyingGlassIcon, PuzzlePieceIcon } from '@heroicons/vue/24/outline'
 import PlacesModal from '@/components/PlacesModal.vue'
 import { useSearchStore } from '../stores/searchPlaces'
 
-const searchStore = useSearchStore()
 const map = ref(null)
-const mapCenter = ref({ lat: 24.998564, lng: 121.576222 })
+const searchStore = useSearchStore()
 
 async function initMap() {
   const { Map } = await google.maps.importLibrary('maps')
   map.value = new Map(document.getElementById('map'), {
-    center: mapCenter.value,
+    center: searchStore.mapCenter,
     zoom: 15,
     maxZoom: 20,
     minZoom: 3,
     streetViewControl: false,
     mapTypeControl: false,
   })
+
+  map.value.addListener('idle', () => {
+    searchStore.mapCenter = map.value.getCenter().toJSON()
+  })
 }
 
 const nearbySearch = () => {
-  searchStore.mapCenter = map.value.getCenter().toJSON()
   searchStore.mapSearch()
 }
 
