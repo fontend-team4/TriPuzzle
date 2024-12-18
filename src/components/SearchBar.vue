@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { MagnifyingGlassIcon, XCircleIcon } from '@heroicons/vue/24/solid'
 import CategoryFilter from './CategoryFilter.vue'
 import SearchArea from './SearchArea.vue'
@@ -35,7 +35,7 @@ const setActiveCategory = (category) => {
 }
 
 const setActiveMdCategory = (Mdcategory) => {
-  activeCategory.value = {}
+  searchStore.selectedTab = ''
   activeMdCategory.value = Mdcategory
   searchStore.selectedMdTab = activeMdCategory.value.name
   searchStore.typeSearch()
@@ -55,6 +55,9 @@ const updateCategories = (newCategories) => {
   categories.value = newCategories
   activeCategory.value = newCategories[0]
 }
+onMounted(() => {
+  searchStore.selectedTab = activeCategory.value.name
+})
 </script>
 
 <template>
