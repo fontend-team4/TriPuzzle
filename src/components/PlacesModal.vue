@@ -13,6 +13,10 @@ import DefaultPlaces from '../../places_default.json'
 // import AddPlaceModal from './AddPlaceModal.vue'
 import AddPlaceBtn from './AddPlaceBtn.vue'
 import { useRouter } from 'vue-router'
+import { PlaceModalStore } from '@/stores/PlaceModal'
+
+const modalStore=PlaceModalStore()
+
 const router = useRouter()
 
 const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
@@ -95,7 +99,7 @@ const openDetailModal = (detailId) => {
             key:item.id
             class="w-full mb-3 transition-colors rounded-md p1 bg-gray hover:bg-primary-100"
           >
-            <a href="#" @click="openDetailModal(item.place_id)">
+            <a href="#" @click="openDetailModal(item.place_id),modalStore.savePlace(item)">
               <figure class="flex p-1 group">
                 <div class="w-40 h-auto overflow-hidden rounded-md">
                   <img
@@ -125,7 +129,7 @@ const openDetailModal = (detailId) => {
                   <div
                     class="absolute inline-flex items-center justify-between w-[147px] h-auto mt-2 text-sm duration-300 opacity-0 group-hover:opacity-100 bottom-2"
                   >
-                    <AddPlaceBtn @click.stop />
+                    <AddPlaceBtn @click.stop @click="modalStore.savePlace(item)"/>
                     <!-- <AddPlaceModal /> -->
                     <a :href="item.googleMapsUri" target="_blank">
                       <MapPinIcon class="text-gray-500 size-5" />

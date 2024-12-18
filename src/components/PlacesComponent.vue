@@ -12,6 +12,11 @@ import { HeartIcon as OutlineHeartIcon } from '@heroicons/vue/24/outline'
 import { useRouter, useRoute } from 'vue-router'
 import AddPlaceBtn from './AddPlaceBtn.vue'
 import DefaultPlaces from '../../places_default.json'
+import { PlaceModalStore } from '@/stores/PlaceModal'
+
+const modalStore=PlaceModalStore()
+
+
 
 const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
 const  places  = DefaultPlaces
@@ -121,7 +126,7 @@ const getDefaultLocations = async()=>{
         class="flex flex-col gap-4"
       >
         <div v-for="item in col" :key="item.id" class="group">
-          <a href="#" @click="openDetailModal(item.id)">
+          <a href="#" @click="openDetailModal(item.id),modalStore.savePlace(item)">
             <div class="relative w-full mb-2 overflow-hidden rounded-lg">
               <!-- 黑色遮罩 -->
               <div
@@ -145,7 +150,7 @@ const getDefaultLocations = async()=>{
                   />
                 </div>
                 <!-- <button class="overflow-hidden text-lg text-white border-0 rounded-full btn bg-secondary-500 hover:bg-secondary-600" onclick="AddPlaceModal.showModal()">加入行程<PlusCircleIcon class="size-6"/></button> -->
-                <AddPlaceBtn @click.stop />
+                <AddPlaceBtn @click.stop @click="modalStore.savePlace(item)" />
               </div>
 
               <!-- 圖片 -->

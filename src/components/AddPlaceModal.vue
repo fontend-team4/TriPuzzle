@@ -5,7 +5,12 @@ import { XMarkIcon, ChevronDownIcon, ChevronUpIcon, ChevronLeftIcon, HandThumbUp
 import { PlusCircleIcon,  MapPinIcon} from "@heroicons/vue/24/solid";
 import { PlaceModalStore } from "@/stores/PlaceModal";
 
+
 const modalStore = PlaceModalStore();
+
+const place=modalStore.selectedPlace
+// console.log(place);
+
 
 // Tab的部分
 const selectedButton = ref("myRunDown");

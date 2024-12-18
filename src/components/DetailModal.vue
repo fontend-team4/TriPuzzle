@@ -20,6 +20,14 @@ import { StarIcon } from '@heroicons/vue/24/solid'
 import { computed, ref, defineEmits } from 'vue'
 import Waterfall from './Waterfall.vue'
 import AddPlaceBtn from './AddPlaceBtn.vue'
+import { useRoute } from 'vue-router'
+import { PlaceModalStore } from '@/stores/PlaceModal'
+
+const modalStore=PlaceModalStore()
+// console.log(modalStore.selectedPlace);
+
+
+const route = useRoute()
 
 const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 
@@ -63,7 +71,6 @@ const placeId = computed(() => props.place?.place_id);
 
 //關閉detailModal
 defineEmits(['close'])
-
 
 
 </script>
