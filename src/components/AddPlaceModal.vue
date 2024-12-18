@@ -9,7 +9,7 @@ import { PlaceModalStore } from "@/stores/PlaceModal";
 const modalStore = PlaceModalStore();
 
 const place=modalStore.selectedPlace
-// console.log(place);
+console.log(place);
 
 
 // Tab的部分
