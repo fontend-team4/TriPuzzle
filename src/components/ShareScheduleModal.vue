@@ -1,5 +1,5 @@
 <script setup>
-import { ref, defineProps } from 'vue'
+import { ref, defineProps, defineEmits } from 'vue'
 import { LinkIcon, ShareIcon, ChevronDownIcon } from '@heroicons/vue/24/outline'
 import ScheduleSummaryModal from './ScheduleSummaryModal.vue'
 import ExportScheduleModal from './ExportScheduleModal.vue'
@@ -12,6 +12,10 @@ const props = defineProps({
     required: true,
   },
 })
+const emit = defineEmits(['updateStatus'])
+const updateActiveTab = (status) => {
+  emit('updateStatus', status)
+}
 </script>
 
 <template>
@@ -33,8 +37,8 @@ const props = defineProps({
           id="share"
           type="radio"
           name="tab"
-          v-model="props.activeTab"
-          value="share"
+          :checked="activeTab === 'share'"
+          @change="updateActiveTab('share')"
           class="hidden"
         />
         <label
@@ -46,8 +50,8 @@ const props = defineProps({
           id="invite"
           type="radio"
           name="tab"
-          v-model="props.activeTab"
-          value="invite"
+          :checked="activeTab === 'invite'"
+          @change="updateActiveTab('invite')"
           class="hidden"
         />
         <label

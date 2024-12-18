@@ -68,6 +68,10 @@ const openShareModal = () => {
 const openInviteModal = () => {
   activeStatus.value = 'invite'
 }
+const updateStatus = (status) => {
+  activeStatus.value = status
+}
+
 const login = () => {
   LoginStore.openModal()
   listToggle()
@@ -367,7 +371,10 @@ onMounted(async () => {
       </div>
     </div>
 
-    <ShareScheduleModal :activeTab="activeStatus" />
+    <ShareScheduleModal
+      :activeTab="activeStatus"
+      @updateStatus="updateStatus"
+    />
     <DeleteScheduleModal :toBeDeleteId="deletedId" :updateList="getSchedules" />
     <NewScheduleModal :savetoSchedules="getSchedules" />
   </div>
