@@ -9,9 +9,10 @@ import { useRouter, useRoute } from 'vue-router'
 import AddPlaceModal from './AddPlaceModal.vue'
 import { PlaceModalStore } from '@/stores/PlaceModal'
 import { usePlacesStore } from '@/stores/fetchPlaces'
+import { useSearchStore } from '@/stores/searchPlaces'
 
 const placesStore = usePlacesStore()
-
+const searchStore = useSearchStore()
 const modalStore = PlaceModalStore()
 const scrollPosition = ref(0)
 const places = ref([])
@@ -50,9 +51,6 @@ const handleOpenDetailModal = (detailId) => {
 
 const currentPlace = computed(() => {
   if (!currentPlaceId.value || !places.value.length) return null // 確保資料存在
-  // const aa = places.value.find((place) => place.id === currentPlaceId.value)
-  // console.log(aa);
-
   return places.value.find((place) => place.id === currentPlaceId.value)
 })
 
@@ -69,6 +67,18 @@ onMounted(async () => {
     places.value = [] // 防止錯誤導致的 undefined
   }
 })
+
+// 監聽searchData
+watch(
+  () => searchStore.searchData,
+  (newData) => {
+    if (newData.length > 0) {
+      console.log('Main更新囉~')
+      placesStore.updateFromSearch(newData)
+    }
+  },
+  { immediate: true }
+)
 
 // 避免打開或關掉任何Modal時往卷軸彈到最上方
 watch(
@@ -107,6 +117,10 @@ watch(
       <SearchBar class="flex justify-end w-full lg:ml-20" />
       <MapToggle
         class="justify-start hidden mr-24 lg:flex item-center"
+        v-model:isPlacesComponent="isPlacesComponent"
+      />
+      <MapToggle
+        class="fixed bottom-5 left-1/2 -translate-x-1/2 justify-center item-center md:left-[44%] lg:hidden"
         v-model:isPlacesComponent="isPlacesComponent"
       />
     </div>

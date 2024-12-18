@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, computed, defineEmits } from 'vue'
+import { ref, onMounted, computed, defineEmits, watch } from 'vue'
 import {
   ListBulletIcon,
   XMarkIcon,
@@ -8,10 +8,12 @@ import {
   PlusCircleIcon,
 } from '@heroicons/vue/24/solid'
 import { usePlacesStore } from '@/stores/fetchPlaces'
+import { useSearchStore } from '@/stores/searchPlaces'
 import { useRouter } from 'vue-router'
 import AddPlaceBtn from './AddPlaceBtn.vue'
 
 const placesStore = usePlacesStore()
+const searchStore = useSearchStore()
 const router = useRouter()
 
 const defaultPlacesData = ref([]) // 存放抓取的資料
@@ -45,6 +47,18 @@ onMounted(async () => {
   await placesStore.fetchDefaultPlaces() // 抓取資料
   defaultPlacesData.value = placesStore.items // 賦值給本地變數
 })
+
+watch(
+  () => searchStore.searchData,
+  (newData) => {
+    if (newData.length > 0) {
+      console.log('更新囉~')
+      placesStore.updateFromSearch(newData)
+      defaultPlacesData.value = placesStore.items
+    }
+  },
+  { immediate: true }
+)
 </script>
 
 <template>

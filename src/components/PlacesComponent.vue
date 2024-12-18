@@ -6,13 +6,15 @@ import {
   HeartIcon,
   PlusCircleIcon,
 } from '@heroicons/vue/24/solid'
-import { ref, onMounted, watch, nextTick, defineEmits } from 'vue'
+import { ref, onMounted, watch, nextTick, defineEmits, onUnmounted } from 'vue'
 import { usePlacesStore } from '@/stores/fetchPlaces'
 import { HeartIcon as OutlineHeartIcon } from '@heroicons/vue/24/outline'
 import { useRouter, useRoute } from 'vue-router'
 import AddPlaceBtn from './AddPlaceBtn.vue'
+import { useSearchStore } from '@/stores/searchPlaces'
 
 const placesStore = usePlacesStore()
+const searchStore = useSearchStore()
 
 const columns = ref([]) // 瀑布流欄位
 const numCols = ref(2) // 預設為兩欄
@@ -35,7 +37,6 @@ const calculateColumns = async () => {
   }
 }
 
-
 // 監聽螢幕大小調整欄位數量
 const handleResize = () => {
   if (window.innerWidth >= 1024) numCols.value = 4
@@ -53,14 +54,13 @@ const handleResize = () => {
 //   // { immediate: true }
 // )
 
-
 // 初始化
 onMounted(async () => {
-  await placesStore.fetchDefaultPlaces() // 從 Store 撈資料
-  handleResize() // 初始化欄數，但不需要調用 calculateColumns
+  console.log('PlacesComponent onMounted了')
+  await calculateColumns() // 初始計算瀑布流
+  handleResize() // 初始化欄數
   window.addEventListener('resize', handleResize)
 })
-
 
 const toggleFavorite = (item) => {
   item.isFavorited = !item.isFavorited
@@ -69,6 +69,31 @@ const toggleFavorite = (item) => {
 const openDetailModal = (detailId) => {
   emit('open-detail-modal', detailId) // 傳遞地點的 ID
 }
+
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize)
+})
+
+// 監聽 items 的變化並重新計算瀑布流
+watch(
+  () => placesStore.items,
+  async (newItems) => {
+    console.log('placesStore.items 更新為:', newItems)
+    await calculateColumns()
+  },
+  { immediate: true }
+)
+
+// 監聽 searchStore.searchData，當有更新時觸發 placesStore 更新
+watch(
+  () => searchStore.searchData,
+  (newData) => {
+    if (newData.length > 0) {
+      console.log('searchData 更新，觸發 placesStore 更新:', newData)
+      placesStore.updateFromSearch(newData)
+    }
+  }
+)
 </script>
 
 <template>

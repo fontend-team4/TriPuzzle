@@ -8,6 +8,8 @@ export const useSearchStore = defineStore('searchStore', () => {
   const selectedTab = ref('')
   const selectedMdTab = ref('')
   const mapCenter = ref({ lat: 24.998564, lng: 121.576222 })
+  const searchParams = ref({})
+  const searchData = ref([])
 
   const fetchData = async (params) => {
     try {
@@ -16,6 +18,8 @@ export const useSearchStore = defineStore('searchStore', () => {
       })
       console.log(params)
       console.log(data)
+      searchParams.value = params
+      searchData.value = data
       return data
     } catch (error) {
       console.log(params)
@@ -65,5 +69,7 @@ export const useSearchStore = defineStore('searchStore', () => {
     mapSearch,
     typeSearch,
     regionSearch,
+    searchParams,
+    searchData,
   }
 })

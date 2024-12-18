@@ -65,7 +65,6 @@ defineEmits(['close'])
 // 紀錄：打算改成用網址來渲染detailModal
 onMounted(async () => {
   try {
-    await placesStore.fetchDefaultPlaces() // 抓取資料
     places.value = placesStore.items // 將資料存入 places
 
     // 在places.value中找到ID和currentPlaceId.value一樣的景點
