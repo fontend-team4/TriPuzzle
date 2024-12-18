@@ -1,5 +1,6 @@
 <script setup>
 import { ref, inject, onMounted, computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import axios from 'axios'
 import {
   ChevronDownIcon,
@@ -19,6 +20,8 @@ import NewScheduleModal from '@/components/NewScheduleModal.vue'
 import DeleteScheduleModal from './DeleteScheduleModal.vue'
 import { LoginModalStore } from '@/stores/LoginModal.js'
 
+const router = useRouter()
+const route = useRoute()
 const LoginStore = LoginModalStore()
 const listToggle = inject('listToggle')
 const detailToggle = inject('detailToggle')
@@ -67,6 +70,7 @@ const openInviteModal = () => {
 }
 const login = () => {
   LoginStore.openModal()
+  listToggle()
 }
 // 行程列表篩選
 const listsort = ref('newest')
@@ -79,11 +83,12 @@ const sortedSchedules = computed(() => {
     }
   })
 })
+
 onMounted(async () => {
   if (token) {
     isLogin.value = true
+    await getSchedules()
   }
-  await getSchedules()
 })
 </script>
 

@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, inject } from 'vue'
 import { XMarkIcon } from '@heroicons/vue/24/solid'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/vue/24/outline'
 import axios from 'axios'
