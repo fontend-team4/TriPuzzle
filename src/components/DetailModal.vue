@@ -17,20 +17,14 @@ import {
   LinkIcon,
 } from '@heroicons/vue/24/outline'
 import { StarIcon } from '@heroicons/vue/24/solid'
-import { computed, ref, defineEmits } from 'vue'
+import { computed, ref, defineEmits, onMounted } from 'vue'
 import Waterfall from './Waterfall.vue'
 import AddPlaceBtn from './AddPlaceBtn.vue'
-import { useRouter, useRoute } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { usePlacesStore } from '@/stores/fetchPlaces'
 
-
 const placesStore = usePlacesStore()
-
-
-const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
-const router = useRouter()
 const route = useRoute()
-
 
 // 愛心顏色的切換可參考PlacesComponent，為避免重複同樣功能這邊就不放了，之後可統一做移動到stores去
 const showPhoto = ref(false)
@@ -60,35 +54,30 @@ const props = defineProps({
   place: {
     type: Object,
     required: false, // 改為非必需，避免報錯
-    // default: () => ({}),
   },
 })
 
-
-
-
+const places = ref([])
+const place = ref({})
 
 //關閉detailModal
 defineEmits(['close'])
 // 紀錄：打算改成用網址來渲染detailModal
-// onMounted(async () => {
-//   try {
-//     await placesStore.fetchDefaultPlaces() // 抓取資料
-//     places.value = placesStore.items // 將資料存入 places
-//   } catch (error) {
-//     console.error('Failed to fetch places:', error)
-//     places.value = [] // 防止錯誤導致 undefined
-//   }
-// })
+onMounted(async () => {
+  try {
+    await placesStore.fetchDefaultPlaces() // 抓取資料
+    places.value = placesStore.items // 將資料存入 places
 
-// if (props.place == null) {
-//   console.log("哇咧");
-// }
-// 找到網址if
-// const currentPlaceId = computed(() => route.query.placeId)
-// console.log(currentPlaceId.value);
+    // 在places.value中找到ID和currentPlaceId.value一樣的景點
+    place.value = places.value.find((p) => p.id === currentPlaceId.value) || {}
+  } catch (error) {
+    console.error('Failed to fetch places:', error)
+    places.value = [] // 防止錯誤導致 undefined
+  }
+})
 
-
+// 找到網址id
+const currentPlaceId = computed(() => route.query.placeId)
 </script>
 
 <template>
@@ -96,31 +85,28 @@ defineEmits(['close'])
     class="fixed z-50 flex items-center justify-center w-screen h-screen overflow-hidden bg-black bg-opacity-25"
     @click="$emit('close')"
   >
-  <div
+    <div
       class="pb-10 md:pb-0 h-full md:h-[calc(100vh-160px)] md:w-[1032px] mx-0 md:mx-auto bg-white md:flex md:rounded-md md:overflow-hidden overflow-auto relative"
       :class="overflowStatus"
       @click.stop
     >
       <div
-        class="bg-black md:w-[calc(100%-368px)] h-[360px] md:h-full  md:overflow-hidden flex justify-center relative group"
+        class="bg-black md:w-[calc(100%-368px)] h-[360px] md:h-full md:overflow-hidden flex justify-center relative group"
       >
         <!--輪播圖  -->
         <!-- <DetailCarousel /> -->
         <div
           class="inline-flex items-center justify-center w-full h-full overflow-hidden bg-black"
         >
-          <img
-            :src="place.url"
-            alt=""
-            class="object-contain w-full"
-          />
+          <img :src="place.url" alt="" class="object-contain w-full" />
         </div>
         <button
           for="showPhoto"
           class="absolute flex gap-1 bg-gray-100 py-[3px] px-2.5 rounded-full top-4 right-16 h-[32px] text-sm items-center bg-opacity-75 bg-white md:right-4 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
-          @click="changeShowPhoto" @updatePhotoCount="updatePhotoCount"
+          @click="changeShowPhoto"
+          @updatePhotoCount="updatePhotoCount"
         >
-          <PhotoIcon class="size-5" />3
+          <PhotoIcon class="size-5" />{{ place.photos_length }}
         </button>
         <button
           class="absolute flex gap-1 bg-gray-100 py-[3px] px-2.5 rounded-full top-4 right-5 h-[32px] w-[32px] text-sm items-center bg-opacity-75 bg-white md:hidden"
@@ -130,7 +116,7 @@ defineEmits(['close'])
         </button>
       </div>
       <div
-        class="relative px-5 py-5 md:py-16 md:w-[368px] flex  flex-col gap-2.5 md:h-[calc(100% - 64px)] pb-20 overflow-y-auto"
+        class="relative px-5 py-5 md:py-16 md:w-[368px] flex flex-col gap-2.5 md:h-[calc(100% - 64px)] pb-20 overflow-y-auto"
       >
         <h2 class="text-xl font-medium">{{ place.name }}</h2>
         <div class="flex">
@@ -138,7 +124,7 @@ defineEmits(['close'])
             class="inline-flex items-center gap-1 pr-3 text-sm align-middle border-r-2"
           >
             Google 評價
-            <StarIcon class="text-yellow-400 size-4" v-if="rating != 'N/A'"/>
+            <StarIcon class="text-yellow-400 size-4" v-if="rating != 'N/A'" />
             <span class="text-yellow-400">{{ place.rating }}</span>
             (<span class="underline">34</span>)
           </div>
@@ -146,50 +132,42 @@ defineEmits(['close'])
             加入行程<span>45</span>次
           </div>
         </div>
-        <div class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px]" v-if="address != 'N/A'">
+        <div
+          class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px]"
+          v-if="address != 'N/A'"
+        >
           <MapPinIcon class="size-5" />
           <p class="pl-8 text-sm">{{ place.location }}</p>
         </div>
-        <div class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px]" v-if="place.summary.overview && place.summary.overview != 'N/A'">
+        <div
+          class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px]"
+          v-if="place.overview && place.overview != 'N/A'"
+        >
           <CalendarIcon class="flex flex-shrink-0 size-5" />
           <p class="pl-8 text-sm">{{ place.summary.overview }}</p>
         </div>
-        <div class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px]" v-if="place.phone && place.phone != 'N/A'">
+        <div
+          class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px]"
+          v-if="place.phone && place.phone != 'N/A'"
+        >
           <PhoneIcon class="size-5" />
           <p class="pl-8 text-sm">{{ place.phone }}</p>
         </div>
-        <!-- <div class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px]">
-          <MagnifyingGlassIcon class="size-5" />
-          <div class="inline-flex items-center gap-1 pl-8 text-sm">
-            <div class="pr-3.5">Google</div>
-            <div>
-              <button class="px-4 py-1 rounded-full bg-gray" v-if="place.googleMapsLinks.reviewsUri">
-                <a :href="place.googleMapsLinks.reviewsUri" target="_blank"
-                  >評論</a
-                >
-              </button>
-            </div>
-            <div>
-              <button class="px-4 py-1 rounded-full bg-gray" v-if="place.googleMapsLinks.photosUri">
-                <a :href="place.googleMapsLinks.photosUri" target="_blank">
-                  照片</a
-                >
-              </button>
-            </div>
-            <div>
-              <button class="px-4 py-1 rounded-full bg-gray">
-                <a>文章</a>
-              </button>
-            </div>
-          </div>
-        </div> -->
-        <div class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px] w-full" v-if="place.website && place.website != 'N/A'">
+        <div
+          class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px] w-full"
+          v-if="place.website && place.website != 'N/A'"
+        >
           <GlobeAltIcon class="flex-shrink-0 size-5" />
-          <p class="pl-8 overflow-hidden text-sm truncate-text whitespace-nowrap text-ellipsis">
+          <p
+            class="pl-8 overflow-hidden text-sm truncate-text whitespace-nowrap text-ellipsis"
+          >
             <a :href="place.website" target="_blank">{{ place.website }}</a>
           </p>
         </div>
-        <div class="flex pt-2.5 pb-3.5  w-full "  v-if="place.opening_hours && place.opening_hours != []">
+        <div
+          class="flex pt-2.5 pb-3.5 w-full"
+          v-if="place.opening_hours && place.opening_hours != []"
+        >
           <ClockIcon class="flex-shrink-0 size-5" />
           <div>
             <div>
@@ -198,7 +176,9 @@ defineEmits(['close'])
                 :key="index"
                 class="flex pl-4 ml-4 text-sm leading-7"
               >
-                <span class="whitespace-nowrap">{{ description.split(': ')[0] }}</span>
+                <span class="whitespace-nowrap">{{
+                  description.split(': ')[0]
+                }}</span>
                 <span class="ml-7">{{ description.split(': ')[1] }}</span>
               </div>
             </div>
@@ -213,83 +193,79 @@ defineEmits(['close'])
       </div>
       <!-- fiexd 的那玩意 -->
       <div
-          class="fixed md:absolute bottom-0 right-0 w-full md:w-[368px] h-[50px] border-t-2 border-t-gray inline-flex items-center justify-between px-2 bg-white"
-        >
-          <div class="inline-flex items-center gap-2">
+        class="fixed md:absolute bottom-0 right-0 w-full md:w-[368px] h-[50px] border-t-2 border-t-gray inline-flex items-center justify-between px-2 bg-white"
+      >
+        <div class="inline-flex items-center gap-2">
+          <div class="tooltip" data-tip="分享" onclick="my_modal_2.showModal()">
+            <ShareIcon class="cursor-pointer size-6" />
+          </div>
+          <dialog id="my_modal_2" class="modal">
             <div
-              class="tooltip"
-              data-tip="分享"
-              onclick="my_modal_2.showModal()"
+              class="modal-box min-w-full md:min-w-[480px] min-h-full md:min-h-[464px] bg-gray relative rounded-none md:rounded-xl"
             >
-              <ShareIcon class="cursor-pointer size-6" />
-            </div>
-            <dialog id="my_modal_2" class="modal">
-              <div
-                class="modal-box min-w-full md:min-w-[480px] min-h-full md:min-h-[464px] bg-gray relative rounded-none md:rounded-xl"
-              >
-                <form method="dialog">
-                  <button
-                    class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2"
-                  >
-                    ✕
-                  </button>
-                </form>
-                <!-- 框框內容 -->
-                <div class="flex flex-col items-center mt-8">
-                  <h3 class="pb-4 text-2xl font-medium">分享</h3>
-                  <div
-                    class="flex flex-col items-center w-full px-5 pt-10 pb-6 mb-8 bg-white rounded-xl"
-                  >
-                    <div class="mb-4">
-                      <img src="../assets/share_location_QRcode.png" alt="" />
-                    </div>
-                    <p class="text-base text-stone-900">
-                      手機掃描條碼，即可查看此景點
-                    </p>
-                    <div class="flex flex-col w-full gap-3 pt-8 md:flex-row">
-                      <button
-                        class="inline-flex justify-center w-full px-4 py-[11px] transition-all border rounded-full text-primary-600 border-primary-600 hover:bg-primary-100"
-                      >
-                        <ArrowDownTrayIcon class="mr-1 size-6" /><span
-                          >下載QRcode</span
-                        >
-                      </button>
-                      <button
-                        class="inline-flex justify-center w-full px-4 py-[11px] text-white border rounded-full bg-primary-600 border-primary-600 hover:bg-primary-700"
-                      >
-                        <LinkIcon class="mr-1 size-6" /><span>複製連結</span>
-                      </button>
-                      <div
-                        class="absolute right-0 top-1/2 md:w-[100px] md:h-[100px] w-[80px] h-[80px] -translate-y-full md:-translate-y-1/2"
-                      >
-                        <img
-                          src="../assets/monster_take_phone.png"
-                          alt=""
-                          class="object-contain"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <form method="dialog" class="modal-backdrop">
+              <form method="dialog">
                 <button
                   class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2"
                 >
                   ✕
                 </button>
-                <button>close</button>
               </form>
-            </dialog>
-            <div class="tooltip" data-tip="加到最愛">
-              <HeartIcon class="cursor-pointer size-6" />
+              <!-- 框框內容 -->
+              <div class="flex flex-col items-center mt-8">
+                <h3 class="pb-4 text-2xl font-medium">分享</h3>
+                <div
+                  class="flex flex-col items-center w-full px-5 pt-10 pb-6 mb-8 bg-white rounded-xl"
+                >
+                  <div class="mb-4">
+                    <img src="../assets/share_location_QRcode.png" alt="" />
+                  </div>
+                  <p class="text-base text-stone-900">
+                    手機掃描條碼，即可查看此景點
+                  </p>
+                  <div class="flex flex-col w-full gap-3 pt-8 md:flex-row">
+                    <button
+                      class="inline-flex justify-center w-full px-4 py-[11px] transition-all border rounded-full text-primary-600 border-primary-600 hover:bg-primary-100"
+                    >
+                      <ArrowDownTrayIcon class="mr-1 size-6" /><span
+                        >下載QRcode</span
+                      >
+                    </button>
+                    <button
+                      class="inline-flex justify-center w-full px-4 py-[11px] text-white border rounded-full bg-primary-600 border-primary-600 hover:bg-primary-700"
+                    >
+                      <LinkIcon class="mr-1 size-6" /><span>複製連結</span>
+                    </button>
+                    <div
+                      class="absolute right-0 top-1/2 md:w-[100px] md:h-[100px] w-[80px] h-[80px] -translate-y-full md:-translate-y-1/2"
+                    >
+                      <img
+                        src="../assets/monster_take_phone.png"
+                        alt=""
+                        class="object-contain"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="tooltip" data-tip="導航">
-              <PaperAirplaneIcon class="cursor-pointer size-6" />
-            </div>
+            <form method="dialog" class="modal-backdrop">
+              <button
+                class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2"
+              >
+                ✕
+              </button>
+              <button>close</button>
+            </form>
+          </dialog>
+          <div class="tooltip" data-tip="加到最愛">
+            <HeartIcon class="cursor-pointer size-6" />
           </div>
-          <AddPlaceBtn />
+          <div class="tooltip" data-tip="導航">
+            <PaperAirplaneIcon class="cursor-pointer size-6" />
+          </div>
         </div>
+        <AddPlaceBtn />
+      </div>
       <!-- 照片區 -->
       <div
         class="absolute md:top-0 right-0 z-40 w-screen h-0 transition-all duration-300 transform bg-white md:w-[368px] md:right-0 overflow-auto"
@@ -306,7 +282,11 @@ defineEmits(['close'])
           </div>
           <button><XMarkIcon class="size-6" /></button>
         </div>
-        <Waterfall class="mt-16" :place-id="placeId"/>
+        <Waterfall
+          class="mt-16"
+          v-if="Object.keys(place).length"
+          :place="place"
+        />
       </div>
     </div>
   </div>
@@ -352,11 +332,9 @@ img {
   opacity: 0;
 }
 
-img{
+img {
   object-fit: contain;
 }
 
 /* 禁止滾動 */
-
-
 </style>

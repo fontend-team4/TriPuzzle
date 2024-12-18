@@ -11,8 +11,7 @@ import { usePlacesStore } from '@/stores/fetchPlaces'
 import { useRouter } from 'vue-router'
 import AddPlaceBtn from './AddPlaceBtn.vue'
 
-
-const placesStore = usePlacesStore() 
+const placesStore = usePlacesStore()
 const router = useRouter()
 
 const defaultPlacesData = ref([]) // 存放抓取的資料
@@ -47,7 +46,6 @@ onMounted(async () => {
   defaultPlacesData.value = placesStore.items // 賦值給本地變數
 })
 </script>
-
 
 <template>
   <!-- 漢堡選單 -->
@@ -92,14 +90,10 @@ onMounted(async () => {
             key:item.id
             class="w-full mb-3 transition-colors rounded-md p1 bg-gray hover:bg-primary-100"
           >
-            <a href="#" @click="openDetailModal(item.place_id)">
+            <a href="#" @click="openDetailModal(item.id)">
               <figure class="flex p-1 group">
                 <div class="w-40 h-auto overflow-hidden rounded-md">
-                  <img
-                    :src="item.url"
-                    alt=""
-                    class="aspect-square"
-                  />
+                  <img :src="item.url" alt="" class="aspect-square" />
                 </div>
                 <div
                   class="pt-3 pl-4 pr-3 w-[176px] flex flex-col justify-between relative"
@@ -108,7 +102,8 @@ onMounted(async () => {
                     <h3 class="font-bold text-slate-900">
                       {{ item.name }}
                     </h3>
-                    <p v-if="item.rating"
+                    <p
+                      v-if="item.rating"
                       class="flex items-center gap-1 text-sm leading-6 text-slate-500"
                     >
                       <StarIcon class="size-4 text-secondary-500" />{{
