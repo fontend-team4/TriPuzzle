@@ -1,6 +1,10 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import { MagnifyingGlassIcon, PuzzlePieceIcon } from '@heroicons/vue/24/outline'
+import {
+  MagnifyingGlassIcon,
+  PuzzlePieceIcon,
+  MapPinIcon,
+} from '@heroicons/vue/24/outline'
 import PlacesModal from '@/components/PlacesModal.vue'
 import { useSearchStore } from '../stores/searchPlaces'
 
