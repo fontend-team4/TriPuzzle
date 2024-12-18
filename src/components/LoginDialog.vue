@@ -339,7 +339,7 @@ const registerSubmit = async () => {
 
       <div class="flex justify-center items-center gap-6 mt-5">
         <a
-          p.href="http://localhost:3000/auth/google/callback"
+          href="http://localhost:3000/auth/google/callback"
           class="h-8 w-8 rounded-full shadow flex justify-center items-center cursor-pointer"
         >
           <img
@@ -349,7 +349,7 @@ const registerSubmit = async () => {
           />
         </a>
         <a
-          p.href="http://localhost:3000/api/auth/line/callback"
+          href="http://localhost:3000/api/auth/line/callback"
           class="h-8 w-8 rounded-full shadow flex justify-center items-center"
         >
           <img
