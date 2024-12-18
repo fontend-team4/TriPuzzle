@@ -27,12 +27,6 @@ const nearbySearch = () => {
   searchStore.mapSearch()
 }
 
-onMounted(() => {
-  initMap()
-  // locateUser()
-  setMarker()
-})
-
 // 定位功能
 const locateUser = () => {
   if (navigator.geolocation) {
@@ -60,6 +54,7 @@ const locateUser = () => {
 }
 
 onMounted(() => {
+  initMap()
   locateUser()
 })
 </script>
