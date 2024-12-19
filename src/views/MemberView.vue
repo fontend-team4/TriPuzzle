@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 import SideBar from '@/components/SideBar.vue'
@@ -15,27 +15,15 @@ import {
   XMarkIcon,
   PencilSquareIcon,
 } from '@heroicons/vue/24/outline'
-import { UserBadgeCheck, WarningTriangle } from '@iconoir/vue'
+import { UserBadgeCheck, WarningTriangle, LogOut } from '@iconoir/vue'
+import { LoginModalStore } from '@/stores/LoginModal.js'
+const LoginStore = LoginModalStore()
 
 const router = useRouter()
 const API_URL = 'http://localhost:3000'
-const token = ref(null)
-const userId = ref(null)
-// User Login 還未完成前端登入註冊功能，故暫時寫在這
-// 之後會從 pinia 去取得 token / id
-const getUserToken = async () => {
-  try {
-    const config = {
-      identifier: 'user@gmail.com',
-      password: '12345678',
-    }
-    const response = await axios.post(`${API_URL}/users/login`, config)
-    token.value = response.data.token
-    userId.value = response.data.user.id
-  } catch (error) {
-    console.error(error.message)
-  }
-}
+const token = localStorage.getItem('token')
+const userId = localStorage.getItem('userId')
+
 // GET User Profile
 // http://localhost:3000/users/profile/:id
 const user = ref('')
@@ -45,16 +33,19 @@ const userGender = ref('')
 const userBirthday = ref('')
 const userDescription = ref('')
 const userLoginWay = ref('')
+const userImg = ref(
+  'https://web.chictrip.com.tw/assets/waterview_default.f746ada9.svg'
+)
 
 const getUser = async () => {
   try {
     const config = {
       headers: {
-        Authorization: token.value,
+        Authorization: token,
       },
     }
     const response = await axios.get(
-      `${API_URL}/users/profile/${userId.value}`,
+      `${API_URL}/users/profile/${userId}`,
       config
     )
     user.value = response.data.data
@@ -64,10 +55,19 @@ const getUser = async () => {
     userBirthday.value = user.value.birthday // 2000-12-12T00:00:00.000Z
     userDescription.value = user.value.description
     userLoginWay.value = user.value.login_way
-    console.log(user.value)
   } catch (error) {
     console.error(error.message)
+    router.push('/')
   }
+}
+// logout
+const logoutSuccess = ref(null)
+const logout = () => {
+  localStorage.removeItem('token')
+  logoutSuccess.value.showModal()
+  setTimeout(() => {
+    router.push('/planner')
+  }, 1000)
 }
 
 // 因應 input:date 的格式做調整
@@ -100,7 +100,7 @@ const updateUser = async () => {
   try {
     const config = {
       headers: {
-        Authorization: token.value,
+        Authorization: token,
       },
     }
     const updatedUserData = {
@@ -112,7 +112,7 @@ const updateUser = async () => {
       description: userDescription.value,
     }
     const response = await axios.patch(
-      `${API_URL}/users/profile/${userId.value}`,
+      `${API_URL}/users/profile/${userId}`,
       updatedUserData,
       config
     )
@@ -141,19 +141,21 @@ const deleteUser = async () => {
   try {
     const config = {
       headers: {
-        Authorization: token.value,
+        Authorization: token,
       },
     }
     const response = await axios.delete(
-      `${API_URL}/users/profile/${userId.value}`,
+      `${API_URL}/users/profile/${userId}`,
       config
     )
     console.log(response.data.message)
-    if (response.data.message === `成功刪除 ID:${userId.value} 使用者`) {
+    if (response.data.message === `成功刪除 ID:${userId} 使用者`) {
       user.value = ''
+      localStorage.removeItem('token')
+      localStorage.removeItem('userId')
       deletedSuccess.value.showModal()
       setTimeout(() => {
-        router.push('/')
+        router.push('/planner')
       }, 1000)
     }
   } catch (error) {
@@ -162,12 +164,16 @@ const deleteUser = async () => {
 }
 
 onMounted(async () => {
-  await getUserToken()
   await getUser()
 })
 
-import { LoginModalStore } from '@/stores/LoginModal.js'
-const LoginStore = LoginModalStore()
+const uploadedImg = ref(null)
+const updateProfileImage = (event) => {
+  const file = event.target.files[0]
+  uploadedImg.value = URL.createObjectURL(file)
+  userImg.value = uploadedImg.value
+}
+
 const closeEditmodal = () => {
   const dialog = document.getElementById('Editmodal')
   dialog?.close()
@@ -205,23 +211,30 @@ const closePersonalInformatioMmodal = () => {
         >
           <div class="flex">
             <img
-              src="https://web.chictrip.com.tw/assets/waterview_default.f746ada9.svg"
+              :src="userImg"
               alt=""
-              class="w-32 h-32 rounded-full ml-2"
+              class="w-32 h-32 rounded-full ml-2 object-cover"
             />
             <div class="sm:mr-0">
               <div class="block mt-2 md:mr-20 pl-4 sm:mr-0">
                 <p class="text-xl font-semibold mt-4">{{ userName }}</p>
                 <p class="mt-2">{{ userEmail }}</p>
-                <div class="flex justify-between items-center mt-4 gap-4">
+                <div class="flex justify-between items-center mt-4 gap-3">
                   <button
-                    class="px-4 py-2 border border-slate-400 rounded-full hover:bg-primary-100 hover:text-primary-800 transition flex items-center"
-                    onclick="document.getElementById('Editmodal').showModal()"
+                    class="px-3 py-1 border border-slate-400 rounded-full hover:bg-primary-100 hover:text-primary-800 transition flex items-center"
+                    onclick="Editmodal.showModal()"
                   >
-                    <PencilIcon class="w-4 h-4 mr-2" />
+                    <PencilIcon class="w-4 h-4 mr-1" />
                     <span class="w-10">編輯</span>
                   </button>
-                  <div class="dropdown">
+                  <button
+                    class="px-3 py-1 border border-slate-400 rounded-full hover:bg-primary-100 hover:text-primary-800 transition flex items-center"
+                    @click="logout"
+                  >
+                    <ArrowRightStartOnRectangleIcon class="h-4 w-4 mr-1" />
+                    <span class="w-10">登出</span>
+                  </button>
+                  <!-- <div class="dropdown">
                     <div
                       tabindex="0"
                       class="p-2 rounded-full border border-slate-400 hover:bg-primary-100 hover:text-primary-800"
@@ -259,6 +272,7 @@ const closePersonalInformatioMmodal = () => {
                       <button class="w-52">
                         <li
                           class="flex flex-row py-2 px-4 hover:bg-primary-100 hover:text-primary-800 rounded-b-lg items-center"
+                          @click="logout"
                         >
                           <ArrowRightStartOnRectangleIcon
                             class="h-4 w-4 mr-2"
@@ -267,7 +281,7 @@ const closePersonalInformatioMmodal = () => {
                         </li>
                       </button>
                     </ul>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -324,25 +338,27 @@ const closePersonalInformatioMmodal = () => {
         <div class="flex flex-col items-center text-center space-y-4 mb-5">
           <h3 class="text-xl font-bold">個人資料</h3>
           <div class="relative">
-            <img
-              id="profileImage"
-              src="https://web.chictrip.com.tw/assets/waterview_default.f746ada9.svg"
-              alt=""
-              class="w-20 h-20 rounded-full shadow-lg"
-            />
-            <button
-              class="absolute bottom-0 right-0 bg-black opacity-70 text-white p-1 rounded-full shadow-md"
-              onclick="document.getElementById('imageUpload').click();"
-            >
-              <PencilSquareIcon class="w-5 h-5" />
-            </button>
+            <label for="imageUpload" class="cursor-pointer">
+              <img
+                id="profileImage"
+                :src="userImg"
+                alt="profileImage"
+                class="w-20 h-20 rounded-full shadow-lg object-cover"
+              />
+              <button
+                class="absolute bottom-0 right-0 bg-black opacity-70 text-white p-1 rounded-full shadow-md"
+                onclick="document.getElementById('imageUpload').click();"
+              >
+                <PencilSquareIcon class="w-5 h-5" />
+              </button>
+            </label>
           </div>
           <input
             type="file"
             id="imageUpload"
             class="hidden"
             accept="image/*"
-            onchange="updateProfileImage(event)"
+            @change="updateProfileImage"
           />
         </div>
         <div class="bg-gray rounded-2xl">
@@ -755,15 +771,14 @@ const closePersonalInformatioMmodal = () => {
         <UserBadgeCheck class="mx-auto w-14 h-14 text-primary-600 mb-3" />
         <h3 class="text-xl font-bold text-center">用戶刪除成功！</h3>
       </div>
-      <form method="dialog" class="modal-backdrop">
-        <!-- <button
-          class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-          @click.prevent="closeDeleteModal"
-        >
-          ✕
-        </button>
-        <button>close</button> -->
-      </form>
+    </dialog>
+    <!-- logout success 的 Modal -->
+    <dialog ref="logoutSuccess" class="modal w-[384px] mx-auto">
+      <div class="modal-box">
+        <form method="dialog"></form>
+        <LogOut class="mx-auto w-14 h-14 text-primary-600 mb-3" />
+        <h3 class="text-xl font-bold text-center">登出成功！</h3>
+      </div>
     </dialog>
   </div>
 </template>
