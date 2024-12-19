@@ -1,15 +1,21 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch, nextTick } from 'vue'
 import {
   MagnifyingGlassIcon,
   PuzzlePieceIcon,
   MapPinIcon,
 } from '@heroicons/vue/24/outline'
 import PlacesModal from '@/components/PlacesModal.vue'
+import { usePlacesStore } from '@/stores/fetchPlaces'
 import { useSearchStore } from '../stores/searchPlaces'
 
-const map = ref(null)
+const placesStore = usePlacesStore()
 const searchStore = useSearchStore()
+
+const map = ref(null)
+const markers = ref([]) // 用來管理地圖上的所有圖標
+
+// console.log(placesStore.items)
 
 async function initMap() {
   const { Map } = await google.maps.importLibrary('maps')
@@ -29,6 +35,33 @@ async function initMap() {
 
 const nearbySearch = () => {
   searchStore.mapSearch()
+}
+
+// 清除地圖上的所有圖標
+function clearMarkers() {
+  if (markers.value.length > 0) {
+    markers.value.forEach((marker) => {
+      marker.setMap(null) // 從地圖移除 marker
+    })
+  }
+  markers.value = [] // 確保 markers.value 被清空
+  console.log('所有舊的 markers 已清除:', markers.value)
+}
+
+// 根據 placesStore.items 新增圖標
+function updateMarkers() {
+  clearMarkers() // 確保舊圖標被清除
+  placesStore.items.forEach((place) => {
+    const marker = new google.maps.Marker({
+      position: place.geometry,
+      map: map.value,
+      title: place.name,
+    })
+    markers.value.push(marker) // 將新建的 marker 加入列表
+  })
+  console.log('新 markers 已更新:', markers.value)
+  console.log('placesStore.items:', placesStore.items)
+  console.log('標記數量:', markers.value.length)
 }
 
 // 定位功能
@@ -57,9 +90,23 @@ const locateUser = () => {
   }
 }
 
-onMounted(() => {
-  initMap()
+onMounted(async () => {
+  console.log()
+
+  if (!map.value) {
+    initMap()
+  }
   locateUser()
+  watch(
+    () => placesStore.items,
+    (newItems, oldItems) => {
+      if (JSON.stringify(newItems) !== JSON.stringify(oldItems)) {
+        console.log('檢測到 placesStore.items 的變化')
+        updateMarkers()
+      }
+    },
+    { immediate: true }
+  )
 })
 </script>
 
@@ -82,7 +129,7 @@ onMounted(() => {
     <MapPinIcon class="size-5 text-primary-400" />
   </button>
   <!-- 地點卡片 -->
-  <div class="absolute top-1/2 left-1/2">
+  <div class="absolute top-1/2 left-1/2" id="locationCard">
     <div class="flex flex-col items-center justify-center group">
       <div class="flex flex-col items-center justify-center">
         <div

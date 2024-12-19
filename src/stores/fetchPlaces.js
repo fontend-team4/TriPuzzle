@@ -1,8 +1,6 @@
 // stores/fetchPlaces.js
 import { defineStore } from 'pinia'
 import axios from 'axios'
-import { watch } from 'vue'
-import { useSearchStore } from './searchPlaces'
 
 const API_URL = 'http://localhost:3000'
 const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
@@ -53,6 +51,7 @@ export const usePlacesStore = defineStore('places', {
         address: location.address,
         website: location.website,
         placeUrl: location.placeUrl,
+        // geometry: location.geometry,
       }))
     },
     updateFromSearch(searchData) {
