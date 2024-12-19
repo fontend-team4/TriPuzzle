@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, computed, nextTick, defineEmits } from 'vue'
+import { ref, onMounted, computed, defineEmits, watch } from 'vue'
 import {
   ListBulletIcon,
   XMarkIcon,
@@ -7,49 +7,57 @@ import {
   MapPinIcon,
   PlusCircleIcon,
 } from '@heroicons/vue/24/solid'
-// import defaultPlaces from '../../defaultPlaces.json'
-import DefaultPlaces from '../../places_default.json'
-
-// import AddPlaceModal from './AddPlaceModal.vue'
-import AddPlaceBtn from './AddPlaceBtn.vue'
+import { usePlacesStore } from '@/stores/fetchPlaces'
+import { useSearchStore } from '@/stores/searchPlaces'
 import { useRouter } from 'vue-router'
+import AddPlaceBtn from './AddPlaceBtn.vue'
+
+const placesStore = usePlacesStore()
+const searchStore = useSearchStore()
 const router = useRouter()
 
-const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
-
-
-const places  = DefaultPlaces
-
-const defaultPlacesData = ref([])
+const defaultPlacesData = ref([]) // 存放抓取的資料
 const emit = defineEmits(['open-detail-modal'])
-
-onMounted(() => {
-  defaultPlacesData.value = places
-})
-console.log(places)
-
-console.log(defaultPlacesData)
-
-const sideToggle = () => {
-  sideBarIsOpen.value = !sideBarIsOpen.value
-}
 
 const sideBarIsOpen = ref(true)
 
+// 計算側邊欄樣式
 const sideCls = computed(() => {
   return sideBarIsOpen.value ? [''] : ['translate-x-[-100%] opacity-0']
 })
-
 const hamburgerCls = computed(() => {
   return sideBarIsOpen.value ? ['opacity-0'] : ['']
 })
 
+// 切換側邊欄
+const sideToggle = () => {
+  sideBarIsOpen.value = !sideBarIsOpen.value
+}
+
+// 開啟詳細資訊
 const openDetailModal = (detailId) => {
   router.push({
     path: '/planner',
     query: { action: 'placeInfo', placeId: detailId },
   })
 }
+
+// 初始化並抓取資料
+onMounted(async () => {
+  await placesStore.fetchDefaultPlaces() // 抓取資料
+  defaultPlacesData.value = placesStore.items // 賦值給本地變數
+})
+
+watch(
+  () => searchStore.searchData,
+  (newData) => {
+    if (newData.length > 0) {
+      placesStore.updateFromSearch(newData)
+      defaultPlacesData.value = placesStore.items
+    }
+  },
+  { immediate: true }
+)
 </script>
 
 <template>
@@ -95,14 +103,10 @@ const openDetailModal = (detailId) => {
             key:item.id
             class="w-full mb-3 transition-colors rounded-md p1 bg-gray hover:bg-primary-100"
           >
-            <a href="#" @click="openDetailModal(item.place_id)">
+            <a href="#" @click="openDetailModal(item.id)">
               <figure class="flex p-1 group">
                 <div class="w-40 h-auto overflow-hidden rounded-md">
-                  <img
-                    :src="`https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference=${item.photos[1].photo_reference}&key=${GOOGLE_API_KEY}`"
-                    alt=""
-                    class="aspect-square"
-                  />
+                  <img :src="item.url" alt="" class="aspect-square" />
                 </div>
                 <div
                   class="pt-3 pl-4 pr-3 w-[176px] flex flex-col justify-between relative"
@@ -111,7 +115,8 @@ const openDetailModal = (detailId) => {
                     <h3 class="font-bold text-slate-900">
                       {{ item.name }}
                     </h3>
-                    <p v-if="item.rating"
+                    <p
+                      v-if="item.rating"
                       class="flex items-center gap-1 text-sm leading-6 text-slate-500"
                     >
                       <StarIcon class="size-4 text-secondary-500" />{{

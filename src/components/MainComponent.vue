@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch, onMounted } from 'vue'
 import SearchBar from './SearchBar.vue'
 import MapToggle from './MapToggle.vue'
 import PlacesComponent from './PlacesComponent.vue'
@@ -8,12 +8,14 @@ import DetailModal from '@/components/DetailModal.vue'
 import { useRouter, useRoute } from 'vue-router'
 import AddPlaceModal from './AddPlaceModal.vue'
 import { PlaceModalStore } from '@/stores/PlaceModal'
+import { usePlacesStore } from '@/stores/fetchPlaces'
+import { useSearchStore } from '@/stores/searchPlaces'
 
-import DefaultPlaces from '../../places_default.json'
+const placesStore = usePlacesStore()
+const searchStore = useSearchStore()
 const modalStore = PlaceModalStore()
 const scrollPosition = ref(0)
-
-const places  = DefaultPlaces
+const places = ref([])
 const router = useRouter()
 const route = useRoute()
 
@@ -39,7 +41,6 @@ const waterFallSwitch = computed(() => {
 const isModalOpen = computed(() => route.query.action === 'placeInfo')
 const currentPlaceId = computed(() => route.query.placeId)
 const handleOpenDetailModal = (detailId) => {
-  console.log('Opening Detail Modal with ID:', detailId);
   router.push({
     path: '/planner',
     query: { action: 'placeInfo', placeId: detailId }, // 傳遞地點 ID
@@ -47,18 +48,34 @@ const handleOpenDetailModal = (detailId) => {
 }
 
 const currentPlace = computed(() => {
-  if (!currentPlaceId.value || !places) return null // 防止無效 ID 或 places 未定義
-  return places.find((place) => place.place_id === currentPlaceId.value)
-
-  // 把place.id改成了place.place_id
+  if (!currentPlaceId.value || !places.value.length) return null // 確保資料存在
+  return places.value.find((place) => place.id === currentPlaceId.value)
 })
-console.log(currentPlaceId.value);
-
-
 
 const closeDetailModal = () => {
   router.push({ path: '/planner' })
 }
+
+onMounted(async () => {
+  try {
+    await placesStore.fetchDefaultPlaces() // 抓取資料
+    places.value = placesStore.items
+  } catch (error) {
+    console.error('Failed to fetch places:', error)
+    places.value = [] // 防止錯誤導致的 undefined
+  }
+})
+
+// 監聽searchData
+watch(
+  () => searchStore.searchData,
+  (newData) => {
+    if (newData.length > 0) {
+      placesStore.updateFromSearch(newData)
+    }
+  },
+  { immediate: true }
+)
 
 // 避免打開或關掉任何Modal時往卷軸彈到最上方
 watch(
@@ -97,6 +114,10 @@ watch(
       <SearchBar class="flex justify-end w-full lg:ml-20" />
       <MapToggle
         class="justify-start hidden mr-24 lg:flex item-center"
+        v-model:isPlacesComponent="isPlacesComponent"
+      />
+      <MapToggle
+        class="fixed bottom-5 left-1/2 -translate-x-1/2 justify-center item-center md:left-[44%] lg:hidden"
         v-model:isPlacesComponent="isPlacesComponent"
       />
     </div>
