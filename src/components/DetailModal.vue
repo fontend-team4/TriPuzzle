@@ -21,7 +21,6 @@ import {
 import { StarIcon } from "@heroicons/vue/24/solid"
 import Waterfall from "./Waterfall.vue"
 import AddPlaceBtn from "./AddPlaceBtn.vue"
-import { useRoute } from "vue-router"
 import { PlaceModalStore } from "@/stores/PlaceModal"
 import { usePlacesStore } from "@/stores/fetchPlaces"
 

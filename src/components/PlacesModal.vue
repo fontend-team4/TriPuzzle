@@ -108,9 +108,7 @@ watch(
           >
             <a
               href="#"
-              @click="
-                openDetailModal(item.place_id), modalStore.savePlace(item)
-              "
+              @click="openDetailModal(item.id), modalStore.savePlace(item)"
             >
               <figure class="flex p-1 group">
                 <div class="w-40 h-auto overflow-hidden rounded-md">

@@ -6,6 +6,7 @@ import AddPlaceBtn from "./AddPlaceBtn.vue"
 import { usePlacesStore } from "@/stores/fetchPlaces"
 import { useSearchStore } from "@/stores/searchPlaces"
 import { PlaceModalStore } from "@/stores/PlaceModal"
+import { useRouter, useRoute } from "vue-router"
 
 const placesStore = usePlacesStore()
 const searchStore = useSearchStore()
