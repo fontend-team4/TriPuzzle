@@ -1,5 +1,7 @@
 <script setup>
 import DetailCarousel from './DetailCarousel.vue'
+import { computed, ref, defineEmits, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 import {
   CalendarIcon,
   ClockIcon,
@@ -17,16 +19,12 @@ import {
   LinkIcon,
 } from '@heroicons/vue/24/outline'
 import { StarIcon } from '@heroicons/vue/24/solid'
-import { computed, ref, defineEmits, onMounted } from 'vue'
 import Waterfall from './Waterfall.vue'
 import AddPlaceBtn from './AddPlaceBtn.vue'
-import { useRoute } from 'vue-router'
 import { usePlacesStore } from '@/stores/fetchPlaces'
 
 const placesStore = usePlacesStore()
 const route = useRoute()
-
-// 愛心顏色的切換可參考PlacesComponent，為避免重複同樣功能這邊就不放了，之後可統一做移動到stores去
 const showPhoto = ref(false)
 
 // CSS區
@@ -49,7 +47,7 @@ const changeShowPhoto = () => {
   return (showPhoto.value = !showPhoto.value)
 }
 
-// 接收PlaceID
+// 接收Place物件
 const props = defineProps({
   place: {
     type: Object,
@@ -165,7 +163,7 @@ const currentPlaceId = computed(() => route.query.placeId)
         </div>
         <div
           class="flex pt-2.5 pb-3.5 w-full"
-          v-if="place.opening_hours && place.opening_hours != []"
+          v-if="place.opening_hours && place.opening_hours != ''"
         >
           <ClockIcon class="flex-shrink-0 size-5" />
           <div>

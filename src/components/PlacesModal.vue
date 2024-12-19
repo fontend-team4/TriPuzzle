@@ -52,7 +52,6 @@ watch(
   () => searchStore.searchData,
   (newData) => {
     if (newData.length > 0) {
-      console.log('更新囉~')
       placesStore.updateFromSearch(newData)
       defaultPlacesData.value = placesStore.items
     }

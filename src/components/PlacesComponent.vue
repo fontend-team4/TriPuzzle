@@ -1,16 +1,9 @@
 <script setup>
-import {
-  StarIcon,
-  MapPinIcon,
-  ChevronDownIcon,
-  HeartIcon,
-  PlusCircleIcon,
-} from '@heroicons/vue/24/solid'
+import { StarIcon, MapPinIcon, HeartIcon } from '@heroicons/vue/24/solid'
 import { ref, onMounted, watch, nextTick, defineEmits, onUnmounted } from 'vue'
-import { usePlacesStore } from '@/stores/fetchPlaces'
 import { HeartIcon as OutlineHeartIcon } from '@heroicons/vue/24/outline'
-import { useRouter, useRoute } from 'vue-router'
 import AddPlaceBtn from './AddPlaceBtn.vue'
+import { usePlacesStore } from '@/stores/fetchPlaces'
 import { useSearchStore } from '@/stores/searchPlaces'
 
 const placesStore = usePlacesStore()
@@ -56,7 +49,6 @@ const handleResize = () => {
 
 // 初始化
 onMounted(async () => {
-  console.log('PlacesComponent onMounted了')
   await calculateColumns() // 初始計算瀑布流
   handleResize() // 初始化欄數
   window.addEventListener('resize', handleResize)
@@ -78,7 +70,6 @@ onUnmounted(() => {
 watch(
   () => placesStore.items,
   async (newItems) => {
-    console.log('placesStore.items 更新為:', newItems)
     await calculateColumns()
   },
   { immediate: true }
@@ -89,7 +80,7 @@ watch(
   () => searchStore.searchData,
   (newData) => {
     if (newData.length > 0) {
-      console.log('searchData 更新，觸發 placesStore 更新:', newData)
+      // console.log('searchData 更新，觸發 placesStore 更新:', newData)
       placesStore.updateFromSearch(newData)
     }
   }
@@ -97,7 +88,6 @@ watch(
 </script>
 
 <template>
-  <!-- <button @click="getDefaultLocations" class="absolute top-0 z-50 left-16">按我取得資料</button> -->
   <div class="absolute top-0 h-auto pt-20 lg:ps-28 lg:pt-24 pb-14 bg-slate-100">
     <!-- 瀑布流 -->
     <div
@@ -134,7 +124,6 @@ watch(
                     class="size-6"
                   />
                 </div>
-                <!-- <button class="overflow-hidden text-lg text-white border-0 rounded-full btn bg-secondary-500 hover:bg-secondary-600" onclick="AddPlaceModal.showModal()">加入行程<PlusCircleIcon class="size-6"/></button> -->
                 <AddPlaceBtn @click.stop />
               </div>
 

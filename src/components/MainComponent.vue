@@ -41,8 +41,6 @@ const waterFallSwitch = computed(() => {
 const isModalOpen = computed(() => route.query.action === 'placeInfo')
 const currentPlaceId = computed(() => route.query.placeId)
 const handleOpenDetailModal = (detailId) => {
-  console.log('Opening Detail Modal with ID:', detailId)
-
   router.push({
     path: '/planner',
     query: { action: 'placeInfo', placeId: detailId }, // 傳遞地點 ID
@@ -73,7 +71,6 @@ watch(
   () => searchStore.searchData,
   (newData) => {
     if (newData.length > 0) {
-      console.log('Main更新囉~')
       placesStore.updateFromSearch(newData)
     }
   },
