@@ -1,19 +1,27 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import { MagnifyingGlassIcon, XCircleIcon } from '@heroicons/vue/24/solid'
-import CategoryFilter from './CategoryFilter.vue'
-import SearchArea from './SearchArea.vue'
-import { useSearchStore } from '../stores/searchPlaces'
+import { ref, onMounted } from "vue"
+import { MagnifyingGlassIcon, XCircleIcon } from "@heroicons/vue/24/solid"
+import CategoryFilter from "./CategoryFilter.vue"
+import SearchArea from "./SearchArea.vue"
+import { useSearchStore } from "../stores/searchPlaces"
 
 // 預設為分類模式
 const isCategoryMode = ref(true)
 
 // 定義預設分類資料
 const defaultCategories = [
-  { name: '景點', icon: '🌄' },
-  { name: '收藏', icon: '❤️' },
-  { name: '美食', icon: '🍴' },
-  { name: '購物', icon: '🛍️' },
+  {
+    name: "景點",
+    icon: "🌄",
+    params: ["tourist_attraction", "museum", "zoo", "campground", "church"],
+  },
+  { name: "收藏", icon: "❤️", params: ["lodging", "embassy"] },
+  { name: "美食", icon: "🍴", params: ["food", "restaurant", "cafe", "bar"] },
+  {
+    name: "購物",
+    icon: "🛍️",
+    params: ["department_store", "supermarket", "shopping_mall", "store"],
+  },
 ]
 
 const categories = ref([...defaultCategories])
@@ -30,14 +38,14 @@ const toggleMode = () => {
 //活動分類
 const setActiveCategory = (category) => {
   activeCategory.value = category
-  searchStore.selectedTab = activeCategory.value.name
+  searchStore.selectedTab = activeCategory.value.params
   searchStore.typeSearch()
 }
 
 const setActiveMdCategory = (Mdcategory) => {
-  searchStore.selectedTab = ''
+  searchStore.selectedTab = ""
   activeMdCategory.value = Mdcategory
-  searchStore.selectedMdTab = activeMdCategory.value.name
+  searchStore.selectedMdTab = activeMdCategory.value.params
   searchStore.typeSearch()
 }
 
@@ -56,7 +64,7 @@ const updateCategories = (newCategories) => {
   activeCategory.value = newCategories[0]
 }
 onMounted(() => {
-  searchStore.selectedTab = activeCategory.value.name
+  searchStore.selectedTab = activeCategory.value.params
 })
 </script>
 

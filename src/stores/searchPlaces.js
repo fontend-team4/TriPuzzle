@@ -1,19 +1,19 @@
-import { defineStore } from 'pinia'
-import { ref } from 'vue'
-import axios from 'axios'
+import { defineStore } from "pinia"
+import { ref } from "vue"
+import axios from "axios"
 
-export const useSearchStore = defineStore('searchStore', () => {
-  const keyword = ref('')
-  const region = ref('')
-  const selectedTab = ref('')
-  const selectedMdTab = ref('')
+export const useSearchStore = defineStore("searchStore", () => {
+  const keyword = ref("")
+  const region = ref("")
+  const selectedTab = ref("")
+  const selectedMdTab = ref("")
   const mapCenter = ref({ lat: 24.998564, lng: 121.576222 })
   const searchParams = ref({})
   const searchData = ref([])
 
   const fetchData = async (params) => {
     try {
-      const { data } = await axios.get('http://localhost:3000/places/search', {
+      const { data } = await axios.get("http://localhost:3000/places/search", {
         params,
       })
       console.log(params)
