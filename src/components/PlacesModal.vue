@@ -1,32 +1,35 @@
 <script setup>
-import { ref, onMounted, computed, defineEmits, watch } from 'vue'
+import { ref, onMounted, computed, defineEmits, watch } from "vue"
 import {
   ListBulletIcon,
   XMarkIcon,
   StarIcon,
   MapPinIcon,
   PlusCircleIcon,
-} from '@heroicons/vue/24/solid'
-import { usePlacesStore } from '@/stores/fetchPlaces'
-import { useSearchStore } from '@/stores/searchPlaces'
-import { useRouter } from 'vue-router'
-import AddPlaceBtn from './AddPlaceBtn.vue'
+} from "@heroicons/vue/24/solid"
+import { usePlacesStore } from "@/stores/fetchPlaces"
+import { useSearchStore } from "@/stores/searchPlaces"
+import { useRouter } from "vue-router"
+import AddPlaceBtn from "./AddPlaceBtn.vue"
+import { PlaceModalStore } from "@/stores/PlaceModal"
 
 const placesStore = usePlacesStore()
 const searchStore = useSearchStore()
+const modalStore = PlaceModalStore()
+
 const router = useRouter()
 
 const defaultPlacesData = ref([]) // 存放抓取的資料
-const emit = defineEmits(['open-detail-modal'])
+const emit = defineEmits(["open-detail-modal"])
 
 const sideBarIsOpen = ref(true)
 
 // 計算側邊欄樣式
 const sideCls = computed(() => {
-  return sideBarIsOpen.value ? [''] : ['translate-x-[-100%] opacity-0']
+  return sideBarIsOpen.value ? [""] : ["translate-x-[-100%] opacity-0"]
 })
 const hamburgerCls = computed(() => {
-  return sideBarIsOpen.value ? ['opacity-0'] : ['']
+  return sideBarIsOpen.value ? ["opacity-0"] : [""]
 })
 
 // 切換側邊欄
@@ -37,8 +40,8 @@ const sideToggle = () => {
 // 開啟詳細資訊
 const openDetailModal = (detailId) => {
   router.push({
-    path: '/planner',
-    query: { action: 'placeInfo', placeId: detailId },
+    path: "/planner",
+    query: { action: "placeInfo", placeId: detailId },
   })
 }
 
@@ -103,7 +106,12 @@ watch(
             key:item.id
             class="w-full mb-3 transition-colors rounded-md p1 bg-gray hover:bg-primary-100"
           >
-            <a href="#" @click="openDetailModal(item.id)">
+            <a
+              href="#"
+              @click="
+                openDetailModal(item.place_id), modalStore.savePlace(item)
+              "
+            >
               <figure class="flex p-1 group">
                 <div class="w-40 h-auto overflow-hidden rounded-md">
                   <img :src="item.url" alt="" class="aspect-square" />
@@ -130,7 +138,10 @@ watch(
                   <div
                     class="absolute inline-flex items-center justify-between w-[147px] h-auto mt-2 text-sm duration-300 opacity-0 group-hover:opacity-100 bottom-2"
                   >
-                    <AddPlaceBtn @click.stop />
+                    <AddPlaceBtn
+                      @click.stop
+                      @click="modalStore.savePlace(item)"
+                    />
                     <!-- <AddPlaceModal /> -->
                     <a :href="item.googleMapsUri" target="_blank">
                       <MapPinIcon class="text-gray-500 size-5" />

@@ -1,7 +1,7 @@
 <script setup>
-import DetailCarousel from './DetailCarousel.vue'
-import { computed, ref, defineEmits, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import DetailCarousel from "./DetailCarousel.vue"
+import { computed, ref, defineEmits, onMounted } from "vue"
+import { useRoute } from "vue-router"
 import {
   CalendarIcon,
   ClockIcon,
@@ -17,31 +17,35 @@ import {
   ChevronLeftIcon,
   ArrowDownTrayIcon,
   LinkIcon,
-} from '@heroicons/vue/24/outline'
-import { StarIcon } from '@heroicons/vue/24/solid'
-import Waterfall from './Waterfall.vue'
-import AddPlaceBtn from './AddPlaceBtn.vue'
-import { usePlacesStore } from '@/stores/fetchPlaces'
+} from "@heroicons/vue/24/outline"
+import { StarIcon } from "@heroicons/vue/24/solid"
+import Waterfall from "./Waterfall.vue"
+import AddPlaceBtn from "./AddPlaceBtn.vue"
+import { useRoute } from "vue-router"
+import { PlaceModalStore } from "@/stores/PlaceModal"
+import { usePlacesStore } from "@/stores/fetchPlaces"
 
+const modalStore = PlaceModalStore()
 const placesStore = usePlacesStore()
+
 const route = useRoute()
 const showPhoto = ref(false)
 
 // CSS區
 const isPhotoShow = computed(() => {
   return showPhoto.value
-    ? ['h-screen', 'md:translate-x-0', 'opacity-100', 'bottom-0']
+    ? ["h-screen", "md:translate-x-0", "opacity-100", "bottom-0"]
     : [
-        'h-0',
-        'md:translate-x-full',
-        'md:translate-y-0',
-        'opacity-0',
-        '-bottom-12',
+        "h-0",
+        "md:translate-x-full",
+        "md:translate-y-0",
+        "opacity-0",
+        "-bottom-12",
       ]
 })
 
 const overflowStatus = computed(() => {
-  return showPhoto.value ? ['overflow-hidden'] : ['']
+  return showPhoto.value ? ["overflow-hidden"] : [""]
 })
 const changeShowPhoto = () => {
   return (showPhoto.value = !showPhoto.value)
@@ -59,7 +63,7 @@ const places = ref([])
 const place = ref({})
 
 //關閉detailModal
-defineEmits(['close'])
+defineEmits(["close"])
 // 紀錄：打算改成用網址來渲染detailModal
 onMounted(async () => {
   try {
@@ -68,7 +72,7 @@ onMounted(async () => {
     // 在places.value中找到ID和currentPlaceId.value一樣的景點
     place.value = places.value.find((p) => p.id === currentPlaceId.value) || {}
   } catch (error) {
-    console.error('Failed to fetch places:', error)
+    console.error("Failed to fetch places:", error)
     places.value = [] // 防止錯誤導致 undefined
   }
 })
@@ -174,9 +178,9 @@ const currentPlaceId = computed(() => route.query.placeId)
                 class="flex pl-4 ml-4 text-sm leading-7"
               >
                 <span class="whitespace-nowrap">{{
-                  description.split(': ')[0]
+                  description.split(": ")[0]
                 }}</span>
-                <span class="ml-7">{{ description.split(': ')[1] }}</span>
+                <span class="ml-7">{{ description.split(": ")[1] }}</span>
               </div>
             </div>
           </div>

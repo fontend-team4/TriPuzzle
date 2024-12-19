@@ -1,17 +1,32 @@
 <script setup>
-import { StarIcon, MapPinIcon, HeartIcon } from '@heroicons/vue/24/solid'
-import { ref, onMounted, watch, nextTick, defineEmits, onUnmounted } from 'vue'
-import { HeartIcon as OutlineHeartIcon } from '@heroicons/vue/24/outline'
-import AddPlaceBtn from './AddPlaceBtn.vue'
-import { usePlacesStore } from '@/stores/fetchPlaces'
-import { useSearchStore } from '@/stores/searchPlaces'
+import { StarIcon, MapPinIcon, HeartIcon } from "@heroicons/vue/24/solid"
+import { ref, onMounted, watch, nextTick, defineEmits, onUnmounted } from "vue"
+import { HeartIcon as OutlineHeartIcon } from "@heroicons/vue/24/outline"
+import AddPlaceBtn from "./AddPlaceBtn.vue"
+import { usePlacesStore } from "@/stores/fetchPlaces"
+import { useSearchStore } from "@/stores/searchPlaces"
+import { PlaceModalStore } from "@/stores/PlaceModal"
 
 const placesStore = usePlacesStore()
 const searchStore = useSearchStore()
+const modalStore = PlaceModalStore()
 
-const columns = ref([]) // 瀑布流欄位
+import DefaultPlaces from "../../places_default.json"
+
+const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
+const places = DefaultPlaces
+console.log(places[0].name)
+
+// places是陣列形式
+// console.log(places[1].photos[1].name)
+
+const router = useRouter()
+const API_URL = "http://localhost:3000"
+const defaultPlacesData = ref([])
+const items = ref([])
+const columns = ref([]) // 每欄
 const numCols = ref(2) // 預設為兩欄
-const emit = defineEmits(['open-detail-modal'])
+const emit = defineEmits(["open-detail-modal"])
 
 // 瀑布流計算
 const calculateColumns = async () => {
@@ -51,7 +66,7 @@ const handleResize = () => {
 onMounted(async () => {
   await calculateColumns() // 初始計算瀑布流
   handleResize() // 初始化欄數
-  window.addEventListener('resize', handleResize)
+  window.addEventListener("resize", handleResize)
 })
 
 const toggleFavorite = (item) => {
@@ -59,11 +74,11 @@ const toggleFavorite = (item) => {
 }
 
 const openDetailModal = (detailId) => {
-  emit('open-detail-modal', detailId) // 傳遞地點的 ID
+  emit("open-detail-modal", detailId) // 傳遞地點的 ID
 }
 
 onUnmounted(() => {
-  window.removeEventListener('resize', handleResize)
+  window.removeEventListener("resize", handleResize)
 })
 
 // 監聽 items 的變化並重新計算瀑布流
@@ -101,7 +116,10 @@ watch(
         class="flex flex-col gap-4"
       >
         <div v-for="item in col" :key="item.id" class="group">
-          <a href="#" @click="openDetailModal(item.id)">
+          <a
+            href="#"
+            @click="openDetailModal(item.id), modalStore.savePlace(item)"
+          >
             <div class="relative w-full mb-2 overflow-hidden rounded-lg">
               <!-- 黑色遮罩 -->
               <div
@@ -124,7 +142,8 @@ watch(
                     class="size-6"
                   />
                 </div>
-                <AddPlaceBtn @click.stop />
+                <!-- <button class="overflow-hidden text-lg text-white border-0 rounded-full btn bg-secondary-500 hover:bg-secondary-600" onclick="AddPlaceModal.showModal()">加入行程<PlusCircleIcon class="size-6"/></button> -->
+                <AddPlaceBtn @click.stop @click="modalStore.savePlace(item)" />
               </div>
 
               <!-- 圖片 -->
