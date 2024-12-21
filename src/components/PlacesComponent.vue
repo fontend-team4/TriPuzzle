@@ -7,20 +7,23 @@ import { usePlacesStore } from "@/stores/fetchPlaces"
 import { useSearchStore } from "@/stores/searchPlaces"
 import { PlaceModalStore } from "@/stores/PlaceModal"
 import { useRouter, useRoute } from "vue-router"
+import { LoginModalStore } from '@/stores/LoginModal.js'
+import axios from "axios"
 
 const placesStore = usePlacesStore()
 const searchStore = useSearchStore()
 const modalStore = PlaceModalStore()
-
-
-
-
 
 const router = useRouter()
 const API_URL = "http://localhost:3000"
 const columns = ref([]) // 每欄
 const numCols = ref(2) // 預設為兩欄
 const emit = defineEmits(["open-detail-modal"])
+
+const LoginStore = LoginModalStore()
+const isLogin = ref(false)
+const token = localStorage.getItem('token')
+const userId = ref(localStorage.getItem("userId"));
 
 // 瀑布流計算
 const calculateColumns = async () => {
@@ -47,19 +50,18 @@ const handleResize = () => {
   calculateColumns()
 }
 
-// 初始化
-onMounted(async () => {
-  await calculateColumns() // 初始計算瀑布流
-  handleResize() // 初始化欄數
-  window.addEventListener("resize", handleResize)
-})
-
-// 收藏按鈕
+// 收藏景點按鈕
 const toggleFavorite = async (item) => {
-  item.isFavorited = !item.isFavorited;
+  if (!isLogin.value) {
+    alert("請先登入以使用收藏功能");
+    login();
+    return;
+  }
 
   try {
-    if (item.isFavorited) {
+    const headers = { Authorization: token };
+
+    if (!isFavorited(item.id)) {
       const placeData = {
         place_id: item.id,
         name: item.name,
@@ -69,60 +71,101 @@ const toggleFavorite = async (item) => {
         google_map_url: item.mapUrl,
       };
 
-      //儲存到 places
-      await axios.post(`${API_URL}/places`, placeData);
-      
-      
-      console.log('placeData:', placeData);
-      console.log('userId:', userId);
+      await axios.post(`${API_URL}/places`, placeData, { headers });
 
-      console.log('favorite_user:', userId.value);
-      console.log('favorite_places:', placeData.place_id);
+      const favoriteResponse = await axios.post(
+        `${API_URL}/favorites`,
+        {
+          favorite_user: userId.value,
+          favorite_places: placeData.place_id,
+        },
+        { headers }
+      );
 
-      //儲存到 favorites
-      await axios.post(`${API_URL}/favorites`, {
-        favorite_user: userId.value,
+      // 同步 favorites 狀態
+      favorites.value.push({
         favorite_places: placeData.place_id,
+        ...favoriteResponse.data,
       });
 
-      alert('收藏成功');
+      await calculateColumns();
+
+      alert("收藏成功");
     } else {
-      //取消收藏，刪除favorites
+      // 取消收藏該景點
       await axios.delete(`${API_URL}/favorites`, {
-        data: { favorite_user: userId, favorite_places: item.id },
+        data: { favorite_user: userId.value, favorite_places: item.id },
+        headers,
       });
 
-      alert('已取消收藏');
+      // 更新 favorites 狀態
+      favorites.value = favorites.value.filter(
+        (fav) => fav.favorite_places !== item.id
+      );
+
+      await calculateColumns();
+
+      alert("已取消收藏");
     }
   } catch (error) {
-    console.error('切換收藏時發生錯誤:', error);
-    item.isFavorited = !item.isFavorited;
-    alert('操作失敗，請稍號再試');
+    console.error("切換收藏時發生錯誤:", error);
+    alert("操作失敗，請稍後再試");
   }
 };
 
 
+const login = () => {
+  LoginStore.openModal();
 
-// 判斷是否已收藏
-const isFavorited = computed(() =>
-  favorites.some((fav) => fav.favorite_places === place.id)
-);
-
-// 狀態
-const userId = ref(1); // 假設目前登入的使用者 ID 是 1
-const favorites = ref([]);
-
-// 加載景點資料 
-const loadPlaces = async () => {
-  const response = await axios.get(`${API_URL}/places`); // 假設有此 API 返回所有景點
-  places.value = response.data;
+  // 假設 LoginModalStore 會處理登入，並在成功後更新 token 和 userId
+  LoginStore.onLoginSuccess = (newToken, newUserId) => {
+    localStorage.setItem('token', newToken);
+    localStorage.setItem('userId', newUserId);
+    token.value = newToken;
+    userId.value = Number(newUserId);
+    isLogin = true;
+  };
 };
 
-// 加載使用者收藏資料
+
+const favorites = ref([]); // 收藏列表
+
+const isFavorited = (placeId) => {
+  return favorites.value.some((fav) => fav.favorite_places === placeId);
+};
+
 const loadFavorites = async () => {
-  const response = await axios.get(`${API_URL}/favorites/${userId.value}`);
-  favorites.value = response.data;
+  if (!userId.value) return; // 確保有 userId 才執行
+
+  try {
+    const response = await axios.get(`${API_URL}/favorites/${userId.value}`, {
+      headers: { Authorization: token },
+    });
+    favorites.value = response.data; // 更新收藏列表
+  } catch (error) {
+    console.error("無法加載收藏資料:", error);
+  }
 };
+
+// 初始化
+onMounted(async () => {
+  await calculateColumns() // 初始計算瀑布流
+  handleResize() // 初始化欄數
+  window.addEventListener("resize", handleResize)
+})
+
+onMounted(() => {
+  const storedToken = localStorage.getItem("token");
+  const storedUserId = localStorage.getItem("userId");
+
+  if (storedToken && storedUserId) {
+    isLogin.value = true;
+    userId.value = Number(storedUserId);
+    loadFavorites(); // 加載收藏列表
+  } else {
+    isLogin.value = false;
+  }
+});
 
 const openDetailModal = (detailId) => {
   emit("open-detail-modal", detailId) // 傳遞地點的 ID
@@ -177,21 +220,31 @@ watch(
                 class="absolute w-full h-full transition-opacity bg-black opacity-0 group-hover:opacity-20"
               ></div>
 
-              <!-- 喜歡按鈕和加入景點 -->
+              <!-- 收藏按鈕和加入景點 -->
               <div
                 class="absolute bottom-0 flex items-center justify-between w-full p-4 transition-opacity opacity-0 z-2 group-hover:opacity-100"
               >
-                <button
-                  class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer bg-gray hover:bg-opacity-75 tooltip"
-                  data-tip="加入最愛"
-                  @click.prevent.stoop="toggleFavorite(item)"
-                >
-                  <component
-                    :is="item.isFavorited ? HeartIcon : OutlineHeartIcon"
-                    :class="item.isFavorited ? 'text-red-500' : 'text-gray-500'"
-                    class="size-6"
-                  />
-                </button>
+              <button
+                v-if="isLogin"
+                class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer bg-gray hover:bg-opacity-75 tooltip"
+                :data-tip="isFavorited(item.id) ? '已收藏' : '加入收藏'"
+                @click.prevent.stop="toggleFavorite(item)"
+              >
+                <component
+                  :is="isFavorited(item.id) ? HeartIcon : OutlineHeartIcon"
+                  :class="isFavorited(item.id) ? 'text-red-500' : 'text-gray-500'"
+                  class="size-6"
+                />
+              </button>
+              <!-- 未登入狀態 -->
+              <button
+                v-else
+                class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer bg-gray hover:bg-opacity-75 tooltip"
+                data-tip="請先登入!"
+                @click.prevent.stop="login()"
+              >
+                <OutlineHeartIcon class="text-gray-500 size-6" />
+              </button>
                 <!-- <button class="overflow-hidden text-lg text-white border-0 rounded-full btn bg-secondary-500 hover:bg-secondary-600" onclick="AddPlaceModal.showModal()">加入行程<PlusCircleIcon class="size-6"/></button> -->
                 <AddPlaceBtn @click.stop @click="modalStore.savePlace(item)" />
               </div>
