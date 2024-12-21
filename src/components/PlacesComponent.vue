@@ -1,6 +1,6 @@
 <script setup>
 import { StarIcon, MapPinIcon, HeartIcon } from "@heroicons/vue/24/solid"
-import { ref, onMounted, watch, nextTick, defineEmits, onUnmounted } from "vue"
+import { ref, onMounted, watch, nextTick, defineEmits, onUnmounted,computed } from "vue"
 import { HeartIcon as OutlineHeartIcon } from "@heroicons/vue/24/outline"
 import AddPlaceBtn from "./AddPlaceBtn.vue"
 import { usePlacesStore } from "@/stores/fetchPlaces"
@@ -12,19 +12,12 @@ const placesStore = usePlacesStore()
 const searchStore = useSearchStore()
 const modalStore = PlaceModalStore()
 
-import DefaultPlaces from "../../places_default.json"
 
-const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
-const places = DefaultPlaces
-console.log(places[0].name)
 
-// places是陣列形式
-// console.log(places[1].photos[1].name)
+
 
 const router = useRouter()
 const API_URL = "http://localhost:3000"
-const defaultPlacesData = ref([])
-const items = ref([])
 const columns = ref([]) // 每欄
 const numCols = ref(2) // 預設為兩欄
 const emit = defineEmits(["open-detail-modal"])
@@ -54,15 +47,6 @@ const handleResize = () => {
   calculateColumns()
 }
 
-// 監聽 items 的變化並重新計算瀑布流
-// watch(
-//   () => placesStore.items,
-//   async () => {
-//     await calculateColumns()
-//   },
-//   // { immediate: true }
-// )
-
 // 初始化
 onMounted(async () => {
   await calculateColumns() // 初始計算瀑布流
@@ -70,9 +54,75 @@ onMounted(async () => {
   window.addEventListener("resize", handleResize)
 })
 
-const toggleFavorite = (item) => {
-  item.isFavorited = !item.isFavorited
-}
+// 收藏按鈕
+const toggleFavorite = async (item) => {
+  item.isFavorited = !item.isFavorited;
+
+  try {
+    if (item.isFavorited) {
+      const placeData = {
+        place_id: item.id,
+        name: item.name,
+        image_url: item.url,
+        address: item.location,
+        rating: item.rating,
+        google_map_url: item.mapUrl,
+      };
+
+      //儲存到 places
+      await axios.post(`${API_URL}/places`, placeData);
+      
+      
+      console.log('placeData:', placeData);
+      console.log('userId:', userId);
+
+      console.log('favorite_user:', userId.value);
+      console.log('favorite_places:', placeData.place_id);
+
+      //儲存到 favorites
+      await axios.post(`${API_URL}/favorites`, {
+        favorite_user: userId.value,
+        favorite_places: placeData.place_id,
+      });
+
+      alert('收藏成功');
+    } else {
+      //取消收藏，刪除favorites
+      await axios.delete(`${API_URL}/favorites`, {
+        data: { favorite_user: userId, favorite_places: item.id },
+      });
+
+      alert('已取消收藏');
+    }
+  } catch (error) {
+    console.error('切換收藏時發生錯誤:', error);
+    item.isFavorited = !item.isFavorited;
+    alert('操作失敗，請稍號再試');
+  }
+};
+
+
+
+// 判斷是否已收藏
+const isFavorited = computed(() =>
+  favorites.some((fav) => fav.favorite_places === place.id)
+);
+
+// 狀態
+const userId = ref(1); // 假設目前登入的使用者 ID 是 1
+const favorites = ref([]);
+
+// 加載景點資料 
+const loadPlaces = async () => {
+  const response = await axios.get(`${API_URL}/places`); // 假設有此 API 返回所有景點
+  places.value = response.data;
+};
+
+// 加載使用者收藏資料
+const loadFavorites = async () => {
+  const response = await axios.get(`${API_URL}/favorites/${userId.value}`);
+  favorites.value = response.data;
+};
 
 const openDetailModal = (detailId) => {
   emit("open-detail-modal", detailId) // 傳遞地點的 ID
@@ -131,18 +181,17 @@ watch(
               <div
                 class="absolute bottom-0 flex items-center justify-between w-full p-4 transition-opacity opacity-0 z-2 group-hover:opacity-100"
               >
-                <div
+                <button
                   class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer bg-gray hover:bg-opacity-75 tooltip"
                   data-tip="加入最愛"
-                  @click.prevent="toggleFavorite(item)"
-                  @click.stop
+                  @click.prevent.stoop="toggleFavorite(item)"
                 >
                   <component
                     :is="item.isFavorited ? HeartIcon : OutlineHeartIcon"
                     :class="item.isFavorited ? 'text-red-500' : 'text-gray-500'"
                     class="size-6"
                   />
-                </div>
+                </button>
                 <!-- <button class="overflow-hidden text-lg text-white border-0 rounded-full btn bg-secondary-500 hover:bg-secondary-600" onclick="AddPlaceModal.showModal()">加入行程<PlusCircleIcon class="size-6"/></button> -->
                 <AddPlaceBtn @click.stop @click="modalStore.savePlace(item)" />
               </div>
