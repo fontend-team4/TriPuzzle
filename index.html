@@ -19,7 +19,7 @@
       defer
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0Ip9EuG0dBEVMGmJLM63x704MYW9bhW0"
     ></script> -->
-    <script>
+    <script type="module">
       ;((g) => {
         var h,
           a,
@@ -55,7 +55,7 @@
           ? console.warn(p + ' only loads once. Ignoring:', g)
           : (d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)))
       })({
-        key: 'AIzaSyD4Whz0dBiuFCGPpOc0ex7cTCKA6LxYq2o',
+        key: import.meta.env.VITE_GOOGLE_API_KEY,
         v: 'weekly',
         // Use the 'v' parameter to indicate the version to use (weekly, beta, alpha, etc.).
         // Add other bootstrap parameters as needed, using camel case.

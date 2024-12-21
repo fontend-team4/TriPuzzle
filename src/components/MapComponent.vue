@@ -1,10 +1,6 @@
 <script setup>
 import { ref, onMounted, watch, nextTick, shallowRef, toRaw } from 'vue'
-import {
-  MagnifyingGlassIcon,
-  PuzzlePieceIcon,
-  MapPinIcon,
-} from '@heroicons/vue/24/outline'
+import { MagnifyingGlassIcon, MapPinIcon } from '@heroicons/vue/24/outline'
 import PlacesModal from '@/components/PlacesModal.vue'
 import { usePlacesStore } from '@/stores/fetchPlaces'
 import { useSearchStore } from '../stores/searchPlaces'
@@ -14,13 +10,12 @@ const searchStore = useSearchStore()
 const currentLat = ref()
 const currentLng = ref ()
 const map = shallowRef(null)
-const markers = ref([]) // 用來管理地圖上的所有圖標
+const markers = ref([]) 
 
-// console.log(placesStore.items)
+
 
 async function initMap(center) {
   const { Map } = await google.maps.importLibrary('maps');
-  const { AdvancedMarkerElement } = await google.maps.importLibrary('marker');
   const newMap = new Map(document.getElementById('map'), {
     center: center || { lat: 25.0341222, lng: 121.5640212 },
     zoom: 15,
@@ -42,7 +37,6 @@ async function initMap(center) {
 
 
 const nearbySearch = () => {
-  console.log("觸發搜尋附近");
   searchStore.mapSearch()
 }
 
@@ -50,16 +44,16 @@ const nearbySearch = () => {
 function clearMarkers() {
   if (markers.value.length > 0) {
     markers.value.forEach((marker) => {
-      marker.setMap(null) // 從地圖移除 marker
+      marker.setMap(null) 
     })
   }
-  markers.value = [] // 確保 markers.value 被清空
+  markers.value = []
 }
 
 
-// 根據 placesStore.items 新增圖標
+// 根據 placesStore.items 新增Marker
 async function updateMarkers() {
-  clearMarkers(); // 確保舊的標記被清除
+  clearMarkers();
   const { AdvancedMarkerElement } = await google.maps.importLibrary('marker');
 
   if (!map.value) {
@@ -68,19 +62,19 @@ async function updateMarkers() {
   }
 
   placesStore.items.forEach((place) => {
-    // 建立 HTML 節點
+    // 自定義Marker
     const contentDiv = document.createElement('div');
     contentDiv.innerHTML = `
-  <div class="relative flex flex-col items-center justify-center group">
+  <div class="relative flex flex-col items-center justify-center group allBtn">
     <!-- Hidden popup -->
     <div
-      class="bg-white rounded-md p-[4px] items-center hidden group-hover:flex absolute top-16 w-auto shadow-md transition duration-150"
+      class="bg-white rounded-md p-[4px] items-center hidden group-hover:flex absolute -top-16 w-auto shadow-md transition duration-150"
     >
       <div class="w-12 h-12 overflow-hidden rounded-md">
         <img
-          src="https://via.placeholder.com/48"
+          src="${place.url}"
           alt="景點圖片"
-          class="aspect-square"
+          class="aspect-square smallImg"
         />
       </div>
       <p class="mx-2 font-semibold whitespace-nowrap">${place.name}</p>
@@ -95,7 +89,7 @@ async function updateMarkers() {
 
     <!-- Button -->
     <button
-      class="inline-flex items-center justify-between bg-white rounded-full shadow-lg p-[2px] before:content-['▼'] before:absolute before:z-1 before:-bottom-2 before:text-white before:left-1/2 before:translate-x-[-50%] group-hover:bg-primary-400 group-hover:before:text-primary-400 group-hover:scale-125 transition-transform duration-150 items-center"
+      class="inline-flex items-center justify-between bg-white rounded-full shadow-lg p-[2px] before:content-['▼'] before:absolute before:z-1 before:-bottom-2 before:text-white before:left-1/2 before:translate-x-[-50%] group-hover:bg-primary-400 group-hover:before:text-primary-400 group-hover:scale-125 transition-transform duration-150 items-center "
     >
       <div
         class="relative flex items-center justify-center w-8 h-8 mr-2 rounded-full bg-primary-400"
@@ -108,13 +102,15 @@ async function updateMarkers() {
 `;
 
 
+
     const marker = new AdvancedMarkerElement({
       position: place.geometry,
       map: map.value,
-      content: contentDiv, // 使用 DOM 節點
+      content: contentDiv,
+      draggable: false,
     });
 
-    markers.value.push(marker); // 將新建的 marker 加入列表
+    markers.value.push(marker);
   });
 }
 
@@ -131,7 +127,6 @@ const locateUser = async() => {
         currentLng.value = position.coords.longitude
         if (map.value) {
           map.value.setCenter({ lat: currentLat.value, lng: currentLng.value })
-          console.log("使用者位置更新");
           
         }
         new google.maps.Marker({
@@ -165,7 +160,7 @@ const locateUser = async() => {
 
 
 onMounted(async () => {
-//   // 先設定mapCenter會被定位覆蓋
+  // 先設定mapCenter會被定位覆蓋
   let initialCenter = searchStore.mapCenter 
   const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
 
@@ -190,16 +185,12 @@ onMounted(async () => {
     }
   })
 
-// 初始化地圖
   await initMap(initialCenter)
-
-
-
-    // 搜索附近地點
   searchStore.mapCenter = initialCenter
   searchStore.mapSearch()
   locateUser()
-  // 監聽 placesStore.items 的變化，動態更新標記
+
+
   watch(
   () => placesStore.items,
   (newItems, oldItems) => {
@@ -207,7 +198,7 @@ onMounted(async () => {
       if (map.value) {
         updateMarkers();
       } else {
-        console.warn('地圖尚未初始化，無法更新標記');
+        console.warn('地圖尚未初始化');
       }
     }
   },
@@ -238,40 +229,6 @@ onMounted(async () => {
   >
     <MapPinIcon class="size-5 text-primary-400" />
   </button>
-  <!-- 圖標樣式 -->
-  <!-- <div class="absolute top-1/2 left-1/2" id="locationCard">
-    <div class="flex flex-col items-center justify-center group">
-      <div class="flex flex-col items-center justify-center">
-        <div
-          class="bg-white rounded-md p-[4px] items-center hidden group-hover:flex absolute top-16 w-auto shadow-md"
-        >
-          <div class="w-12 h-12 overflow-hidden rounded-md">
-            <img
-              src="https://assets-lighthouse.s3.amazonaws.com/uploads/image/file/5635/01.jpg"
-              alt=""
-              class="aspect-square"
-            />
-          </div>
-          <p class="mx-2 font-semibold whitespace-nowrap">景點名稱</p>
-        </div>
-      </div>
-      <p
-        class="absolute -top-5 mx-auto font-[600] text-primary-400 strokeText text-sm  group-hover:hidden whitespace-nowrap"
-      >
-      景點名稱
-      </p>
-      <button
-        class="inline-flex items-center justify-between bg-white rounded-full shadow-lg p-[2px] before:content-['▼'] before:absolute before:z-1 before:-bottom-2 before:text-white before:left-1/2 before:translate-x-[-50%] group-hover:bg-primary-400 group-hover:before:text-primary-400 group-hover:scale-125 transition-transform duration-100"
-      >
-        <div
-          class="relative flex items-center w-6 h-6 mr-1 rounded-full bg-primary-400"
-        >
-          <PuzzlePieceIcon class="absolute mr-1 text-white size-5 left-[1px]" />
-        </div>
-        <p class="mr-1 group-hover:text-white ">4.2</p>
-      </button>
-    </div>
-  </div> -->
   <PlacesModal class="hidden md:block" />
 </template>
 
@@ -286,4 +243,19 @@ onMounted(async () => {
 img {
   object-fit: cover;
 }
+
+.allBtn-btn:hover{
+  transform: scale(1.25);
+  background-color: #f17b78;
+}
+.smallImg{
+  aspect-ratio: 1;
+  width: 48px;
+}
+
+.allBtn {
+  pointer-events: auto;
+  z-index: 1000;
+}
+
 </style>
