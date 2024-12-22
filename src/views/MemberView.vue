@@ -17,6 +17,7 @@ import {
 } from '@heroicons/vue/24/outline'
 import { UserBadgeCheck, WarningTriangle, LogOut } from '@iconoir/vue'
 import { LoginModalStore } from '@/stores/LoginModal.js'
+import FavoritesList from '@/components/FavoritesList.vue'
 const LoginStore = LoginModalStore()
 
 const router = useRouter()
@@ -306,21 +307,7 @@ const closePersonalInformatioMmodal = () => {
           </h2>
           <hr class="border-slate-300" />
         </div>
-
-        <div class="text-center p-6 rounded-lg">
-          <img
-            src="https://web.chictrip.com.tw/assets/img-empty.65a29235.png"
-            alt="Empty collection"
-            class="w-80 mx-auto mb-4"
-          />
-          <p class="mb-8">「收藏」中還沒有景點哦</p>
-          <RouterLink
-            to="/planner"
-            class="px-16 p-4 bg-primary-600 text-white text-sm rounded-full hover:bg-primary-800 transition"
-          >
-            探索景點
-          </RouterLink>
-        </div>
+        <FavoritesList/>
       </div>
     </div>
     <!-- Edit的Modal -->
