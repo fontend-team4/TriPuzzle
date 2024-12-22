@@ -65,6 +65,7 @@ const getUser = async () => {
 const logoutSuccess = ref(null)
 const logout = () => {
   localStorage.removeItem('token')
+  localStorage.removeItem('userId')
   logoutSuccess.value.showModal()
   setTimeout(() => {
     router.push('/planner')
