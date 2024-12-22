@@ -1,6 +1,10 @@
 <script setup>
-import { ref, onMounted } from "vue";
-import axios from "axios";
+import { StarIcon, MapPinIcon, HeartIcon } from "@heroicons/vue/24/solid";
+import { HeartIcon as OutlineHeartIcon } from "@heroicons/vue/24/outline"
+import AddPlaceBtn from "./AddPlaceBtn.vue";
+import { ref, onMounted, watch, nextTick, defineEmits, onUnmounted,computed } from "vue"
+import axios from "axios"
+import {  favorites, isFavorited, loadFavorites, toggleFavorite } from "@/stores/favorites";
 
 // 定義狀態
 const places = ref([]); 
@@ -30,12 +34,12 @@ onMounted(fetchPlaces);
 </script>
 
 <template>
-  <div class="favorites">    
+  <div class="favorites">
     <!-- 載入中 -->
     <div v-if="loading" class="text-center">
       <p>載入中...</p>
     </div>
-    
+
     <!-- 沒有收藏景點 -->
     <div v-else-if="places.length === 0" class="text-center p-6 rounded-lg">
       <img
@@ -51,31 +55,66 @@ onMounted(fetchPlaces);
         探索景點
       </RouterLink>
     </div>
-    
+
     <!-- 有收藏景點 -->
-    <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       <div
         v-for="place in places"
         :key="place.id"
-        class="p-4 border rounded shadow-md hover:shadow-lg"
+        class="p-4 rounded shadow-md hover:shadow-lg"
       >
-        <img
-          :src="place.image_url"
-          alt="Place image"
-          class="w-full h-40 object-cover mb-3 rounded"
-        />
-        <h2 class="text-lg font-semibold">{{ place.name }}</h2>
-        <p class="text-sm text-gray-600">
-          地址: {{ place.address || "未提供" }}
-        </p>
-        <p class="text-sm text-gray-500 mt-2">評分: {{ place.rating }}</p>
         <a
-          v-if="place.google_map_url"
-          :href="place.google_map_url"
-          target="_blank"
-          class="text-primary-600 hover:underline text-sm"
+          href="#"
+          @click="openDetailModal(place.id), modalStore.savePlace(place)"
         >
-          在 Google 地圖上查看
+          <div class="relative w-full mb-2 overflow-hidden rounded-lg">
+            <!-- 黑色遮罩 -->
+            <div
+              class="absolute w-full h-full transition-opacity bg-black opacity-0 group-hover:opacity-20"
+            ></div>
+
+            <!-- 收藏按鈕和加入景點 -->
+            <div
+              class="absolute bottom-0 flex items-center justify-between w-full p-4 transition-opacity opacity-0 z-2 group-hover:opacity-100"
+            >
+              <button
+                class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer bg-gray hover:bg-opacity-75 tooltip"
+                :data-tip="isFavorited(place.id) ? '已收藏' : '加入收藏'"
+                @click.prevent.stop="toggleFavorite(place)"
+              >
+                <component
+                  :is="isFavorited(place.id) ? HeartIcon : OutlineHeartIcon"
+                  :class="isFavorited(place.id) ? 'text-red-500' : 'text-gray-500'"
+                  class="size-6"
+                />
+              </button>
+              <AddPlaceBtn @click.stop @click="modalStore.savePlace(place)" />
+            </div>
+
+            <!-- 圖片 -->
+            <img
+              :src="place.image_url"
+              alt="Place image"
+              class="w-full h-40 object-cover mb-3 rounded"
+            />
+          </div>
+          <div>
+            <h3
+              class="text-sm font-bold text-gray-700 md:text-lg text-ellipsis text-slate-900"
+            >
+              {{ place.name }}
+            </h3>
+            <div class="flex justify-between">
+              <div class="flex text-slate-500 text-[12px] md:text-base">
+                <StarIcon class="text-yellow-500 md:size-6 size-4" />
+                <span>{{ place.rating }}</span>
+                <span>{{ place.location }}</span>
+              </div>
+              <a :href="place.mapUrl" target="_blank">
+                <MapPinIcon class="text-gray-500 md:size-6 size-4" />
+              </a>
+            </div>
+          </div>
         </a>
       </div>
     </div>
@@ -84,8 +123,8 @@ onMounted(fetchPlaces);
 
 <style scoped>
 .favorites {
-  max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
 }
+
 </style>
