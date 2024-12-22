@@ -5,7 +5,6 @@ import SchedulesList from './SchedulesList.vue'
 import ScheduleDetail from '@/components/ScheduleDetail.vue'
 import TransportationWay from './TransportationWay.vue'
 
-// schedule toggle 開關
 const scheduleToggleShow = ref(true)
 
 // SchedulesList 開關

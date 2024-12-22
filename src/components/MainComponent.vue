@@ -13,13 +13,12 @@ import DefaultPlaces from '../../places_default.json'
 const modalStore = PlaceModalStore()
 const scrollPosition = ref(0)
 
-const places  = DefaultPlaces
+const places = DefaultPlaces
 const router = useRouter()
 const route = useRoute()
 
 const isPlacesComponent = ref(true)
 
-// ScheduleList
 const schedulesListRef = ref(null)
 
 // search bar 跟著右側列表伸縮寬度
@@ -39,7 +38,7 @@ const waterFallSwitch = computed(() => {
 const isModalOpen = computed(() => route.query.action === 'placeInfo')
 const currentPlaceId = computed(() => route.query.placeId)
 const handleOpenDetailModal = (detailId) => {
-  console.log('Opening Detail Modal with ID:', detailId);
+  console.log('Opening Detail Modal with ID:', detailId)
   router.push({
     path: '/planner',
     query: { action: 'placeInfo', placeId: detailId }, // 傳遞地點 ID
@@ -52,9 +51,7 @@ const currentPlace = computed(() => {
 
   // 把place.id改成了place.place_id
 })
-console.log(currentPlaceId.value);
-
-
+console.log(currentPlaceId.value)
 
 const closeDetailModal = () => {
   router.push({ path: '/planner' })

@@ -17,7 +17,7 @@ import { LoginModalStore } from '@/stores/LoginModal.js'
 const LoginStore = LoginModalStore()
 const listToggle = inject('listToggle')
 const detailToggle = inject('detailToggle')
-const API_URL = 'http://localhost:3000'
+const API_URL = process.env.VITE_HOST_URL
 
 const isLogin = ref(false)
 const token = localStorage.getItem('token')
