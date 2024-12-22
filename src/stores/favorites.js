@@ -67,21 +67,15 @@ const addFavorite = async (item, headers) => {
     favorite_places: placeData.place_id,
   };
 
-  // 新增收藏
-  const favoriteResponse = await axios.post(
-    `${API_URL}/favorites`,
-    favoriteData,
-    { headers }
-  );
+  const favoriteResponse = 
+    await axios.post(`${API_URL}/favorites`,favoriteData,{ headers });
 
-  // 更新收藏列表
   favorites.value.push({
     favorite_places: placeData.place_id,
     ...favoriteResponse.data,
   });
 };
 
-// 移除收藏
 const removeFavorite = async (placeId, headers) => {
   await axios.delete(`${API_URL}/favorites`, {
     data: {
@@ -91,7 +85,6 @@ const removeFavorite = async (placeId, headers) => {
     headers,
   });
 
-  // 更新收藏列表
   favorites.value = favorites.value.filter(
     (fav) => fav.favorite_places !== placeId
   );
