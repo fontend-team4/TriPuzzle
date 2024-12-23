@@ -5,12 +5,11 @@ import defaultCoverImage from '../assets/images/coverimage-1.jpg'
 import { ref, onMounted, defineProps } from 'vue'
 import {
   XMarkIcon,
-  PencilSquareIcon,
   ArrowLongRightIcon,
   PencilIcon,
   ArrowUpTrayIcon,
-  ChevronDownIcon,
 } from '@heroicons/vue/24/solid'
+import { CalendarCheck } from '@iconoir/vue'
 
 const transprotations = ref([
   {
@@ -82,6 +81,7 @@ const uploadImg = (event) => {
   coverImage.value = uploadedImg.value
 }
 
+const addSuccess = ref(null)
 // 建立行程
 const token = localStorage.getItem('token')
 const addSchedule = async () => {
@@ -108,7 +108,10 @@ const addSchedule = async () => {
       config
     )
     console.log(response.data)
-    alert('行程建立成功！')
+    addSuccess.value.showModal()
+    setTimeout(() => {
+      addSuccess.value.close()
+    }, 1000)
     props.savetoSchedules()
   } catch (err) {
     console.error(err.message)
@@ -290,6 +293,14 @@ onMounted(() => {
     <form method="dialog" class="modal-backdrop">
       <button>close</button>
     </form>
+  </dialog>
+  <!-- add schedule success 的 Modal -->
+  <dialog ref="addSuccess" class="modal w-[384px] mx-auto">
+    <div class="modal-box">
+      <form method="dialog"></form>
+      <CalendarCheck class="mx-auto w-14 h-14 text-primary-600 mb-3" />
+      <h3 class="text-xl font-bold text-center">行程建立成功！</h3>
+    </div>
   </dialog>
 </template>
 

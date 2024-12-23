@@ -1,27 +1,38 @@
 <script setup>
-import { ref } from 'vue';
-import LoginDialog from './LoginDialog.vue';
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import LoginDialog from './LoginDialog.vue'
 import {
   MagnifyingGlassIcon,
   LightBulbIcon,
   UserCircleIcon,
   Bars3Icon,
-} from '@heroicons/vue/24/solid';
+} from '@heroicons/vue/24/solid'
 import { LoginModalStore } from '@/stores/LoginModal.js'
 const LoginStore = LoginModalStore()
 
+const router = useRouter()
+// 判斷是否為登入狀態，未登入才會跳登入彈窗，已登入直接進到 member 頁面
+const checkIfIsLogin = () => {
+  const token = localStorage.getItem('token')
+  if (!token) {
+    LoginStore.openModal()
+  } else {
+    router.push('/member')
+  }
+}
 
-const isMenuOpen = ref(false);
+const isMenuOpen = ref(false)
 const toggleMenu = () => {
-  isMenuOpen.value = !isMenuOpen.value;
-};
-const isLoginDialogOpen = ref(false);
+  isMenuOpen.value = !isMenuOpen.value
+}
+const isLoginDialogOpen = ref(false)
 const openLoginDialog = () => {
-  isLoginDialogOpen.value = true;
-};
+  isLoginDialogOpen.value = true
+}
 const closeLoginDialog = () => {
-  isLoginDialogOpen.value = false;
-};
+  isLoginDialogOpen.value = false
+}
 </script>
 
 <template>
@@ -29,7 +40,7 @@ const closeLoginDialog = () => {
     class="fixed z-50 p-2 text-black bg-white rounded-lg shadow top-4 left-5 lg:hidden"
     @click="toggleMenu"
     aria-label="Toggle Menu"
-    :aria-expanded="isMenuOpen ? 'true' : 'false' "
+    :aria-expanded="isMenuOpen ? 'true' : 'false'"
   >
     <Bars3Icon class="w-4 h-4" />
   </button>
@@ -52,7 +63,9 @@ const closeLoginDialog = () => {
       </RouterLink>
     </div>
     <ul class="w-full space-y-2">
-      <li class="flex items-center p-2 transition-all rounded-lg hover:bg-primary-100">
+      <li
+        class="flex items-center p-2 transition-all rounded-lg hover:bg-primary-100"
+      >
         <button class="flex w-full">
           <RouterLink to="/planner">
             <div class="flex">
@@ -66,7 +79,9 @@ const closeLoginDialog = () => {
           </RouterLink>
         </button>
       </li>
-      <li class="flex items-center p-2 transition-all rounded-lg hover:bg-primary-100">
+      <li
+        class="flex items-center p-2 transition-all rounded-lg hover:bg-primary-100"
+      >
         <button class="flex w-full">
           <RouterLink to="/">
             <div class="flex">
@@ -81,8 +96,11 @@ const closeLoginDialog = () => {
         </button>
       </li>
       <hr class="w-full my-4 border-t border-gray" />
-      <li class="flex items-center p-2 transition-all rounded-lg hover:bg-primary-100">
-        <button class="flex w-full" @click="LoginStore.openModal()">
+      <li
+        class="flex items-center p-2 transition-all rounded-lg hover:bg-primary-100"
+      >
+        <button class="flex w-full" @click="checkIfIsLogin">
+          <!-- @click="LoginStore.openModal()" -->
           <UserCircleIcon class="flex-none w-6 h-6 text-slate-500" />
           <span
             class="hidden ml-3 font-medium transition-opacity duration-500 delay-500 opacity-0 group-hover:opacity-100 group-hover:inline-block whitespace-nowrap text-slate-500 hover:text-primary-800"
@@ -94,11 +112,12 @@ const closeLoginDialog = () => {
     </ul>
   </div>
   <!-- <LoginDialog class="z-20" v-if="isLoginDialogOpen" @close="closeLoginDialog" /> -->
-  <LoginDialog class="z-20" v-if="LoginStore.isOpen" @close="LoginStore.closeModal" />
-  <div>
-  </div>
+  <LoginDialog
+    class="z-20"
+    v-if="LoginStore.isOpen"
+    @close="LoginStore.closeModal"
+  />
+  <div></div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -1,48 +1,35 @@
 <script setup>
-import { ref, onMounted, nextTick, defineEmits, provide, watch } from 'vue'
-import {
-  StarIcon,
-  MapPinIcon,
-  ChevronDownIcon,
-  HeartIcon,
-  PlusCircleIcon,
-} from '@heroicons/vue/24/solid'
-import { HeartIcon as OutlineHeartIcon } from '@heroicons/vue/24/outline'
-import { useRouter, useRoute } from 'vue-router'
-import AddPlaceBtn from './AddPlaceBtn.vue'
-import DefaultPlaces from '../../places_default.json'
+import { StarIcon, MapPinIcon, HeartIcon } from "@heroicons/vue/24/solid"
+import { ref, onMounted, watch, nextTick, defineEmits, onUnmounted } from "vue"
+import { HeartIcon as OutlineHeartIcon } from "@heroicons/vue/24/outline"
+import AddPlaceBtn from "./AddPlaceBtn.vue"
+import { usePlacesStore } from "@/stores/fetchPlaces"
+import { useSearchStore } from "@/stores/searchPlaces"
+import { PlaceModalStore } from "@/stores/PlaceModal"
+import { useRouter, useRoute } from "vue-router"
 
-const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
-const { places } = DefaultPlaces
+const placesStore = usePlacesStore()
+const searchStore = useSearchStore()
+const modalStore = PlaceModalStore()
+
+const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
+const places = DefaultPlaces
+console.log(places[0].name)
 
 // places是陣列形式
 // console.log(places[1].photos[1].name)
 
-const router = useRouter()
-
-const defaultPlacesData = ref([])
-const items = ref([])
 const columns = ref([]) // 每欄
 const numCols = ref(2) // 預設為兩欄
-const emit = defineEmits(['open-detail-modal'])
+const emit = defineEmits(["open-detail-modal"])
 
-const initializeItems = () => {
-  items.value = places.map((location) => ({
-    id: location.id,
-    url: `https://places.googleapis.com/v1/${location.photos[0].name}/media?key=${GOOGLE_API_KEY}&maxHeightPx=400&maxWidthPx=400`,
-    title: location.displayName.text,
-    rating: location.rating.toString(),
-    location: location.formattedAddress.split(/[0-9]+/)[1].slice(2, 5),
-    mapUrl: location.googleMapsUri,
-  }))
-}
-
-// 瀑布流
+// 瀑布流計算
 const calculateColumns = async () => {
+  // 每次重新初始化 columns
   columns.value = Array.from({ length: numCols.value }, () => [])
   const heights = Array(numCols.value).fill(0)
 
-  for (const item of items.value) {
+  for (const item of placesStore.items) {
     const shortestCol = heights.indexOf(Math.min(...heights))
     columns.value[shortestCol].push(item)
     await nextTick()
@@ -53,6 +40,7 @@ const calculateColumns = async () => {
   }
 }
 
+// 監聽螢幕大小調整欄位數量
 const handleResize = () => {
   if (window.innerWidth >= 1024) numCols.value = 4
   else if (window.innerWidth >= 768) numCols.value = 3
@@ -60,22 +48,53 @@ const handleResize = () => {
   calculateColumns()
 }
 
-onMounted(() => {
-  defaultPlacesData.value = places
-  initializeItems() // 初始化 items
-  handleResize()
-  window.addEventListener('resize', handleResize)
+// 監聽 items 的變化並重新計算瀑布流
+// watch(
+//   () => placesStore.items,
+//   async () => {
+//     await calculateColumns()
+//   },
+//   // { immediate: true }
+// )
+
+// 初始化
+onMounted(async () => {
+  await calculateColumns() // 初始計算瀑布流
+  handleResize() // 初始化欄數
+  window.addEventListener("resize", handleResize)
 })
 
-// 點擊愛心切換
 const toggleFavorite = (item) => {
   item.isFavorited = !item.isFavorited
 }
 
 const openDetailModal = (detailId) => {
-  emit('open-detail-modal', detailId) // 傳遞地點的 ID
+  emit("open-detail-modal", detailId) // 傳遞地點的 ID
 }
 
+onUnmounted(() => {
+  window.removeEventListener("resize", handleResize)
+})
+
+// 監聽 items 的變化並重新計算瀑布流
+watch(
+  () => placesStore.items,
+  async (newItems) => {
+    await calculateColumns()
+  },
+  { immediate: true }
+)
+
+// 監聽 searchStore.searchData，當有更新時觸發 placesStore 更新
+watch(
+  () => searchStore.searchData,
+  (newData) => {
+    if (newData.length > 0) {
+      // console.log('searchData 更新，觸發 placesStore 更新:', newData)
+      placesStore.updateFromSearch(newData)
+    }
+  }
+)
 </script>
 
 <template>
@@ -92,7 +111,10 @@ const openDetailModal = (detailId) => {
         class="flex flex-col gap-4"
       >
         <div v-for="item in col" :key="item.id" class="group">
-          <a href="#" @click="openDetailModal(item.id)">
+          <a
+            href="#"
+            @click="openDetailModal(item.id), modalStore.savePlace(item)"
+          >
             <div class="relative w-full mb-2 overflow-hidden rounded-lg">
               <!-- 黑色遮罩 -->
               <div
@@ -116,7 +138,7 @@ const openDetailModal = (detailId) => {
                   />
                 </div>
                 <!-- <button class="overflow-hidden text-lg text-white border-0 rounded-full btn bg-secondary-500 hover:bg-secondary-600" onclick="AddPlaceModal.showModal()">加入行程<PlusCircleIcon class="size-6"/></button> -->
-                <AddPlaceBtn @click.stop />
+                <AddPlaceBtn @click.stop @click="modalStore.savePlace(item)" />
               </div>
 
               <!-- 圖片 -->
@@ -126,7 +148,7 @@ const openDetailModal = (detailId) => {
               <h3
                 class="text-sm font-bold text-gray-700 md:text-lg text-ellipsis text-slate-900"
               >
-                {{ item.title }}
+                {{ item.name }}
               </h3>
               <div class="flex justify-between">
                 <div class="flex text-slate-500 text-[12px] md:text-base">
@@ -160,6 +182,4 @@ summary:active {
   background-color: transparent !important;
   color: rgb(55 65 81 / var(--tw-text-opacity, 1)) !important;
 }
-
-
 </style>

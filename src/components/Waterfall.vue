@@ -1,106 +1,75 @@
 <script setup>
-import { ref, onMounted, nextTick, onBeforeUnmount, watch, computed, defineEmits, } from "vue";
-import DefaultPlaces from '../../places_default.json'
+import { ref, onMounted, nextTick, onBeforeUnmount } from 'vue'
 
-
-const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
-const { places } = DefaultPlaces
-
-const containerRef = ref(null); // 參考外容器
-// const fakeLocations = ref([]);
-const items = ref([]);
-const columns = ref([]); // 每欄
-const numCols = ref(2); // 預設為兩欄
-let resizeObserver = null;
-
+const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
+const containerRef = ref(null) // 參考外容器
+const items = ref([])
+const columns = ref([]) // 每欄
+const numCols = ref(2) // 預設為兩欄
+let resizeObserver = null
 
 // 計算欄位分佈
 const calculateColumns = async () => {
-  columns.value = Array.from({ length: numCols.value }, () => []);
-  const heights = Array(numCols.value).fill(0);
+  columns.value = Array.from({ length: numCols.value }, () => [])
+  const heights = Array(numCols.value).fill(0)
 
   for (const item of items.value) {
-    const shortestCol = heights.indexOf(Math.min(...heights));
-    columns.value[shortestCol].push(item);
-    await nextTick();
-    const img = document.getElementById(`img-${item.id}`);
+    const shortestCol = heights.indexOf(Math.min(...heights))
+    columns.value[shortestCol].push(item)
+    await nextTick()
+    const img = document.getElementById(`img-${item.id}`)
     if (img) {
-      heights[shortestCol] += img.offsetHeight + 16;
+      heights[shortestCol] += img.offsetHeight + 16
     }
   }
-};
-
+}
 // 根據容器寬度調整欄數
 const updateColumnCount = () => {
-  if (!containerRef.value) return;
-  const width = containerRef.value.offsetWidth;
+  if (!containerRef.value) return
+  const width = containerRef.value.offsetWidth
 
-  if (width >= 1200) numCols.value = 5;
-  else if (width >= 900) numCols.value = 4;
-  else if (width >= 600) numCols.value = 3;
-  else numCols.value = 2;
+  if (width >= 1200) numCols.value = 5
+  else if (width >= 900) numCols.value = 4
+  else if (width >= 600) numCols.value = 3
+  else numCols.value = 2
 
-  calculateColumns();
-};
+  calculateColumns()
+}
 
 onMounted(() => {
-
-  initializeItems(); 
+  initializeItems()
+  console.log(props.place.photos)
 
   // 監聽外容器大小
-  resizeObserver = new ResizeObserver(updateColumnCount);
-  if (containerRef.value) resizeObserver.observe(containerRef.value);
-});
+  resizeObserver = new ResizeObserver(updateColumnCount)
+  if (containerRef.value) resizeObserver.observe(containerRef.value)
+})
 
 onBeforeUnmount(() => {
   if (resizeObserver && containerRef.value) {
-    resizeObserver.unobserve(containerRef.value);
+    resizeObserver.unobserve(containerRef.value)
   }
-});
+})
 
+// 收取Detail的景點
 const props = defineProps({
-  placeId: {
-    type: String,
-    required: false,
+  place: {
+    type: Object,
+    required: true,
   },
-});
+})
 
-// 使用 place.id
-console.log(props.placeId);
-
+// 組成URL
 const initializeItems = () => {
-  if (!props.placeId) return;
+  if (!props.place || !props.place.photos) return
 
-  const targetPlace = places.find((location) => location.id === props.placeId);
-  if (!targetPlace) {
-    items.value = [];
-    return;
-  }
+  items.value = props.place.photos.map((photo, index) => ({
+    id: `photo-${index}`,
+    url: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference=${photo.photo_reference}&key=${GOOGLE_API_KEY}`,
+  }))
 
-  // 找到該ID所有照片
-  items.value = targetPlace.photos.map((photo, index) => ({
-    id: `${targetPlace.id}-${index}`, // 每張圖的ID
-    url: `https://places.googleapis.com/v1/${photo.name}/media?key=${GOOGLE_API_KEY}&maxHeightPx=400&maxWidthPx=400`,
-    title: targetPlace.displayName.text,
-    rating: targetPlace.rating.toString(),
-    location: targetPlace.formattedAddress.split(/[0-9]+/)[1].slice(2, 5),
-    mapUrl: targetPlace.googleMapsUri,
-  }));
-};
-
-
-
-// 如果照片不對就打開這個
-// watch(
-//   () => props.placeId,
-//   (newId) => {
-//     if (newId) {
-//       initializeItems(); // placeID如果改變就重算
-//       calculateColumns(); 
-//     }
-//   },
-//   { immediate: true } 
-// );
+  calculateColumns()
+}
 </script>
 
 <template>
@@ -116,15 +85,20 @@ const initializeItems = () => {
         :key="colIndex"
         class="flex flex-col gap-3"
       >
-        <div v-for="item in col" :key="item.id" class=" group">
-            <div class=" z-40 relative w-full overflow-hidden rounded-lg focus:border-2 focus:border-primary-500 focus:my-[-0.5px] focus:after:content-[''] focus:after:w-full focus:after:h-full focus:after:bg-primary-400 focus:after:opacity-10 focus:after:absolute focus:after:z-50 focus:after:top-0" tabindex="0" >
-              <!-- 黑色遮罩 -->
-              <div class="absolute w-full h-full transition-opacity bg-black opacity-0 group-hover:opacity-20 "></div>
-              <!-- 圖片 -->
-              <a href="" class="">
-                <img :id="'img-' + item.id" :src="item.url" alt="" />
-              </a>
-            </div>
+        <div v-for="item in col" :key="item.id" class="group">
+          <div
+            class="z-40 relative w-full overflow-hidden rounded-lg focus:border-2 focus:border-primary-500 focus:my-[-0.5px] focus:after:content-[''] focus:after:w-full focus:after:h-full focus:after:bg-primary-400 focus:after:opacity-10 focus:after:absolute focus:after:z-50 focus:after:top-0"
+            tabindex="0"
+          >
+            <!-- 黑色遮罩 -->
+            <div
+              class="absolute w-full h-full transition-opacity bg-black opacity-0 group-hover:opacity-20"
+            ></div>
+            <!-- 圖片 -->
+            <a href="" class="">
+              <img :id="'img-' + item.id" :src="item.url" alt="" />
+            </a>
+          </div>
         </div>
       </div>
     </div>

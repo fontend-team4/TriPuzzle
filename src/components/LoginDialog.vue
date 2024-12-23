@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, inject } from 'vue'
 import { XMarkIcon } from '@heroicons/vue/24/solid'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/vue/24/outline'
 import axios from 'axios'
@@ -32,8 +32,17 @@ function showMessage({ title = '訊息', message, status }) {
   if (document.querySelector('#custom_modal')) {
     document.querySelector('#modal_title').textContent = title // 更新標題
     document.querySelector('#modal_message').textContent = message // 更新訊息
-    document.querySelector('#modal_button').classList.remove('bg-green-500', 'hover:bg-green-700', 'bg-primary-600', 'hover:bg-primary-700');
-    document.querySelector('#modal_button').classList.add(...buttonClass.split(' ')) // 更新class
+    document
+      .querySelector('#modal_button')
+      .classList.remove(
+        'bg-green-500',
+        'hover:bg-green-700',
+        'bg-primary-600',
+        'hover:bg-primary-700'
+      )
+    document
+      .querySelector('#modal_button')
+      .classList.add(...buttonClass.split(' ')) // 更新class
     document.querySelector('#custom_modal').showModal() // 顯示 Modal
     return
   }
@@ -75,6 +84,9 @@ const loginSubmit = async () => {
       loginPassword.value = ''
       userStore.setUser(res.data.user)
       userStore.setToken(res.data.token)
+      // 提供 MemberView 讀取用戶資料使用
+      localStorage.setItem('userId', res.data.user.id)
+      localStorage.setItem('token', res.data.token)
       LoginStore.closeModal()
       showMessage({
         title: '登入成功',
@@ -327,7 +339,7 @@ const registerSubmit = async () => {
 
       <div class="flex justify-center items-center gap-6 mt-5">
         <a
-          p.href="http://localhost:3000/auth/google/callback"
+          href="http://localhost:3000/auth/google/callback"
           class="h-8 w-8 rounded-full shadow flex justify-center items-center cursor-pointer"
         >
           <img
@@ -337,7 +349,7 @@ const registerSubmit = async () => {
           />
         </a>
         <a
-          p.href="http://localhost:3000/api/auth/line/callback"
+          href="http://localhost:3000/api/auth/line/callback"
           class="h-8 w-8 rounded-full shadow flex justify-center items-center"
         >
           <img

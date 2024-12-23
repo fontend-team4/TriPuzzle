@@ -1,20 +1,33 @@
-import { defineStore, storeToRefs } from 'pinia';
-import { ref } from 'vue';
+import { defineStore, storeToRefs } from 'pinia'
+import { ref } from 'vue'
 
-export const PlaceModalStore = defineStore('PlaceModal', () => {
-  const isOpen = ref(false);
+const PlaceModalStore = defineStore('PlaceModal', () => {
+  const isOpen = ref(false)
+  const selectedPlace = ref(null)
 
+  const savePlace = (place) => {
+    selectedPlace.value = place
+  }
   const openModal = () => {
-    isOpen.value = true;
-  };
+    isOpen.value = true
+  }
 
   const closeModal = () => {
-    isOpen.value = false;
-  };
+    isOpen.value = false
+  }
 
   const toggleModal = () => {
-    isOpen.value = !isOpen.value;
-  };
+    isOpen.value = !isOpen.value
+  }
 
-  return { isOpen, openModal, closeModal, toggleModal };
-});
+  return {
+    isOpen,
+    selectedPlace,
+    savePlace,
+    openModal,
+    closeModal,
+    toggleModal,
+  }
+})
+
+export { PlaceModalStore }

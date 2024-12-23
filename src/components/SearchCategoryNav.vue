@@ -1,29 +1,71 @@
 <script setup>
+import taiwanLocation from "../../taiwanLocation.json"
 import { ref } from "vue";
-const categories = ref(["推薦", "台灣", "日本", "韓國"]);
+
+// 從 taiwanLocation 中提取出市名作為分類
+const categories = ref(Object.keys(taiwanLocation));
 </script>
 
-
 <template>
-  <nav class="block-category relative flex" >
-    <ul class="category-list flex flex-col gap-1 bg-white">
+  <div class="flex">
+    <nav class="relative flex block-category shrink-0" >
+    <ul class="flex flex-col gap-1 bg-white category-list">
       <li
         v-for="item in categories"
         :key="item"
-        class="category-item flex relative font-medium text-sm leading-2 py-3 pr-8 pl-3 cursor-pointer "
+        class="relative flex px-6 py-3 text-sm font-medium cursor-pointer category-item leading-2 hover:bg-gray"
         :class="{ active: item === $route.params.category }"
       >
-        <router-link
-          :to="{ name: 'CategoryView', params: { category: item } }"
-          class="w-10 h-4 leading-4"
-        >
+        <p class="w-auto h-4 leading-4 ">
           {{ item }}
-        </router-link>
+        </p>
       </li>
     </ul>
-  </nav>
-  <RouterView />
+    </nav>
+    <div class="h-full p-8 ">
+      <div class="text-lg font-medium">推薦區域</div>
+      <div class="flex flex-wrap gap-4 m-4">
+        <a href="#">
+          <div class="relative overflow-hidden rounded-2xl">
+          <img src="https://fakeimg.pl/200x200/200">
+          <p class="absolute text-white bottom-3 left-3">信義區</p>
+          </div>
+        </a>
+        <a href="#">
+          <div class="relative overflow-hidden rounded-2xl">
+          <img src="https://fakeimg.pl/200x200/200">
+          <p class="absolute text-white bottom-3 left-3">信義區</p>
+          </div>
+        </a>
+        <a href="#">
+          <div class="relative overflow-hidden rounded-2xl">
+          <img src="https://fakeimg.pl/200x200/200">
+          <p class="absolute text-white bottom-3 left-3">信義區</p>
+          </div>
+        </a>
+        <a href="#">
+          <div class="relative overflow-hidden rounded-2xl">
+          <img src="https://fakeimg.pl/200x200/200">
+          <p class="absolute text-white bottom-3 left-3">信義區</p>
+          </div>
+        </a>
+        <a href="#">
+          <div class="relative overflow-hidden rounded-2xl">
+          <img src="https://fakeimg.pl/200x200/200">
+          <p class="absolute text-white bottom-3 left-3">信義區</p>
+          </div>
+        </a>
+      </div>
+      <div class="text-lg font-medium">所有區域</div>
+      <div class="flex gap-4 m-4">
+        <button class="px-4 py-2 bg-white rounded-full ">信義區</button>
+        <button class="px-4 py-2 bg-white rounded-full ">信義區</button>
+        <button class="px-4 py-2 bg-white rounded-full ">信義區</button>
+      </div>
+    </div>
+  </div>
 </template>
+
 
 
 <style scoped>

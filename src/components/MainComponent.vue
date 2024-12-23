@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch, onMounted } from 'vue'
 import SearchBar from './SearchBar.vue'
 import MapToggle from './MapToggle.vue'
 import PlacesComponent from './PlacesComponent.vue'
@@ -8,14 +8,14 @@ import DetailModal from '@/components/DetailModal.vue'
 import { useRouter, useRoute } from 'vue-router'
 import AddPlaceModal from './AddPlaceModal.vue'
 import { PlaceModalStore } from '@/stores/PlaceModal'
+import { usePlacesStore } from '@/stores/fetchPlaces'
+import { useSearchStore } from '@/stores/searchPlaces'
 
-import DefaultPlaces from '../../places_default.json'
+const placesStore = usePlacesStore()
+const searchStore = useSearchStore()
 const modalStore = PlaceModalStore()
-
-
-
-
-const { places } = DefaultPlaces
+const scrollPosition = ref(0)
+const places = ref([])
 const router = useRouter()
 const route = useRoute()
 
@@ -25,7 +25,6 @@ const isPlacesComponent = ref(true)
 const schedulesListRef = ref(null)
 
 // search bar 跟著右側列表伸縮寬度
-
 const topBarSwitch = computed(() => {
   return schedulesListRef?.value?.listOpen
     ? 'w-[75%] transition-all'
@@ -33,7 +32,6 @@ const topBarSwitch = computed(() => {
 })
 
 // waterfall 跟著右側列表伸縮寬度
-
 const waterFallSwitch = computed(() => {
   return schedulesListRef?.value?.listOpen
     ? 'lg:pe-[420px] transition-all'
@@ -49,41 +47,62 @@ const handleOpenDetailModal = (detailId) => {
   })
 }
 
-
 const currentPlace = computed(() => {
-  if (!currentPlaceId.value || !places) return null // 防止無效 ID 或 places 未定義
-  return places.find((place) => place.id === currentPlaceId.value)
+  if (!currentPlaceId.value || !places.value.length) return null // 確保資料存在
+  return places.value.find((place) => place.id === currentPlaceId.value)
 })
 
 const closeDetailModal = () => {
   router.push({ path: '/planner' })
 }
 
-// 避免打開或關掉任何Modal時往卷軸彈到最上方
-watch(() => isModalOpen.value || modalStore.isOpen, (newVal) => {
-  if (newVal) {
-    scrollPosition.value = window.scrollY;
-
-    const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
-    document.body.style.position = 'fixed';
-    document.body.style.top = `-${scrollPosition.value}px`;
-    document.body.style.width = `calc(100% - ${scrollBarWidth}px)`;
-  } else {
-    document.body.style.position = '';
-    document.body.style.top = '';
-    document.body.style.width = '';
-
-    // 等瀑布流渲染完成再恢復滾動（不然會置頂）
-    setTimeout(() => {
-      window.scrollTo({
-        top: scrollPosition.value,
-      });
-    }, 0);
+onMounted(async () => {
+  try {
+    await placesStore.fetchDefaultPlaces() // 抓取資料
+    places.value = placesStore.items
+  } catch (error) {
+    console.error('Failed to fetch places:', error)
+    places.value = [] // 防止錯誤導致的 undefined
   }
-});
+})
 
+// 監聽searchData
+watch(
+  () => searchStore.searchData,
+  (newData) => {
+    if (newData.length > 0) {
+      placesStore.updateFromSearch(newData)
+    }
+  },
+  { immediate: true }
+)
 
+// 避免打開或關掉任何Modal時往卷軸彈到最上方
+watch(
+  () => isModalOpen.value || modalStore.isOpen,
+  (newVal) => {
+    if (newVal) {
+      scrollPosition.value = window.scrollY
 
+      const scrollBarWidth =
+        window.innerWidth - document.documentElement.clientWidth
+      document.body.style.position = 'fixed'
+      document.body.style.top = `-${scrollPosition.value}px`
+      document.body.style.width = `calc(100% - ${scrollBarWidth}px)`
+    } else {
+      document.body.style.position = ''
+      document.body.style.top = ''
+      document.body.style.width = ''
+
+      // 等瀑布流渲染完成再恢復滾動（不然會置頂）
+      setTimeout(() => {
+        window.scrollTo({
+          top: scrollPosition.value,
+        })
+      }, 0)
+    }
+  }
+)
 </script>
 
 <template>
@@ -95,6 +114,10 @@ watch(() => isModalOpen.value || modalStore.isOpen, (newVal) => {
       <SearchBar class="flex justify-end w-full lg:ml-20" />
       <MapToggle
         class="justify-start hidden mr-24 lg:flex item-center"
+        v-model:isPlacesComponent="isPlacesComponent"
+      />
+      <MapToggle
+        class="fixed bottom-5 left-1/2 -translate-x-1/2 justify-center item-center md:left-[44%] lg:hidden"
         v-model:isPlacesComponent="isPlacesComponent"
       />
     </div>
@@ -148,6 +171,4 @@ watch(() => isModalOpen.value || modalStore.isOpen, (newVal) => {
   opacity: 0;
   transform: translateY(-5%);
 }
-
-
 </style>
