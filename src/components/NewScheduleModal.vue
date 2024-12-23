@@ -9,7 +9,7 @@ import {
   PencilIcon,
   ArrowUpTrayIcon,
 } from '@heroicons/vue/24/solid'
-import { CalendarCheck } from '@iconoir/vue'
+import { CalendarCheck, MapXmark } from '@iconoir/vue'
 
 const transprotations = ref([
   {
@@ -67,22 +67,36 @@ const props = defineProps({
   },
 })
 
-// 封面照片
 const getCoverImg = (img) => {
   coverImage.value = img
 }
 
-const uploadedImg = ref(null)
-const uploadImg = (event) => {
+const imgFile = ref(null)
+const selectedImg = ref(null)
+const handleImgUpload = async (event) => {
   document.getElementById('dropdown-toggle').click()
+  imgFile.value = event.target.files[0]
+  selectedImg.value = URL.createObjectURL(imgFile.value)
+  coverImage.value = selectedImg.value
+  await uploadImg()
+}
 
-  const file = event.target.files[0]
-  uploadedImg.value = URL.createObjectURL(file)
-  coverImage.value = uploadedImg.value
+const uploadImg = async () => {
+  const formData = new FormData()
+  formData.append('image', imgFile.value)
+  try {
+    const response = await axios.post(
+      `${API_URL}/api/upload/coverImg`,
+      formData
+    )
+    coverImage.value = response.data.url
+  } catch (error) {
+    console.error(error.message)
+  }
 }
 
 const addSuccess = ref(null)
-// 建立行程
+const addFailed = ref(null)
 const token = localStorage.getItem('token')
 const addSchedule = async () => {
   const config = {
@@ -102,12 +116,7 @@ const addSchedule = async () => {
     transportation_way: transportationWay.value,
   }
   try {
-    const response = await axios.post(
-      `${API_URL}/schedules`,
-      ScheduleData,
-      config
-    )
-    console.log(response.data)
+    await axios.post(`${API_URL}/schedules`, ScheduleData, config)
     addSuccess.value.showModal()
     setTimeout(() => {
       addSuccess.value.close()
@@ -115,9 +124,11 @@ const addSchedule = async () => {
     props.savetoSchedules()
   } catch (err) {
     console.error(err.message)
-    alert('行程建立失敗')
+    addFailed.value.showModal()
+    setTimeout(() => {
+      addFailed.value.close()
+    }, 1500)
   }
-  // 清空欄位資料
   coverImage.value = defaultCoverImage
   ScheduleName.value = ''
   startDate.value = ''
@@ -188,7 +199,7 @@ onMounted(() => {
             <label
               for="file-upload"
               class="cursor-pointer w-full"
-              @change="uploadImg"
+              @change="handleImgUpload"
             >
               <li
                 class="h-[50%] px-[20px] py-[8px] hover:bg-gray-100 cursor-pointer flex items-center border-t-[1px] border-slate-200"
@@ -205,7 +216,7 @@ onMounted(() => {
             </label>
           </ul>
 
-          <div class="relative w-full h-auto rounded-xl overflow-hidden">
+          <div class="relative w-[440px] h-[220px] rounded-xl overflow-hidden">
             <img
               :src="coverImage"
               alt="封面照片"
@@ -216,7 +227,6 @@ onMounted(() => {
             ></div>
           </div>
         </div>
-
         <!-- 行程名稱 -->
         <div>
           <p class="mb-2 font-bold">行程名稱</p>
@@ -300,6 +310,15 @@ onMounted(() => {
       <form method="dialog"></form>
       <CalendarCheck class="mx-auto w-14 h-14 text-primary-600 mb-3" />
       <h3 class="text-xl font-bold text-center">行程建立成功！</h3>
+    </div>
+  </dialog>
+  <!-- add schedule failed 的 Modal -->
+  <dialog ref="addFailed" class="modal w-[384px] mx-auto">
+    <div class="modal-box">
+      <form method="dialog"></form>
+      <MapXmark class="mx-auto w-14 h-14 text-primary-600 mb-3" />
+      <h3 class="text-xl font-bold text-center">行程建立失敗！</h3>
+      <p class="text-center mt-3">請確認所有欄位皆已填寫。</p>
     </div>
   </dialog>
 </template>
