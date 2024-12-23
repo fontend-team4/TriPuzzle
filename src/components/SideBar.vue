@@ -26,13 +26,6 @@ const isMenuOpen = ref(false)
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value
 }
-const isLoginDialogOpen = ref(false)
-const openLoginDialog = () => {
-  isLoginDialogOpen.value = true
-}
-const closeLoginDialog = () => {
-  isLoginDialogOpen.value = false
-}
 </script>
 
 <template>
@@ -100,7 +93,6 @@ const closeLoginDialog = () => {
         class="flex items-center p-2 transition-all rounded-lg hover:bg-primary-100"
       >
         <button class="flex w-full" @click="checkIfIsLogin">
-          <!-- @click="LoginStore.openModal()" -->
           <UserCircleIcon class="flex-none w-6 h-6 text-slate-500" />
           <span
             class="hidden ml-3 font-medium transition-opacity duration-500 delay-500 opacity-0 group-hover:opacity-100 group-hover:inline-block whitespace-nowrap text-slate-500 hover:text-primary-800"
@@ -111,7 +103,6 @@ const closeLoginDialog = () => {
       </li>
     </ul>
   </div>
-  <!-- <LoginDialog class="z-20" v-if="isLoginDialogOpen" @close="closeLoginDialog" /> -->
   <LoginDialog
     class="z-20"
     v-if="LoginStore.isOpen"

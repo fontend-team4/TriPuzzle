@@ -1,16 +1,12 @@
 <script setup>
-import { ref, onMounted, computed, watch } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 import SideBar from '@/components/SideBar.vue'
 import {
   HeartIcon,
   PencilIcon,
-  Cog8ToothIcon,
-  ShareIcon,
   ArrowRightStartOnRectangleIcon,
-  EnvelopeIcon,
-  ChatBubbleLeftEllipsisIcon,
   ChevronRightIcon,
   XMarkIcon,
   PencilSquareIcon,
@@ -234,54 +230,6 @@ const closePersonalInformatioMmodal = () => {
                     <ArrowRightStartOnRectangleIcon class="h-4 w-4 mr-1" />
                     <span class="w-10">登出</span>
                   </button>
-                  <!-- <div class="dropdown">
-                    <div
-                      tabindex="0"
-                      class="p-2 rounded-full border border-slate-400 hover:bg-primary-100 hover:text-primary-800"
-                    >
-                      <Cog8ToothIcon class="w-5 h-5" />
-                    </div>
-                    <ul
-                      tabindex="0"
-                      class="dropdown-content bg-base-100 rounded-lg w-52 shadow sm:absolute top-15 right-5 md:left-0"
-                    >
-                      <button class="w-52">
-                        <li
-                          class="flex flex-row py-2 px-4 hover:bg-primary-100 hover:text-primary-800 rounded-t-lg items-center"
-                        >
-                          <ShareIcon class="h-4 w-4 mr-2" />
-                          分享
-                        </li>
-                      </button>
-                      <button class="w-52">
-                        <li
-                          class="flex flex-row py-2 px-4 hover:bg-primary-100 hover:text-primary-800 items-center"
-                        >
-                          <EnvelopeIcon class="h-4 w-4 mr-2" />
-                          服務條款與隱私聲明
-                        </li>
-                      </button>
-                      <button class="w-52">
-                        <li
-                          class="flex flex-row py-2 px-4 hover:bg-primary-100 hover:text-primary-800 items-center"
-                        >
-                          <ChatBubbleLeftEllipsisIcon class="h-4 w-4 mr-2" />
-                          意見回饋
-                        </li>
-                      </button>
-                      <button class="w-52">
-                        <li
-                          class="flex flex-row py-2 px-4 hover:bg-primary-100 hover:text-primary-800 rounded-b-lg items-center"
-                          @click="logout"
-                        >
-                          <ArrowRightStartOnRectangleIcon
-                            class="h-4 w-4 mr-2"
-                          />
-                          登出
-                        </li>
-                      </button>
-                    </ul>
-                  </div> -->
                 </div>
               </div>
             </div>
@@ -323,7 +271,6 @@ const closePersonalInformatioMmodal = () => {
         </div>
       </div>
     </div>
-    <!-- Edit的Modal -->
     <dialog id="Editmodal" class="modal" @click.self="closeEditmodal">
       <div
         class="bg-white rounded-none p-6 w-full h-full md:w-96 md:h-max md:rounded-2xl md:mb-20"
@@ -439,7 +386,6 @@ const closePersonalInformatioMmodal = () => {
         <button>close</button>
       </form>
     </dialog>
-    <!-- NickName的Modal -->
     <dialog id="NickNameModal" class="modal" @click.self="closeNickNameModal">
       <div
         class="bg-white rounded-none p-6 w-full h-full md:w-96 md:h-max md:rounded-2xl md:mb-40"
@@ -500,7 +446,6 @@ const closePersonalInformatioMmodal = () => {
         <button>close</button>
       </form>
     </dialog>
-    <!-- Profile的Modal -->
     <dialog id="ProfileModal" class="modal" @click.self="closeProfileModal">
       <div
         class="bg-white rounded-none p-6 w-full h-full md:w-96 md:h-max md:rounded-2xl md:mb-40"
@@ -554,7 +499,6 @@ const closePersonalInformatioMmodal = () => {
         <button>close</button>
       </form>
     </dialog>
-    <!-- PersonalInformatio的Modal -->
     <dialog
       id="PersonalInformatioMmodal"
       class="modal"
