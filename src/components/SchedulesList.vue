@@ -1,32 +1,24 @@
 <script setup>
 import { ref, inject, onMounted, computed } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
 import axios from 'axios'
-import {
-  ChevronDownIcon,
-  EllipsisHorizontalIcon,
-} from '@heroicons/vue/16/solid'
+import { EllipsisHorizontalIcon } from '@heroicons/vue/16/solid'
 import {
   XMarkIcon,
   UserPlusIcon,
   ShareIcon,
   DocumentDuplicateIcon,
   TrashIcon,
-  BriefcaseIcon,
-  GlobeAsiaAustraliaIcon,
 } from '@heroicons/vue/24/outline'
 import ShareScheduleModal from './ShareScheduleModal.vue'
 import NewScheduleModal from '@/components/NewScheduleModal.vue'
 import DeleteScheduleModal from './DeleteScheduleModal.vue'
 import { LoginModalStore } from '@/stores/LoginModal.js'
 
-const router = useRouter()
-const route = useRoute()
 const LoginStore = LoginModalStore()
 const listToggle = inject('listToggle')
 const detailToggle = inject('detailToggle')
 const API_URL = 'http://localhost:3000'
-// 抓取 user login token
+
 const isLogin = ref(false)
 const token = localStorage.getItem('token')
 
@@ -56,10 +48,11 @@ const getSchedules = async () => {
     hasSchedules.value = false
   }
 }
-// 刪除彈窗
+
 const openDeleteModal = (id) => {
   deletedId.value = id
 }
+
 // 行程分享、共編彈窗
 const activeStatus = ref(null)
 const openShareModal = () => {
@@ -76,7 +69,7 @@ const login = () => {
   LoginStore.openModal()
   listToggle()
 }
-// 行程列表篩選
+
 const listsort = ref('newest')
 const sortedSchedules = computed(() => {
   return schedules.value.sort((a, b) => {
@@ -166,8 +159,15 @@ onMounted(async () => {
                   :key="item.id"
                   class="card card-compact bg-base-100 sm:w-full md:w-[30%] lg:w-full h-[176px] lg:h-auto border-gray border mb-4 relative hover:cursor-pointer"
                 >
-                  <figure @click="detailToggle">
-                    <img :src="item.image_url" alt="scheduleCoverImage" />
+                  <figure
+                    @click="detailToggle"
+                    class="w-full h-[150px] overflow-hidden"
+                  >
+                    <img
+                      :src="item.image_url"
+                      alt="scheduleCoverImage"
+                      class="object-cover"
+                    />
                   </figure>
                   <!-- 行程右上設定 icon -->
                   <div class="flex gap-2 absolute top-3 right-3">
@@ -389,10 +389,6 @@ onMounted(async () => {
 }
 #schedule-list-toggle:checked ~ .schedule-list {
   transform: translateX(0);
-  /* 關閉按鈕做好之後就可以打開 */
-  /* .schedule{
-    display: none;
-  } */
 }
 .card > figure > img {
   transform: scale(1);
