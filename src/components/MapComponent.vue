@@ -114,20 +114,14 @@ async function updateMarkers() {
   });
 }
 
-
-
-// 定位功能
 const locateUser = async() => {
   if (navigator.geolocation) {
-  const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-
     navigator.geolocation.getCurrentPosition(
       (position) => {
         currentLat.value = position.coords.latitude
         currentLng.value = position.coords.longitude
         if (map.value) {
           map.value.setCenter({ lat: currentLat.value, lng: currentLng.value })
-          
         }
         new google.maps.Marker({
           position: { lat: currentLat.value, lng: currentLng.value },
@@ -144,14 +138,12 @@ const locateUser = async() => {
         })
       },
       () => {
-        console.warn('使用者拒絕共享位置，使用預設中心點')
         if (map.value) {
           map.value.setCenter(searchStore.mapCenter)
         }
       }
     )
   } else {
-    console.warn('瀏覽器不支援定位功能')
     if (map.value) {
       map.value.setCenter(searchStore.mapCenter)
     }
@@ -162,8 +154,6 @@ const locateUser = async() => {
 onMounted(async () => {
   // 先設定mapCenter會被定位覆蓋
   let initialCenter = searchStore.mapCenter 
-  const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-
   // 取得使用者定位
   await new Promise((resolve) => {
     if (navigator.geolocation) {
@@ -207,8 +197,6 @@ onMounted(async () => {
 
 })
 
- 
-
 </script>
 
 <template>
@@ -222,7 +210,6 @@ onMounted(async () => {
     <MagnifyingGlassIcon class="mr-1 size-5 text-primary-400" />
     <p>搜尋此區域</p>
   </button>
-  <!-- 定位按鈕 -->
   <button
     @click="locateUser"
     class="fixed px-2 py-2 bg-white rounded-md right-3 bottom-28 hover:bg-slate-100"
