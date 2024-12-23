@@ -1,11 +1,10 @@
 <script setup>
-import { ref, defineProps, defineEmits } from 'vue'
-import { LinkIcon, ShareIcon, ChevronDownIcon } from '@heroicons/vue/24/outline'
+import { defineProps, defineEmits } from 'vue'
+import { LinkIcon, ChevronDownIcon } from '@heroicons/vue/24/outline'
 import ScheduleSummaryModal from './ScheduleSummaryModal.vue'
 import ExportScheduleModal from './ExportScheduleModal.vue'
 import ExitCoEditModal from './ExitCoEditModal.vue'
 
-// const activeTab = ref('share')
 const props = defineProps({
   activeTab: {
     type: String,
@@ -21,7 +20,6 @@ const updateActiveTab = (status) => {
 <template>
   <dialog id="shareSchedule" class="modal">
     <div class="modal-box min-w-full md:min-w-[480px] bg-gray">
-      <!-- close button -->
       <form method="dialog">
         <div class="w-full h-10">
           <button
