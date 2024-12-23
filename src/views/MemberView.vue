@@ -1,22 +1,19 @@
 <script setup>
-import { ref, onMounted, computed, watch } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 import SideBar from '@/components/SideBar.vue'
 import {
   HeartIcon,
   PencilIcon,
-  Cog8ToothIcon,
-  ShareIcon,
   ArrowRightStartOnRectangleIcon,
-  EnvelopeIcon,
-  ChatBubbleLeftEllipsisIcon,
   ChevronRightIcon,
   XMarkIcon,
   PencilSquareIcon,
 } from '@heroicons/vue/24/outline'
 import { UserBadgeCheck, WarningTriangle, LogOut } from '@iconoir/vue'
 import { LoginModalStore } from '@/stores/LoginModal.js'
+import FavoritesList from '@/components/FavoritesList.vue'
 const LoginStore = LoginModalStore()
 
 const router = useRouter()
@@ -25,7 +22,6 @@ const token = localStorage.getItem('token')
 const userId = localStorage.getItem('userId')
 
 // GET User Profile
-// http://localhost:3000/users/profile/:id
 const user = ref('')
 const userName = ref('')
 const userEmail = ref('')
@@ -51,6 +47,7 @@ const getUser = async () => {
     user.value = response.data.data
     userName.value = user.value.name
     userEmail.value = user.value.email
+    userImg.value = user.value.profile_pic_url
     userGender.value = user.value.gender
     userBirthday.value = user.value.birthday // 2000-12-12T00:00:00.000Z
     userDescription.value = user.value.description
@@ -60,10 +57,11 @@ const getUser = async () => {
     router.push('/')
   }
 }
-// logout
+// User Logout
 const logoutSuccess = ref(null)
 const logout = () => {
   localStorage.removeItem('token')
+  localStorage.removeItem('userId')
   logoutSuccess.value.showModal()
   setTimeout(() => {
     router.push('/planner')
@@ -81,7 +79,6 @@ const formattedBirthday = computed(() => {
   const day = String(date.getDate()).padStart(2, '0')
   return `${year}-${month}-${day}`
 })
-
 const userBirthdayInput = computed({
   get: () => formattedBirthday.value,
   set: (value) => {
@@ -92,10 +89,10 @@ const userBirthdayInput = computed({
   },
 })
 
+// Update User Profile
 const errorMsg = ref('')
 const UpdateSuccess = ref(null)
 const UpdateFailed = ref(null)
-// PATCH User Profile
 const updateUser = async () => {
   try {
     const config = {
@@ -106,7 +103,7 @@ const updateUser = async () => {
     const updatedUserData = {
       name: userName.value,
       email: userEmail.value,
-      // profile_pic_url,
+      profile_pic_url: userImg.value,
       gender: userGender.value,
       birthday: userBirthday.value,
       description: userDescription.value,
@@ -118,14 +115,18 @@ const updateUser = async () => {
     )
     if (response.data.message === 'User update successful') {
       UpdateSuccess.value.showModal()
+      setTimeout(() => {
+        UpdateSuccess.value.close()
+      }, 1000)
     } else {
       UpdateFailed.value.showModal()
+      setTimeout(() => {
+        UpdateFailed.value.close()
+      }, 1000)
     }
     user.value = response.data.updatedData // 更新後的資料
-    console.log(user.value)
     await getUser()
   } catch (error) {
-    console.error(error.message)
     errorMsg.value = error.message
     UpdateFailed.value.showModal()
   }
@@ -148,7 +149,6 @@ const deleteUser = async () => {
       `${API_URL}/users/profile/${userId}`,
       config
     )
-    console.log(response.data.message)
     if (response.data.message === `成功刪除 ID:${userId} 使用者`) {
       user.value = ''
       localStorage.removeItem('token')
@@ -167,11 +167,31 @@ onMounted(async () => {
   await getUser()
 })
 
-const uploadedImg = ref(null)
-const updateProfileImage = (event) => {
-  const file = event.target.files[0]
-  uploadedImg.value = URL.createObjectURL(file)
-  userImg.value = uploadedImg.value
+// Upload Profile Image
+const imgFile = ref(null)
+const selectedImg = ref(null)
+
+const handleImgUpload = (event) => {
+  imgFile.value = event.target.files[0]
+  selectedImg.value = URL.createObjectURL(imgFile.value)
+  userImg.value = selectedImg.value
+  uploadImg()
+}
+
+const uploadImg = async () => {
+  const formData = new FormData()
+  formData.append('image', imgFile.value)
+
+  try {
+    const response = await axios.post(
+      `${API_URL}/api/upload/profileImg`,
+      formData
+    )
+    userImg.value = response.data.url
+    updateUser()
+  } catch (error) {
+    console.error(error.message)
+  }
 }
 
 const closeEditmodal = () => {
@@ -306,21 +326,7 @@ const closePersonalInformatioMmodal = () => {
           </h2>
           <hr class="border-slate-300" />
         </div>
-
-        <div class="text-center p-6 rounded-lg">
-          <img
-            src="https://web.chictrip.com.tw/assets/img-empty.65a29235.png"
-            alt="Empty collection"
-            class="w-80 mx-auto mb-4"
-          />
-          <p class="mb-8">「收藏」中還沒有景點哦</p>
-          <RouterLink
-            to="/planner"
-            class="px-16 p-4 bg-primary-600 text-white text-sm rounded-full hover:bg-primary-800 transition"
-          >
-            探索景點
-          </RouterLink>
-        </div>
+        <FavoritesList/>
       </div>
     </div>
     <!-- Edit的Modal -->
@@ -358,7 +364,7 @@ const closePersonalInformatioMmodal = () => {
             id="imageUpload"
             class="hidden"
             accept="image/*"
-            @change="updateProfileImage"
+            @change="handleImgUpload"
           />
         </div>
         <div class="bg-gray rounded-2xl">

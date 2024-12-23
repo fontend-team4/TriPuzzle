@@ -1,16 +1,11 @@
-<script setup>
-import {
-  Logo,
-  FooterIllustration1,
-  FooterIllustration2,
-} from '@/components/svg/exportSvg.js'
-</script>
-
 <template>
   <footer class="bg-gradient-to-b from-primary-50 pt-5 md:pt-10">
     <div class="w-full px-4 mx-auto relative md:w-9/12 md:max-w-7xl md:px-0">
       <div class="flex justify-center items-center gap-3 mb-5 md:flex-col">
-        <Logo class="scale-75 md:mx-auto md:mb-3 md:scale-100" />
+        <img
+          src="@/assets/svg/Logo.svg"
+          class="scale-75 md:mx-auto md:mb-3 md:scale-100"
+        />
         <h1
           class="text-lg font-bold text-neutral-800 text-left sm:text-xl md:text-3xl md:mb-10 md:text-center"
         >
@@ -37,10 +32,12 @@ import {
           Corporation.
         </p>
       </div>
-      <FooterIllustration1
+      <img
+        src="@/assets/svg/FooterIllustration1.svg"
         class="scale-75 absolute top-32 -left-[150px] hidden lg:block xl:scale-100 xl:top-[100px] xl:-left-32"
       />
-      <FooterIllustration2
+      <img
+        src="@/assets/svg/FooterIllustration2.svg"
         class="scale-75 absolute top-14 -right-[150px] hidden lg:block xl:scale-100 xl:top-5 xl:-right-[120px]"
       />
     </div>
