@@ -12,8 +12,6 @@ const placesStore = usePlacesStore()
 const searchStore = useSearchStore()
 const modalStore = PlaceModalStore()
 
-import DefaultPlaces from "../../places_default.json"
-
 const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
 const places = DefaultPlaces
 console.log(places[0].name)
@@ -21,10 +19,6 @@ console.log(places[0].name)
 // places是陣列形式
 // console.log(places[1].photos[1].name)
 
-const router = useRouter()
-const API_URL = "http://localhost:3000"
-const defaultPlacesData = ref([])
-const items = ref([])
 const columns = ref([]) // 每欄
 const numCols = ref(2) // 預設為兩欄
 const emit = defineEmits(["open-detail-modal"])
