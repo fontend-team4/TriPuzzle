@@ -93,7 +93,11 @@ const loginSubmit = async () => {
         message: res.data.message,
         status: 'success',
       })
-      console.log(res)
+
+      // 加入頁面重整的邏輯
+      setTimeout(() => {
+        window.location.reload()
+      }, 1000)
     }
   } catch (err) {
     const errorMessage = err.response?.data?.message || '未知錯誤'

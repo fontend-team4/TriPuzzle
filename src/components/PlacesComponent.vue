@@ -1,27 +1,32 @@
 <script setup>
 import { StarIcon, MapPinIcon, HeartIcon } from "@heroicons/vue/24/solid"
-import { ref, onMounted, watch, nextTick, defineEmits, onUnmounted } from "vue"
+import { ref, onMounted, watch, nextTick, defineEmits, onUnmounted,computed } from "vue"
 import { HeartIcon as OutlineHeartIcon } from "@heroicons/vue/24/outline"
 import AddPlaceBtn from "./AddPlaceBtn.vue"
 import { usePlacesStore } from "@/stores/fetchPlaces"
 import { useSearchStore } from "@/stores/searchPlaces"
 import { PlaceModalStore } from "@/stores/PlaceModal"
-import { useRouter, useRoute } from "vue-router"
+import { favorites,isFavorited,loadFavorites, toggleFavorite } from '@/stores/favorites.js'
 
 const placesStore = usePlacesStore()
 const searchStore = useSearchStore()
 const modalStore = PlaceModalStore()
 
-const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
-const places = DefaultPlaces
-console.log(places[0].name)
-
-// places是陣列形式
-// console.log(places[1].photos[1].name)
-
 const columns = ref([]) // 每欄
 const numCols = ref(2) // 預設為兩欄
 const emit = defineEmits(["open-detail-modal"])
+
+const isLogin = ref(false)
+const token = localStorage.getItem('token')
+const userId = ref(localStorage.getItem("userId"));
+
+// 檢查登入狀態
+onMounted(() => {
+  isLogin.value = Boolean(token && userId.value);
+  if (isLogin.value) {
+    loadFavorites(); // 加載收藏列表
+  }
+});
 
 // 瀑布流計算
 const calculateColumns = async () => {
@@ -48,15 +53,6 @@ const handleResize = () => {
   calculateColumns()
 }
 
-// 監聽 items 的變化並重新計算瀑布流
-// watch(
-//   () => placesStore.items,
-//   async () => {
-//     await calculateColumns()
-//   },
-//   // { immediate: true }
-// )
-
 // 初始化
 onMounted(async () => {
   await calculateColumns() // 初始計算瀑布流
@@ -64,9 +60,6 @@ onMounted(async () => {
   window.addEventListener("resize", handleResize)
 })
 
-const toggleFavorite = (item) => {
-  item.isFavorited = !item.isFavorited
-}
 
 const openDetailModal = (detailId) => {
   emit("open-detail-modal", detailId) // 傳遞地點的 ID
@@ -121,22 +114,31 @@ watch(
                 class="absolute w-full h-full transition-opacity bg-black opacity-0 group-hover:opacity-20"
               ></div>
 
-              <!-- 喜歡按鈕和加入景點 -->
+              <!-- 收藏按鈕和加入景點 -->
               <div
                 class="absolute bottom-0 flex items-center justify-between w-full p-4 transition-opacity opacity-0 z-2 group-hover:opacity-100"
               >
-                <div
-                  class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer bg-gray hover:bg-opacity-75 tooltip"
-                  data-tip="加入最愛"
-                  @click.prevent="toggleFavorite(item)"
-                  @click.stop
-                >
-                  <component
-                    :is="item.isFavorited ? HeartIcon : OutlineHeartIcon"
-                    :class="item.isFavorited ? 'text-red-500' : 'text-gray-500'"
-                    class="size-6"
-                  />
-                </div>
+              <button
+                v-if="isLogin"
+                class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer bg-gray hover:bg-opacity-75 tooltip"
+                :data-tip="isFavorited(item.id) ? '已收藏' : '加入收藏'"
+                @click.prevent.stop="toggleFavorite(item)"
+              >
+                <component
+                  :is="isFavorited(item.id) ? HeartIcon : OutlineHeartIcon"
+                  :class="isFavorited(item.id) ? 'text-red-500' : 'text-gray-500'"
+                  class="size-6"
+                />
+              </button>
+              <!-- 未登入狀態 -->
+              <button
+                v-else
+                class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer bg-gray hover:bg-opacity-75 tooltip"
+                data-tip="請先登入!"
+                @click.prevent.stop="toggleFavorite(item);"
+              >
+                <OutlineHeartIcon class="text-gray-500 size-6" />
+              </button>
                 <!-- <button class="overflow-hidden text-lg text-white border-0 rounded-full btn bg-secondary-500 hover:bg-secondary-600" onclick="AddPlaceModal.showModal()">加入行程<PlusCircleIcon class="size-6"/></button> -->
                 <AddPlaceBtn @click.stop @click="modalStore.savePlace(item)" />
               </div>
