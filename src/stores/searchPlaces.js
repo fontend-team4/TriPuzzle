@@ -7,7 +7,7 @@ export const useSearchStore = defineStore("searchStore", () => {
   const region = ref("")
   const selectedTab = ref("")
   const selectedMdTab = ref("")
-  const mapCenter = ref({ lat: 24.998564, lng: 121.576222 })
+  const mapCenter = ref({ lat: 25.0341222, lng: 121.5640212 })
   const searchParams = ref({})
   const searchData = ref([])
 

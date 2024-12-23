@@ -1,15 +1,14 @@
 <script setup>
-import { defineEmits, ref } from 'vue'
-import { PuzzlePieceIcon, Bars3Icon } from '@heroicons/vue/20/solid'
-import { Logo } from '@/components/svg/exportSvg.js'
+import { defineEmits, ref } from "vue"
+import { PuzzlePieceIcon, Bars3Icon } from "@heroicons/vue/20/solid"
 
 const isOpen = ref(false)
 const openDropdown = () => {
   isOpen.value = !isOpen.value
 }
-const emit = defineEmits(['clickTab'])
+const emit = defineEmits(["clickTab"])
 const clickTab = (sectionName) => {
-  emit('clickTab', sectionName)
+  emit("clickTab", sectionName)
 }
 </script>
 
@@ -20,7 +19,7 @@ const clickTab = (sectionName) => {
     <div class="relative flex justify-end items-center my-3 mx-3">
       <div class="flex items-center flex-1">
         <Bars3Icon class="w-6 h-6 text-neutral-800" @click="openDropdown" />
-        <Logo class="ml-3 w-auto h-8" />
+        <img src="@/assets/svg/Logo.svg" class="ml-3 w-auto h-8" />
       </div>
       <RouterLink
         to="/planner"
@@ -63,7 +62,11 @@ const clickTab = (sectionName) => {
     <div
       class="w-9/12 max-w-7xl min-w-max py-4 mx-auto flex justify-between items-center"
     >
-      <Logo class="flex-none cursor-pointer" @click="clickTab('top')" />
+      <img
+        src="@/assets/svg/Logo.svg"
+        class="flex-none cursor-pointer"
+        @click="clickTab('top')"
+      />
       <ul class="flex gap-4 text-neutral-800">
         <li
           class="px-[18px] py-4 cursor-pointer hover:text-primary-800"

@@ -1,11 +1,10 @@
-<template>
-  <svg
-    width="235"
-    height="239"
-    viewBox="0 0 235 239"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+<svg
+  width="235"
+  height="239"
+  viewBox="0 0 235 239"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
     <g clip-path="url(#clip0_259_2137)">
       <path
         d="M0 235.423C0 235.72 0.237401 235.959 0.533029 235.959H234.467C234.763 235.959 235 235.72 235 235.423C235 235.127 234.763 234.888 234.467 234.888H0.533029C0.237401 234.888 0 235.127 0 235.423Z"
@@ -214,4 +213,3 @@
       </clipPath>
     </defs>
   </svg>
-</template>
