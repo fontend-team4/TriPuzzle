@@ -59,6 +59,8 @@ const addFavorite = async (item, headers) => {
     google_map_url: item.mapUrl,
   };
 
+  console.log('placeData', placeData)
+
   // 新增地點
   await axios.post(`${API_URL}/places`, placeData, { headers });
 
@@ -85,6 +87,7 @@ const removeFavorite = async (placeId, headers) => {
     headers,
   });
 
+  console.log('移除地點', placeId)
   favorites.value = favorites.value.filter(
     (fav) => fav.favorite_places !== placeId
   );

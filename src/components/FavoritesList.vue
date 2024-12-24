@@ -2,9 +2,12 @@
 import { StarIcon, MapPinIcon, HeartIcon } from "@heroicons/vue/24/solid";
 import { HeartIcon as OutlineHeartIcon } from "@heroicons/vue/24/outline"
 import AddPlaceBtn from "./AddPlaceBtn.vue";
+import DetailModal from "@/components/DetailModal.vue";
+import { PlaceModalStore } from "@/stores/PlaceModal"
 import { ref, onMounted, watch, nextTick, defineEmits, onUnmounted,computed } from "vue"
 import axios from "axios"
 import {  favorites, isFavorited, loadFavorites, toggleFavorite } from "@/stores/favorites";
+import { usePlacesStore } from "@/stores/fetchPlaces"; // 引入 placesStore
 
 // 定義狀態
 const places = ref([]); 
@@ -12,6 +15,16 @@ const loading = ref(true);
 const userId = ref(localStorage.getItem("userId"));
 const token = localStorage.getItem("token"); 
 const API_URL = "http://localhost:3000";
+
+const modalStore = PlaceModalStore()
+const placesStore = usePlacesStore(); // 使用 placesStore
+
+const emit = defineEmits(["open-detail-modal"])
+
+const openDetailModal = (detailId) => {
+  emit("open-detail-modal", detailId) // 傳遞地點的 ID
+}
+
 
 // 獲取收藏景點資料
 const fetchPlaces = async () => {
@@ -22,6 +35,7 @@ const fetchPlaces = async () => {
       }
     });
     places.value = res.data.map((favorite) => favorite.places);
+    localStorage.setItem("favorites", JSON.stringify(places.value));
   } catch (err) {
     alert("無法獲取景點資料", err);
   } finally {
@@ -119,6 +133,12 @@ onMounted(fetchPlaces);
       </div>
     </div>
   </div>
+  <DetailModal
+      class="fixed top-0 left-0 z-40 flex-auto"
+      v-if="isModalOpen"
+      :place="currentPlace"
+      @close="closeDetailModal"
+    />
 </template>
 
 <style scoped>

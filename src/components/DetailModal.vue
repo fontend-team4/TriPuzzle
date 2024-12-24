@@ -141,10 +141,10 @@ const currentPlaceId = computed(() => route.query.placeId)
         </div>
         <div
           class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px]"
-          v-if="place.overview && place.overview != 'N/A'"
+          v-if="place.summary && place.summary != 'N/A'"
         >
           <CalendarIcon class="flex flex-shrink-0 size-5" />
-          <p class="pl-8 text-sm">{{ place.summary.overview }}</p>
+          <p class="pl-8 text-sm">{{ place.summary }}</p>
         </div>
         <div
           class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px]"

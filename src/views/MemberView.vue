@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, computed, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter,useRoute } from 'vue-router'
 import axios from 'axios'
 import SideBar from '@/components/SideBar.vue'
 import {
@@ -18,8 +18,20 @@ import {
 import { UserBadgeCheck, WarningTriangle, LogOut } from '@iconoir/vue'
 import { LoginModalStore } from '@/stores/LoginModal.js'
 import FavoritesList from '@/components/FavoritesList.vue'
-const LoginStore = LoginModalStore()
+import DetailModal from '@/components/DetailModal.vue'
+import { usePlacesStore } from '@/stores/fetchPlaces'
+import { PlaceModalStore } from '@/stores/PlaceModal'
 
+
+const LoginStore = LoginModalStore()
+const placesStore = usePlacesStore()
+const modalStore = PlaceModalStore()
+
+
+
+const places = ref([])
+
+const route = useRoute()
 const router = useRouter()
 const API_URL = 'http://localhost:3000'
 const token = localStorage.getItem('token')
@@ -192,6 +204,41 @@ const closePersonalInformatioMmodal = () => {
   const dialog = document.getElementById('PersonalInformatioMmodal')
   dialog?.close()
 }
+
+const isModalOpen = computed(() => route.query.action === 'placeInfo')
+const currentPlaceId = computed(() => route.query.placeId)
+const handleOpenDetailModal = (detailId) => {
+  if (!detailId) {
+    console.error('Invalid detailId passed:', detailId)
+    return
+  }
+  console.log('detailId:', detailId)
+  
+  router.push({
+    path: '/member',
+    query: { action: 'placeInfo', placeId: detailId },
+  })
+}
+
+
+const currentPlace = computed(() => {
+  if (!currentPlaceId.value || !places.value.length) return null // 確保資料存在
+  return places.value.find((places) => places.place_id === currentPlaceId.value) 
+})
+
+const closeDetailModal = () => {
+  router.push({ path: '/member' })
+}
+onMounted(async () => {
+  try {
+    await placesStore.fetchDefaultPlaces() // 抓取資料
+      console.log('places:', places.value);
+  } catch (error) {
+    console.error('Failed to fetch places:', error)
+    places.value = [] // 防止錯誤導致的 undefined
+  }
+})
+
 </script>
 
 <template>
@@ -308,7 +355,15 @@ const closePersonalInformatioMmodal = () => {
           </h2>
           <hr class="border-slate-300" />
         </div>
-        <FavoritesList/>
+        <FavoritesList
+          @open-detail-modal="handleOpenDetailModal"
+        />
+        <DetailModal
+          class="fixed top-0 left-0 z-40 flex-auto"
+          v-if="isModalOpen"
+          :place="currentPlace"
+          @close="closeDetailModal"
+        />    
       </div>
     </div>
     <!-- Edit的Modal -->
