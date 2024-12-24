@@ -1,8 +1,8 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue'
-import { useRouter } from 'vue-router'
-import axios from 'axios'
-import SideBar from '@/components/SideBar.vue'
+import { ref, onMounted, computed } from "vue"
+import { useRouter } from "vue-router"
+import axios from "axios"
+import SideBar from "@/components/SideBar.vue"
 import {
   HeartIcon,
   PencilIcon,
@@ -10,28 +10,27 @@ import {
   ChevronRightIcon,
   XMarkIcon,
   PencilSquareIcon,
-} from '@heroicons/vue/24/outline'
-import { UserBadgeCheck, WarningTriangle, LogOut } from '@iconoir/vue'
-import { LoginModalStore } from '@/stores/LoginModal.js'
-import FavoritesList from '@/components/FavoritesList.vue'
+} from "@heroicons/vue/24/outline"
+import { UserBadgeCheck, WarningTriangle, LogOut } from "@iconoir/vue"
+import { LoginModalStore } from "@/stores/LoginModal.js"
+import FavoritesList from "@/components/FavoritesList.vue"
+import Logo from "@/assets/svg/logo-dark.svg"
 const LoginStore = LoginModalStore()
 
 const router = useRouter()
 const API_URL = process.env.VITE_HOST_URL
-const token = localStorage.getItem('token')
-const userId = localStorage.getItem('userId')
+const token = localStorage.getItem("token")
+const userId = localStorage.getItem("userId")
 
 // GET User Profile
-const user = ref('')
-const userName = ref('')
-const userEmail = ref('')
-const userGender = ref('')
-const userBirthday = ref('')
-const userDescription = ref('')
-const userLoginWay = ref('')
-const userImg = ref(
-  'https://web.chictrip.com.tw/assets/waterview_default.f746ada9.svg'
-)
+const user = ref("")
+const userName = ref("")
+const userEmail = ref("")
+const userGender = ref("")
+const userBirthday = ref("")
+const userDescription = ref("")
+const userLoginWay = ref("")
+const userImg = ref(Logo)
 
 const getUser = async () => {
   try {
@@ -47,24 +46,27 @@ const getUser = async () => {
     user.value = response.data.data
     userName.value = user.value.name
     userEmail.value = user.value.email
-    userImg.value = user.value.profile_pic_url
     userGender.value = user.value.gender
     userBirthday.value = user.value.birthday // 2000-12-12T00:00:00.000Z
     userDescription.value = user.value.description
     userLoginWay.value = user.value.login_way
+    if (user.value.profile_pic_url !== null) {
+      userImg.value = user.value.profile_pic_url
+      return
+    }
   } catch (error) {
     console.error(error.message)
-    router.push('/')
+    router.push("/")
   }
 }
 // User Logout
 const logoutSuccess = ref(null)
 const logout = () => {
-  localStorage.removeItem('token')
-  localStorage.removeItem('userId')
+  localStorage.removeItem("token")
+  localStorage.removeItem("userId")
   logoutSuccess.value.showModal()
   setTimeout(() => {
-    router.push('/planner')
+    router.push("/planner")
   }, 1000)
 }
 
@@ -75,14 +77,14 @@ const formattedBirthday = computed(() => {
   const year = date.getFullYear()
   // date.getMonth() 返回的月份是 0 到 11,而不是 1 到 12,所以需要手動加 1
   // .padStart(2, '0') 確保字串有兩個字元，不足要補 0
-  const month = String(date.getMonth() + 1).padStart(2, '0')
-  const day = String(date.getDate()).padStart(2, '0')
+  const month = String(date.getMonth() + 1).padStart(2, "0")
+  const day = String(date.getDate()).padStart(2, "0")
   return `${year}-${month}-${day}`
 })
 const userBirthdayInput = computed({
   get: () => formattedBirthday.value,
   set: (value) => {
-    const [year, month, day] = value.split('-')
+    const [year, month, day] = value.split("-")
     userBirthday.value = new Date(
       `${year}-${month}-${day}T00:00:00.000Z`
     ).toISOString()
@@ -90,7 +92,7 @@ const userBirthdayInput = computed({
 })
 
 // Update User Profile
-const errorMsg = ref('')
+const errorMsg = ref("")
 const UpdateSuccess = ref(null)
 const UpdateFailed = ref(null)
 const updateUser = async () => {
@@ -113,7 +115,7 @@ const updateUser = async () => {
       updatedUserData,
       config
     )
-    if (response.data.message === 'User update successful') {
+    if (response.data.message === "User update successful") {
       UpdateSuccess.value.showModal()
       setTimeout(() => {
         UpdateSuccess.value.close()
@@ -150,12 +152,12 @@ const deleteUser = async () => {
       config
     )
     if (response.data.message === `成功刪除 ID:${userId} 使用者`) {
-      user.value = ''
-      localStorage.removeItem('token')
-      localStorage.removeItem('userId')
+      user.value = ""
+      localStorage.removeItem("token")
+      localStorage.removeItem("userId")
       deletedSuccess.value.showModal()
       setTimeout(() => {
-        router.push('/planner')
+        router.push("/planner")
       }, 1000)
     }
   } catch (error) {
@@ -180,7 +182,7 @@ const handleImgUpload = (event) => {
 
 const uploadImg = async () => {
   const formData = new FormData()
-  formData.append('image', imgFile.value)
+  formData.append("image", imgFile.value)
 
   try {
     const response = await axios.post(
@@ -195,19 +197,19 @@ const uploadImg = async () => {
 }
 
 const closeEditmodal = () => {
-  const dialog = document.getElementById('Editmodal')
+  const dialog = document.getElementById("Editmodal")
   dialog?.close()
 }
 const closeNickNameModal = () => {
-  const dialog = document.getElementById('NickNameModal')
+  const dialog = document.getElementById("NickNameModal")
   dialog?.close()
 }
 const closeProfileModal = () => {
-  const dialog = document.getElementById('ProfileModal')
+  const dialog = document.getElementById("ProfileModal")
   dialog?.close()
 }
 const closePersonalInformatioMmodal = () => {
-  const dialog = document.getElementById('PersonalInformatioMmodal')
+  const dialog = document.getElementById("PersonalInformatioMmodal")
   dialog?.close()
 }
 </script>
@@ -219,7 +221,7 @@ const closePersonalInformatioMmodal = () => {
   >
     <div class="ml-5 p-2">
       <img
-        src="https://web.chictrip.com.tw/assets/logo_horizontal.aa2cb44e.svg"
+        src="../assets/svg/Logo.svg"
         alt=""
         class="w-24 mt-1 ml-8 lg:ml-1 md:ml-8 sm:ml-8"
       />
@@ -239,7 +241,7 @@ const closePersonalInformatioMmodal = () => {
               <div class="block mt-2 md:mr-20 pl-4 sm:mr-0">
                 <p class="text-xl font-semibold mt-4">{{ userName }}</p>
                 <p class="mt-2">{{ userEmail }}</p>
-                <div class="flex justify-between items-center mt-4 gap-3">
+                <div class="flex items-center mt-4 gap-3">
                   <button
                     class="px-3 py-1 border border-slate-400 rounded-full hover:bg-primary-100 hover:text-primary-800 transition flex items-center"
                     onclick="Editmodal.showModal()"
@@ -278,7 +280,7 @@ const closePersonalInformatioMmodal = () => {
           </h2>
           <hr class="border-slate-300" />
         </div>
-        <FavoritesList/>
+        <FavoritesList />
       </div>
     </div>
     <dialog id="Editmodal" class="modal" @click.self="closeEditmodal">
