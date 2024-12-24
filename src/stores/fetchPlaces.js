@@ -1,11 +1,11 @@
 // stores/fetchPlaces.js
-import { defineStore } from 'pinia'
-import axios from 'axios'
+import { defineStore } from "pinia"
+import axios from "axios"
 
-const API_URL = 'http://localhost:3000'
 const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
+const API_URL = import.meta.env.VITE_HOST_URL
 
-export const usePlacesStore = defineStore('places', {
+export const usePlacesStore = defineStore("places", {
   state: () => ({
     places: [], // 原始地點資料
     items: [], // 處理後的顯示資料
@@ -19,7 +19,7 @@ export const usePlacesStore = defineStore('places', {
           `${API_URL}/places/search?latitude=${lat}&longitude=${lng}&type=tourist_attraction`
         )
         this.places = response.data
-        this.initializeItems() 
+        this.initializeItems()
       } catch (err) {
         console.error(err.message)
         alert("搜尋失敗")
@@ -31,9 +31,9 @@ export const usePlacesStore = defineStore('places', {
         id: location.place_id,
         url: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference=${location.photos[0]?.photo_reference}&key=${GOOGLE_API_KEY}`,
         name: location.name,
-        rating: location.rating || 'N/A',
+        rating: location.rating || "N/A",
         location:
-          location.address?.split(/[0-9]+/)[1]?.slice(2, 5) || 'Unknown',
+          location.address?.split(/[0-9]+/)[1]?.slice(2, 5) || "Unknown",
         mapUrl: location.placeUrl,
         isFavorited: false, // 預設為未收藏
         summary: location.summary.overview,
@@ -56,6 +56,6 @@ export const usePlacesStore = defineStore('places', {
   },
 
   persist: {
-    path: ['places', 'items'],
+    path: ["places", "items"],
   },
 })
