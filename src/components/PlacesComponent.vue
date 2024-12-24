@@ -27,7 +27,7 @@ const modalStore = PlaceModalStore()
 
 const columns = ref([]) // 每欄
 const numCols = ref(2) // 預設為兩欄
-const emit = defineEmits(["open-detail-modal"])
+const emit = defineEmits(["open-detail-modal", "updateIsPlacesComponent"])
 
 const isLogin = ref(false)
 const token = localStorage.getItem("token")
@@ -78,9 +78,8 @@ const openDetailModal = (detailId) => {
 }
 
 const updateMapCenter = (item) => {
-  console.log(item.geometry)
   searchStore.placeGeometry = item.geometry
-  console.log(searchStore.placeGeometry)
+  emit("updateIsPlacesComponent", false)
 }
 
 onUnmounted(() => {

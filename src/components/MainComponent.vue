@@ -76,6 +76,10 @@ watch(
   { immediate: true }
 )
 
+const handleUpdateIsPlacesComponent = (value) => {
+  isPlacesComponent.value = value
+}
+
 // 避免打開或關掉任何Modal時往卷軸彈到最上方
 watch(
   () => isModalOpen.value || modalStore.isOpen,
@@ -130,6 +134,7 @@ watch(
       class="absolute top-0 transition-all"
       :class="waterFallSwitch"
       @open-detail-modal="handleOpenDetailModal"
+      @updateIsPlacesComponent="handleUpdateIsPlacesComponent"
     />
   </Transition>
 
