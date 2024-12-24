@@ -77,6 +77,12 @@ const openDetailModal = (detailId) => {
   emit("open-detail-modal", detailId) // 傳遞地點的 ID
 }
 
+const updateMapCenter = (item) => {
+  console.log(item.geometry)
+  searchStore.placeGeometry = item.geometry
+  console.log(searchStore.placeGeometry)
+}
+
 onUnmounted(() => {
   window.removeEventListener("resize", handleResize)
 })
@@ -95,7 +101,6 @@ watch(
   () => searchStore.searchData,
   (newData) => {
     if (newData.length > 0) {
-      // console.log('searchData 更新，觸發 placesStore 更新:', newData)
       placesStore.updateFromSearch(newData)
     }
   }
@@ -173,9 +178,13 @@ watch(
                   }}</span
                   >．<span>{{ item.location }}</span>
                 </div>
-                <a :href="item.mapUrl" target="_blank"
-                  ><MapPinIcon class="text-gray-500 md:size-6 size-4"
-                /></a>
+                <button
+                  target="_blank"
+                  @click.stop
+                  @click="updateMapCenter(item)"
+                >
+                  <MapPinIcon class="text-gray-500 md:size-6 size-4" />
+                </button>
               </div>
             </div>
           </a>

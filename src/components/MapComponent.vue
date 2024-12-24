@@ -1,22 +1,20 @@
 <script setup>
-import { ref, onMounted, watch, nextTick, shallowRef, toRaw } from 'vue'
-import { MagnifyingGlassIcon, MapPinIcon } from '@heroicons/vue/24/outline'
-import PlacesModal from '@/components/PlacesModal.vue'
-import { usePlacesStore } from '@/stores/fetchPlaces'
-import { useSearchStore } from '../stores/searchPlaces'
+import { ref, onMounted, watch, nextTick, shallowRef, toRaw } from "vue"
+import { MagnifyingGlassIcon, MapPinIcon } from "@heroicons/vue/24/outline"
+import PlacesModal from "@/components/PlacesModal.vue"
+import { usePlacesStore } from "@/stores/fetchPlaces"
+import { useSearchStore } from "../stores/searchPlaces"
 
 const placesStore = usePlacesStore()
 const searchStore = useSearchStore()
 const currentLat = ref()
-const currentLng = ref ()
+const currentLng = ref()
 const map = shallowRef(null)
-const markers = ref([]) 
-
-
+const markers = ref([])
 
 async function initMap(center) {
-  const { Map } = await google.maps.importLibrary('maps');
-  const newMap = new Map(document.getElementById('map'), {
+  const { Map } = await google.maps.importLibrary("maps")
+  const newMap = new Map(document.getElementById("map"), {
     center: center || { lat: 25.0341222, lng: 121.5640212 },
     zoom: 15,
     maxZoom: 20,
@@ -24,17 +22,14 @@ async function initMap(center) {
     streetViewControl: false,
     mapTypeControl: false,
     mapId: "83af7188f1a0650d",
-  });
-  map.value = newMap;
+  })
+  map.value = newMap
 
   // 為地圖新增事件監聽器
-  newMap.addListener('idle', () => {
-    searchStore.mapCenter = newMap.getCenter().toJSON();
-  });
-
+  newMap.addListener("idle", () => {
+    searchStore.mapCenter = newMap.getCenter().toJSON()
+  })
 }
-
-
 
 const nearbySearch = () => {
   searchStore.mapSearch()
@@ -44,26 +39,25 @@ const nearbySearch = () => {
 function clearMarkers() {
   if (markers.value.length > 0) {
     markers.value.forEach((marker) => {
-      marker.setMap(null) 
+      marker.setMap(null)
     })
   }
   markers.value = []
 }
 
-
 // 根據 placesStore.items 新增Marker
 async function updateMarkers() {
-  clearMarkers();
-  const { AdvancedMarkerElement } = await google.maps.importLibrary('marker');
+  clearMarkers()
+  const { AdvancedMarkerElement } = await google.maps.importLibrary("marker")
 
   if (!map.value) {
-    console.error('地圖尚未初始化，無法新增標記');
-    return;
+    console.error("地圖尚未初始化，無法新增標記")
+    return
   }
 
   placesStore.items.forEach((place) => {
     // 自定義Marker
-    const contentDiv = document.createElement('div');
+    const contentDiv = document.createElement("div")
     contentDiv.innerHTML = `
   <div class="relative flex flex-col items-center justify-center group allBtn">
     <!-- Hidden popup -->
@@ -99,22 +93,20 @@ async function updateMarkers() {
       <p class="mr-1 text-base group-hover:text-white">${place.rating}</p>
     </button>
   </div>
-`;
-
-
+`
 
     const marker = new AdvancedMarkerElement({
       position: place.geometry,
       map: map.value,
       content: contentDiv,
       draggable: false,
-    });
+    })
 
-    markers.value.push(marker);
-  });
+    markers.value.push(marker)
+  })
 }
 
-const locateUser = async() => {
+const locateUser = async () => {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -126,13 +118,13 @@ const locateUser = async() => {
         new google.maps.Marker({
           position: { lat: currentLat.value, lng: currentLng.value },
           map: map.value,
-          title: '您的位置',
+          title: "您的位置",
           icon: {
             path: google.maps.SymbolPath.CIRCLE,
             scale: 8,
-            fillColor: '#4285F4',
+            fillColor: "#4285F4",
             fillOpacity: 1,
-            strokeColor: '#ffffff',
+            strokeColor: "#ffffff",
             strokeWeight: 2,
           },
         })
@@ -150,10 +142,9 @@ const locateUser = async() => {
   }
 }
 
-
 onMounted(async () => {
   // 先設定mapCenter會被定位覆蓋
-  let initialCenter = searchStore.mapCenter 
+  let initialCenter = searchStore.mapCenter
   // 取得使用者定位
   await new Promise((resolve) => {
     if (navigator.geolocation) {
@@ -180,28 +171,43 @@ onMounted(async () => {
   searchStore.mapSearch()
   locateUser()
 
-
   watch(
-  () => placesStore.items,
-  (newItems, oldItems) => {
-    if (JSON.stringify(newItems) !== JSON.stringify(oldItems)) {
+    () => placesStore.items,
+    (newItems, oldItems) => {
+      if (JSON.stringify(newItems) !== JSON.stringify(oldItems)) {
+        if (map.value) {
+          updateMarkers()
+        } else {
+          console.warn("地圖尚未初始化")
+        }
+      }
+    },
+    { immediate: true }
+  )
+})
+
+// 如果偵測到searchPlaces的mapCenter.value改變，那就重新set center
+watch(
+  () => searchStore.placeGeometry,
+  (newCenter, oldCenter) => {
+    if (
+      newCenter &&
+      oldCenter &&
+      (newCenter.lat !== oldCenter.lat || newCenter.lng !== oldCenter.lng)
+    ) {
       if (map.value) {
-        updateMarkers();
+        map.value.setCenter(newCenter)
       } else {
-        console.warn('地圖尚未初始化');
       }
     }
   },
-  { immediate: true }
-);
-
-})
-
+  { deep: true }
+)
 </script>
 
 <template>
   <!-- 地圖 -->
-  <div class="h-screen google-map min-w-screen " id="map"></div>
+  <div class="h-screen google-map min-w-screen" id="map"></div>
   <!-- 搜尋此區域 -->
   <button
     class="bg-white inline-flex px-4 py-2 rounded-full shadow-lg fixed left-1/2 top-[100px] -translate-x-1/2 text-sm font-medium hover:bg-slate-100 transition-all duration-200 leading-6 active:bg-slate-300"
@@ -222,7 +228,7 @@ onMounted(async () => {
 <style>
 .strokeText::before {
   position: absolute;
-  content: '景點名稱';
+  content: "景點名稱";
   -webkit-text-stroke: 2px #ffffff;
   z-index: -1;
   filter: drop-shadow(0 1px 1px rgb(0 0 0 / 0.25));
@@ -231,11 +237,11 @@ img {
   object-fit: cover;
 }
 
-.allBtn-btn:hover{
+.allBtn-btn:hover {
   transform: scale(1.25);
   background-color: #f17b78;
 }
-.smallImg{
+.smallImg {
   aspect-ratio: 1;
   width: 48px;
 }
@@ -244,5 +250,4 @@ img {
   pointer-events: auto;
   z-index: 1000;
 }
-
 </style>

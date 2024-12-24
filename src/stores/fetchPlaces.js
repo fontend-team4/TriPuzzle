@@ -1,4 +1,3 @@
-// stores/fetchPlaces.js
 import { defineStore } from "pinia"
 import axios from "axios"
 
@@ -31,11 +30,10 @@ export const usePlacesStore = defineStore("places", {
         id: location.place_id,
         url: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference=${location.photos[0]?.photo_reference}&key=${GOOGLE_API_KEY}`,
         name: location.name,
-        rating: location.rating || "N/A",
-        location:
-          location.address?.split(/[0-9]+/)[1]?.slice(2, 5) || "Unknown",
+        rating: location.rating || "",
+        location: location.address?.split(/[0-9]+/)[1]?.slice(2, 5) || "",
         mapUrl: location.placeUrl,
-        isFavorited: false, // 預設為未收藏
+        isFavorited: false,
         summary: location.summary.overview,
         opening_hours: location.opening_hours,
         phone: location.phone,
@@ -49,7 +47,6 @@ export const usePlacesStore = defineStore("places", {
       }))
     },
     updateFromSearch(searchData) {
-      // 用於從 searchData 更新 places
       this.places = searchData
       this.initializeItems()
     },
