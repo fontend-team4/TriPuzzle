@@ -7,7 +7,7 @@
     "dev": "vite --host 0.0.0.0",
     "build": "vite build",
     "preview": "vite preview",
-    "start":"npm serve dist"
+    "start":"node --max-old-space-size=4096 server.js"
   },
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.16.8",
