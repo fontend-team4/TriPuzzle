@@ -27,7 +27,7 @@ const modalStore = PlaceModalStore()
 
 const columns = ref([]) // 每欄
 const numCols = ref(2) // 預設為兩欄
-const emit = defineEmits(["open-detail-modal"])
+const emit = defineEmits(["open-detail-modal", "updateIsPlacesComponent"])
 
 const isLogin = ref(false)
 const token = localStorage.getItem("token")
@@ -77,6 +77,11 @@ const openDetailModal = (detailId) => {
   emit("open-detail-modal", detailId) // 傳遞地點的 ID
 }
 
+const updateMapCenter = (item) => {
+  searchStore.placeGeometry = item.geometry
+  emit("updateIsPlacesComponent", false)
+}
+
 onUnmounted(() => {
   window.removeEventListener("resize", handleResize)
 })
@@ -95,7 +100,6 @@ watch(
   () => searchStore.searchData,
   (newData) => {
     if (newData.length > 0) {
-      // console.log('searchData 更新，觸發 placesStore 更新:', newData)
       placesStore.updateFromSearch(newData)
     }
   }
@@ -173,9 +177,13 @@ watch(
                   }}</span
                   >．<span>{{ item.location }}</span>
                 </div>
-                <a :href="item.mapUrl" target="_blank"
-                  ><MapPinIcon class="text-gray-500 md:size-6 size-4"
-                /></a>
+                <button
+                  target="_blank"
+                  @click.stop
+                  @click="updateMapCenter(item)"
+                >
+                  <MapPinIcon class="text-gray-500 md:size-6 size-4" />
+                </button>
               </div>
             </div>
           </a>
