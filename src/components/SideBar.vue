@@ -1,24 +1,24 @@
 <script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import LoginDialog from './LoginDialog.vue'
+import { ref } from "vue"
+import { useRouter } from "vue-router"
+import LoginDialog from "./LoginDialog.vue"
 import {
   MagnifyingGlassIcon,
   LightBulbIcon,
   UserCircleIcon,
   Bars3Icon,
-} from '@heroicons/vue/24/solid'
-import { LoginModalStore } from '@/stores/LoginModal.js'
+} from "@heroicons/vue/24/solid"
+import { LoginModalStore } from "@/stores/LoginModal.js"
 const LoginStore = LoginModalStore()
 
 const router = useRouter()
 // 判斷是否為登入狀態，未登入才會跳登入彈窗，已登入直接進到 member 頁面
 const checkIfIsLogin = () => {
-  const token = localStorage.getItem('token')
+  const token = localStorage.getItem("token")
   if (!token) {
     LoginStore.openModal()
   } else {
-    router.push('/member')
+    router.push("/member")
   }
 }
 
@@ -55,11 +55,7 @@ const closeLoginDialog = () => {
   >
     <div class="flex items-center">
       <RouterLink to="/planner">
-        <img
-          src="https://web.chictrip.com.tw/assets/logo.26916d07.svg"
-          alt="Logo"
-          class="w-10 mb-3"
-        />
+        <img src="../assets/logo_sm.png" alt="Logo" class="w-12 mb-3" />
       </RouterLink>
     </div>
     <ul class="w-full space-y-2">
