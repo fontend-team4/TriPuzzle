@@ -21,6 +21,7 @@ const loginPassword = ref('')
 const name = ref('')
 const email = ref('')
 const registerPassword = ref('')
+const URL=import.meta.env.VITE_HOST_URL
 
 //成功、錯誤訊息彈窗
 function showMessage({ title = '訊息', message, status }) {
@@ -68,7 +69,7 @@ function showMessage({ title = '訊息', message, status }) {
 const loginSubmit = async () => {
   try {
     const res = await axios.post(
-      'http://127.0.0.1:3000/users/login',
+      `${URL}/users/login`,
       {
         identifier: identifier.value,
         password: loginPassword.value,
@@ -118,7 +119,7 @@ const registerSubmit = async () => {
   errorMessage.value = ''
   try {
     const res = await axios.post(
-      'http://127.0.0.1:3000/users/register',
+      `${URL}/users/register`,
       {
         name: name.value,
         email: email.value,
@@ -339,7 +340,7 @@ const registerSubmit = async () => {
 
       <div class="flex justify-center items-center gap-6 mt-5">
         <a
-          href="http://localhost:3000/auth/google/callback"
+          href="https://tripuzzlebackend-production.up.railway.app/auth/google/callback"
           class="h-8 w-8 rounded-full shadow flex justify-center items-center cursor-pointer"
         >
           <img
@@ -349,7 +350,7 @@ const registerSubmit = async () => {
           />
         </a>
         <a
-          href="http://localhost:3000/api/auth/line/callback"
+          href="https://tripuzzlebackend-production.up.railway.app/api/auth/line/callback"
           class="h-8 w-8 rounded-full shadow flex justify-center items-center"
         >
           <img

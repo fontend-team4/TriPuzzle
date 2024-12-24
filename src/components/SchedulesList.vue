@@ -25,7 +25,7 @@ const route = useRoute()
 const LoginStore = LoginModalStore()
 const listToggle = inject('listToggle')
 const detailToggle = inject('detailToggle')
-const API_URL = 'http://localhost:3000'
+const API_URL = import.meta.env.VITE_HOST_URL
 // 抓取 user login token
 const isLogin = ref(false)
 const token = localStorage.getItem('token')

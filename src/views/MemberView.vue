@@ -20,7 +20,7 @@ import { LoginModalStore } from '@/stores/LoginModal.js'
 const LoginStore = LoginModalStore()
 
 const router = useRouter()
-const API_URL = 'http://localhost:3000'
+const API_URL = import.meta.env.VITE_HOST_URL
 const token = localStorage.getItem('token')
 const userId = localStorage.getItem('userId')
 
