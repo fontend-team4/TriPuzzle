@@ -55,7 +55,7 @@ const closeLoginDialog = () => {
   >
     <div class="flex items-center">
       <RouterLink to="/planner">
-        <img src="../assets/logo_sm.png" alt="Logo" class="w-12 mb-3" />
+        <img src="../assets/svg/logo-light.svg" alt="Logo" class="w-12 mb-3" />
       </RouterLink>
     </div>
     <ul class="w-full space-y-2">
