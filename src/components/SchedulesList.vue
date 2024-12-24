@@ -81,6 +81,52 @@ const sortedSchedules = computed(() => {
   })
 })
 
+const scheduleName = ref("")
+const coverImage = ref("")
+const startDate = ref("")
+const endDate = ref("")
+const transportationWay = ref("")
+
+const scheduleDuplicate = async (id) => {
+  const config = {
+    headers: {
+      Authorization: token,
+    },
+  }
+  try {
+    const response = await axios.get(`${API_URL}/schedules/${id}`, config)
+    scheduleName.value = response.data.title
+    coverImage.value = response.data.image_url
+    startDate.value = response.data.start_date.split("T")[0]
+    endDate.value = response.data.end_date.split("T")[0]
+    transportationWay.value = response.data.transportation_way
+    await copySchedule()
+  } catch (error) {
+    console.error(error.message)
+  }
+}
+
+const copySchedule = async () => {
+  const config = {
+    headers: {
+      Authorization: token,
+    },
+  }
+  const ScheduleData = {
+    title: scheduleName.value,
+    image_url: coverImage.value,
+    start_date: startDate.value,
+    end_date: endDate.value,
+    transportation_way: transportationWay.value,
+  }
+  try {
+    await axios.post(`${API_URL}/schedules`, ScheduleData, config)
+    await getSchedules()
+  } catch (err) {
+    console.error(err.message)
+  }
+}
+
 onMounted(async () => {
   if (token) {
     isLogin.value = true
@@ -190,7 +236,7 @@ onMounted(async () => {
                         tabindex="0"
                         class="dropdown-content w-32 bg-white rounded border border-gray absolute right-0 top-10"
                       >
-                        <li>
+                        <li @click="scheduleDuplicate(item.id)">
                           <a
                             class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray"
                             href="#"
