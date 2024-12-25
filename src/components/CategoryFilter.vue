@@ -8,35 +8,34 @@ const defaultCategories = [
     icon: "🌄",
     params: ["tourist_attraction", "museum", "campground", "church"],
   },
-  { name: "收藏", icon: "❤️", params: ["lodging", "embassy"] },
+  { name: "住宿", icon: "🏨", params: ["lodging", "embassy"] },
   { name: "美食", icon: "🍴", params: ["food", "restaurant", "cafe", "bar"] },
   {
     name: "購物",
     icon: "🛍️",
-    params: ["department_store", "supermarket", "shopping_mall", "store"],
+    params: ["department_store", "store", "shopping_mall", "supermarket"],
   },
 ]
 
 const additionalCategories = ref([
-  { name: "住宿", icon: "🏨", params: ["lodging", "embassy"] },
-  { name: "租車站", icon: "🚗", params: ["car_rental"] },
+  { name: "租車站", icon: "🚗", params: "car_rental" },
   {
     name: "交通站",
     icon: "🚉",
     params: [
-      "light_rail_station",
+      "transit_station",
+      "train_station",
       "bus_station",
       "subway_station",
-      "train_station",
-      "transit_station",
+      "light_rail_station",
     ],
   },
   { name: "充電樁", icon: "⚡", params: ["electrician", "electronics_store"] },
-  { name: "機場", icon: "✈️", params: ["airport"] },
-  { name: "水族館", icon: "🐠", params: ["aquarium"] },
+  { name: "機場", icon: "✈️", params: "airport" },
+  { name: "水族館", icon: "🐠", params: "aquarium" },
   { name: "公園", icon: "🏞️", params: "park" },
-  { name: "動物園", icon: "🐾", params: ["zoo"] },
-  { name: "其他", icon: "🛠️", params: ["point_of_interest"] },
+  { name: "動物園", icon: "🐾", params: "zoo" },
+  { name: "其他", icon: "🛠️", params: "point_of_interest" },
 ])
 
 const categories = ref([...defaultCategories])

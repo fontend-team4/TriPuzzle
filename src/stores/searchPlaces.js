@@ -17,14 +17,12 @@ export const useSearchStore = defineStore("searchStore", () => {
       const { data } = await axios.get("http://localhost:3000/places/search", {
         params,
       })
-      console.log(params)
-      console.log(data)
+
       searchParams.value = params
       searchData.value = data
       return data
     } catch (error) {
-      console.log(params)
-      throw error
+      return null
     }
   }
 

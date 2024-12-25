@@ -13,14 +13,14 @@ const defaultCategories = [
   {
     name: "景點",
     icon: "🌄",
-    params: ["tourist_attraction", "museum", "zoo", "campground", "church"],
+    params: ["tourist_attraction", "museum", "campground", "church"],
   },
-  { name: "收藏", icon: "❤️", params: ["lodging", "embassy"] },
+  { name: "住宿", icon: "🏨", params: ["lodging", "embassy"] },
   { name: "美食", icon: "🍴", params: ["food", "restaurant", "cafe", "bar"] },
   {
     name: "購物",
     icon: "🛍️",
-    params: ["department_store", "supermarket", "shopping_mall", "store"],
+    params: ["department_store", "store", "shopping_mall", "supermarket"],
   },
 ]
 

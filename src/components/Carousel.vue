@@ -1,22 +1,22 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed } from "vue"
 import {
   ArrowRightIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
-} from '@heroicons/vue/20/solid'
-import { loadImage } from '@/assets/images/loadImage'
+} from "@heroicons/vue/20/solid"
+import { loadPNG } from "@/assets/images/loadImage"
 
 const currentIndex = ref(0)
 const maxIndex = computed(() => images.length - 3)
 const images = [
-  loadImage('item1'),
-  loadImage('item3'),
-  loadImage('item4'),
-  loadImage('item2'),
-  loadImage('item5'),
-  loadImage('item6'),
-  loadImage('item7'),
+  loadPNG("carousel-valley"),
+  loadPNG("carousel-spain"),
+  loadPNG("carousel-finland"),
+  loadPNG("carousel-japan"),
+  loadPNG("carousel-rainforest"),
+  loadPNG("carousel-glacier"),
+  loadPNG("carousel-sled"),
 ]
 </script>
 <template>
