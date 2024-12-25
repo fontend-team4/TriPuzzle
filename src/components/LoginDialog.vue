@@ -9,6 +9,7 @@ const LoginStore = LoginModalStore()
 const userStore = useUserStore()
 
 const API_URL = process.env.VITE_HOST_URL
+
 const Google_login = `${API_URL}/api/auth/google/callback`
 const Line_login =`${API_URL}api/auth/line/callback`
 
@@ -74,7 +75,7 @@ const loginSubmit = async () => {
   try {
     const res = await axios.post(
       `${API_URL}/users/login`,
-      {111
+      {
         identifier: identifier.value,
         password: loginPassword.value,
       },

@@ -41,17 +41,6 @@ onMounted(() => {
   }
 })
 
-const isLogin = ref(false)
-const token = localStorage.getItem('token')
-const userId = ref(localStorage.getItem("userId"));
-
-// 檢查登入狀態
-onMounted(() => {
-  isLogin.value = Boolean(token && userId.value);
-  if (isLogin.value) {
-    loadFavorites(); // 加載收藏列表
-  }
-});
 
 // 瀑布流計算
 const calculateColumns = async () => {

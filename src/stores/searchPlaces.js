@@ -2,6 +2,9 @@ import { defineStore } from "pinia"
 import { ref } from "vue"
 import axios from "axios"
 
+const API_URL = process.env.VITE_HOST_URL
+
+
 export const useSearchStore = defineStore("searchStore", () => {
   const keyword = ref("")
   const region = ref("")
@@ -12,7 +15,6 @@ export const useSearchStore = defineStore("searchStore", () => {
   const searchData = ref([])
   const placeGeometry = ref({})
 
-const API_URL = process.env.VITE_HOST_URL
 
 
   const fetchData = async (params) => {
