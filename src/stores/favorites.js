@@ -136,6 +136,7 @@ const removeFavoriteDirectly = async (place) => {
 const generateImageUrl = (photoReference) => {
   if (!photoReference) return null;
   return `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference=${photoReference}&key=${GOOGLE_API_KEY}`;
+
 };
 
 

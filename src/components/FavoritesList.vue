@@ -24,6 +24,9 @@ const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
 const modalStore = PlaceModalStore()
 const placesStore = usePlacesStore(); // 使用 placesStore
 
+const modalStore = PlaceModalStore()
+const placesStore = usePlacesStore(); // 使用 placesStore
+
 // 獲取收藏景點資料
 const fetchPlaces = async () => {
   try {
@@ -46,8 +49,6 @@ const emit = defineEmits(["open-detail-modal"])
 const openDetailModal = (place) => {
   emit("open-detail-modal", place.place_id) // 傳遞地點的 ID
 }
-
-
 
 
 

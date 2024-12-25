@@ -11,18 +11,19 @@ import {
   ChevronRightIcon,
   XMarkIcon,
   PencilSquareIcon,
-} from '@heroicons/vue/24/outline'
-import { UserBadgeCheck, WarningTriangle, LogOut } from '@iconoir/vue'
-import { LoginModalStore } from '@/stores/LoginModal.js'
-import FavoritesList from '@/components/FavoritesList.vue'
-import DetailModal from '@/components/DetailModal.vue'
-import { usePlacesStore } from '@/stores/fetchPlaces'
-import { PlaceModalStore } from '@/stores/PlaceModal'
+
+} from "@heroicons/vue/24/outline"
+import { UserBadgeCheck, WarningTriangle, LogOut } from "@iconoir/vue"
+import { LoginModalStore } from "@/stores/LoginModal.js"
+import FavoritesList from "@/components/FavoritesList.vue"
+import DetailModal from "@/components/DetailModal.vue"
+import { usePlacesStore } from "@/stores/fetchPlaces"
+import { PlaceModalStore } from "@/stores/PlaceModal"
+import Logo from "@/assets/svg/logo-dark.svg"
 
 const LoginStore = LoginModalStore()
 const placesStore = usePlacesStore()
 const modalStore = PlaceModalStore()
-
 
 
 const places = ref([])
@@ -67,6 +68,8 @@ const getUser = async () => {
     }
   } catch (error) {
     console.error(error.message)
+    localStorage.removeItem("token")
+    localStorage.removeItem("userId")
     router.push("/")
   }
 }
@@ -257,6 +260,7 @@ onMounted(async () => {
     places.value = [] // 防止錯誤導致的 undefined
   }
 })
+
 
 </script>
 
