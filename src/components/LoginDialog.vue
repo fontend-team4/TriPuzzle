@@ -1,55 +1,54 @@
 <script setup>
-import { ref, inject } from 'vue'
-import { XMarkIcon } from '@heroicons/vue/24/solid'
-import { EyeIcon, EyeSlashIcon } from '@heroicons/vue/24/outline'
-import axios from 'axios'
-import { useUserStore } from '@/stores/userStore'
-import { LoginModalStore } from '@/stores/LoginModal.js'
+import { ref } from "vue"
+import { XMarkIcon } from "@heroicons/vue/24/solid"
+import { EyeIcon, EyeSlashIcon } from "@heroicons/vue/24/outline"
+import axios from "axios"
+import { useUserStore } from "@/stores/userStore"
+import { LoginModalStore } from "@/stores/LoginModal.js"
 const LoginStore = LoginModalStore()
 const userStore = useUserStore()
 
 const API_URL = process.env.VITE_HOST_URL
 
 const Google_login = `${API_URL}/api/auth/google/callback`
-const Line_login =`${API_URL}api/auth/line/callback`
-
+const Line_login = `${API_URL}/api/auth/line/callback`
 
 const showPassword = ref(false)
 function togglePasswordVisibility() {
   showPassword.value = !showPassword.value
 }
 
-const switchLogRes = ref('login')
+const switchLogRes = ref("login")
 
 //登入註冊資訊
-const identifier = ref('')
-const loginPassword = ref('')
-const name = ref('')
-const email = ref('')
-const registerPassword = ref('')
+const identifier = ref("")
+const loginPassword = ref("")
+const name = ref("")
+const email = ref("")
+const registerPassword = ref("")
 
 //成功、錯誤訊息彈窗
-function showMessage({ title = '訊息', message, status }) {
+function showMessage({ title = "訊息", message, status }) {
   const typeClasses = {
-    success: 'bg-green-500 hover:bg-green-700',
-    error: 'bg-primary-600 hover:bg-primary-700',
+    success: "bg-green-500 hover:bg-green-700",
+    error: "bg-primary-600 hover:bg-primary-700",
   }
   const buttonClass = typeClasses[status]
-  if (document.querySelector('#custom_modal')) {
-    document.querySelector('#modal_title').textContent = title // 更新標題
-    document.querySelector('#modal_message').textContent = message // 更新訊息
+  if (document.querySelector("#custom_modal")) {
+    document.querySelector("#modal_title").textContent = title // 更新標題
+    document.querySelector("#modal_message").textContent = message // 更新訊息
     document
-      .querySelector('#modal_button')
+      .querySelector("#modal_button")
       .classList.remove(
-        'bg-green-500',
-        'hover:bg-green-700',
-        'bg-primary-600',
-        'hover:bg-primary-700'
+        "bg-green-500",
+        "hover:bg-green-700",
+        "bg-primary-600",
+        "hover:bg-primary-700"
       )
     document
-      .querySelector('#modal_button')
-      .classList.add(...buttonClass.split(' ')) // 更新class
-    document.querySelector('#custom_modal').showModal() // 顯示 Modal
+      .querySelector("#modal_button")
+      .classList.add(...buttonClass.split(" ")) // 更新class
+    document.querySelector("#custom_modal").showModal() // 顯示 Modal
     return
   }
 
@@ -65,10 +64,10 @@ function showMessage({ title = '訊息', message, status }) {
     </dialog>
   `
   // 動態插入 Modal 到 body
-  document.body.insertAdjacentHTML('beforeend', modalHTML)
+  document.body.insertAdjacentHTML("beforeend", modalHTML)
 
   // 顯示 Modal
-  document.querySelector('#custom_modal').showModal()
+  document.querySelector("#custom_modal").showModal()
 }
 
 const loginSubmit = async () => {
@@ -81,23 +80,23 @@ const loginSubmit = async () => {
       },
       {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       }
     )
     if (res.data.status == 200) {
-      identifier.value = ''
-      loginPassword.value = ''
+      identifier.value = ""
+      loginPassword.value = ""
       userStore.setUser(res.data.user)
       userStore.setToken(res.data.token)
       // 提供 MemberView 讀取用戶資料使用
-      localStorage.setItem('userId', res.data.user.id)
-      localStorage.setItem('token', res.data.token)
+      localStorage.setItem("userId", res.data.user.id)
+      localStorage.setItem("token", res.data.token)
       LoginStore.closeModal()
       showMessage({
-        title: '登入成功',
+        title: "登入成功",
         message: res.data.message,
-        status: 'success',
+        status: "success",
       })
 
       // 加入頁面重整的邏輯
@@ -106,26 +105,26 @@ const loginSubmit = async () => {
       }, 1000)
     }
   } catch (err) {
-    const errorMessage = err.response?.data?.message || '未知錯誤'
+    const errorMessage = err.response?.data?.message || "未知錯誤"
     showMessage({
-      title: '登入失敗',
+      title: "登入失敗",
       message: errorMessage,
-      status: 'error',
+      status: "error",
     })
   }
 }
 
 const hasAgreed = ref(false)
-const errorMessage = ref('')
+const errorMessage = ref("")
 // const isSubmitted = ref(false);
 
 const registerSubmit = async () => {
   // isSubmitted.value=true
   if (!hasAgreed.value) {
-    errorMessage.value = '請閱讀並勾選使用條款'
+    errorMessage.value = "請閱讀並勾選使用條款"
     return
   }
-  errorMessage.value = ''
+  errorMessage.value = ""
   try {
     const res = await axios.post(
       `${API_URL}/users/register`,
@@ -136,27 +135,27 @@ const registerSubmit = async () => {
       },
       {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       }
     )
     if (res.data.status == 201) {
-      name.value = ''
-      email.value = ''
-      registerPassword.value = ''
-      switchLogRes.value = 'login'
+      name.value = ""
+      email.value = ""
+      registerPassword.value = ""
+      switchLogRes.value = "login"
       showMessage({
-        title: '註冊成功',
+        title: "註冊成功",
         message: res.data.message,
-        status: 'success',
+        status: "success",
       })
     }
   } catch (err) {
-    const errorMessage = err.response?.data?.message || '未知錯誤'
+    const errorMessage = err.response?.data?.message || "未知錯誤"
     showMessage({
-      title: '註冊失敗',
+      title: "註冊失敗",
       message: errorMessage,
-      status: 'error',
+      status: "error",
     })
   }
 }
