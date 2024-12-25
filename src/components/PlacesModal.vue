@@ -61,6 +61,12 @@ watch(
   },
   { immediate: true }
 )
+
+const updateMapCenter = (item) => {
+  console.log(item.geometry)
+  searchStore.placeGeometry = item.geometry
+  console.log(searchStore.placeGeometry)
+}
 </script>
 
 <template>
@@ -141,9 +147,13 @@ watch(
                       @click="modalStore.savePlace(item)"
                     />
                     <!-- <AddPlaceModal /> -->
-                    <a :href="item.googleMapsUri" target="_blank">
+                    <button
+                      target="_blank"
+                      @click.stop
+                      @click="updateMapCenter(item)"
+                    >
                       <MapPinIcon class="text-gray-500 size-5" />
-                    </a>
+                    </button>
                   </div>
                 </div>
               </figure>

@@ -10,6 +10,7 @@ export const useSearchStore = defineStore("searchStore", () => {
   const mapCenter = ref({ lat: 25.0341222, lng: 121.5640212 })
   const searchParams = ref({})
   const searchData = ref([])
+  const placeGeometry = ref({})
 
   const fetchData = async (params) => {
     try {
@@ -71,5 +72,6 @@ export const useSearchStore = defineStore("searchStore", () => {
     regionSearch,
     searchParams,
     searchData,
+    placeGeometry,
   }
 })

@@ -16,7 +16,7 @@ const props = defineProps({
   },
 })
 
-const API_URL = 'http://localhost:3000'
+const API_URL = process.env.VITE_HOST_URL
 const token = localStorage.getItem('token')
 // 刪除行程
 const deleteSchedule = async (id) => {
