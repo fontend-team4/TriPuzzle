@@ -1,15 +1,15 @@
 <script setup>
+import { ref, inject, onMounted } from "vue"
 import axios from "axios"
 import ScheduleCoverImgModal from "./ScheduleCoverImgModal.vue"
 import defaultCoverImage from "../assets/images/coverimage-1.jpg"
-import { ref, onMounted, defineProps, provide } from "vue"
+import { CalendarCheck, EditPencil } from "@iconoir/vue"
 import {
   XMarkIcon,
   ArrowLongRightIcon,
   PencilIcon,
   ArrowUpTrayIcon,
 } from "@heroicons/vue/24/solid"
-import { CalendarCheck, MapXmark } from "@iconoir/vue"
 
 const transprotations = ref([
   {
@@ -34,38 +34,22 @@ const transprotations = ref([
   },
 ])
 
-const replaceImgLabelClick = () => {
-  // 點擊收回下拉式選單(再點擊一次)
-  document.getElementById("dropdown-toggle").click()
-}
+const API_URL = import.meta.env.VITE_HOST_URL
+const token = localStorage.getItem("token")
+const scheduleId = inject("scheduleId")
 
-//點選選擇交通方式紅框
-const isChecked = ref(false)
-const transportationLabelClick = () => {
-  const checkbox = document.getElementById("toggle-transportation")
-  if (checkbox) {
-    checkbox.checked = !checkbox.checked // 切換 checked 狀態
-    isChecked.value = checkbox.checked // 更新 Vue 狀態
-  }
-}
-
-const closeDropdown = () => {
-  isChecked.value = false // 收起選單
-}
-
-const API_URL = process.env.VITE_HOST_URL
 const coverImage = ref(null)
-const ScheduleName = ref("")
+const noteDialog = ref(null)
+const scheduleNote = ref(null)
+const scheduleName = ref("")
 const startDate = ref("")
 const endDate = ref("")
 const transportationWay = ref("CUSTOM")
 
-const props = defineProps({
-  savetoSchedules: {
-    type: Function,
-    required: true,
-  },
-})
+const replaceImgLabelClick = () => {
+  // 點擊收回下拉式選單(再點擊一次)
+  document.getElementById("changeImg-toggle").click()
+}
 
 const getCoverImg = (img) => {
   coverImage.value = img
@@ -74,7 +58,7 @@ const getCoverImg = (img) => {
 const imgFile = ref(null)
 const selectedImg = ref(null)
 const handleImgUpload = async (event) => {
-  document.getElementById("dropdown-toggle").click()
+  document.getElementById("changeImg-toggle").click()
   imgFile.value = event.target.files[0]
   selectedImg.value = URL.createObjectURL(imgFile.value)
   coverImage.value = selectedImg.value
@@ -95,54 +79,192 @@ const uploadImg = async () => {
   }
 }
 
-const addSuccess = ref(null)
-const addFailed = ref(null)
-const token = localStorage.getItem("token")
-const addSchedule = async () => {
+const editSchedule = ref(null)
+const openEditSchedule = () => {
+  editSchedule.value.showModal()
+}
+
+const getSchedule = async (id) => {
   const config = {
     headers: {
       Authorization: token,
     },
   }
-  const ScheduleData = {
-    title: ScheduleName.value,
-    create_by: null,
-    co_edit_url: null,
-    co_edit_qrcode: null,
-    schedule_note: null,
+  try {
+    const response = await axios.get(`${API_URL}/schedules/${id}`, config)
+    scheduleName.value = response.data.title
+    scheduleNote.value = response.data.schedule_note
+    coverImage.value = response.data.image_url
+    startDate.value = response.data.start_date.split("T")[0]
+    endDate.value = response.data.end_date.split("T")[0]
+    transportationWay.value = response.data.transportation_way
+  } catch (error) {
+    console.error(error.message)
+  }
+}
+
+const saveSuccessMsg = ref("")
+const saveSuccess = ref(null)
+const upateSchedule = async (id) => {
+  const config = {
+    headers: {
+      Authorization: token,
+    },
+  }
+  const data = {
+    title: scheduleName.value,
+    schedule_note: scheduleNote.value,
     image_url: coverImage.value,
     start_date: startDate.value,
     end_date: endDate.value,
     transportation_way: transportationWay.value,
   }
   try {
-    await axios.post(`${API_URL}/schedules`, ScheduleData, config)
-    addSuccess.value.showModal()
+    const response = await axios.patch(
+      `${API_URL}/schedules/${id}`,
+      data,
+      config
+    )
+    scheduleNote.value = await response.data.updatedSchedule.schedule_note
+    scheduleName.value = await response.data.updatedSchedule.title
+    coverImage.value = await response.data.updatedSchedule.image_url
+    startDate.value = await response.data.updatedSchedule.start_date.split(
+      "T"
+    )[0]
+    endDate.value = await response.data.updatedSchedule.end_date.split("T")[0]
+    transportationWay.value = await response.data.updatedSchedule
+      .transportation_way
+    noteDialog.value.close()
+    saveSuccessMsg.value = "行程已更新"
+    saveSuccess.value.showModal()
     setTimeout(() => {
-      addSuccess.value.close()
+      saveSuccess.value.close()
     }, 1000)
-    props.savetoSchedules()
-  } catch (err) {
-    console.error(err.message)
-    addFailed.value.showModal()
-    setTimeout(() => {
-      addFailed.value.close()
-    }, 1500)
+  } catch (error) {
+    console.error(error.message)
   }
-  coverImage.value = defaultCoverImage
-  ScheduleName.value = ""
-  startDate.value = ""
-  endDate.value = ""
-  transportationWay.value = "CUSTOM"
 }
 
 onMounted(() => {
   coverImage.value = defaultCoverImage
+  getSchedule(scheduleId.value)
 })
 </script>
 
 <template>
-  <dialog id="newSchedule" class="modal">
+  <!-- schedule title -->
+  <div class="w-full pt-5 px-6 pb-8">
+    <div class="flex items-center gap-1">
+      <p class="text-2xl font-medium mb-2">{{ scheduleName }}</p>
+      <span @click="editSchedule.showModal()">
+        <EditPencil class="inline-block w-5 h-5 mb-2 hover:cursor-pointer" />
+      </span>
+    </div>
+    <p class="text-sm mb-3 text-slate-500">{{ startDate }} - {{ endDate }}</p>
+    <span
+      v-if="!scheduleNote"
+      class="text-sm text-slate-400 border-l border-slate-400 ps-3"
+    >
+      還沒有寫筆記哦...
+    </span>
+    <span v-else class="text-sm text-slate-400 border-l border-slate-400 ps-3">
+      旅行細節都在這！
+    </span>
+    <span
+      class="text-sm text-primary-600 font-medium hover:cursor-pointer"
+      @click="noteDialog.showModal()"
+      >編輯筆記</span
+    >
+    <!-- schedule note -->
+    <dialog ref="noteDialog" class="modal">
+      <div class="modal-box w-screen md:w-[480px]">
+        <form method="dialog">
+          <button
+            class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+          >
+            ✕
+          </button>
+        </form>
+        <h2 class="text-2xl font-medium text-center pt-6 mb-4">行程筆記</h2>
+        <textarea
+          class="w-full h-[500px] textarea textarea-lg focus:border-0 focus:outline-none"
+          placeholder="記下重要的旅行細節吧"
+          v-model="scheduleNote"
+        ></textarea>
+        <div
+          class="w-full flex gap-3 h-20 px-6 py-4 bg-white border-t border-gray fixed bottom-0 right-0"
+        >
+          <button
+            class="w-full h-12 px-5 py-3 border border-primary-600 text-primary-600 text-center rounded-3xl font-medium hover:bg-primary-100"
+            @click="noteDialog.close()"
+          >
+            取消
+          </button>
+          <button
+            class="w-full h-12 px-5 py-3 bg-primary-600 hover:bg-primary-700 text-white text-center rounded-3xl font-medium"
+            @click="upateSchedule(scheduleId)"
+          >
+            儲存
+          </button>
+        </div>
+      </div>
+      <form method="dialog" class="modal-backdrop">
+        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+          ✕
+        </button>
+        <button>close</button>
+      </form>
+    </dialog>
+  </div>
+  <!-- my tool -->
+  <div class="p-5">
+    <div class="flex items-center gap-1 mb-3">
+      <span class="inline-block w-5 h-5"><UsersIcon /></span>
+      <p>我的工具</p>
+    </div>
+    <ul class="flex justify-between">
+      <li
+        class="w-[100px] pt-4 px-2.5 pb-2.5 bg-gray rounded-xl hover:cursor-pointer hover:bg-primary-100 hover:text-primary-600"
+      >
+        <img
+          src="https://web.chictrip.com.tw/assets/img-myfavorite.42ac10ec.svg"
+          class="mx-auto"
+          alt=""
+        />
+        <p class="text-center font-medium mt-2">收藏</p>
+      </li>
+      <li
+        class="w-[100px] pt-4 px-2.5 pb-2.5 bg-gray rounded-xl hover:cursor-pointer hover:bg-primary-100 hover:text-primary-600"
+      >
+        <img
+          src="https://web.chictrip.com.tw/assets/img-share.7c89cdf8.svg"
+          class="mx-auto"
+          alt=""
+        />
+        <p class="text-center font-medium mt-2">共編</p>
+      </li>
+      <li
+        class="w-[100px] pt-4 px-2.5 pb-2.5 bg-gray rounded-xl hover:cursor-pointer hover:bg-primary-100 hover:text-primary-600"
+      >
+        <img
+          src="https://web.chictrip.com.tw/assets/img-exportbook.a62ae1d0.svg"
+          class="mx-auto"
+          alt=""
+        />
+        <p class="text-center font-medium mt-2">分帳</p>
+      </li>
+    </ul>
+  </div>
+  <!-- schedule note save success Modal -->
+  <dialog ref="saveSuccess" class="modal w-[384px] mx-auto">
+    <div class="modal-box">
+      <form method="dialog"></form>
+      <CalendarCheck class="mx-auto w-14 h-14 text-primary-600 mb-3" />
+      <h3 class="text-xl font-bold text-center">{{ saveSuccessMsg }}</h3>
+    </div>
+  </dialog>
+  <!-- edit schedule Modal -->
+  <dialog ref="editSchedule" class="modal">
     <div
       class="modal-box p-0 w-full md:max-w-[480px] sm:max-w-[100%] sm:max-h-[100%] max-md:rounded-none"
     >
@@ -161,7 +283,7 @@ onMounted(() => {
       <div>
         <header>
           <span class="text-2xl font-bold flex items-center justify-center"
-            >行程設定</span
+            >編輯行程</span
           >
         </header>
       </div>
@@ -174,16 +296,16 @@ onMounted(() => {
         <div class="relative">
           <p class="font-bold mb-[5px]">封面照片</p>
           <!-- 隱藏的 Checkbox -->
-          <input type="checkbox" id="dropdown-toggle" class="hidden peer" />
+          <input type="checkbox" id="changeImg-toggle" class="hidden peer" />
 
           <!-- 使用 Label 包裹按鈕 -->
-          <label
-            for="dropdown-toggle"
+          <!-- <label
+            for="changeImg-toggle"
             class="w-[85px] h-[32px] absolute right-[20px] bottom-[16px] z-10 flex items-center justify-center gap-2 border-[1px] border-white rounded-3xl py-[4px] px-[12px] cursor-pointer"
           >
             <PencilIcon class="size-5 font-bold text-white" />
             <p class="font-bold text-sm text-white">更換</p>
-          </label>
+          </label> -->
 
           <!-- 下拉選單(插入更換圖片modal) -->
           <ul
@@ -233,7 +355,7 @@ onMounted(() => {
           <input
             type="text"
             placeholder="幫行程取個名字吧"
-            v-model="ScheduleName"
+            v-model="scheduleName"
             class="border-solid border border-[#EEEEEE] rounded-lg w-[100%] h-[40px] py-2 px-5"
           />
         </div>
@@ -293,9 +415,9 @@ onMounted(() => {
           </button>
           <button
             class="w-[50%] h-[48px] bg-primary-600 rounded-3xl text-white font-bold text-sm justify-center items-center px-[12px] py-[8px] hover:bg-primary-700"
-            @click="addSchedule"
+            @click="upateSchedule(scheduleId)"
           >
-            完成
+            更新
           </button>
         </form>
       </div>
@@ -304,71 +426,4 @@ onMounted(() => {
       <button>close</button>
     </form>
   </dialog>
-  <!-- add schedule success 的 Modal -->
-  <dialog ref="addSuccess" class="modal w-[384px] mx-auto">
-    <div class="modal-box">
-      <form method="dialog"></form>
-      <CalendarCheck class="mx-auto w-14 h-14 text-primary-600 mb-3" />
-      <h3 class="text-xl font-bold text-center">行程建立成功！</h3>
-    </div>
-  </dialog>
-  <!-- add schedule failed 的 Modal -->
-  <dialog ref="addFailed" class="modal w-[384px] mx-auto">
-    <div class="modal-box">
-      <form method="dialog"></form>
-      <MapXmark class="mx-auto w-14 h-14 text-primary-600 mb-3" />
-      <h3 class="text-xl font-bold text-center">行程建立失敗！</h3>
-      <p class="text-center mt-3">請確認所有欄位皆已填寫。</p>
-    </div>
-  </dialog>
 </template>
-
-<style>
-.fade-slide-enter-active,
-.fade-slide-leave-active {
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.fade-slide-enter-from,
-.fade-slide-leave-to {
-  opacity: 0;
-  transform: translateY(20px);
-}
-
-.fade-slide-enter-to,
-.fade-slide-leave-from {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* 圖標旋轉 */
-#toggle-transportation:checked + label svg {
-  transform: rotate(180deg);
-}
-
-.transportation-area li:hover,
-.replace-img-btn li:hover {
-  background-color: #eeeeee;
-}
-input {
-  border: 2px solid transparent;
-  border-radius: 4px;
-  outline: none;
-  transition: box-shadow 0.3s ease, border-color 0.3s ease;
-}
-
-input:focus {
-  border-color: #d23430;
-  box-shadow: 0 0 4px rgba(210, 52, 48, 0.5),
-    /* 內層的陰影 */ 0 0 8px rgba(210, 52, 48, 0.3),
-    /* 中間的陰影 */ 0 0 16px rgba(210, 52, 48, 0.1); /* 外層的陰影 */
-}
-
-.red-frame {
-  border-color: #d23430;
-  box-shadow: 0 0 4px rgba(210, 52, 48, 0.5),
-    /* 內層的陰影 */ 0 0 8px rgba(210, 52, 48, 0.3),
-    /* 中間的陰影 */ 0 0 16px rgba(210, 52, 48, 0.1); /* 外層的陰影 */
-  transition: box-shadow 0.3s ease, border-color 0.3s ease;
-}
-</style>
