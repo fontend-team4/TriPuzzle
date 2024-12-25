@@ -27,6 +27,8 @@ import axios from "axios"
 
 const API_URL = "http://localhost:3000"
 const token = localStorage.getItem("token")
+const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
+
 
 const modalStore = PlaceModalStore()
 const placesStore = usePlacesStore()

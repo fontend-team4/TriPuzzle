@@ -6,7 +6,7 @@ import DetailModal from "@/components/DetailModal.vue";
 import { PlaceModalStore } from "@/stores/PlaceModal"
 import { ref, onMounted, watch, nextTick, defineEmits, onUnmounted,computed } from "vue"
 import axios from "axios"
-import {  favorites, isFavorited, loadFavorites, toggleFavorite } from "@/stores/favorites";
+import {  favorites, isFavorited, loadFavorites, toggleFavorite,removeFavoriteDirectly,generateImageUrl } from "@/stores/favorites";
 import { usePlacesStore } from "@/stores/fetchPlaces"; // 引入 placesStore
 
 
@@ -16,6 +16,13 @@ const loading = ref(true);
 const userId = ref(localStorage.getItem("userId"));
 const token = localStorage.getItem("token"); 
 const API_URL = "http://localhost:3000";
+const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
+
+
+
+
+const modalStore = PlaceModalStore()
+const placesStore = usePlacesStore(); // 使用 placesStore
 
 const modalStore = PlaceModalStore()
 const placesStore = usePlacesStore(); // 使用 placesStore
@@ -42,6 +49,7 @@ const emit = defineEmits(["open-detail-modal"])
 const openDetailModal = (place) => {
   emit("open-detail-modal", place.place_id) // 傳遞地點的 ID
 }
+
 
 
 // 載入收藏景點
@@ -72,11 +80,11 @@ onMounted(fetchPlaces);
     </div>
 
     <!-- 有收藏景點 -->
-    <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 ">
       <div
         v-for="place in places"
         :key="place.id"
-        class="p-4 rounded shadow-md hover:shadow-lg"
+        class="p-4 rounded shadow-md hover:shadow-lg group"
       >
         <a
           href="#"
@@ -86,33 +94,31 @@ onMounted(fetchPlaces);
           <div class="relative w-full mb-2 overflow-hidden rounded-lg">
             <!-- 黑色遮罩 -->
             <div
-              class="absolute w-full h-full transition-opacity bg-black opacity-0 group-hover:opacity-20"
+              class="absolute  h-full transition-opacity bg-black opacity-0 group-hover:opacity-20"
             ></div>
 
             <!-- 收藏按鈕和加入景點 -->
             <div
               class="absolute bottom-0 flex items-center justify-between w-full p-4 transition-opacity opacity-0 z-2 group-hover:opacity-100"
             >
-              <button
-                class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer bg-gray hover:bg-opacity-75 tooltip"
-                :data-tip="isFavorited(place.id) ? '已收藏' : '加入收藏'"
-                @click.prevent.stop="toggleFavorite(place)"
-              >
-                <component
-                  :is="isFavorited(place.id) ? HeartIcon : OutlineHeartIcon"
-                  :class="isFavorited(place.id) ? 'text-red-500' : 'text-gray-500'"
-                  class="size-6"
-                />
-              </button>
+            <button
+              class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer bg-gray hover:bg-opacity-75 tooltip"
+              data-tip="取消收藏"
+              @click.prevent.stop="removeFavoriteDirectly(place)"
+            >
+              <HeartIcon class="text-red-500 size-6" />
+            </button>
+
               <AddPlaceBtn @click.stop @click="modalStore.savePlace(place)" />
             </div>
 
             <!-- 圖片 -->
-            <img
-              :src="place.image_url"
-              alt="Place image"
-              class="w-full h-40 object-cover mb-3 rounded"
+            <img 
+              :src="generateImageUrl(place.image_url)" 
+              alt="Place image" 
+              class="w-full h-40 object-cover mb-3 rounded" 
             />
+
           </div>
           <div>
             <h3
@@ -121,7 +127,7 @@ onMounted(fetchPlaces);
               {{ place.name }}
             </h3>
             <div class="flex justify-between">
-              <div class="flex text-slate-500 text-[12px] md:text-base">
+              <div class="flex text-slate-500 text-[12px] md:text-base gap-1">
                 <StarIcon class="text-yellow-500 md:size-6 size-4" />
                 <span>{{ place.rating }}</span>
                 <span>{{ place.location }}</span>
@@ -148,6 +154,18 @@ onMounted(fetchPlaces);
 .favorites {
   margin: 0 auto;
   padding: 20px;
+}
+
+.group:hover .group-hover\:opacity-20 {
+  opacity: 0.2;
+}
+.transition-opacity {
+  transition: opacity 0.3s ease-in-out;
+}
+
+summary:active {
+  background-color: transparent !important;
+  color: rgb(55 65 81 / var(--tw-text-opacity, 1)) !important;
 }
 
 </style>
