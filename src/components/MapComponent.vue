@@ -25,7 +25,6 @@ async function initMap(center) {
   })
   map.value = newMap
 
-  // 為地圖新增事件監聽器
   newMap.addListener("idle", () => {
     searchStore.mapCenter = newMap.getCenter().toJSON()
   })
