@@ -1,13 +1,11 @@
 <script setup>
 import { StarIcon, MapPinIcon, HeartIcon } from "@heroicons/vue/24/solid";
-import { HeartIcon as OutlineHeartIcon } from "@heroicons/vue/24/outline"
 import AddPlaceBtn from "./AddPlaceBtn.vue";
 import DetailModal from "@/components/DetailModal.vue";
 import { PlaceModalStore } from "@/stores/PlaceModal"
 import { ref, onMounted, watch, nextTick, defineEmits, onUnmounted,computed } from "vue"
 import axios from "axios"
 import {  favorites, isFavorited, loadFavorites, toggleFavorite,removeFavoriteDirectly,generateImageUrl } from "@/stores/favorites";
-import { usePlacesStore } from "@/stores/fetchPlaces"; // 引入 placesStore
 
 
 // 定義狀態
@@ -15,17 +13,13 @@ const places = ref([]);
 const loading = ref(true); 
 const userId = ref(localStorage.getItem("userId"));
 const token = localStorage.getItem("token"); 
-const API_URL = "http://localhost:3000";
-const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
 
+
+const API_URL = process.env.VITE_HOST_URL
 
 
 
 const modalStore = PlaceModalStore()
-const placesStore = usePlacesStore(); // 使用 placesStore
-
-const modalStore = PlaceModalStore()
-const placesStore = usePlacesStore(); // 使用 placesStore
 
 // 獲取收藏景點資料
 const fetchPlaces = async () => {

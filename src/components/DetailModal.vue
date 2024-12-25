@@ -25,7 +25,8 @@ import { PlaceModalStore } from "@/stores/PlaceModal"
 import { usePlacesStore } from "@/stores/fetchPlaces"
 import axios from "axios"
 
-const API_URL = "http://localhost:3000"
+
+const API_URL = process.env.VITE_HOST_URL
 const token = localStorage.getItem("token")
 const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
 

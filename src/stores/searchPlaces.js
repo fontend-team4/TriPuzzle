@@ -12,9 +12,12 @@ export const useSearchStore = defineStore("searchStore", () => {
   const searchData = ref([])
   const placeGeometry = ref({})
 
+const API_URL = process.env.VITE_HOST_URL
+
+
   const fetchData = async (params) => {
     try {
-      const { data } = await axios.get("http://localhost:3000/places/search", {
+      const { data } = await axios.get(`${API_URL}/places/search`, {
         params,
       })
 

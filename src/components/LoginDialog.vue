@@ -8,6 +8,11 @@ import { LoginModalStore } from '@/stores/LoginModal.js'
 const LoginStore = LoginModalStore()
 const userStore = useUserStore()
 
+const API_URL = process.env.VITE_HOST_URL
+const Google_login = `${API_URL}/api/auth/google/callback`
+const Line_login =`${API_URL}api/auth/line/callback`
+
+
 const showPassword = ref(false)
 function togglePasswordVisibility() {
   showPassword.value = !showPassword.value
@@ -68,8 +73,8 @@ function showMessage({ title = '訊息', message, status }) {
 const loginSubmit = async () => {
   try {
     const res = await axios.post(
-      'http://127.0.0.1:3000/users/login',
-      {
+      `${API_URL}/users/login`,
+      {111
         identifier: identifier.value,
         password: loginPassword.value,
       },
@@ -122,7 +127,7 @@ const registerSubmit = async () => {
   errorMessage.value = ''
   try {
     const res = await axios.post(
-      'http://127.0.0.1:3000/users/register',
+      `${API_URL}/users/register`,
       {
         name: name.value,
         email: email.value,
@@ -343,7 +348,7 @@ const registerSubmit = async () => {
 
       <div class="flex justify-center items-center gap-6 mt-5">
         <a
-          href="http://localhost:3000/auth/google/callback"
+          :href="Google_login"
           class="h-8 w-8 rounded-full shadow flex justify-center items-center cursor-pointer"
         >
           <img
@@ -353,7 +358,7 @@ const registerSubmit = async () => {
           />
         </a>
         <a
-          href="http://localhost:3000/api/auth/line/callback"
+          :href="Line_login"
           class="h-8 w-8 rounded-full shadow flex justify-center items-center"
         >
           <img

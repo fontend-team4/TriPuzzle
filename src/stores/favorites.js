@@ -5,7 +5,7 @@ import { Phone } from "@iconoir/vue";
 
 
 const LoginStore = LoginModalStore()
-const API_URL = "http://localhost:3000";
+const API_URL = process.env.VITE_HOST_URL
 const favorites = ref([]); 
 const userId = ref(localStorage.getItem("userId"));
 const token = localStorage.getItem("token"); 
