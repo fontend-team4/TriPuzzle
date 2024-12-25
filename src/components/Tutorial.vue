@@ -92,7 +92,7 @@ const currentTab = computed(() => tabs[activeTab.value])
           </p>
         </div>
         <img
-          :src="currentTab.image"
+          src="@/assets/images/mockup-1.png"
           class="lg:w-[400px] xl:w-[450px] 2xl:w-[500px]"
         />
       </div>
