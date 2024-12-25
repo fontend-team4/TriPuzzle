@@ -3,8 +3,8 @@ import axios from "axios"
 
 const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
 
+const API_URL = import.meta.env.VITE_HOST_URL
 
-const API_URL = process.env.VITE_HOST_URL
 
 export const usePlacesStore = defineStore("places", {
   state: () => ({

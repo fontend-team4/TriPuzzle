@@ -15,7 +15,7 @@ const userId = ref(localStorage.getItem("userId"));
 const token = localStorage.getItem("token"); 
 
 
-const API_URL = process.env.VITE_HOST_URL
+const API_URL = import.meta.env.VITE_HOST_URL
 
 
 
