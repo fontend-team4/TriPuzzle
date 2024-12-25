@@ -5,18 +5,17 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
 } from "@heroicons/vue/20/solid"
-import { loadPNG } from "@/assets/images/loadImage"
 
 const currentIndex = ref(0)
 const maxIndex = computed(() => images.length - 3)
 const images = [
-  loadPNG("carousel-valley"),
-  loadPNG("carousel-spain"),
-  loadPNG("carousel-finland"),
-  loadPNG("carousel-japan"),
-  loadPNG("carousel-rainforest"),
-  loadPNG("carousel-glacier"),
-  loadPNG("carousel-sled"),
+  "src/assets/images/carousel-valley.png",
+  "src/assets/images/carousel-spain.png",
+  "src/assets/images/carousel-finland.png",
+  "src/assets/images/carousel-japan.png",
+  "src/assets/images/carousel-rainforest.png",
+  "src/assets/images/carousel-glacier.png",
+  "src/assets/images/carousel-sled.png",
 ]
 </script>
 <template>
