@@ -1,37 +1,40 @@
 <script setup>
-import { ref, onMounted, watch, nextTick } from 'vue'
-import {
-  MagnifyingGlassIcon,
-  PuzzlePieceIcon,
-  MapPinIcon,
-} from '@heroicons/vue/24/outline'
+import { ref, onMounted, watch, nextTick, shallowRef, toRaw } from 'vue'
+import { MagnifyingGlassIcon, MapPinIcon } from '@heroicons/vue/24/outline'
 import PlacesModal from '@/components/PlacesModal.vue'
 import { usePlacesStore } from '@/stores/fetchPlaces'
 import { useSearchStore } from '../stores/searchPlaces'
 
 const placesStore = usePlacesStore()
 const searchStore = useSearchStore()
+const currentLat = ref()
+const currentLng = ref ()
+const map = shallowRef(null)
+const markers = ref([]) 
 
-const map = ref(null)
-const markers = ref([]) // 用來管理地圖上的所有圖標
 
-// console.log(placesStore.items)
 
-async function initMap() {
-  const { Map } = await google.maps.importLibrary('maps')
-  map.value = new Map(document.getElementById('map'), {
-    center: searchStore.mapCenter,
+async function initMap(center) {
+  const { Map } = await google.maps.importLibrary('maps');
+  const newMap = new Map(document.getElementById('map'), {
+    center: center || { lat: 25.0341222, lng: 121.5640212 },
     zoom: 15,
     maxZoom: 20,
     minZoom: 3,
     streetViewControl: false,
     mapTypeControl: false,
-  })
+    mapId: "83af7188f1a0650d",
+  });
+  map.value = newMap;
 
-  map.value.addListener('idle', () => {
-    searchStore.mapCenter = map.value.getCenter().toJSON()
-  })
+  // 為地圖新增事件監聽器
+  newMap.addListener('idle', () => {
+    searchStore.mapCenter = newMap.getCenter().toJSON();
+  });
+
 }
+
+
 
 const nearbySearch = () => {
   searchStore.mapSearch()
@@ -41,78 +44,176 @@ const nearbySearch = () => {
 function clearMarkers() {
   if (markers.value.length > 0) {
     markers.value.forEach((marker) => {
-      marker.setMap(null) // 從地圖移除 marker
+      marker.setMap(null) 
     })
   }
-  markers.value = [] // 確保 markers.value 被清空
-  console.log('所有舊的 markers 已清除:', markers.value)
+  markers.value = []
 }
 
-// 根據 placesStore.items 新增圖標
-function updateMarkers() {
-  clearMarkers() // 確保舊圖標被清除
-  placesStore.items.forEach((place) => {
-    const marker = new google.maps.Marker({
-      position: place.geometry,
-      map: map.value,
-      title: place.name,
-    })
-    markers.value.push(marker) // 將新建的 marker 加入列表
-  })
-  console.log('新 markers 已更新:', markers.value)
-  console.log('placesStore.items:', placesStore.items)
-  console.log('標記數量:', markers.value.length)
-}
 
-// 定位功能
-const locateUser = () => {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition((position) => {
-      const userLat = position.coords.latitude
-      const userLng = position.coords.longitude
-      // 更新地圖中心
-      map.value.setCenter({ lat: userLat, lng: userLng })
-      // 新增使用者位置的地標
-      new google.maps.Marker({
-        position: { lat: userLat, lng: userLng },
-        map: map.value,
-        title: '您的位置',
-        icon: {
-          path: google.maps.SymbolPath.CIRCLE,
-          scale: 8,
-          fillColor: '#4285F4',
-          fillOpacity: 1,
-          strokeColor: '#ffffff',
-          strokeWeight: 2,
-        },
-      })
-    })
-  }
-}
-
-onMounted(async () => {
-  console.log()
+// 根據 placesStore.items 新增Marker
+async function updateMarkers() {
+  clearMarkers();
+  const { AdvancedMarkerElement } = await google.maps.importLibrary('marker');
 
   if (!map.value) {
-    initMap()
+    console.error('地圖尚未初始化，無法新增標記');
+    return;
   }
-  locateUser()
-  watch(
-    () => placesStore.items,
-    (newItems, oldItems) => {
-      if (JSON.stringify(newItems) !== JSON.stringify(oldItems)) {
-        console.log('檢測到 placesStore.items 的變化')
-        updateMarkers()
+
+  placesStore.items.forEach((place) => {
+    // 自定義Marker
+    const contentDiv = document.createElement('div');
+    contentDiv.innerHTML = `
+  <div class="relative flex flex-col items-center justify-center group allBtn">
+    <!-- Hidden popup -->
+    <div
+      class="bg-white rounded-md p-[4px] items-center hidden group-hover:flex absolute -top-16 w-auto shadow-md transition duration-150"
+    >
+      <div class="w-12 h-12 overflow-hidden rounded-md">
+        <img
+          src="${place.url}"
+          alt="景點圖片"
+          class="aspect-square smallImg"
+        />
+      </div>
+      <p class="mx-2 font-semibold whitespace-nowrap">${place.name}</p>
+    </div>
+
+    <!-- Static name -->
+    <p
+      class="absolute -top-5 mx-auto font-[600] text-primary-400 strokeText text-sm group-hover:hidden whitespace-nowrap z-50"
+    >
+    ${place.name}
+    </p>
+
+    <!-- Button -->
+    <button
+      class="inline-flex items-center justify-between bg-white rounded-full shadow-lg p-[2px] before:content-['▼'] before:absolute before:z-1 before:-bottom-2 before:text-white before:left-1/2 before:translate-x-[-50%] group-hover:bg-primary-400 group-hover:before:text-primary-400 group-hover:scale-125 transition-transform duration-150 items-center "
+    >
+      <div
+        class="relative flex items-center justify-center w-8 h-8 mr-2 rounded-full bg-primary-400"
+      >
+        <span class="text-lg text-white">❤︎</span>
+      </div>
+      <p class="mr-1 text-base group-hover:text-white">${place.rating}</p>
+    </button>
+  </div>
+`;
+
+
+
+    const marker = new AdvancedMarkerElement({
+      position: place.geometry,
+      map: map.value,
+      content: contentDiv,
+      draggable: false,
+    });
+
+    markers.value.push(marker);
+  });
+}
+
+
+
+// 定位功能
+const locateUser = async() => {
+  if (navigator.geolocation) {
+  const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        currentLat.value = position.coords.latitude
+        currentLng.value = position.coords.longitude
+        if (map.value) {
+          map.value.setCenter({ lat: currentLat.value, lng: currentLng.value })
+          
+        }
+        new google.maps.Marker({
+          position: { lat: currentLat.value, lng: currentLng.value },
+          map: map.value,
+          title: '您的位置',
+          icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 8,
+            fillColor: '#4285F4',
+            fillOpacity: 1,
+            strokeColor: '#ffffff',
+            strokeWeight: 2,
+          },
+        })
+      },
+      () => {
+        console.warn('使用者拒絕共享位置，使用預設中心點')
+        if (map.value) {
+          map.value.setCenter(searchStore.mapCenter)
+        }
       }
-    },
-    { immediate: true }
-  )
+    )
+  } else {
+    console.warn('瀏覽器不支援定位功能')
+    if (map.value) {
+      map.value.setCenter(searchStore.mapCenter)
+    }
+  }
+}
+
+
+onMounted(async () => {
+  // 先設定mapCenter會被定位覆蓋
+  let initialCenter = searchStore.mapCenter 
+  const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+
+  // 取得使用者定位
+  await new Promise((resolve) => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          currentLat.value = position.coords.latitude
+          currentLng.value = position.coords.longitude
+          initialCenter = { lat: currentLat.value, lng: currentLng.value }
+          resolve()
+        },
+        () => {
+          console.warn("拒絕使用位置，使用預設中心點")
+          resolve()
+        }
+      )
+    } else {
+      console.warn("瀏覽器不支援定位功能")
+      resolve()
+    }
+  })
+
+  await initMap(initialCenter)
+  searchStore.mapCenter = initialCenter
+  searchStore.mapSearch()
+  locateUser()
+
+
+  watch(
+  () => placesStore.items,
+  (newItems, oldItems) => {
+    if (JSON.stringify(newItems) !== JSON.stringify(oldItems)) {
+      if (map.value) {
+        updateMarkers();
+      } else {
+        console.warn('地圖尚未初始化');
+      }
+    }
+  },
+  { immediate: true }
+);
+
 })
+
+ 
+
 </script>
 
 <template>
   <!-- 地圖 -->
-  <div class="h-screen google-map min-w-screen" id="map"></div>
+  <div class="h-screen google-map min-w-screen " id="map"></div>
   <!-- 搜尋此區域 -->
   <button
     class="bg-white inline-flex px-4 py-2 rounded-full shadow-lg fixed left-1/2 top-[100px] -translate-x-1/2 text-sm font-medium hover:bg-slate-100 transition-all duration-200 leading-6 active:bg-slate-300"
@@ -128,47 +229,13 @@ onMounted(async () => {
   >
     <MapPinIcon class="size-5 text-primary-400" />
   </button>
-  <!-- 地點卡片 -->
-  <div class="absolute top-1/2 left-1/2" id="locationCard">
-    <div class="flex flex-col items-center justify-center group">
-      <div class="flex flex-col items-center justify-center">
-        <div
-          class="bg-white rounded-md p-[4px] items-center hidden group-hover:flex absolute top-16 w-auto shadow-md"
-        >
-          <div class="w-12 h-12 overflow-hidden rounded-md">
-            <img
-              src="https://assets-lighthouse.s3.amazonaws.com/uploads/image/file/5635/01.jpg"
-              alt=""
-              class="aspect-square"
-            />
-          </div>
-          <p class="mx-2 font-semibold whitespace-nowrap">沙巴巴中東美食</p>
-        </div>
-      </div>
-      <p
-        class="absolute -top-5 mx-auto font-[400] text-primary-400 strokeText text-sm group-hover:hidden whitespace-nowrap"
-      >
-        沙巴巴中東美食
-      </p>
-      <button
-        class="inline-flex items-center justify-between bg-white rounded-full shadow-lg p-[2px] before:content-['▼'] before:absolute before:z-1 before:-bottom-3 before:text-white before:left-1/2 before:translate-x-[-50%] group-hover:bg-primary-400 group-hover:before:text-primary-400 group-hover:scale-125 transition-transform duration-100"
-      >
-        <div
-          class="relative flex items-center w-6 h-6 mr-1 rounded-full bg-primary-400"
-        >
-          <PuzzlePieceIcon class="absolute mr-1 text-white size-5 left-[1px]" />
-        </div>
-        <p class="mr-1 group-hover:text-white">4.2</p>
-      </button>
-    </div>
-  </div>
   <PlacesModal class="hidden md:block" />
 </template>
 
-<style scoped>
+<style>
 .strokeText::before {
   position: absolute;
-  content: '沙巴巴中東美食';
+  content: '景點名稱';
   -webkit-text-stroke: 2px #ffffff;
   z-index: -1;
   filter: drop-shadow(0 1px 1px rgb(0 0 0 / 0.25));
@@ -176,4 +243,19 @@ onMounted(async () => {
 img {
   object-fit: cover;
 }
+
+.allBtn-btn:hover{
+  transform: scale(1.25);
+  background-color: #f17b78;
+}
+.smallImg{
+  aspect-ratio: 1;
+  width: 48px;
+}
+
+.allBtn {
+  pointer-events: auto;
+  z-index: 1000;
+}
+
 </style>

@@ -12,22 +12,17 @@ export const usePlacesStore = defineStore('places', {
   }),
 
   actions: {
-    async fetchDefaultPlaces() {
+    async fetchDefaultPlaces(lat = 25.0341222, lng = 121.5640212) {
       this.items = []
-      const lat = 25.0341222
-      const lng = 121.5640212
-      // 清空舊資料
-      if (this.items.length > 0) return // 防止重複加載資料
-
       try {
         const response = await axios.get(
           `${API_URL}/places/search?latitude=${lat}&longitude=${lng}&type=tourist_attraction`
         )
         this.places = response.data
-        this.initializeItems() // 處理資料
+        this.initializeItems() 
       } catch (err) {
         console.error(err.message)
-        alert('搜尋失敗')
+        alert("搜尋失敗")
       }
     },
 
@@ -51,7 +46,6 @@ export const usePlacesStore = defineStore('places', {
         address: location.address,
         website: location.website,
         placeUrl: location.placeUrl,
-        // geometry: location.geometry,
       }))
     },
     updateFromSearch(searchData) {
