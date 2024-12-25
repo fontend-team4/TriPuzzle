@@ -153,11 +153,11 @@ watch(
                 {{ item.name }}
               </h3>
               <div class="flex justify-between">
-                <div class="flex text-slate-500 text-[12px] md:text-base">
+                <div class="flex text-slate-500 text-[12px] md:text-base gap-1">
                   <StarIcon class="text-yellow-500 md:size-6 size-4" /><span>{{
                     item.rating
                   }}</span
-                  >．<span>{{ item.location }}</span>
+                  ><span>{{ item.location }}</span>
                 </div>
                 <a :href="item.mapUrl" target="_blank"
                   ><MapPinIcon class="text-gray-500 md:size-6 size-4"

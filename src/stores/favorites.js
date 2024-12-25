@@ -9,6 +9,8 @@ const favorites = ref([]);
 const userId = ref(localStorage.getItem("userId"));
 const token = localStorage.getItem("token"); 
 
+const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
+
 // 檢查是否已收藏
 const isFavorited = (placeId) => {
   return favorites.value.some((fav) => fav.favorite_places === placeId);
@@ -54,7 +56,7 @@ const addFavorite = async (item, headers) => {
   const placeData = {
     place_id: item.id,
     name: item.name,
-    image_url: item.url,
+    image_url: item.photos[0]?.photo_reference || null,
     location: item.location,
     rating: item.rating,
     phone: item.phone,
@@ -90,20 +92,55 @@ const addFavorite = async (item, headers) => {
 };
 
 const removeFavorite = async (placeId, headers) => {
-  await axios.delete(`${API_URL}/favorites`, {
-    data: {
+  try {
+    console.log("嘗試移除收藏:", {
       favorite_user: Number(userId.value),
       favorite_places: placeId,
-    },
-    headers,
-  });
+    });
+    console.log("使用的 headers:", headers);
 
-  console.log('移除地點', placeId)
-  favorites.value = favorites.value.filter(
-    (fav) => fav.favorite_places !== placeId
-  );
+    await axios.delete(`${API_URL}/favorites`, {
+      data: {
+        favorite_user: Number(userId.value),
+        favorite_places: placeId,
+      },
+      headers,
+    });
+
+    console.log("移除地點成功:", placeId);
+
+    favorites.value = favorites.value.filter(
+      (fav) => fav.favorite_places !== placeId
+    );
+  } catch (error) {
+    console.error("無法移除收藏:", error);
+    throw error; // 傳遞錯誤以便進一步處理
+  }
+};
+
+const removeFavoriteDirectly = async (place) => {
+  if (!userId.value || !token) {
+    LoginStore.openModal();
+    return;
+  }
+
+  try {
+    console.log("嘗試直接移除收藏:", place);
+    await removeFavorite(place.place_id, { Authorization: token });
+  } catch (error) {
+    console.error("無法移除收藏:", error);
+    alert("移除收藏失敗，請稍後再試");
+  }
+};
+
+//將image_url格式轉換為URL
+const generateImageUrl = (photoReference) => {
+  if (!photoReference) return null;
+  return `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference=${photoReference}&key=${GOOGLE_API_KEY}`;
 };
 
 
+export { favorites, isFavorited, loadFavorites, toggleFavorite, removeFavoriteDirectly,generateImageUrl };
 
-export { favorites, isFavorited, loadFavorites, toggleFavorite };
+
+
