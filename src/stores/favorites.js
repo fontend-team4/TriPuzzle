@@ -3,6 +3,7 @@ import axios from "axios";
 import { LoginModalStore } from '@/stores/LoginModal.js'
 import { Phone } from "@iconoir/vue";
 
+
 const LoginStore = LoginModalStore()
 const API_URL = "http://localhost:3000";
 const favorites = ref([]); 
@@ -46,7 +47,6 @@ const toggleFavorite = async (item) => {
       await removeFavorite(item.id, headers);
     }
   } catch (error) {
-    console.error("操作失敗:", error);
     alert("操作失敗，請稍後再試");
   }
 };
@@ -72,7 +72,6 @@ const addFavorite = async (item, headers) => {
 
 
 
-  console.log('placeData', placeData)
 
   // 新增地點
   await axios.post(`${API_URL}/places`, placeData, { headers });

@@ -1,30 +1,30 @@
 <script setup>
-import { ref, inject, onMounted, computed } from 'vue'
-import axios from 'axios'
-import { EllipsisHorizontalIcon } from '@heroicons/vue/16/solid'
+import { ref, inject, onMounted, computed } from "vue"
+import axios from "axios"
+import { EllipsisHorizontalIcon } from "@heroicons/vue/16/solid"
 import {
   XMarkIcon,
   UserPlusIcon,
   ShareIcon,
   DocumentDuplicateIcon,
   TrashIcon,
-} from '@heroicons/vue/24/outline'
-import ShareScheduleModal from './ShareScheduleModal.vue'
-import NewScheduleModal from '@/components/NewScheduleModal.vue'
-import DeleteScheduleModal from './DeleteScheduleModal.vue'
-import { LoginModalStore } from '@/stores/LoginModal.js'
+} from "@heroicons/vue/24/outline"
+import ShareScheduleModal from "./ShareScheduleModal.vue"
+import NewScheduleModal from "@/components/NewScheduleModal.vue"
+import DeleteScheduleModal from "./DeleteScheduleModal.vue"
+import { LoginModalStore } from "@/stores/LoginModal.js"
 
 const LoginStore = LoginModalStore()
-const listToggle = inject('listToggle')
-const detailToggle = inject('detailToggle')
-const API_URL = 'http://localhost:3000'
+const listToggle = inject("listToggle")
+const detailToggle = inject("detailToggle")
+const API_URL = process.env.VITE_HOST_URL
 
 const isLogin = ref(false)
-const token = localStorage.getItem('token')
+const token = localStorage.getItem("token")
 
 // 讀取行程資料
 const hasSchedules = ref(false)
-const checkedSchedule = ref('mine')
+const checkedSchedule = ref("mine")
 const schedules = ref([])
 const deletedId = ref(null)
 const getSchedules = async () => {
@@ -40,8 +40,8 @@ const getSchedules = async () => {
     }
     schedules.value = response.data
     schedules.value.forEach((item) => {
-      item.start_date = item.start_date.split('T')[0]
-      item.end_date = item.end_date.split('T')[0]
+      item.start_date = item.start_date.split("T")[0]
+      item.end_date = item.end_date.split("T")[0]
     })
   } catch (error) {
     console.error(error.message)
@@ -56,10 +56,10 @@ const openDeleteModal = (id) => {
 // 行程分享、共編彈窗
 const activeStatus = ref(null)
 const openShareModal = () => {
-  activeStatus.value = 'share'
+  activeStatus.value = "share"
 }
 const openInviteModal = () => {
-  activeStatus.value = 'invite'
+  activeStatus.value = "invite"
 }
 const updateStatus = (status) => {
   activeStatus.value = status
@@ -70,16 +70,62 @@ const login = () => {
   listToggle()
 }
 
-const listsort = ref('newest')
+const listsort = ref("newest")
 const sortedSchedules = computed(() => {
   return schedules.value.sort((a, b) => {
-    if (listsort.value === 'newest') {
+    if (listsort.value === "newest") {
       return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
     } else {
       return new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
     }
   })
 })
+
+const scheduleName = ref("")
+const coverImage = ref("")
+const startDate = ref("")
+const endDate = ref("")
+const transportationWay = ref("")
+
+const scheduleDuplicate = async (id) => {
+  const config = {
+    headers: {
+      Authorization: token,
+    },
+  }
+  try {
+    const response = await axios.get(`${API_URL}/schedules/${id}`, config)
+    scheduleName.value = response.data.title
+    coverImage.value = response.data.image_url
+    startDate.value = response.data.start_date.split("T")[0]
+    endDate.value = response.data.end_date.split("T")[0]
+    transportationWay.value = response.data.transportation_way
+    await copySchedule()
+  } catch (error) {
+    console.error(error.message)
+  }
+}
+
+const copySchedule = async () => {
+  const config = {
+    headers: {
+      Authorization: token,
+    },
+  }
+  const ScheduleData = {
+    title: scheduleName.value,
+    image_url: coverImage.value,
+    start_date: startDate.value,
+    end_date: endDate.value,
+    transportation_way: transportationWay.value,
+  }
+  try {
+    await axios.post(`${API_URL}/schedules`, ScheduleData, config)
+    await getSchedules()
+  } catch (err) {
+    console.error(err.message)
+  }
+}
 
 onMounted(async () => {
   if (token) {
@@ -190,7 +236,7 @@ onMounted(async () => {
                         tabindex="0"
                         class="dropdown-content w-32 bg-white rounded border border-gray absolute right-0 top-10"
                       >
-                        <li>
+                        <li @click="scheduleDuplicate(item.id)">
                           <a
                             class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray"
                             href="#"

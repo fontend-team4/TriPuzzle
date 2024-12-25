@@ -9,6 +9,7 @@ import axios from "axios"
 import {  favorites, isFavorited, loadFavorites, toggleFavorite,removeFavoriteDirectly,generateImageUrl } from "@/stores/favorites";
 import { usePlacesStore } from "@/stores/fetchPlaces"; // 引入 placesStore
 
+
 // 定義狀態
 const places = ref([]); 
 const loading = ref(true); 
@@ -23,8 +24,6 @@ const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
 const modalStore = PlaceModalStore()
 const placesStore = usePlacesStore(); // 使用 placesStore
 
-
-
 // 獲取收藏景點資料
 const fetchPlaces = async () => {
   try {
@@ -35,6 +34,7 @@ const fetchPlaces = async () => {
     });
     places.value = res.data.map((favorite) => favorite.places);
     localStorage.setItem("favorites", JSON.stringify(places.value));
+
   } catch (err) {
     alert("無法獲取景點資料", err);
   } finally {
@@ -88,6 +88,7 @@ onMounted(fetchPlaces);
         <a
           href="#"
           @click="openDetailModal(place), modalStore.savePlace(place)"
+
         >
           <div class="relative w-full mb-2 overflow-hidden rounded-lg">
             <!-- 黑色遮罩 -->
@@ -145,6 +146,7 @@ onMounted(fetchPlaces);
       :place="currentPlace"
       @close="closeDetailModal"
     />
+
 </template>
 
 <style scoped>

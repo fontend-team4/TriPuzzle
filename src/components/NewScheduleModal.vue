@@ -53,7 +53,7 @@ const closeDropdown = () => {
   isChecked.value = false // 收起選單
 }
 
-const API_URL = 'http://localhost:3000'
+const API_URL = process.env.VITE_HOST_URL
 const coverImage = ref(null)
 const ScheduleName = ref('')
 const startDate = ref('')

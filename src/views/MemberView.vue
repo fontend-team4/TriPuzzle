@@ -3,6 +3,7 @@ import { ref, onMounted, computed, watch } from 'vue'
 import { useRouter,useRoute } from 'vue-router'
 import axios from 'axios'
 import SideBar from '@/components/SideBar.vue'
+
 import {
   HeartIcon,
   PencilIcon,
@@ -18,7 +19,6 @@ import DetailModal from '@/components/DetailModal.vue'
 import { usePlacesStore } from '@/stores/fetchPlaces'
 import { PlaceModalStore } from '@/stores/PlaceModal'
 
-
 const LoginStore = LoginModalStore()
 const placesStore = usePlacesStore()
 const modalStore = PlaceModalStore()
@@ -29,21 +29,19 @@ const places = ref([])
 
 const route = useRoute()
 const router = useRouter()
-const API_URL = 'http://localhost:3000'
-const token = localStorage.getItem('token')
-const userId = localStorage.getItem('userId')
+const API_URL = process.env.VITE_HOST_URL
+const token = localStorage.getItem("token")
+const userId = localStorage.getItem("userId")
 
 // GET User Profile
-const user = ref('')
-const userName = ref('')
-const userEmail = ref('')
-const userGender = ref('')
-const userBirthday = ref('')
-const userDescription = ref('')
-const userLoginWay = ref('')
-const userImg = ref(
-  'https://web.chictrip.com.tw/assets/waterview_default.f746ada9.svg'
-)
+const user = ref("")
+const userName = ref("")
+const userEmail = ref("")
+const userGender = ref("")
+const userBirthday = ref("")
+const userDescription = ref("")
+const userLoginWay = ref("")
+const userImg = ref(Logo)
 
 const getUser = async () => {
   try {
@@ -59,14 +57,17 @@ const getUser = async () => {
     user.value = response.data.data
     userName.value = user.value.name
     userEmail.value = user.value.email
-    userImg.value = user.value.profile_pic_url
     userGender.value = user.value.gender
     userBirthday.value = user.value.birthday // 2000-12-12T00:00:00.000Z
     userDescription.value = user.value.description
     userLoginWay.value = user.value.login_way
+    if (user.value.profile_pic_url !== null) {
+      userImg.value = user.value.profile_pic_url
+      return
+    }
   } catch (error) {
     console.error(error.message)
-    router.push('/')
+    router.push("/")
   }
 }
 // User Logout
@@ -76,7 +77,7 @@ const logout = () => {
   localStorage.removeItem('userId')
   logoutSuccess.value.showModal()
   setTimeout(() => {
-    router.push('/planner')
+    router.push("/planner")
   }, 1000)
 }
 
@@ -87,14 +88,14 @@ const formattedBirthday = computed(() => {
   const year = date.getFullYear()
   // date.getMonth() 返回的月份是 0 到 11,而不是 1 到 12,所以需要手動加 1
   // .padStart(2, '0') 確保字串有兩個字元，不足要補 0
-  const month = String(date.getMonth() + 1).padStart(2, '0')
-  const day = String(date.getDate()).padStart(2, '0')
+  const month = String(date.getMonth() + 1).padStart(2, "0")
+  const day = String(date.getDate()).padStart(2, "0")
   return `${year}-${month}-${day}`
 })
 const userBirthdayInput = computed({
   get: () => formattedBirthday.value,
   set: (value) => {
-    const [year, month, day] = value.split('-')
+    const [year, month, day] = value.split("-")
     userBirthday.value = new Date(
       `${year}-${month}-${day}T00:00:00.000Z`
     ).toISOString()
@@ -102,7 +103,7 @@ const userBirthdayInput = computed({
 })
 
 // Update User Profile
-const errorMsg = ref('')
+const errorMsg = ref("")
 const UpdateSuccess = ref(null)
 const UpdateFailed = ref(null)
 const updateUser = async () => {
@@ -125,7 +126,7 @@ const updateUser = async () => {
       updatedUserData,
       config
     )
-    if (response.data.message === 'User update successful') {
+    if (response.data.message === "User update successful") {
       UpdateSuccess.value.showModal()
       setTimeout(() => {
         UpdateSuccess.value.close()
@@ -162,12 +163,12 @@ const deleteUser = async () => {
       config
     )
     if (response.data.message === `成功刪除 ID:${userId} 使用者`) {
-      user.value = ''
-      localStorage.removeItem('token')
-      localStorage.removeItem('userId')
+      user.value = ""
+      localStorage.removeItem("token")
+      localStorage.removeItem("userId")
       deletedSuccess.value.showModal()
       setTimeout(() => {
-        router.push('/planner')
+        router.push("/planner")
       }, 1000)
     }
   } catch (error) {
@@ -192,7 +193,7 @@ const handleImgUpload = (event) => {
 
 const uploadImg = async () => {
   const formData = new FormData()
-  formData.append('image', imgFile.value)
+  formData.append("image", imgFile.value)
 
   try {
     const response = await axios.post(
@@ -207,19 +208,19 @@ const uploadImg = async () => {
 }
 
 const closeEditmodal = () => {
-  const dialog = document.getElementById('Editmodal')
+  const dialog = document.getElementById("Editmodal")
   dialog?.close()
 }
 const closeNickNameModal = () => {
-  const dialog = document.getElementById('NickNameModal')
+  const dialog = document.getElementById("NickNameModal")
   dialog?.close()
 }
 const closeProfileModal = () => {
-  const dialog = document.getElementById('ProfileModal')
+  const dialog = document.getElementById("ProfileModal")
   dialog?.close()
 }
 const closePersonalInformatioMmodal = () => {
-  const dialog = document.getElementById('PersonalInformatioMmodal')
+  const dialog = document.getElementById("PersonalInformatioMmodal")
   dialog?.close()
 }
 
@@ -266,7 +267,7 @@ onMounted(async () => {
   >
     <div class="ml-5 p-2">
       <img
-        src="https://web.chictrip.com.tw/assets/logo_horizontal.aa2cb44e.svg"
+        src="../assets/svg/Logo.svg"
         alt=""
         class="w-24 mt-1 ml-8 lg:ml-1 md:ml-8 sm:ml-8"
       />
@@ -286,7 +287,7 @@ onMounted(async () => {
               <div class="block mt-2 md:mr-20 pl-4 sm:mr-0">
                 <p class="text-xl font-semibold mt-4">{{ userName }}</p>
                 <p class="mt-2">{{ userEmail }}</p>
-                <div class="flex justify-between items-center mt-4 gap-3">
+                <div class="flex items-center mt-4 gap-3">
                   <button
                     class="px-3 py-1 border border-slate-400 rounded-full hover:bg-primary-100 hover:text-primary-800 transition flex items-center"
                     onclick="Editmodal.showModal()"
@@ -301,54 +302,6 @@ onMounted(async () => {
                     <ArrowRightStartOnRectangleIcon class="h-4 w-4 mr-1" />
                     <span class="w-10">登出</span>
                   </button>
-                  <!-- <div class="dropdown">
-                    <div
-                      tabindex="0"
-                      class="p-2 rounded-full border border-slate-400 hover:bg-primary-100 hover:text-primary-800"
-                    >
-                      <Cog8ToothIcon class="w-5 h-5" />
-                    </div>
-                    <ul
-                      tabindex="0"
-                      class="dropdown-content bg-base-100 rounded-lg w-52 shadow sm:absolute top-15 right-5 md:left-0"
-                    >
-                      <button class="w-52">
-                        <li
-                          class="flex flex-row py-2 px-4 hover:bg-primary-100 hover:text-primary-800 rounded-t-lg items-center"
-                        >
-                          <ShareIcon class="h-4 w-4 mr-2" />
-                          分享
-                        </li>
-                      </button>
-                      <button class="w-52">
-                        <li
-                          class="flex flex-row py-2 px-4 hover:bg-primary-100 hover:text-primary-800 items-center"
-                        >
-                          <EnvelopeIcon class="h-4 w-4 mr-2" />
-                          服務條款與隱私聲明
-                        </li>
-                      </button>
-                      <button class="w-52">
-                        <li
-                          class="flex flex-row py-2 px-4 hover:bg-primary-100 hover:text-primary-800 items-center"
-                        >
-                          <ChatBubbleLeftEllipsisIcon class="h-4 w-4 mr-2" />
-                          意見回饋
-                        </li>
-                      </button>
-                      <button class="w-52">
-                        <li
-                          class="flex flex-row py-2 px-4 hover:bg-primary-100 hover:text-primary-800 rounded-b-lg items-center"
-                          @click="logout"
-                        >
-                          <ArrowRightStartOnRectangleIcon
-                            class="h-4 w-4 mr-2"
-                          />
-                          登出
-                        </li>
-                      </button>
-                    </ul>
-                  </div> -->
                 </div>
               </div>
             </div>
@@ -384,7 +337,6 @@ onMounted(async () => {
         />    
       </div>
     </div>
-    <!-- Edit的Modal -->
     <dialog id="Editmodal" class="modal" @click.self="closeEditmodal">
       <div
         class="bg-white rounded-none p-6 w-full h-full md:w-96 md:h-max md:rounded-2xl md:mb-20"
@@ -500,7 +452,6 @@ onMounted(async () => {
         <button>close</button>
       </form>
     </dialog>
-    <!-- NickName的Modal -->
     <dialog id="NickNameModal" class="modal" @click.self="closeNickNameModal">
       <div
         class="bg-white rounded-none p-6 w-full h-full md:w-96 md:h-max md:rounded-2xl md:mb-40"
@@ -561,7 +512,6 @@ onMounted(async () => {
         <button>close</button>
       </form>
     </dialog>
-    <!-- Profile的Modal -->
     <dialog id="ProfileModal" class="modal" @click.self="closeProfileModal">
       <div
         class="bg-white rounded-none p-6 w-full h-full md:w-96 md:h-max md:rounded-2xl md:mb-40"
@@ -615,7 +565,6 @@ onMounted(async () => {
         <button>close</button>
       </form>
     </dialog>
-    <!-- PersonalInformatio的Modal -->
     <dialog
       id="PersonalInformatioMmodal"
       class="modal"

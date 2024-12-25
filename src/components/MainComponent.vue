@@ -1,15 +1,15 @@
 <script setup>
-import { computed, ref, watch, onMounted } from 'vue'
-import SearchBar from './SearchBar.vue'
-import MapToggle from './MapToggle.vue'
-import PlacesComponent from './PlacesComponent.vue'
-import ScheduleSideBar from './ScheduleSideBar.vue'
-import DetailModal from '@/components/DetailModal.vue'
-import { useRouter, useRoute } from 'vue-router'
-import AddPlaceModal from './AddPlaceModal.vue'
-import { PlaceModalStore } from '@/stores/PlaceModal'
-import { usePlacesStore } from '@/stores/fetchPlaces'
-import { useSearchStore } from '@/stores/searchPlaces'
+import { computed, ref, watch, onMounted } from "vue"
+import SearchBar from "./SearchBar.vue"
+import MapToggle from "./MapToggle.vue"
+import PlacesComponent from "./PlacesComponent.vue"
+import ScheduleSideBar from "./ScheduleSideBar.vue"
+import DetailModal from "@/components/DetailModal.vue"
+import { useRouter, useRoute } from "vue-router"
+import AddPlaceModal from "./AddPlaceModal.vue"
+import { PlaceModalStore } from "@/stores/PlaceModal"
+import { usePlacesStore } from "@/stores/fetchPlaces"
+import { useSearchStore } from "@/stores/searchPlaces"
 
 const placesStore = usePlacesStore()
 const searchStore = useSearchStore()
@@ -21,29 +21,28 @@ const route = useRoute()
 
 const isPlacesComponent = ref(true)
 
-// ScheduleList
 const schedulesListRef = ref(null)
 
 // search bar 跟著右側列表伸縮寬度
 const topBarSwitch = computed(() => {
   return schedulesListRef?.value?.listOpen
-    ? 'w-[75%] transition-all'
-    : 'w-full lg:w-[98%]'
+    ? "w-[75%] transition-all"
+    : "w-full lg:w-[98%]"
 })
 
 // waterfall 跟著右側列表伸縮寬度
 const waterFallSwitch = computed(() => {
   return schedulesListRef?.value?.listOpen
-    ? 'lg:pe-[420px] transition-all'
-    : 'px-10'
+    ? "lg:pe-[420px] transition-all"
+    : "px-10"
 })
 
-const isModalOpen = computed(() => route.query.action === 'placeInfo')
+const isModalOpen = computed(() => route.query.action === "placeInfo")
 const currentPlaceId = computed(() => route.query.placeId)
 const handleOpenDetailModal = (detailId) => {
   router.push({
-    path: '/planner',
-    query: { action: 'placeInfo', placeId: detailId }, // 傳遞地點 ID
+    path: "/planner",
+    query: { action: "placeInfo", placeId: detailId }, // 傳遞地點 ID
   })
 }
 
@@ -53,7 +52,7 @@ const currentPlace = computed(() => {
 })
 
 const closeDetailModal = () => {
-  router.push({ path: '/planner' })
+  router.push({ path: "/planner" })
 }
 
 onMounted(async () => {
@@ -61,7 +60,7 @@ onMounted(async () => {
     await placesStore.fetchDefaultPlaces() // 抓取資料
     places.value = placesStore.items
   } catch (error) {
-    console.error('Failed to fetch places:', error)
+    console.error("Failed to fetch places:", error)
     places.value = [] // 防止錯誤導致的 undefined
   }
 })
@@ -77,6 +76,10 @@ watch(
   { immediate: true }
 )
 
+const handleUpdateIsPlacesComponent = (value) => {
+  isPlacesComponent.value = value
+}
+
 // 避免打開或關掉任何Modal時往卷軸彈到最上方
 watch(
   () => isModalOpen.value || modalStore.isOpen,
@@ -86,13 +89,13 @@ watch(
 
       const scrollBarWidth =
         window.innerWidth - document.documentElement.clientWidth
-      document.body.style.position = 'fixed'
+      document.body.style.position = "fixed"
       document.body.style.top = `-${scrollPosition.value}px`
       document.body.style.width = `calc(100% - ${scrollBarWidth}px)`
     } else {
-      document.body.style.position = ''
-      document.body.style.top = ''
-      document.body.style.width = ''
+      document.body.style.position = ""
+      document.body.style.top = ""
+      document.body.style.width = ""
 
       // 等瀑布流渲染完成再恢復滾動（不然會置頂）
       setTimeout(() => {
@@ -131,6 +134,7 @@ watch(
       class="absolute top-0 transition-all"
       :class="waterFallSwitch"
       @open-detail-modal="handleOpenDetailModal"
+      @updateIsPlacesComponent="handleUpdateIsPlacesComponent"
     />
   </Transition>
 

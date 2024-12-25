@@ -1,12 +1,25 @@
 <script setup>
 import { StarIcon, MapPinIcon, HeartIcon } from "@heroicons/vue/24/solid"
-import { ref, onMounted, watch, nextTick, defineEmits, onUnmounted,computed } from "vue"
+import {
+  ref,
+  onMounted,
+  watch,
+  nextTick,
+  defineEmits,
+  onUnmounted,
+  computed,
+} from "vue"
 import { HeartIcon as OutlineHeartIcon } from "@heroicons/vue/24/outline"
 import AddPlaceBtn from "./AddPlaceBtn.vue"
 import { usePlacesStore } from "@/stores/fetchPlaces"
 import { useSearchStore } from "@/stores/searchPlaces"
 import { PlaceModalStore } from "@/stores/PlaceModal"
-import { favorites,isFavorited,loadFavorites, toggleFavorite } from '@/stores/favorites.js'
+import {
+  favorites,
+  isFavorited,
+  loadFavorites,
+  toggleFavorite,
+} from "@/stores/favorites.js"
 
 const placesStore = usePlacesStore()
 const searchStore = useSearchStore()
@@ -14,7 +27,19 @@ const modalStore = PlaceModalStore()
 
 const columns = ref([]) // 每欄
 const numCols = ref(2) // 預設為兩欄
-const emit = defineEmits(["open-detail-modal"])
+const emit = defineEmits(["open-detail-modal", "updateIsPlacesComponent"])
+
+const isLogin = ref(false)
+const token = localStorage.getItem("token")
+const userId = ref(localStorage.getItem("userId"))
+
+// 檢查登入狀態
+onMounted(() => {
+  isLogin.value = Boolean(token && userId.value)
+  if (isLogin.value) {
+    loadFavorites() // 加載收藏列表
+  }
+})
 
 const isLogin = ref(false)
 const token = localStorage.getItem('token')
@@ -60,9 +85,13 @@ onMounted(async () => {
   window.addEventListener("resize", handleResize)
 })
 
-
 const openDetailModal = (detailId) => {
   emit("open-detail-modal", detailId) // 傳遞地點的 ID
+}
+
+const updateMapCenter = (item) => {
+  searchStore.placeGeometry = item.geometry
+  emit("updateIsPlacesComponent", false)
 }
 
 onUnmounted(() => {
@@ -83,7 +112,6 @@ watch(
   () => searchStore.searchData,
   (newData) => {
     if (newData.length > 0) {
-      // console.log('searchData 更新，觸發 placesStore 更新:', newData)
       placesStore.updateFromSearch(newData)
     }
   }
@@ -91,7 +119,7 @@ watch(
 </script>
 
 <template>
-  <div class="absolute top-0 h-auto pt-20 lg:ps-28 lg:pt-24 pb-14 bg-slate-100">
+  <div class="absolute top-0 h-full pt-20 lg:ps-28 lg:pt-24 pb-14 bg-slate-100">
     <!-- 瀑布流 -->
     <div
       class="grid"
@@ -139,6 +167,7 @@ watch(
               >
                 <OutlineHeartIcon class="text-gray-500 size-6" />
               </button>
+
                 <!-- <button class="overflow-hidden text-lg text-white border-0 rounded-full btn bg-secondary-500 hover:bg-secondary-600" onclick="AddPlaceModal.showModal()">加入行程<PlusCircleIcon class="size-6"/></button> -->
                 <AddPlaceBtn @click.stop @click="modalStore.savePlace(item)" />
               </div>
@@ -159,9 +188,13 @@ watch(
                   }}</span
                   ><span>{{ item.location }}</span>
                 </div>
-                <a :href="item.mapUrl" target="_blank"
-                  ><MapPinIcon class="text-gray-500 md:size-6 size-4"
-                /></a>
+                <button
+                  target="_blank"
+                  @click.stop
+                  @click="updateMapCenter(item)"
+                >
+                  <MapPinIcon class="text-gray-500 md:size-6 size-4" />
+                </button>
               </div>
             </div>
           </a>
