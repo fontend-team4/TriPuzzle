@@ -59,7 +59,7 @@ const images = [
         }"
       >
         <img
-          :src="image"
+          src="@/assets/images/carousel-valley.png"
           class="carousel-items-md"
           v-for="(image, index) in images"
           :key="index"
