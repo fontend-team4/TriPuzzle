@@ -19,11 +19,6 @@ const API_URL = "http://localhost:3000";
 const modalStore = PlaceModalStore()
 const placesStore = usePlacesStore(); // 使用 placesStore
 
-const emit = defineEmits(["open-detail-modal"])
-
-const openDetailModal = (detailId) => {
-  emit("open-detail-modal", detailId) // 傳遞地點的 ID
-}
 
 
 // 獲取收藏景點資料
@@ -42,6 +37,13 @@ const fetchPlaces = async () => {
     loading.value = false;
   }
 };
+const emit = defineEmits(["open-detail-modal"])
+
+const openDetailModal = (place) => {
+  emit("open-detail-modal", place.place_id) // 傳遞地點的 ID
+}
+
+
 
 // 載入收藏景點
 onMounted(fetchPlaces);
@@ -79,7 +81,7 @@ onMounted(fetchPlaces);
       >
         <a
           href="#"
-          @click="openDetailModal(place.id), modalStore.savePlace(place)"
+          @click="openDetailModal(place), modalStore.savePlace(place)"
         >
           <div class="relative w-full mb-2 overflow-hidden rounded-lg">
             <!-- 黑色遮罩 -->

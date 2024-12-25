@@ -23,6 +23,10 @@ import Waterfall from "./Waterfall.vue"
 import AddPlaceBtn from "./AddPlaceBtn.vue"
 import { PlaceModalStore } from "@/stores/PlaceModal"
 import { usePlacesStore } from "@/stores/fetchPlaces"
+import axios from "axios"
+
+const API_URL = "http://localhost:3000"
+const token = localStorage.getItem("token")
 
 const modalStore = PlaceModalStore()
 const placesStore = usePlacesStore()
@@ -60,21 +64,46 @@ const props = defineProps({
 
 const places = ref([])
 const place = ref({})
+// const favorites = ref([])
+const favorites = ref(JSON.parse(localStorage.getItem("favorites") || "[]"));
+
 
 //關閉detailModal
 defineEmits(["close"])
 // 紀錄：打算改成用網址來渲染detailModal
 onMounted(async () => {
   try {
-    places.value = placesStore.items // 將資料存入 places
+    // 如果本地 placesStore.items 中有數據
+    places.value = placesStore.items;
 
-    // 在places.value中找到ID和currentPlaceId.value一樣的景點
-    place.value = places.value.find((p) => p.id === currentPlaceId.value) || {}
+    // 嘗試從 placesStore 中找到對應的 place
+    place.value = places.value.find((p) => p.id === currentPlaceId.value) || {};
+
+    // 如果本地未找到，嘗試從 favorites 中查找
+    if (Object.keys(place.value).length === 0 && favorites.value.length > 0) {
+      console.log("Searching in favorites...");
+      favorites.value = JSON.parse(localStorage.getItem("favorites") || "[]");
+      place.value = favorites.value.find((f) => f.place_id === currentPlaceId.value) || {};
+      console.log("Found in favorites:", place.value.image_url);
+    }
+
+    // 如果仍未找到，從遠程加載
+    if (Object.keys(place.value).length === 0) {
+      console.log("Fetching place details from API...");
+      const response = await axios.get(`${API_URL}/places`, {
+        headers: { Authorization: token },
+      });
+      place.value = response.data;
+    }
+
+    console.log("Loaded place details:", place.value);
   } catch (error) {
-    console.error("Failed to fetch places:", error)
-    places.value = [] // 防止錯誤導致 undefined
+    console.error("Failed to load place details:", error);
+    place.value = {};
   }
-})
+});
+
+
 
 // 找到網址id
 const currentPlaceId = computed(() => route.query.placeId)
@@ -98,7 +127,7 @@ const currentPlaceId = computed(() => route.query.placeId)
         <div
           class="inline-flex items-center justify-center w-full h-full overflow-hidden bg-black"
         >
-          <img :src="place.url" alt="" class="object-contain w-full" />
+          <img :src="place.url || place.image_url" alt="" class="object-contain w-full" />
         </div>
         <button
           for="showPhoto"
@@ -165,21 +194,21 @@ const currentPlaceId = computed(() => route.query.placeId)
           </p>
         </div>
         <div
-          class="flex pt-2.5 pb-3.5 w-full"
-          v-if="place.opening_hours && place.opening_hours != ''"
+            class="flex pt-2.5 pb-3.5 w-full"
+            v-if="(place.opening_hours && place.opening_hours != '')"
         >
           <ClockIcon class="flex-shrink-0 size-5" />
           <div>
             <div>
               <div
-                v-for="(description, index) in place.opening_hours"
+                v-for="(summary, index) in place.opening_hours"
                 :key="index"
                 class="flex pl-4 ml-4 text-sm leading-7"
               >
                 <span class="whitespace-nowrap">{{
-                  description.split(": ")[0]
+                  summary.split(": ")[0]
                 }}</span>
-                <span class="ml-7">{{ description.split(": ")[1] }}</span>
+                <span class="ml-7">{{ summary.split(": ")[1] }}</span>
               </div>
             </div>
           </div>
