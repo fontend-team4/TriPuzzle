@@ -107,7 +107,9 @@ watch(
 </script>
 
 <template>
-  <div class="absolute top-0 h-full pt-20 lg:ps-28 lg:pt-24 pb-14 bg-slate-100">
+  <div
+    class="absolute top-0 min-h-full pt-20 lg:ps-28 lg:pt-24 pb-14 bg-slate-100"
+  >
     <!-- 瀑布流 -->
     <div
       class="grid"
