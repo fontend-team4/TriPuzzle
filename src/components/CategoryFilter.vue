@@ -13,7 +13,7 @@ const defaultCategories = [
   {
     name: "購物",
     icon: "🛍️",
-    params: ["department_store", "store", "shopping_mall", "supermarket"],
+    params: ["store", "department_store", "shopping_mall", "supermarket"],
   },
 ]
 
