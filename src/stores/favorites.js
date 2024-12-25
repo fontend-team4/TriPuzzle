@@ -1,6 +1,7 @@
 import { ref } from "vue";
 import axios from "axios";
 import { LoginModalStore } from '@/stores/LoginModal.js'
+import { Phone } from "@iconoir/vue";
 
 const LoginStore = LoginModalStore()
 const API_URL = "http://localhost:3000";
@@ -54,10 +55,20 @@ const addFavorite = async (item, headers) => {
     place_id: item.id,
     name: item.name,
     image_url: item.url,
-    address: item.location,
+    location: item.location,
     rating: item.rating,
+    phone: item.phone,
     google_map_url: item.mapUrl,
+    opening_hours: item.opening_hours,
+    summary: item.summary,
+    photos: item.photos,
+    photos_length: item.photos.length,
+    geometry: item.geometry,
+    address: item.address,
+    website: item.website,
   };
+
+
 
   console.log('placeData', placeData)
 
