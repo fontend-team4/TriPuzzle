@@ -41,6 +41,18 @@ onMounted(() => {
   }
 })
 
+const isLogin = ref(false)
+const token = localStorage.getItem('token')
+const userId = ref(localStorage.getItem("userId"));
+
+// 檢查登入狀態
+onMounted(() => {
+  isLogin.value = Boolean(token && userId.value);
+  if (isLogin.value) {
+    loadFavorites(); // 加載收藏列表
+  }
+});
+
 // 瀑布流計算
 const calculateColumns = async () => {
   // 每次重新初始化 columns
@@ -134,29 +146,28 @@ watch(
               <div
                 class="absolute bottom-0 flex items-center justify-between w-full p-4 transition-opacity opacity-0 z-2 group-hover:opacity-100"
               >
-                <button
-                  v-if="isLogin"
-                  class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer bg-gray hover:bg-opacity-75 tooltip"
-                  :data-tip="isFavorited(item.id) ? '已收藏' : '加入收藏'"
-                  @click.prevent.stop="toggleFavorite(item)"
-                >
-                  <component
-                    :is="isFavorited(item.id) ? HeartIcon : OutlineHeartIcon"
-                    :class="
-                      isFavorited(item.id) ? 'text-red-500' : 'text-gray-500'
-                    "
-                    class="size-6"
-                  />
-                </button>
-                <!-- 未登入狀態 -->
-                <button
-                  v-else
-                  class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer bg-gray hover:bg-opacity-75 tooltip"
-                  data-tip="請先登入!"
-                  @click.prevent.stop="toggleFavorite(item)"
-                >
-                  <OutlineHeartIcon class="text-gray-500 size-6" />
-                </button>
+              <button
+                v-if="isLogin"
+                class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer bg-gray hover:bg-opacity-75 tooltip"
+                :data-tip="isFavorited(item.id) ? '已收藏' : '加入收藏'"
+                @click.prevent.stop="toggleFavorite(item)"
+              >
+                <component
+                  :is="isFavorited(item.id) ? HeartIcon : OutlineHeartIcon"
+                  :class="isFavorited(item.id) ? 'text-red-500' : 'text-gray-500'"
+                  class="size-6"
+                />
+              </button>
+              <!-- 未登入狀態 -->
+              <button
+                v-else
+                class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer bg-gray hover:bg-opacity-75 tooltip"
+                data-tip="請先登入!"
+                @click.prevent.stop="toggleFavorite(item);"
+              >
+                <OutlineHeartIcon class="text-gray-500 size-6" />
+              </button>
+
                 <!-- <button class="overflow-hidden text-lg text-white border-0 rounded-full btn bg-secondary-500 hover:bg-secondary-600" onclick="AddPlaceModal.showModal()">加入行程<PlusCircleIcon class="size-6"/></button> -->
                 <AddPlaceBtn @click.stop @click="modalStore.savePlace(item)" />
               </div>
