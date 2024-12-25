@@ -1,3 +1,4 @@
+
 # TriPuzzle旅圖  **旅遊行程規劃網站**
 ![image](https://github.com/user-attachments/assets/57cf426e-ce7a-404f-b7f3-4ac893c3081f)
 
@@ -7,6 +8,7 @@
 
 **開始規劃**
 
+
 1. 註冊 / 登入 ：第三方 or email 註冊
 2. 在Google Map上查看景點
 3. 立即規劃 ：
@@ -15,7 +17,6 @@
 * 安排景點時間
 * 選擇共同編輯行程夥伴（ QR code 邀請 or 網址 ）
 * 收藏喜愛景點 / 個人行程
-
 
 
 
@@ -32,6 +33,7 @@ git clone https://github.com/fontend-team4/TriPuzzle.git
 npm install
 ```
 
+
 ## Build `.env` file
 `.env`
 ```
@@ -42,3 +44,4 @@ VITE_GOOGLE_API_KEY =
 ```sh
 npm run dev
 ```
+
