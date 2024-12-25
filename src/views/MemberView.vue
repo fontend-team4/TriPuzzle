@@ -56,6 +56,8 @@ const getUser = async () => {
     }
   } catch (error) {
     console.error(error.message)
+    localStorage.removeItem("token")
+    localStorage.removeItem("userId")
     router.push("/")
   }
 }
