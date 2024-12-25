@@ -1,258 +1,154 @@
 <script setup>
-import { AdjustmentsHorizontalIcon, MagnifyingGlassIcon, ChevronDownIcon } from '@heroicons/vue/24/solid'
-import CategoryFilter from './CategoryFilter.vue';
-import SearchArea from './SearchArea.vue';
+import { ref, onMounted } from "vue"
+import { MagnifyingGlassIcon, XCircleIcon } from "@heroicons/vue/24/solid"
+import CategoryFilter from "./CategoryFilter.vue"
+import SearchArea from "./SearchArea.vue"
+import { useSearchStore } from "../stores/searchPlaces"
+
+// 預設為分類模式
+const isCategoryMode = ref(true)
+
+// 定義預設分類資料
+const defaultCategories = [
+  {
+    name: "景點",
+    icon: "🌄",
+    params: ["tourist_attraction", "museum", "campground", "church"],
+  },
+  { name: "住宿", icon: "🏨", params: ["lodging", "embassy"] },
+  { name: "美食", icon: "🍴", params: ["food", "restaurant", "cafe", "bar"] },
+  {
+    name: "購物",
+    icon: "🛍️",
+    params: ["store", "department_store", "shopping_mall", "supermarket"],
+  },
+]
+
+const categories = ref([...defaultCategories])
+const Mdcategories = ref([...defaultCategories])
+
+const activeCategory = ref(categories.value[0])
+const activeMdCategory = ref(Mdcategories.value[0])
+
+//切換模式
+const toggleMode = () => {
+  isCategoryMode.value = !isCategoryMode.value
+}
+
+//活動分類
+const setActiveCategory = (category) => {
+  activeCategory.value = category
+  searchStore.selectedTab = activeCategory.value.params
+  searchStore.typeSearch()
+}
+
+const setActiveMdCategory = (Mdcategory) => {
+  searchStore.selectedTab = ""
+  activeMdCategory.value = Mdcategory
+  searchStore.selectedMdTab = activeMdCategory.value.params
+  searchStore.typeSearch()
+}
+
+const switchToCategoryMode = () => {
+  isCategoryMode.value = true
+}
+
+const searchStore = useSearchStore()
+const inputKeyword = () => {
+  searchStore.textSearch()
+}
+
+// 監聽 CategoryFilter 的 update-categories 事件
+const updateCategories = (newCategories) => {
+  categories.value = newCategories
+  activeCategory.value = newCategories[0]
+}
+onMounted(() => {
+  searchStore.selectedTab = activeCategory.value.params
+})
 </script>
 
 <template>
-  <!-- 區塊-搜尋列 -->
-  <div class="row-search">
-    <div class="container-search noscroll searchbar">
-      <!-- 搜尋列-分類模式 -->
-      <div class="search-category">
-        <!-- 選單-選擇區域 -->
-        <div class="block-area">
-          <div data-v-2e6cdc7b class="btn-area">
-            <span data-v-2e6cdc7b>選擇區域</span>
-            <!-- <span> {{ selectArea.name }}</span> 預留功能-->
-            <ChevronDownIcon class="IconSelectArea"/>
+  <!-- 搜尋列 -->
+  <div class="flex" @click.self="switchToCategoryMode">
+    <div
+      class="flex w-full border-none rounded-none bg-white shadow-md lg:rounded-full lg:border lg:border-gray-200"
+    >
+      <!-- 顯示分類模式或關鍵字模式 -->
+      <div class="relative flex justify-center items-center h-10 w-full pr-2">
+        <template v-if="isCategoryMode">
+          <!-- 分類模式 -->
+          <SearchArea />
+          <div
+            class="hidden items-center w-28 pl-2 cursor-pointer lg:flex"
+            style="border-right: 1px solid"
+            @click="toggleMode"
+          >
+            <MagnifyingGlassIcon class="w-6 h-6 text-gray-400" />
+            <span class="text-gray-500 font-normal text-sm leading-6"
+              >搜尋...</span
+            >
           </div>
-        </div>
-        <!-- 搜尋列 -->
-        <div class="block-search-mask hidden-md-and-down">
-          <MagnifyingGlassIcon class="IconMagnifyingGlass" />
-          <span>搜尋...</span>
-        </div>
-        <!-- 分類選單 -->
-        <div class="block-category">
-          <ul class="category-list">
-            <li class="category-item active">景點</li>
-            <li class="category-item">美食</li>
-            <li class="category-item">購物</li>
-            <li class="category-item">住宿</li>
-            <li class="category-item">租車站</li>
-            <li class="category-item">交通站</li>
-            <li class="category-item">充電樁</li>
-            <li class="category-item">我的最愛</li>
-          </ul>
-        </div>
-        <!-- 篩選 -->
-        <div class="block-filter">
-          <button data-v-filter type="button" class="filter-btn">
-            <AdjustmentsHorizontalIcon data-v-filter class="IconFilter icon" />
-          </button>
-        </div>
+          <div
+            class="relative overflow-hidden item-center justify-center scrollbar-none p-2 md:p-3 whitespace-nowrap"
+          >
+            <ul class="flex gap-4">
+              <!-- 電腦版 -->
+              <li
+                v-for="(category, index) in categories"
+                :key="index.name"
+                :class="[
+                  'hidden font-medium text-sm leading-6 py-1 cursor-pointer transition border-b-2 border-transparent whitespace-nowrap md:inline-flex',
+                  activeCategory === category
+                    ? 'text-black border-b-red-500'
+                    : 'text-gray-400 hover:text-gray-500 hover:border-b-red-500',
+                ]"
+                @click="setActiveCategory(category)"
+              >
+                {{ category.name }}
+              </li>
+              <!-- 手機板 -->
+              <li
+                v-for="(Mdcategory, index) in Mdcategories"
+                :key="index"
+                :class="[
+                  'font-medium text-sm leading-6 py-1 cursor-pointer transition border-b-2 border-transparent whitespace-nowrap md:hidden',
+                  activeMdCategory === Mdcategory
+                    ? 'text-black border-b-red-500'
+                    : 'hover:text-gray-500 hover:border-b-red-500',
+                ]"
+                @click="setActiveMdCategory(Mdcategory)"
+              >
+                {{ Mdcategory.name }}
+              </li>
+            </ul>
+          </div>
+          <CategoryFilter @update-categories="updateCategories" />
+        </template>
+
+        <template v-else>
+          <!-- 關鍵字模式 -->
+          <div class="relative flex items-center w-full">
+            <MagnifyingGlassIcon
+              class="absolute left-2 top-2 w-4 h-4 text-gray-400"
+            />
+            <input
+              class="w-full h-8 text-sm font-normal leading-6 text-gray-700 border-none bg-transparent outline-none pl-8 pr-4"
+              type="text"
+              autocomplete="off"
+              placeholder="輸入關鍵字"
+              @blur="switchToCategoryMode"
+              v-model="searchStore.keyword"
+              @keyup.enter="inputKeyword"
+            />
+            <XCircleIcon
+              class="absolute right-4 top-2 w-4 h-4 text-gray-400 cursor-pointer"
+              @click="toggleMode"
+            />
+          </div>
+        </template>
       </div>
-    </div>   
+    </div>
   </div>
   
 </template>
-
-<style scoped>
-  html * {
-    box-sizing: border-box;
-  }
-
-  div{
-    display: block;
-  }
-
-  .row-search[data-v-243d8871] {
-    display: inline-flex;
-    padding-top: 16px
-}
-
-  .container-search{
-    width: 100%;
-    background-color: #fff;
-    border:1px solid rgba(45,64,87,.1);
-    box-shadow: 0 4px 16px #00000014;
-    border-radius: 100px;
-  }
-
-  .search-category{
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    height: 40px;
-    width: 100%;
-    padding:0 16px 0 0;
-  }
-
-
-  .block-area{
-    padding-right: 16px;
-  }
-
-  .IconSelectArea{
-    width: 16px;
-    height: 16px;
-    color: white;
-  }
-
-  .block-area .btn-area[data-v-2e6cdc7b] {
-    display: inline-flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 32px;
-    padding: 4px 8px 4px 12px;
-    background: #369ad9;
-    border-radius: 24px;
-    cursor: pointer;
-    transition: .3s;
-    margin: 2px 0 4px;
-    width: 104px
-  }
-
-  .block-area .btn-area span{
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 24px;
-    color: #fff;
-    max-width: calc(100% - 16px);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-  }
-
-  .block-search-mask{
-    position: relative;
-    display: flex;
-    align-items: center;
-    padding: 0 0 0 16px;
-    min-width: 120px;
-    height: 100%;
-    cursor: text;
-  }
-
-  .block-search-mask span {
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 24px;
-    color: #2d405766;
-    cursor:text;
-}
-
-  .IconMagnifyingGlass{
-    width: 24px;
-    height: 24px;
-    color:#2d405766;
-  }
-
-
-  .block-category{
-    position: relative;
-    overflow-x: auto;
-    -ms-overflow-style: none;
-    scrollbar-width: none
-  }
-
-  /* 預設為無 */
-  .block-category::-webkit-scrollbar {
-    display: none
-}
-
-  .block-category .category-list{
-    display: inline-flex;
-    gap: 16px;
-    padding: 0 12px 0 0
-  }
-
-  .block-category .category-item{
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 24px;
-    color: #2d405799;
-    padding: 6px 0;
-    cursor: pointer;
-    transition: .3s;
-    border-bottom: 2px solid transparent;
-    white-space: nowrap
-}
-  /* 顯示頁面 */
-  .block-category .category-item.active {
-    color: #2d4057;
-    border-bottom: 2px solid #369ad9;
-    pointer-events: none
-  }
-
-  .block-filter {
-    margin-left: auto;
-    padding-top: 3px;
-  }
-
-  .btn[data-v-filter]{
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    background-color: #fff3;
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    box-sizing: border-box;
-    border: none;
-    cursor: pointer;
-    transition: .3s;
-    padding: 0
-  }
-
-  .IconFilter{
-    width: 1em;
-    height: 1em;
-    color: black;
-    fill: currentColor;
-  }
-
-  @media screen and (min-width: 1200px) {
-  .row-search[data-v-243d8871] {
-      align-items:center;
-      padding-top: 0;
-      justify-content: center;
-      width: calc(100% - 124px)
-  }
-
-  .container-search[data-v-2e6cdc7b] {
-      border:1px solid rgba(45,64,87,.1);
-      box-shadow: 0 4px 16px #00000014;
-      border-radius: 100px;
-      overflow: hidden
-  }
-
-  .search-category[data-v-2e6cdc7b] {
-      padding:0 16px 0 4px;
-      animation: fade-in-up .4s
-  }
-
-  .block-area {
-      padding-right:0
-  }
-
-  .block-area .btn-area[data-v-2e6cdc7b] {
-      margin:3px 0
-  }
-  
-  .block-category {
-      border-left:1px solid rgba(45,64,87,.1);
-      width: 100%
-  }
-  .block-category .category-list {
-      padding:0 0 0 16px
-  }
-
-  /*顯示滾動條  */
-  .block-category .category-list.block-category::-webkit-scrollbar {
-      padding:0 70px 0 16px
-  }
-
-  .block-category .category-item:hover:not(.active) {
-        color:#2d4057cc;
-        border-bottom: 2px solid rgba(54,154,217,.2)
-    }
-
-  .block-filter{
-      padding-left:8px
-  }
-}
-</style>

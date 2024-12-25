@@ -1,3 +1,52 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: 'GenJyuuGothic';
+    src: url('@/assets/fonts/GenJyuuGothic-ExtraLight.woff2') format('woff2');
+    font-weight: 200;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'GenJyuuGothic';
+    src: url('@/assets/fonts/GenJyuuGothic-Light.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'GenJyuuGothic';
+    src: url('@/assets/fonts/GenJyuuGothic-Normal.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'GenJyuuGothic';
+    src: url('@/assets/fonts/GenJyuuGothic-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'GenJyuuGothic';
+    src: url('@/assets/fonts/GenJyuuGothic-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'GenJyuuGothic';
+    src: url('@/assets/fonts/GenJyuuGothic-Heavy.woff2') format('woff2');
+    font-weight: 900;
+    font-style: normal;
+  }
+  body {
+    @apply font-gen font-medium;
+  }
+  h1 {
+    @apply font-bold;
+  }
+  a,
+  button {
+    @apply font-medium;
+  }
+}
