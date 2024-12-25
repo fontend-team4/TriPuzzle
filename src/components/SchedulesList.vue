@@ -18,11 +18,9 @@ const LoginStore = LoginModalStore()
 const listToggle = inject("listToggle")
 const detailToggle = inject("detailToggle")
 const API_URL = process.env.VITE_HOST_URL
-
 const isLogin = ref(false)
 const token = localStorage.getItem("token")
 
-// 讀取行程資料
 const hasSchedules = ref(false)
 const checkedSchedule = ref("mine")
 const schedules = ref([])
@@ -81,12 +79,13 @@ const sortedSchedules = computed(() => {
   })
 })
 
+// 複製行程
 const scheduleName = ref("")
+const scheduleNote = ref("")
 const coverImage = ref("")
 const startDate = ref("")
 const endDate = ref("")
 const transportationWay = ref("")
-
 const scheduleDuplicate = async (id) => {
   const config = {
     headers: {
@@ -96,6 +95,7 @@ const scheduleDuplicate = async (id) => {
   try {
     const response = await axios.get(`${API_URL}/schedules/${id}`, config)
     scheduleName.value = response.data.title
+    scheduleNote.value = response.data.schedule_note
     coverImage.value = response.data.image_url
     startDate.value = response.data.start_date.split("T")[0]
     endDate.value = response.data.end_date.split("T")[0]
@@ -105,7 +105,6 @@ const scheduleDuplicate = async (id) => {
     console.error(error.message)
   }
 }
-
 const copySchedule = async () => {
   const config = {
     headers: {
@@ -115,6 +114,7 @@ const copySchedule = async () => {
   const ScheduleData = {
     title: scheduleName.value,
     image_url: coverImage.value,
+    schedule_note: scheduleNote.value,
     start_date: startDate.value,
     end_date: endDate.value,
     transportation_way: transportationWay.value,
@@ -126,6 +126,8 @@ const copySchedule = async () => {
     console.error(err.message)
   }
 }
+
+const showNewSchedule = inject("showNewSchedule")
 
 onMounted(async () => {
   if (token) {
@@ -206,7 +208,7 @@ onMounted(async () => {
                   class="card card-compact bg-base-100 sm:w-full md:w-[30%] lg:w-full h-[176px] lg:h-auto border-gray border mb-4 relative hover:cursor-pointer"
                 >
                   <figure
-                    @click="detailToggle"
+                    @click="detailToggle(item.id)"
                     class="w-full h-[150px] overflow-hidden"
                   >
                     <img
@@ -383,7 +385,7 @@ onMounted(async () => {
           >
             <button
               class="w-full h-12 px-5 py-3 bg-primary-600 text-white text-center text-base rounded-3xl hover:bg-primary-700"
-              onclick="NewSchedule.showModal()"
+              onclick="newSchedule.showModal()"
             >
               建立新行程
             </button>

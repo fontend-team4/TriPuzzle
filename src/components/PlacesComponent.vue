@@ -159,6 +159,7 @@ watch(
                 >
                   <OutlineHeartIcon class="text-gray-500 size-6" />
                 </button>
+
                 <!-- <button class="overflow-hidden text-lg text-white border-0 rounded-full btn bg-secondary-500 hover:bg-secondary-600" onclick="AddPlaceModal.showModal()">加入行程<PlusCircleIcon class="size-6"/></button> -->
                 <AddPlaceBtn @click.stop @click="modalStore.savePlace(item)" />
               </div>
