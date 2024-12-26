@@ -1,6 +1,6 @@
 <!-- 右邊側欄 -->
 <script setup>
-import { ref, computed, onMounted, nextTick,watch } from 'vue'
+import { ref, computed, onMounted, nextTick, watch } from 'vue'
 import {
   XMarkIcon,
   ChevronDownIcon,
@@ -11,9 +11,10 @@ import {
 import { PlusCircleIcon, MapPinIcon } from '@heroicons/vue/24/solid'
 import { PlaceModalStore } from '@/stores/PlaceModal'
 import { useUserStore } from '@/stores/userStore'
+import axios from 'axios'
 //googlemap
-const apiKey = import.meta.env.VITE_GOOGLE_API_KEY
-let map = ref('')
+// const apiKey = import.meta.env.VITE_GOOGLE_API_KEY
+// let map = ref('')
 // 初始化地圖
 // let map=ref('')
 // async function initMap() {
@@ -79,30 +80,88 @@ onMounted(async () => {
 const modalStore = PlaceModalStore()
 const place = modalStore.selectedPlace
 
+
 const URL = import.meta.env.VITE_HOST_URL
 const schedules = ref([])
 
-watch(
-  () => userData.value,
-  async (newUserData) => {
-    if (newUserData && newUserData.id) {
-      try {
-        const token = localStorage.getItem('token')
-        const res = await axios.get(`${URL}/schedules`,{
-        headers: { Authorization: token },
-      })
-        schedules.value = res.data
-        console.log(schedules.value );
-        console.log(token);
-        
-        
-      } catch (err) {
-        console.log(err)
-      }
-    }
-  }
-)
+function calculateDateRange(startDate, endDate) {
+  const start = new Date(startDate)
+  const end = new Date(endDate)
+  const dateArray = []
 
+  while (start <= end) {
+    dateArray.push(new Date(start))
+    start.setDate(start.getDate() + 1)
+  }
+
+  return dateArray
+}
+
+function formatDate(dateString) {
+  const date = new Date(dateString)
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+  return `${month}/${day}`
+}
+function formatYear(dateString) {
+  const date = new Date(dateString)
+  const year = date.getFullYear()
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+  return `${year}/${month}/${day}`
+}
+
+// 抓取行程資料
+onMounted(async () => {
+  const token = localStorage.getItem('token')
+  try {
+    const res = await axios.get(`${URL}/schedules`, {
+      headers: { Authorization: token },
+    })
+    schedules.value = res.data.map((schedule) => ({
+      ...schedule,
+      dates: calculateDateRange(schedule.start_date, schedule.end_date),
+    }))
+    // console.log(schedules.value);
+  } catch (error) {
+    console.error('Error fetching schedules:', error)
+  }
+})
+
+//加入景點到行程
+async function updateSchedulePlaces(scheduleId, updatedPlaces) {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await axios.patch(
+      `${URL}/schedules/${scheduleId}`,
+      { places: updatedPlaces },
+      { headers: { Authorization: token } }
+    );
+    console.log("更新成功:", response.data);
+  } catch (error) {
+    console.error("更新失敗:", error);
+  }
+}
+
+// 呼叫範例
+updateSchedulePlaces(3, [
+  {
+    place_id: 1,
+    which_date: "2025-01-01T00:00:00.000Z",
+    arrival_time: "08:00:00",
+    stay_time: "01:00:00",
+    transportation_way: "WALK",
+    order: "1",
+  },
+  {
+    place_id: 2,
+    which_date: "2025-01-02T00:00:00.000Z",
+    arrival_time: "09:00:00",
+    stay_time: "02:00:00",
+    transportation_way: "CAR",
+    order: "2",
+  },
+]);
 
 // Tab的部分
 const selectedButton = ref('myRunDown')
@@ -267,13 +326,14 @@ const selectCard = (index) => {
               <!-- 行程一二只能擇一打開 -->
               <!--打開的時候會變成 <ChevronUpIcon class="size-3" /> -->
               <div
-                id="journey1"
+                v-for="(schedule, index) in schedules"
+                :key="schedule.id"
                 class="collapse ml-[-0.5rem] mr-[0.5rem] transition-opacity"
               >
                 <input
                   type="checkbox"
-                  :checked="openedCollapse === 'journey1'"
-                  @change="toggleCollapse('journey1')"
+                  :checked="openedCollapse === `journey${schedule.id}`"
+                  @change="toggleCollapse(`journey${schedule.id}`)"
                 />
                 <div
                   class="collapse-title flex justify-between items-center p-0 pl-[1rem]"
@@ -282,24 +342,25 @@ const selectCard = (index) => {
                     <h2
                       class="text-xl font-bold group-hover:text-primary-600 text-stone-950"
                     >
-                      行程一
+                      {{ schedule.title }}
                     </h2>
                     <p
                       class="text-sm text-gray-600 group-hover:text-primary-600"
                     >
-                      2024/11/01
+                      {{ formatYear(schedule.start_date) }}
                     </p>
                   </div>
                   <ChevronDownIcon
-                    v-if="openedCollapse !== 'journey1'"
+                    v-if="openedCollapse !== `journey${schedule.id}`"
                     class="text-black size-3"
                   />
                   <ChevronUpIcon v-else class="text-black size-3" />
                 </div>
                 <div class="collapse-content p-0 pl-[1rem]">
                   <div
-                    id="openDay1"
-                    @click="switchToPage('DayCard', 'day1')"
+                    v-for="(date, index) in schedule.dates"
+                    :key="index"
+                    @click="switchToPage('DayCard', `day${index + 1}`)"
                     class="relative p-2 my-[0.5rem] bg-[#f4f4f4] rounded-xl cursor-pointer hover:bg-primary-100 box-border overflow-hidden"
                   >
                     <label
@@ -310,22 +371,29 @@ const selectCard = (index) => {
                         class="size-3 ml-[0.25rem]"
                       />加在這天最順
                     </label>
-                    <h3 class="text-black text-semibold">第一天</h3>
+                    <h3 class="text-black text-semibold">
+                      第{{ index + 1 }}天
+                    </h3>
                     <!-- 景點數量要跟我的行程連動 -->
-                    <p>11/01 週五，4個景點</p>
+                    <p>
+                      {{ formatDate(date) }}　{{
+                        schedule.places?.[index]?.length || 0
+                      }}
+                      個景點
+                    </p>
                   </div>
-                  <div
+                  <!-- <div
                     id="openDay2"
                     @click="switchToPage('DayCard', 'day2')"
                     class="p-2 my-[0.5rem] bg-[#f4f4f4] rounded-xl cursor-pointer hover:bg-primary-100"
                   >
                     <h3 class="text-black text-semibold">第二天</h3>
                     <p>11/02 週六，0個景點</p>
-                  </div>
+                  </div> -->
                 </div>
               </div>
               <!-- 行程二 -->
-              <div
+              <!-- <div
                 id="journey2"
                 class="collapse ml-[-0.5rem] mr-[0.5rem] transition-opacity pt-1 mt-[0.5rem] border-t-2 border-dashed border-gray rounded-none"
               >
@@ -360,7 +428,6 @@ const selectCard = (index) => {
                     class="p-2 my-[0.5rem] bg-[#f4f4f4] rounded-xl cursor-pointer hover:bg-primary-100"
                   >
                     <h3 class="text-black text-semibold">第一天</h3>
-                    <!-- 景點數量要跟我的行程連動 -->
                     <p>11/30 週六，0個景點</p>
                   </div>
                   <div
@@ -370,7 +437,7 @@ const selectCard = (index) => {
                     <p>12/01 週日，0個景點</p>
                   </div>
                 </div>
-              </div>
+              </div> -->
 
               <!-- 這裡的NewSchedule不必是動態的 -->
               <button
@@ -550,7 +617,7 @@ const selectCard = (index) => {
           >
             <div
               class="w-full text-white border-none rounded-full btn bg-primary-600 hover:bg-primary-200 hover:text-primary-600"
-              @click="closeModal"
+              @click="closeModal,updateSchedulePlaces"
             >
               確認新增
             </div>

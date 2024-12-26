@@ -7,10 +7,7 @@ import {
   MapPinIcon,
   PlusCircleIcon,
 } from '@heroicons/vue/24/solid'
-// import defaultPlaces from '../../defaultPlaces.json'
 import DefaultPlaces from '../../places_default.json'
-
-// import AddPlaceModal from './AddPlaceModal.vue'
 import AddPlaceBtn from './AddPlaceBtn.vue'
 import { useRouter } from 'vue-router'
 import { PlaceModalStore } from '@/stores/PlaceModal'
