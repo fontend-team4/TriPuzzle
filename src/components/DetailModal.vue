@@ -1,7 +1,7 @@
 <script setup>
 import DetailCarousel from "./DetailCarousel.vue"
 import { computed, ref, defineEmits, onMounted } from "vue"
-import { useRoute } from "vue-router"
+import { useRoute,useRouter } from "vue-router"
 import {
   CalendarIcon,
   ClockIcon,
@@ -28,6 +28,7 @@ import { defineProps } from "vue"
 import { generateImageUrl } from "@/stores/favorites"
 import { useCopyWebsiteStore } from "@/stores/copywebsite"
 
+const { copyToClipboard } = useCopyWebsiteStore();
 
 const API_URL = process.env.VITE_HOST_URL
 const token = localStorage.getItem("token")
@@ -35,9 +36,9 @@ const token = localStorage.getItem("token")
 
 const modalStore = PlaceModalStore()
 const placesStore = usePlacesStore()
-const { copyToClipboard, copySuccess } = useCopyWebsiteStore();
 
 const route = useRoute()
+const router = useRouter();
 const showPhoto = ref(false)
 
 // CSS區
@@ -71,47 +72,67 @@ const props = defineProps({
 const places = ref([])
 const place = ref({})
 const favorites = ref(JSON.parse(localStorage.getItem("favorites") || "[]"));
+// 找到網址id
+const currentPlaceId = computed(() => route.query.placeId)
 
+const placeData = computed(() => {
+  return props.place || place.value;
+});
+
+const updatePlaceIdInUrl = (placeId) => {
+  router.replace({ query: { ...route.query, placeId } });
+};
+
+// 複製 URL 函數
+const copyPlaceUrl = () => {
+  const placeId = currentPlaceId.value || place.value?.id; // 獲取當前地點 ID
+  if (!placeId) {
+    alert('無法獲取地點 ID');
+    return;
+  }
+  copyToClipboard(placeId); // 傳遞地點 ID
+}
 
 //關閉detailModal
 defineEmits(["close"])
 // 紀錄：打算改成用網址來渲染detailModal
 onMounted(async () => {
   try {
-    // 如果本地 placesStore.items 中有數據
-    places.value = placesStore.items;
-
-    // 嘗試從 placesStore 中找到對應的 place
-    place.value = places.value.find((p) => p.id === currentPlaceId.value) || {};
-
-    // 如果本地未找到，嘗試從 favorites 中查找
-    if (Object.keys(place.value).length === 0 && favorites.value.length > 0) {
-      console.log("Searching in favorites...");
-      favorites.value = JSON.parse(localStorage.getItem("favorites") || "[]");
-      place.value = favorites.value.find((f) => f.place_id === currentPlaceId.value) || {};
-      console.log("Found in favorites:", place.value.image_url);
+    // 優先從 props 或本地 store 中加載資料
+    if (props.place) {
+      place.value = props.place;
+      return;
     }
 
-    // 如果仍未找到，從遠程加載
-    if (Object.keys(places.value).length === 0) {
-      console.log("Fetching place details from API...");
-      const response = await axios.get(`${API_URL}/places`, {
+    places.value = placesStore.items;
+    place.value = places.value.find((p) => p.id === currentPlaceId.value) || {};
+
+    // 從收藏列表中查找
+    if (!Object.keys(place.value).length && favorites.value.length > 0) {
+      favorites.value = JSON.parse(localStorage.getItem("favorites") || "[]");
+      place.value = favorites.value.find((f) => f.place_id === currentPlaceId.value) || {};
+    }
+
+    // 如果仍未找到，從 API 請求數據
+    if (!Object.keys(place.value).length && currentPlaceId.value) {
+      const response = await axios.get(`${API_URL}/places/${currentPlaceId.value}`, {
         headers: { Authorization: token },
       });
       place.value = response.data;
     }
 
-    console.log("Loaded place details:", place.value);
+    // 如果所有途徑都無法獲取數據
+    if (!Object.keys(place.value).length) {
+      throw new Error("無法加載地點詳情，請檢查 placeId 是否有效。");
+    }
   } catch (error) {
-    console.error("Failed to load place details:", error);
-    place.value = {};
+    console.error("無法加載地點詳情:", error);
+    place.value = null;
   }
 });
 
 
 
-// 找到網址id
-const currentPlaceId = computed(() => route.query.placeId)
 </script>
 
 <template>
@@ -132,7 +153,7 @@ const currentPlaceId = computed(() => route.query.placeId)
         <div
           class="inline-flex items-center justify-center w-full h-full overflow-hidden bg-black"
         >
-          <img :src="place.url ||generateImageUrl(place.image_url)" alt="" class="object-contain w-full" />
+          <img :src="placeData.url ||generateImageUrl(placeData.image_url)" alt="" class="object-contain w-full" />
         </div>
         <button
           for="showPhoto"
@@ -140,7 +161,7 @@ const currentPlaceId = computed(() => route.query.placeId)
           @click="changeShowPhoto"
           @updatePhotoCount="updatePhotoCount"
         >
-          <PhotoIcon class="size-5" />{{ place.photos_length }}
+          <PhotoIcon class="size-5" />{{ placeData.photos_length }}
         </button>
         <button
           class="absolute flex gap-1 bg-gray-100 py-[3px] px-2.5 rounded-full top-4 right-5 h-[32px] w-[32px] text-sm items-center bg-opacity-75 bg-white md:hidden"
@@ -152,14 +173,14 @@ const currentPlaceId = computed(() => route.query.placeId)
       <div
         class="relative px-5 py-5 md:py-16 md:w-[368px] flex flex-col gap-2.5 md:h-[calc(100% - 64px)] pb-20 overflow-y-auto"
       >
-        <h2 class="text-xl font-medium">{{ place.name }}</h2>
+        <h2 class="text-xl font-medium">{{ placeData.name }}</h2>
         <div class="flex">
           <div
             class="inline-flex items-center gap-1 pr-3 text-sm align-middle border-r-2"
           >
             Google 評價
-            <StarIcon class="text-yellow-400 size-4" v-if="place.rating != 'N/A'" />
-            <span class="text-yellow-400">{{ place.rating }}</span>
+            <StarIcon class="text-yellow-400 size-4" v-if="placeData.rating != 'N/A'" />
+            <span class="text-yellow-400">{{ placeData.rating }}</span>
             (<span class="underline">34</span>)
           </div>
           <div class="inline-flex gap-1 pl-3 pr-3 text-sm align-middle">
@@ -168,45 +189,45 @@ const currentPlaceId = computed(() => route.query.placeId)
         </div>
         <div
           class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px]"
-          v-if="place.address != 'N/A'"
+          v-if="placeData.address != 'N/A'"
         >
           <MapPinIcon class="size-5" />
-          <p class="pl-8 text-sm">{{ place.location }}</p>
+          <p class="pl-8 text-sm">{{ placeData.location }}</p>
         </div>
         <div
           class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px]"
-          v-if="place.summary && place.summary != 'N/A'"
+          v-if="placeData.summary && placeData.summary != 'N/A'"
         >
           <CalendarIcon class="flex flex-shrink-0 size-5" />
-          <p class="pl-8 text-sm">{{ place.summary }}</p>
+          <p class="pl-8 text-sm">{{ placeData.summary }}</p>
         </div>
         <div
           class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px]"
-          v-if="place.phone && place.phone != 'N/A'"
+          v-if="placeData.phone && placeData.phone != 'N/A'"
         >
           <PhoneIcon class="size-5" />
-          <p class="pl-8 text-sm">{{ place.phone }}</p>
+          <p class="pl-8 text-sm">{{ placeData.phone }}</p>
         </div>
         <div
           class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px] w-full"
-          v-if="place.website && place.website != 'N/A'"
+          v-if="placeData.website && placeData.website != 'N/A'"
         >
           <GlobeAltIcon class="flex-shrink-0 size-5" />
           <p
             class="pl-8 overflow-hidden text-sm truncate-text whitespace-nowrap text-ellipsis"
           >
-            <a :href="place.website" target="_blank">{{ place.website }}</a>
+            <a :href="placeData.website" target="_blank">{{ placeData.website }}</a>
           </p>
         </div>
         <div
             class="flex pt-2.5 pb-3.5 w-full"
-            v-if="(place.opening_hours && place.opening_hours != '')"
+            v-if="(placeData.opening_hours && placeData.opening_hours != '')"
         >
           <ClockIcon class="flex-shrink-0 size-5" />
           <div>
             <div>
               <div
-                v-for="(summary, index) in place.opening_hours"
+                v-for="(summary, index) in placeData.opening_hours"
                 :key="index"
                 class="flex pl-4 ml-4 text-sm leading-7"
               >
@@ -266,11 +287,11 @@ const currentPlaceId = computed(() => route.query.placeId)
                     </button>
                     <button
                       class="inline-flex justify-center w-full px-4 py-[11px] text-white border rounded-full bg-primary-600 border-primary-600 hover:bg-primary-700"
-                      @click="copyToClipboard"
+                      @click="copyPlaceUrl"
                       >
                       <LinkIcon class="mr-1 size-6" /><span>複製連結</span>
                     </button>
-                    <p v-if="copySuccess" class="col-green font-medium mt-10 success-message">已複製網址到剪貼簿！</p>
+                    <!-- 複製成功警告組件 -->
                     <div
                       class="absolute right-0 top-1/2 md:w-[100px] md:h-[100px] w-[80px] h-[80px] -translate-y-full md:-translate-y-1/2"
                     >

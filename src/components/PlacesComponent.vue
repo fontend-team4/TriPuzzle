@@ -20,6 +20,8 @@ import {
   loadFavorites,
   toggleFavorite,
 } from "@/stores/favorites.js"
+import axios from "axios"
+import { useRoute, useRouter } from "vue-router"
 
 const placesStore = usePlacesStore()
 const searchStore = useSearchStore()
@@ -74,14 +76,48 @@ onMounted(async () => {
   window.addEventListener("resize", handleResize)
 })
 
+const router = useRouter();
+
+
 const openDetailModal = (detailId) => {
   emit("open-detail-modal", detailId) // 傳遞地點的 ID
+  console.log("打開詳細資訊:", detailId);
+  router.replace({ query: { action: "placeInfo", placeId: detailId } }); // 更新 URL 参数
 }
 
 const updateMapCenter = (item) => {
   searchStore.placeGeometry = item.geometry
   emit("updateIsPlacesComponent", false)
 }
+
+const API_URL = import.meta.env.VITE_HOST_URL;
+const place = ref(null); // 用于存储地點详情
+const loading = ref(true);
+
+//要改成查詢該景點的API
+const fetchPlaceById = async (placeId) => {
+  try {
+    const response = await axios.get(`${API_URL}/places/${placeId}`);
+    place.value = response.data; // 存储地點详情数据
+    console.log("获取地點数据成功:", place.value);
+  } catch (error) {
+    
+    console.error("无法加载地點详情:", error);
+    alert("加载地點详情失败，请稍后再试");
+  } finally {
+    loading.value = false;
+  }
+};
+
+
+
+onMounted(() => {
+  const route = useRoute();
+  const placeId = route.query.placeId; // 从 URL 中获取 placeId
+  if (placeId) {
+    fetchPlaceById(placeId); // 根据 placeId 加载详情
+  }
+});
 
 onUnmounted(() => {
   window.removeEventListener("resize", handleResize)
