@@ -5,16 +5,38 @@ import ScheduleSummaryModal from './ScheduleSummaryModal.vue'
 import ExportScheduleModal from './ExportScheduleModal.vue'
 import ExitCoEditModal from './ExitCoEditModal.vue'
 
+
+
+
+const copyShareLink = async () => {
+  try {
+    if (!props.shareLink) {
+      console.log('No link to copy');
+      return;
+    }
+    await navigator.clipboard.writeText(props.shareLink);
+    console.log('Text copied to clipboard:', props.shareLink);
+  } catch (err) {
+    console.error('Failed to copy: ', err);
+  }
+};
+
+
 const props = defineProps({
   activeTab: {
     type: String,
     required: true,
+  },
+  shareLink: {
+    type: String,
+    required: false, 
   },
 })
 const emit = defineEmits(['updateStatus'])
 const updateActiveTab = (status) => {
   emit('updateStatus', status)
 }
+
 </script>
 
 <template>
@@ -23,14 +45,14 @@ const updateActiveTab = (status) => {
       <form method="dialog">
         <div class="w-full h-10">
           <button
-            class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+            class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2"
           >
             ✕
           </button>
         </div>
       </form>
       <!-- share & invite toggle -->
-      <div class="w-full h-10 flex gap-1 mb-5 p-1 rounded-xl bg-white">
+      <div class="flex w-full h-10 gap-1 p-1 mb-5 bg-white rounded-xl">
         <input
           id="share"
           type="radio"
@@ -41,7 +63,7 @@ const updateActiveTab = (status) => {
         />
         <label
           for="share"
-          class="share-toggle w-1/2 text-center py-1 px-2 rounded-lg hover:bg-primary-600 hover:text-white hover:cursor-pointer"
+          class="w-1/2 px-2 py-1 text-center rounded-lg share-toggle hover:bg-primary-600 hover:text-white hover:cursor-pointer"
           >分享行程</label
         >
         <input
@@ -54,18 +76,18 @@ const updateActiveTab = (status) => {
         />
         <label
           for="invite"
-          class="invite-toggle w-1/2 text-center py-1 px-2 rounded-lg hover:bg-primary-600 hover:text-white hover:cursor-pointer"
+          class="w-1/2 px-2 py-1 text-center rounded-lg invite-toggle hover:bg-primary-600 hover:text-white hover:cursor-pointer"
           >邀請共編</label
         >
       </div>
       <!-- share detail -->
       <div
         v-if="props.activeTab === 'share'"
-        class="share-detail rounded-xl bg-white w-full pt-10 px-5 pb-6"
+        class="w-full px-5 pt-10 pb-6 bg-white share-detail rounded-xl"
       >
         <div>
           <img
-            class="w-40 h-40 mb-4 mx-auto"
+            class="w-40 h-40 mx-auto mb-4"
             src="../assets/qrcode.svg"
             alt="schedule share QRcode"
           />
@@ -81,7 +103,7 @@ const updateActiveTab = (status) => {
             <li>
               <button class="hover:cursor-pointer">
                 <span
-                  class="inline-block w-14 h-14 p-3 bg-primary-100 rounded-xl text-primary-600"
+                  class="inline-block p-3 w-14 h-14 bg-primary-100 rounded-xl text-primary-600"
                   ><LinkIcon
                 /></span>
                 <p class="text-sm">複製連結</p>
@@ -99,7 +121,7 @@ const updateActiveTab = (status) => {
       <!-- invite detail -->
       <div
         v-else
-        class="invite-detail rounded-xl bg-white w-full pt-10 px-5 pb-6"
+        class="w-full px-5 pt-10 pb-6 bg-white invite-detail rounded-xl"
       >
         <div class="text-center">
           <!-- 邀請者視角 -->
@@ -107,9 +129,9 @@ const updateActiveTab = (status) => {
             <div
               tabindex="0"
               role="button"
-              class="mb-4 w-32 min-h-7 flex items-center justify-center rounded-full bg-primary-100 text-primary-600"
+              class="flex items-center justify-center w-32 mb-4 rounded-full min-h-7 bg-primary-100 text-primary-600"
             >
-              <p class="text-sm font-medium p-1 me-2">僅供檢視</p>
+              <p class="p-1 text-sm font-medium me-2">僅供檢視</p>
               <span class="inline-block w-4 h-4 p-0.5"
                 ><ChevronDownIcon
               /></span>
@@ -119,13 +141,13 @@ const updateActiveTab = (status) => {
               class="dropdown-content menu w-32 bg-base-100 rounded-sm border border-gray z-[1] py-2 px-0"
             >
               <li>
-                <a class="rounded-none bg-gray text-primary-600 font-medium"
+                <a class="font-medium rounded-none bg-gray text-primary-600"
                   >僅供檢視</a
                 >
               </li>
               <li>
                 <a
-                  class="rounded-none font-medium hover:bg-gray focus:bg-transparent active:bg-white"
+                  class="font-medium rounded-none hover:bg-gray focus:bg-transparent active:bg-white"
                   >可編輯</a
                 >
               </li>
@@ -133,21 +155,21 @@ const updateActiveTab = (status) => {
           </div>
           <!-- 被邀請者視角 -->
           <!-- <div class="tooltip" data-tip="只有主揪可以設定共編權限哦">
-            <div class="mx-auto mb-4 w-32 min-h-7 flex items-center justify-center rounded-full bg-primary-100 text-primary-600">
-              <p class="text-sm font-medium p-1 me-2">僅供檢視</p>
+            <div class="flex items-center justify-center w-32 mx-auto mb-4 rounded-full min-h-7 bg-primary-100 text-primary-600">
+              <p class="p-1 text-sm font-medium me-2">僅供檢視</p>
               <span class="inline-block w-4 h-4"><ExclamationCircleIcon /></span>
             </div>
           </div> -->
           <!-- Qrcode -->
           <img
-            class="w-40 h-40 mb-4 mx-auto"
+            class="w-40 h-40 mx-auto mb-4"
             src="../assets/qrcode.svg"
             alt=""
           />
           <p>手機掃描條碼，即可查看此行程</p>
-          <p class="text-sm mb-8 text-gray-400">24 小時內有效</p>
-          <button
-            class="w-full flex justify-center items-center text-primary-600 border border-primary-600 rounded-full py-2 px-4"
+          <p class="mb-8 text-sm text-gray-400">24 小時內有效</p>
+          <button @click="copyShareLink"
+            class="flex items-center justify-center w-full px-4 py-2 border rounded-full text-primary-600 border-primary-600" 
           >
             <span class="inline-block w-6 h-6 me-1"><LinkIcon /></span>
             <p class="text-sm">複製連結</p>
@@ -156,10 +178,10 @@ const updateActiveTab = (status) => {
       </div>
       <!-- 共編成員 -->
       <div class="py-6" v-if="props.activeTab !== 'share'">
-        <p class="text-sm mb-4 font-medium">成員(2)</p>
+        <p class="mb-4 text-sm font-medium">成員(2)</p>
         <ul>
           <li
-            class="flex gap-4 pb-3 border-b-2 border-dashed border-slate-300 mb-3"
+            class="flex gap-4 pb-3 mb-3 border-b-2 border-dashed border-slate-300"
           >
             <img
               class="w-11 h-11"
@@ -178,7 +200,7 @@ const updateActiveTab = (status) => {
             </div>
           </li>
           <li
-            class="flex gap-4 pb-3 border-b-2 border-dashed border-slate-300 mb-3 tooltip tooltip-bottom"
+            class="flex gap-4 pb-3 mb-3 border-b-2 border-dashed border-slate-300 tooltip tooltip-bottom"
             data-tip="2024/11/18 加入行程"
           >
             <img
@@ -186,7 +208,7 @@ const updateActiveTab = (status) => {
               src="https://web.chictrip.com.tw/assets/waterview_default.f746ada9.svg"
               alt=""
             />
-            <div class="w-full flex justify-between items-center">
+            <div class="flex items-center justify-between w-full">
               <div>
                 <p class="mb-2">林小姐</p>
                 <p class="text-gray-400">3 行程</p>
@@ -195,7 +217,7 @@ const updateActiveTab = (status) => {
                 <div
                   tabindex="0"
                   role="button"
-                  class="hover:cursor-pointer py-2 text-gray-400"
+                  class="py-2 text-gray-400 hover:cursor-pointer"
                 >
                   可檢視
                   <span class="inline-block w-4 h-4 p-0.5"
@@ -207,13 +229,13 @@ const updateActiveTab = (status) => {
                   class="dropdown-content menu bg-base-100 rounded-lg z-[1] w-28 px-0 py-2 shadow-lg"
                 >
                   <li>
-                    <a class="hover:rounded-none hover:bg-gray font-medium py-3"
+                    <a class="py-3 font-medium hover:rounded-none hover:bg-gray"
                       >可檢視</a
                     >
                   </li>
                   <li>
                     <a
-                      class="hover:rounded-none hover:bg-gray font-medium py-3"
+                      class="py-3 font-medium hover:rounded-none hover:bg-gray"
                       onclick="exitToggle.showModal()"
                       >退出共編
                     </a>
@@ -227,7 +249,7 @@ const updateActiveTab = (status) => {
       </div>
     </div>
     <form method="dialog" class="modal-backdrop">
-      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+      <button class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2">
         ✕
       </button>
       <button>close</button>

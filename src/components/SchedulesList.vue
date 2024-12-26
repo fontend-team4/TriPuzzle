@@ -27,6 +27,9 @@ const checkedSchedule = ref("mine")
 const schedules = ref([])
 const shareSchedules = ref([])
 const deletedId = ref(null)
+const shareLink = ref('')
+
+
 const getSchedules = async () => {
   const config = {
     headers: {
@@ -84,6 +87,23 @@ const activeStatus = ref(null)
 const openShareModal = () => {
   activeStatus.value = "share"
 }
+
+const shareLinkHandler = async(id)=>{
+  const config = {
+    headers: {
+      Authorization: token,
+    },
+  }
+  try {
+    const response = await axios.post(`${API_URL}/usersSchedules/share/${id}`,{} ,config)
+    shareLink.value = response.data.shareUrl;
+    console.log(shareLink.value);
+    
+  } catch (error) {
+    console.error(error.message)
+  }
+}
+
 const openInviteModal = () => {
   activeStatus.value = "invite"
 }
@@ -174,6 +194,8 @@ onMounted(async () => {
     await getShareSchedules()
   }
 })
+
+
 </script>
 
 <template>
@@ -291,7 +313,7 @@ onMounted(async () => {
                         </li>
                         <li
                           onclick="shareSchedule.showModal()"
-                          @click="openInviteModal"
+                          @click="openInviteModal(); shareLinkHandler(item.id)"
                         >
                           <a
                             class="flex items-center gap-1 px-5 py-2 text-sm hover:bg-gray"
@@ -333,14 +355,14 @@ onMounted(async () => {
                         {{ item.start_date }} ~ {{ item.end_date }}
                       </p>
                     </div>
-                    <div
+                    <button
                       class="w-16 text-center hover:cursor-pointer"
                       onclick="shareSchedule.showModal()"
-                      @click="openInviteModal"
+                      @click="openInviteModal(); shareLinkHandler(item.id)"
                     >
                       <p class="w-6 h-6 mx-auto"><UserPlusIcon /></p>
                       <p class="text-xs">{{ item.total_users }}人</p>
-                    </div>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -428,14 +450,14 @@ onMounted(async () => {
                         {{ item.start_date }} ~ {{ item.end_date }}
                       </p>
                     </div>
-                    <div
+                    <button
                       class="w-16 text-center hover:cursor-pointer"
                       onclick="shareSchedule.showModal()"
-                      @click="openInviteModal"
+                      @click="openInviteModal();shareLinkHandler(item.id)"
                     >
                       <p class="w-6 h-6 mx-auto"><UserPlusIcon /></p>
                       <p class="text-xs">{{ item.total_users }}人</p>
-                    </div>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -530,6 +552,7 @@ onMounted(async () => {
 
     <ShareScheduleModal
       :activeTab="activeStatus"
+      :shareLink="shareLink"
       @updateStatus="updateStatus"
     />
     <DeleteScheduleModal :toBeDeleteId="deletedId" :updateList="getSchedules" />
