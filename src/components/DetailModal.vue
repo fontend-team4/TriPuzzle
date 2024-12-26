@@ -26,6 +26,7 @@ import { usePlacesStore } from "@/stores/fetchPlaces"
 import axios from "axios"
 import { defineProps } from "vue"
 import { generateImageUrl } from "@/stores/favorites"
+import { useCopyWebsiteStore } from "@/stores/copywebsite"
 
 
 const API_URL = process.env.VITE_HOST_URL
@@ -34,6 +35,7 @@ const token = localStorage.getItem("token")
 
 const modalStore = PlaceModalStore()
 const placesStore = usePlacesStore()
+const { copyToClipboard, copySuccess } = useCopyWebsiteStore();
 
 const route = useRoute()
 const showPhoto = ref(false)
@@ -264,9 +266,11 @@ const currentPlaceId = computed(() => route.query.placeId)
                     </button>
                     <button
                       class="inline-flex justify-center w-full px-4 py-[11px] text-white border rounded-full bg-primary-600 border-primary-600 hover:bg-primary-700"
-                    >
+                      @click="copyToClipboard"
+                      >
                       <LinkIcon class="mr-1 size-6" /><span>複製連結</span>
                     </button>
+                    <p v-if="copySuccess" class="col-green font-medium mt-10 success-message">已複製網址到剪貼簿！</p>
                     <div
                       class="absolute right-0 top-1/2 md:w-[100px] md:h-[100px] w-[80px] h-[80px] -translate-y-full md:-translate-y-1/2"
                     >
