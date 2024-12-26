@@ -156,7 +156,7 @@ const currentPlaceId = computed(() => route.query.placeId)
             class="inline-flex items-center gap-1 pr-3 text-sm align-middle border-r-2"
           >
             Google 評價
-            <StarIcon class="text-yellow-400 size-4" v-if="rating != 'N/A'" />
+            <StarIcon class="text-yellow-400 size-4" v-if="place.rating != 'N/A'" />
             <span class="text-yellow-400">{{ place.rating }}</span>
             (<span class="underline">34</span>)
           </div>
@@ -166,7 +166,7 @@ const currentPlaceId = computed(() => route.query.placeId)
         </div>
         <div
           class="flex pt-2.5 pb-3.5 border-b-slate-200 border-b-[1px]"
-          v-if="address != 'N/A'"
+          v-if="place.address != 'N/A'"
         >
           <MapPinIcon class="size-5" />
           <p class="pl-8 text-sm">{{ place.location }}</p>

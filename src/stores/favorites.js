@@ -11,6 +11,12 @@ const token = localStorage.getItem("token");
 
 const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 
+
+const handleError = (error, message = "操作失敗，請稍後再試") => {
+  console.error(message, error);
+  alert(message);
+};
+
 // 檢查是否已收藏
 const isFavorited = (placeId) => {
   return favorites.value.some((fav) => fav.favorite_places === placeId);
@@ -32,13 +38,13 @@ const loadFavorites = async () => {
 
 // 切換收藏狀態
 const toggleFavorite = async (item) => {
-  const LoginStore = LoginModalStore()
+  const LoginStore = LoginModalStore();
   if (!userId.value || !token) {
     LoginStore.openModal();
     return;
   }
 
-  const headers = { Authorization: token }; 
+  const headers = { Authorization: token };
 
   try {
     if (!isFavorited(item.id)) {
@@ -47,45 +53,54 @@ const toggleFavorite = async (item) => {
       await removeFavorite(item.id, headers);
     }
   } catch (error) {
-    alert("操作失敗，請稍後再試");
+    handleError(error, "切換收藏狀態失敗");
   }
 };
 
+
 // 新增收藏
 const addFavorite = async (item, headers) => {
-  const placeData = {
-    place_id: item.id,
-    name: item.name,
-    image_url: item.photos[0]?.photo_reference || null,
-    location: item.location,
-    rating: item.rating,
-    phone: item.phone,
-    google_map_url: item.mapUrl,
-    opening_hours: item.opening_hours,
-    summary: item.summary,
-    photos: item.photos,
-    photos_length: item.photos.length,
-    geometry: item.geometry,
-    address: item.address,
-    website: item.website,
-  };
+  try {
+    const placeData = {
+      place_id: item.id,
+      name: item.name,
+      image_url: item.photos[0]?.photo_reference || null,
+      location: item.location,
+      rating: item.rating,
+      phone: item.phone,
+      google_map_url: item.mapUrl,
+      opening_hours: item.opening_hours,
+      summary: item.summary,
+      photos: item.photos,
+      photos_length: item.photos.length,
+      geometry: item.geometry,
+      address: item.address,
+      website: item.website,
+    };
 
-  // 新增地點
-  await axios.post(`${API_URL}/places`, placeData, { headers });
+    // 新增地點
+    await axios.post(`${API_URL}/places`, placeData, { headers });
 
-  const favoriteData = {
-    favorite_user: Number(userId.value),
-    favorite_places: placeData.place_id,
-  };
+    const favoriteData = {
+      favorite_user: Number(userId.value),
+      favorite_places: placeData.place_id,
+    };
 
-  const favoriteResponse = 
-    await axios.post(`${API_URL}/favorites`,favoriteData,{ headers });
+    const favoriteResponse = await axios.post(
+      `${API_URL}/favorites`,
+      favoriteData,
+      { headers }
+    );
 
-  favorites.value.push({
-    favorite_places: placeData.place_id,
-    ...favoriteResponse.data,
-  });
+    favorites.value.push({
+      favorite_places: placeData.place_id,
+      ...favoriteResponse.data,
+    });
+  } catch (error) {
+    handleError(error, "新增收藏失敗");
+  }
 };
+
 
 const removeFavorite = async (placeId, headers) => {
   try {
@@ -121,11 +136,9 @@ const removeFavoriteDirectly = async (place) => {
   }
 
   try {
-    console.log("嘗試直接移除收藏:", place);
     await removeFavorite(place.place_id, { Authorization: token });
   } catch (error) {
-    console.error("無法移除收藏:", error);
-    alert("移除收藏失敗，請稍後再試");
+    handleError(error, "移除收藏失敗");
   }
 };
 
@@ -137,7 +150,7 @@ const generateImageUrl = (photoReference) => {
 };
 
 
-export { favorites, isFavorited, loadFavorites, toggleFavorite, removeFavoriteDirectly,generateImageUrl };
+export { favorites, isFavorited, loadFavorites, toggleFavorite, removeFavoriteDirectly, generateImageUrl };
 
 
 
