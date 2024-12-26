@@ -20,9 +20,5 @@
     cmd = 'exec caddy run --config Caddyfile --adapter caddyfile 2>&1' # start caddy using the Caddyfile config and caddyfile adapter
 
 [[build.static_dirs]]
-    path = "public"
-    url_prefix = "/"
-
-[[build.static_dirs]]
-    path = "src/assets"
-    url_prefix = "/assets"
+    path = "src/assets/images"
+    url_prefix = "/images"
