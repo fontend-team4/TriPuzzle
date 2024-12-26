@@ -4,7 +4,6 @@ import { LoginModalStore } from '@/stores/LoginModal.js'
 import { Phone } from "@iconoir/vue";
 
 
-const LoginStore = LoginModalStore()
 const API_URL = process.env.VITE_HOST_URL
 const favorites = ref([]); 
 const userId = ref(localStorage.getItem("userId"));
@@ -33,6 +32,7 @@ const loadFavorites = async () => {
 
 // 切換收藏狀態
 const toggleFavorite = async (item) => {
+  const LoginStore = LoginModalStore()
   if (!userId.value || !token) {
     LoginStore.openModal();
     return;
@@ -69,9 +69,6 @@ const addFavorite = async (item, headers) => {
     address: item.address,
     website: item.website,
   };
-
-
-
 
   // 新增地點
   await axios.post(`${API_URL}/places`, placeData, { headers });

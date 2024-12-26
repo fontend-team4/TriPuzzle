@@ -24,11 +24,12 @@ import AddPlaceBtn from "./AddPlaceBtn.vue"
 import { PlaceModalStore } from "@/stores/PlaceModal"
 import { usePlacesStore } from "@/stores/fetchPlaces"
 import axios from "axios"
+import { defineProps } from "vue"
+import { generateImageUrl } from "@/stores/favorites"
 
 
 const API_URL = process.env.VITE_HOST_URL
 const token = localStorage.getItem("token")
-const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
 
 
 const modalStore = PlaceModalStore()
@@ -67,7 +68,6 @@ const props = defineProps({
 
 const places = ref([])
 const place = ref({})
-// const favorites = ref([])
 const favorites = ref(JSON.parse(localStorage.getItem("favorites") || "[]"));
 
 
@@ -91,7 +91,7 @@ onMounted(async () => {
     }
 
     // 如果仍未找到，從遠程加載
-    if (Object.keys(place.value).length === 0) {
+    if (Object.keys(places.value).length === 0) {
       console.log("Fetching place details from API...");
       const response = await axios.get(`${API_URL}/places`, {
         headers: { Authorization: token },
@@ -130,7 +130,7 @@ const currentPlaceId = computed(() => route.query.placeId)
         <div
           class="inline-flex items-center justify-center w-full h-full overflow-hidden bg-black"
         >
-          <img :src="place.url || place.image_url" alt="" class="object-contain w-full" />
+          <img :src="place.url ||generateImageUrl(place.image_url)" alt="" class="object-contain w-full" />
         </div>
         <button
           for="showPhoto"
