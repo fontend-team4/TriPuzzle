@@ -1,57 +1,53 @@
 <script setup>
-import axios from 'axios'
-import { ref, onMounted, nextTick, defineEmits, provide, watch } from 'vue'
+import { StarIcon, MapPinIcon, HeartIcon } from "@heroicons/vue/24/solid"
 import {
-  StarIcon,
-  MapPinIcon,
-  ChevronDownIcon,
-  HeartIcon,
-  PlusCircleIcon,
-} from '@heroicons/vue/24/solid'
-import { HeartIcon as OutlineHeartIcon } from '@heroicons/vue/24/outline'
-import { useRouter, useRoute } from 'vue-router'
-import AddPlaceBtn from './AddPlaceBtn.vue'
-import DefaultPlaces from '../../places_default.json'
-import { PlaceModalStore } from '@/stores/PlaceModal'
+  ref,
+  onMounted,
+  watch,
+  nextTick,
+  defineEmits,
+  onUnmounted,
+  computed,
+} from "vue"
+import { HeartIcon as OutlineHeartIcon } from "@heroicons/vue/24/outline"
+import AddPlaceBtn from "./AddPlaceBtn.vue"
+import { usePlacesStore } from "@/stores/fetchPlaces"
+import { useSearchStore } from "@/stores/searchPlaces"
+import { PlaceModalStore } from "@/stores/PlaceModal"
+import {
+  favorites,
+  isFavorited,
+  loadFavorites,
+  toggleFavorite,
+} from "@/stores/favorites.js"
 
-const modalStore=PlaceModalStore()
+const placesStore = usePlacesStore()
+const searchStore = useSearchStore()
+const modalStore = PlaceModalStore()
 
-
-
-const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
-const  places  = DefaultPlaces
-console.log(places[0].name);
-
-
-// places是陣列形式
-// console.log(places[1].photos[1].name)
-
-const router = useRouter()
-const API_URL = 'http://localhost:3000'
-const defaultPlacesData = ref([])
-const items = ref([])
 const columns = ref([]) // 每欄
 const numCols = ref(2) // 預設為兩欄
-const emit = defineEmits(['open-detail-modal'])
+const emit = defineEmits(["open-detail-modal", "updateIsPlacesComponent"])
 
-const initializeItems = () => {
-  items.value = places.map((location) => ({
-    id: location.place_id, // 使用 place_id 作為 ID
-    url: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference=${location.photos[1].photo_reference}&key=${GOOGLE_API_KEY}`,
-    name: location.name,
-    rating: location.rating || 'N/A', // 若 rating 不存在，則顯示 'N/A'
-    location: location.address.split(/[0-9]+/)[1]?.slice(2, 5) || 'Unknown', // 確保處理 undefined 的情況
-    mapUrl: location.placeUrl,
-  }))
-}
+const isLogin = ref(false)
+const token = localStorage.getItem("token")
+const userId = ref(localStorage.getItem("userId"))
 
+// 檢查登入狀態
+onMounted(() => {
+  isLogin.value = Boolean(token && userId.value)
+  if (isLogin.value) {
+    loadFavorites() // 加載收藏列表
+  }
+})
 
-// 瀑布流
+// 瀑布流計算
 const calculateColumns = async () => {
+  // 每次重新初始化 columns
   columns.value = Array.from({ length: numCols.value }, () => [])
   const heights = Array(numCols.value).fill(0)
 
-  for (const item of items.value) {
+  for (const item of placesStore.items) {
     const shortestCol = heights.indexOf(Math.min(...heights))
     columns.value[shortestCol].push(item)
     await nextTick()
@@ -62,6 +58,7 @@ const calculateColumns = async () => {
   }
 }
 
+// 監聽螢幕大小調整欄位數量
 const handleResize = () => {
   if (window.innerWidth >= 1024) numCols.value = 4
   else if (window.innerWidth >= 768) numCols.value = 3
@@ -69,51 +66,50 @@ const handleResize = () => {
   calculateColumns()
 }
 
-onMounted(() => {
-  defaultPlacesData.value = places
-  initializeItems() // 初始化 items
-  handleResize()
-  window.addEventListener('resize', handleResize)
+// 初始化
+onMounted(async () => {
+  await calculateColumns() // 初始計算瀑布流
+  handleResize() // 初始化欄數
+  window.addEventListener("resize", handleResize)
 })
 
-// 點擊愛心切換
-const toggleFavorite = (item) => {
-  item.isFavorited = !item.isFavorited
-}
-
 const openDetailModal = (detailId) => {
-  emit('open-detail-modal', detailId) // 傳遞地點的 ID
+  emit("open-detail-modal", detailId) // 傳遞地點的 ID
 }
 
+const updateMapCenter = (item) => {
+  searchStore.placeGeometry = item.geometry
+  emit("updateIsPlacesComponent", false)
+}
 
-const getDefaultLocations = async()=>{
-  // 拿取MapComponent的判斷是否定位，以及預設經緯度（信義區）
-  // 如果使用者允許定位，那就搜尋使用者經緯度附近的20個景點
-  // 如果使用者不允許定位，則設定信義區作為中心點去渲染地圖id
-  console.log(123);
-// http://localhost:3000/places/search?latitude=25.0329694&longitude=121.5654177&type=餐廳
-  try {
-    const defaultLat = ref(24.998564)
-    const defaultLng = ref(121.576222)
-    const response = await axios.get(
-      `${API_URL}/places/search?latitude=${defaultLat.value}&longitude=${defaultLng.value}&type=餐廳`,
-      // ScheduleData,
-      // config
-      // type : "景點類型" , latitude : "地圖中心經度" , longitude : "地圖中心緯度"
-    )
-    console.log(response.data)
-  } catch (err) {
-    console.error(err.message)
-    alert('搜尋失敗')
+onUnmounted(() => {
+  window.removeEventListener("resize", handleResize)
+})
+
+// 監聽 items 的變化並重新計算瀑布流
+watch(
+  () => placesStore.items,
+  async (newItems) => {
+    await calculateColumns()
+  },
+  { immediate: true }
+)
+
+// 監聽 searchStore.searchData，當有更新時觸發 placesStore 更新
+watch(
+  () => searchStore.searchData,
+  (newData) => {
+    if (newData.length > 0) {
+      placesStore.updateFromSearch(newData)
+    }
   }
-
-  
-}
+)
 </script>
 
 <template>
-  <button @click="getDefaultLocations" class="absolute top-0 z-50 left-16">按我取得資料</button>
-  <div class="absolute top-0 h-auto pt-20 lg:ps-28 lg:pt-24 pb-14 bg-slate-100">
+  <div
+    class="absolute top-0 min-h-full pt-20 lg:ps-28 lg:pt-24 pb-14 bg-slate-100"
+  >
     <!-- 瀑布流 -->
     <div
       class="grid"
@@ -126,29 +122,44 @@ const getDefaultLocations = async()=>{
         class="flex flex-col gap-4"
       >
         <div v-for="item in col" :key="item.id" class="group">
-          <a href="#" @click="openDetailModal(item.id),modalStore.savePlace(item)">
+          <a
+            href="#"
+            @click="openDetailModal(item.id), modalStore.savePlace(item)"
+          >
             <div class="relative w-full mb-2 overflow-hidden rounded-lg">
               <!-- 黑色遮罩 -->
               <div
                 class="absolute w-full h-full transition-opacity bg-black opacity-0 group-hover:opacity-20"
               ></div>
 
-              <!-- 喜歡按鈕和加入景點 -->
+              <!-- 收藏按鈕和加入景點 -->
               <div
                 class="absolute bottom-0 flex items-center justify-between w-full p-4 transition-opacity opacity-0 z-2 group-hover:opacity-100"
               >
-                <div
+                <button
+                  v-if="isLogin"
                   class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer bg-gray hover:bg-opacity-75 tooltip"
-                  data-tip="加入最愛"
-                  @click.prevent="toggleFavorite(item)"
-                  @click.stop
+                  :data-tip="isFavorited(item.id) ? '已收藏' : '加入收藏'"
+                  @click.prevent.stop="toggleFavorite(item)"
                 >
                   <component
-                    :is="item.isFavorited ? HeartIcon : OutlineHeartIcon"
-                    :class="item.isFavorited ? 'text-red-500' : 'text-gray-500'"
+                    :is="isFavorited(item.id) ? HeartIcon : OutlineHeartIcon"
+                    :class="
+                      isFavorited(item.id) ? 'text-red-500' : 'text-gray-500'
+                    "
                     class="size-6"
                   />
-                </div>
+                </button>
+                <!-- 未登入狀態 -->
+                <button
+                  v-else
+                  class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer bg-gray hover:bg-opacity-75 tooltip"
+                  data-tip="請先登入!"
+                  @click.prevent.stop="toggleFavorite(item)"
+                >
+                  <OutlineHeartIcon class="text-gray-500 size-6" />
+                </button>
+
                 <!-- <button class="overflow-hidden text-lg text-white border-0 rounded-full btn bg-secondary-500 hover:bg-secondary-600" onclick="AddPlaceModal.showModal()">加入行程<PlusCircleIcon class="size-6"/></button> -->
                 <AddPlaceBtn @click.stop @click="modalStore.savePlace(item)" />
               </div>
@@ -163,15 +174,19 @@ const getDefaultLocations = async()=>{
                 {{ item.name }}
               </h3>
               <div class="flex justify-between">
-                <div class="flex text-slate-500 text-[12px] md:text-base">
+                <div class="flex text-slate-500 text-[12px] md:text-base gap-1">
                   <StarIcon class="text-yellow-500 md:size-6 size-4" /><span>{{
                     item.rating
                   }}</span
-                  >．<span>{{ item.location }}</span>
+                  ><span>{{ item.location }}</span>
                 </div>
-                <a :href="item.mapUrl" target="_blank"
-                  ><MapPinIcon class="text-gray-500 md:size-6 size-4"
-                /></a>
+                <button
+                  target="_blank"
+                  @click.stop
+                  @click="updateMapCenter(item)"
+                >
+                  <MapPinIcon class="text-gray-500 md:size-6 size-4" />
+                </button>
               </div>
             </div>
           </a>

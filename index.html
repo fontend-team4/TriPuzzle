@@ -2,33 +2,23 @@
 <html lang="">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- iconoir -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/gh/iconoir-icons/iconoir@main/css/iconoir.css"
-    />
-    <title>Vite App</title>
+    <link rel="icon" type="image/svg" href="/icon-logo-light.svg" />
+    <title>旅圖 TriPuzzle</title>
   </head>
   <body>
     <div id="app"></div>
     <script type="module" src="/src/main.js"></script>
-    <script
-      async
-      defer
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVY_YJI48GBAX6AVQa6w7WcE9t01OPVZ8"
-    ></script>
-    <!-- <script type="module" defer>
-      const apiKey = import.meta.env.VITE_GOOGLE_API_KEY
+    <script type="module">
       ;((g) => {
         var h,
           a,
           k,
-          p = 'The Google Maps JavaScript API',
-          c = 'google',
-          l = 'importLibrary',
-          q = '__ib__',
+          p = "The Google Maps JavaScript API",
+          c = "google",
+          l = "importLibrary",
+          q = "__ib__",
           m = document,
           b = window
         b = b[c] || (b[c] = {})
@@ -38,29 +28,27 @@
           u = () =>
             h ||
             (h = new Promise(async (f, n) => {
-              await (a = m.createElement('script'))
-              e.set('libraries', [...r] + '')
+              await (a = m.createElement("script"))
+              e.set("libraries", [...r] + "")
               for (k in g)
                 e.set(
-                  k.replace(/[A-Z]/g, (t) => '_' + t[0].toLowerCase()),
+                  k.replace(/[A-Z]/g, (t) => "_" + t[0].toLowerCase()),
                   g[k]
                 )
-              e.set('callback', c + '.maps.' + q)
+              e.set("callback", c + ".maps." + q)
               a.src = `https://maps.${c}apis.com/maps/api/js?` + e
               d[q] = f
-              a.onerror = () => (h = n(Error(p + ' could not load.')))
-              a.nonce = m.querySelector('script[nonce]')?.nonce || ''
+              a.onerror = () => (h = n(Error(p + " could not load.")))
+              a.nonce = m.querySelector("script[nonce]")?.nonce || ""
               m.head.append(a)
             }))
         d[l]
-          ? console.warn(p + ' only loads once. Ignoring:', g)
+          ? console.warn(p + " only loads once. Ignoring:", g)
           : (d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)))
       })({
-        key: apiKey,
-        v: 'weekly',
-        // Use the 'v' parameter to indicate the version to use (weekly, beta, alpha, etc.).
-        // Add other bootstrap parameters as needed, using camel case.
+        key: import.meta.env.VITE_GOOGLE_API_KEY,
+        v: "weekly",
       })
-    </script> -->
+    </script>
   </body>
 </html>

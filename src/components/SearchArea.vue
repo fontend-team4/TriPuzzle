@@ -1,50 +1,47 @@
 <script setup>
-import { ChevronDownIcon } from '@heroicons/vue/24/solid';
-import SearchCategoryNav from './SearchCategoryNav.vue';
-import SearchAreaContent from '../components/SearchAreaContent.vue';
-import SearchAreaBar from '../components/SearchAreaBar.vue';
+import { ChevronDownIcon } from "@heroicons/vue/24/solid"
+import SearchCategoryNav from "./SearchCategoryNav.vue"
+import SearchAreaContent from "../components/SearchAreaContent.vue"
+import SearchAreaBar from "../components/SearchAreaBar.vue"
 
 // 點擊外框關閉
 const closeModal = () => {
-  const dialog = document.getElementById("SearchArea");
-  dialog?.close();
-};
-
-
+  const dialog = document.getElementById("SearchArea")
+  dialog?.close()
+}
 </script>
 
 <template>
-    <!-- 區域選擇按鈕 -->
-    <div class="block-area flex justify-center items-center px-2">
-      <button 
-        class="btn btn-sm border-transparent inline-flex items-center justify-center h-4 rounded-3xl cursor-pointer mt-0 mx-0 w-30 bg-primary-600
-        hover:bg-primary-500" 
-        onclick="SearchArea.showModal()"
-      >
-        <span class="text-gray flex font-medium overflow-hidden text-ellipsis justify-center items-center
-          ">選擇區域
-          <ChevronDownIcon class="Icon-SelectArea w-4 h-4 pl-1 text-white"/>
-        </span>
-      </button>
+  <!-- 區域選擇按鈕 -->
+  <div class="flex items-center justify-center px-2 block-area">
+    <button
+      class="inline-flex items-center justify-center h-4 mx-0 mt-0 border-transparent cursor-pointer btn btn-sm rounded-3xl w-30 bg-primary-600 hover:bg-primary-500"
+      onclick="SearchArea.showModal()"
+    >
+      <span
+        class="flex items-center justify-center overflow-hidden font-medium text-gray text-ellipsis"
+        >選擇區域
+        <ChevronDownIcon class="w-4 h-4 pl-1 text-white Icon-SelectArea" />
+      </span>
+    </button>
 
     <!-- 彈窗 -->
-    <dialog 
-      id="SearchArea" 
-      class="modal flex items-center justify-center fixed inset-0 bg-black bg-opacity-50"
+    <dialog
+      id="SearchArea"
+      class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 modal"
       @click.self="closeModal"
+    >
+      <div
+        class="modal-box w-full max-w-[64rem] min-h-[100vh] p-0 bg-white rounded-lg shadow-lg md:min-h-[80%] relative"
       >
-      <div 
-        class="modal-box w-full max-w-[64rem] min-h-[100vh] p-0 bg-white rounded-lg shadow-lg
-        md:min-h-[80%]">
-        
         <!-- 搜尋欄 -->
-        <SearchAreaBar />
+        <SearchAreaBar class="fixed top-0" />
         <!-- 主體內容 -->
-        <div class="dialog-body flex h-full bg-gray">
+        <div class="flex h-full overflow-hidden dialog-body bg-gray">
           <!-- 左側選單 -->
           <SearchCategoryNav />
           <!-- 右側內容 -->
-          <RouterView />
+          <!-- <RouterView /> -->
         </div>
       </div>
     </dialog>
@@ -52,7 +49,7 @@ const closeModal = () => {
 </template>
 
 <style scoped>
-.btn:hover{
+.btn:hover {
   border-color: transparent;
 }
 </style>

@@ -1,11 +1,10 @@
 <script setup>
-import { ref, provide } from 'vue'
-import { GlobeAsiaAustraliaIcon } from '@heroicons/vue/24/outline'
-import SchedulesList from './SchedulesList.vue'
-import ScheduleDetail from '@/components/ScheduleDetail.vue'
-import TransportationWay from './TransportationWay.vue'
+import { ref, provide } from "vue"
+import { GlobeAsiaAustraliaIcon } from "@heroicons/vue/24/outline"
+import SchedulesList from "./SchedulesList.vue"
+import ScheduleDetail from "@/components/ScheduleDetail.vue"
+import TransportationWay from "./TransportationWay.vue"
 
-// schedule toggle 開關
 const scheduleToggleShow = ref(true)
 
 // SchedulesList 開關
@@ -18,19 +17,24 @@ const listToggle = () => {
   scheduleToggleShow.value = !scheduleToggleShow.value
 }
 // 給 SchedulesList 關閉自己
-provide('listToggle', listToggle)
+provide("listToggle", listToggle)
 
 // schedule detail 開關
 const detailOpen = ref(false)
-const detailToggle = () => {
-  detailOpen.value = !detailOpen.value
+const scheduleId = ref("")
+const detailToggle = async (id) => {
+  scheduleId.value = id
+  listOpen.value = !listOpen.value
+  detailOpen.value = await !detailOpen.value
+  listOpen.value = !listOpen.value
 }
 // 給 SchedulesList 進入 ScheduleDetail
 // 給 ScheduleDetail 關閉自己
-provide('detailToggle', detailToggle)
+provide("detailToggle", detailToggle)
+provide("scheduleId", scheduleId)
 
 // 給 ScheduleDetail 關閉全部
-provide('listAndDetailToggle', () => {
+provide("listAndDetailToggle", () => {
   listOpen.value = !listOpen.value
   scheduleToggleShow.value = !scheduleToggleShow.value
   detailOpen.value = !detailOpen.value
@@ -44,7 +48,7 @@ const transportationToggle = () => {
 
 // 給 ScheduleDetail 進入 TransportationWay
 // 給 TransportationWay 關閉自己
-provide('transportationToggle', transportationToggle)
+provide("transportationToggle", transportationToggle)
 </script>
 
 <template>

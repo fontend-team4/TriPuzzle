@@ -1,12 +1,17 @@
 <script setup>
-import { ref, inject } from 'vue'
-import { XMarkIcon } from '@heroicons/vue/24/solid'
-import { EyeIcon, EyeSlashIcon } from '@heroicons/vue/24/outline'
-import axios from 'axios'
-import { useUserStore } from '@/stores/userStore'
-import { LoginModalStore } from '@/stores/LoginModal.js'
+import { ref } from "vue"
+import { XMarkIcon } from "@heroicons/vue/24/solid"
+import { EyeIcon, EyeSlashIcon } from "@heroicons/vue/24/outline"
+import axios from "axios"
+import { useUserStore } from "@/stores/userStore"
+import { LoginModalStore } from "@/stores/LoginModal.js"
 const LoginStore = LoginModalStore()
 const userStore = useUserStore()
+
+const API_URL = process.env.VITE_HOST_URL
+
+const Google_login = `${API_URL}/api/auth/google/callback`
+const Line_login = `${API_URL}/api/auth/line/callback`
 
 const showPassword = ref(false)
 function togglePasswordVisibility() {
@@ -81,33 +86,37 @@ const loginSubmit = async () => {
       }
     )
     if (res.data.status == 200) {
-      identifier.value = ''
-      loginPassword.value = ''
+      identifier.value = ""
+      loginPassword.value = ""
       userStore.setUser(res.data.user)
       userStore.setToken(res.data.token)
       // 提供 MemberView 讀取用戶資料使用
-      localStorage.setItem('userId', res.data.user.id)
-      localStorage.setItem('token', res.data.token)
+      localStorage.setItem("userId", res.data.user.id)
+      localStorage.setItem("token", res.data.token)
       LoginStore.closeModal()
       showMessage({
-        title: '登入成功',
+        title: "登入成功",
         message: res.data.message,
-        status: 'success',
+        status: "success",
       })
-      console.log(res)
+
+      // 加入頁面重整的邏輯
+      setTimeout(() => {
+        window.location.reload()
+      }, 1000)
     }
   } catch (err) {
-    const errorMessage = err.response?.data?.message || '未知錯誤'
+    const errorMessage = err.response?.data?.message || "未知錯誤"
     showMessage({
-      title: '登入失敗',
+      title: "登入失敗",
       message: errorMessage,
-      status: 'error',
+      status: "error",
     })
   }
 }
 
 const hasAgreed = ref(false)
-const errorMessage = ref('')
+const errorMessage = ref("")
 // const isSubmitted = ref(false);
 
 const registerSubmit = async () => {
@@ -340,7 +349,7 @@ const registerSubmit = async () => {
 
       <div class="flex justify-center items-center gap-6 mt-5">
         <a
-          href="https://tripuzzlebackend-production.up.railway.app/auth/google/callback"
+          :href="Google_login"
           class="h-8 w-8 rounded-full shadow flex justify-center items-center cursor-pointer"
         >
           <img
@@ -350,7 +359,7 @@ const registerSubmit = async () => {
           />
         </a>
         <a
-          href="https://tripuzzlebackend-production.up.railway.app/api/auth/line/callback"
+          :href="Line_login"
           class="h-8 w-8 rounded-full shadow flex justify-center items-center"
         >
           <img

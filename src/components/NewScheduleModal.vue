@@ -1,48 +1,48 @@
 <script setup>
-import axios from 'axios'
-import ScheduleCoverImgModal from './ScheduleCoverImgModal.vue'
-import defaultCoverImage from '../assets/images/coverimage-1.jpg'
-import { ref, onMounted, defineProps } from 'vue'
+import axios from "axios"
+import ScheduleCoverImgModal from "./ScheduleCoverImgModal.vue"
+import defaultCoverImage from "../assets/images/coverimage-1.jpg"
+import { ref, onMounted, defineProps, provide } from "vue"
 import {
   XMarkIcon,
   ArrowLongRightIcon,
   PencilIcon,
   ArrowUpTrayIcon,
-} from '@heroicons/vue/24/solid'
-import { CalendarCheck } from '@iconoir/vue'
+} from "@heroicons/vue/24/solid"
+import { CalendarCheck, MapXmark } from "@iconoir/vue"
 
 const transprotations = ref([
   {
     id: 1,
-    item: '汽車',
-    value: 'CAR',
+    item: "汽車",
+    value: "CAR",
   },
   {
     id: 2,
-    item: '機車',
-    value: 'MOTORBIKE',
+    item: "機車",
+    value: "MOTORBIKE",
   },
   {
     id: 3,
-    item: '大眾運輸',
-    value: 'PUBLIC_TRANSPORT',
+    item: "大眾運輸",
+    value: "PUBLIC_TRANSPORT",
   },
   {
     id: 4,
-    item: '走路',
-    value: 'WALK',
+    item: "走路",
+    value: "WALK",
   },
 ])
 
 const replaceImgLabelClick = () => {
   // 點擊收回下拉式選單(再點擊一次)
-  document.getElementById('dropdown-toggle').click()
+  document.getElementById("dropdown-toggle").click()
 }
 
 //點選選擇交通方式紅框
 const isChecked = ref(false)
 const transportationLabelClick = () => {
-  const checkbox = document.getElementById('toggle-transportation')
+  const checkbox = document.getElementById("toggle-transportation")
   if (checkbox) {
     checkbox.checked = !checkbox.checked // 切換 checked 狀態
     isChecked.value = checkbox.checked // 更新 Vue 狀態
@@ -55,10 +55,10 @@ const closeDropdown = () => {
 
 const API_URL = import.meta.env.VITE_HOST_URL
 const coverImage = ref(null)
-const ScheduleName = ref('')
-const startDate = ref('')
-const endDate = ref('')
-const transportationWay = ref('CUSTOM')
+const ScheduleName = ref("")
+const startDate = ref("")
+const endDate = ref("")
+const transportationWay = ref("CUSTOM")
 
 const props = defineProps({
   savetoSchedules: {
@@ -67,23 +67,37 @@ const props = defineProps({
   },
 })
 
-// 封面照片
 const getCoverImg = (img) => {
   coverImage.value = img
 }
 
-const uploadedImg = ref(null)
-const uploadImg = (event) => {
-  document.getElementById('dropdown-toggle').click()
+const imgFile = ref(null)
+const selectedImg = ref(null)
+const handleImgUpload = async (event) => {
+  document.getElementById("dropdown-toggle").click()
+  imgFile.value = event.target.files[0]
+  selectedImg.value = URL.createObjectURL(imgFile.value)
+  coverImage.value = selectedImg.value
+  await uploadImg()
+}
 
-  const file = event.target.files[0]
-  uploadedImg.value = URL.createObjectURL(file)
-  coverImage.value = uploadedImg.value
+const uploadImg = async () => {
+  const formData = new FormData()
+  formData.append("image", imgFile.value)
+  try {
+    const response = await axios.post(
+      `${API_URL}/api/upload/coverImg`,
+      formData
+    )
+    coverImage.value = response.data.url
+  } catch (error) {
+    console.error(error.message)
+  }
 }
 
 const addSuccess = ref(null)
-// 建立行程
-const token = localStorage.getItem('token')
+const addFailed = ref(null)
+const token = localStorage.getItem("token")
 const addSchedule = async () => {
   const config = {
     headers: {
@@ -102,12 +116,7 @@ const addSchedule = async () => {
     transportation_way: transportationWay.value,
   }
   try {
-    const response = await axios.post(
-      `${API_URL}/schedules`,
-      ScheduleData,
-      config
-    )
-    console.log(response.data)
+    await axios.post(`${API_URL}/schedules`, ScheduleData, config)
     addSuccess.value.showModal()
     setTimeout(() => {
       addSuccess.value.close()
@@ -115,14 +124,16 @@ const addSchedule = async () => {
     props.savetoSchedules()
   } catch (err) {
     console.error(err.message)
-    alert('行程建立失敗')
+    addFailed.value.showModal()
+    setTimeout(() => {
+      addFailed.value.close()
+    }, 1500)
   }
-  // 清空欄位資料
   coverImage.value = defaultCoverImage
-  ScheduleName.value = ''
-  startDate.value = ''
-  endDate.value = ''
-  transportationWay.value = 'CUSTOM'
+  ScheduleName.value = ""
+  startDate.value = ""
+  endDate.value = ""
+  transportationWay.value = "CUSTOM"
 }
 
 onMounted(() => {
@@ -131,7 +142,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <dialog id="NewSchedule" class="modal">
+  <dialog id="newSchedule" class="modal">
     <div
       class="modal-box p-0 w-full md:max-w-[480px] sm:max-w-[100%] sm:max-h-[100%] max-md:rounded-none"
     >
@@ -168,7 +179,7 @@ onMounted(() => {
           <!-- 使用 Label 包裹按鈕 -->
           <label
             for="dropdown-toggle"
-            class="w-[82px] h-[32px] absolute right-[20px] bottom-[16px] z-10 flex items-center justify-center gap-2 border-[1px] border-white rounded-3xl py-[4px] px-[12px] cursor-pointer"
+            class="w-[85px] h-[32px] absolute right-[20px] bottom-[16px] z-10 flex items-center justify-center gap-2 border-[1px] border-white rounded-3xl py-[4px] px-[12px] cursor-pointer"
           >
             <PencilIcon class="size-5 font-bold text-white" />
             <p class="font-bold text-sm text-white">更換</p>
@@ -188,7 +199,7 @@ onMounted(() => {
             <label
               for="file-upload"
               class="cursor-pointer w-full"
-              @change="uploadImg"
+              @change="handleImgUpload"
             >
               <li
                 class="h-[50%] px-[20px] py-[8px] hover:bg-gray-100 cursor-pointer flex items-center border-t-[1px] border-slate-200"
@@ -205,7 +216,7 @@ onMounted(() => {
             </label>
           </ul>
 
-          <div class="relative w-full h-auto rounded-xl overflow-hidden">
+          <div class="relative w-full h-[220px] rounded-xl overflow-hidden">
             <img
               :src="coverImage"
               alt="封面照片"
@@ -216,7 +227,6 @@ onMounted(() => {
             ></div>
           </div>
         </div>
-
         <!-- 行程名稱 -->
         <div>
           <p class="mb-2 font-bold">行程名稱</p>
@@ -233,7 +243,7 @@ onMounted(() => {
           <div>
             <p class="mb-2 font-bold">行程日期</p>
           </div>
-          <div class="flex flex-erap gap-[20px] justify-between items-center">
+          <div class="flex flex-erap gap-3 justify-between items-center">
             <input
               type="date"
               placeholder="出發日"
@@ -300,6 +310,15 @@ onMounted(() => {
       <form method="dialog"></form>
       <CalendarCheck class="mx-auto w-14 h-14 text-primary-600 mb-3" />
       <h3 class="text-xl font-bold text-center">行程建立成功！</h3>
+    </div>
+  </dialog>
+  <!-- add schedule failed 的 Modal -->
+  <dialog ref="addFailed" class="modal w-[384px] mx-auto">
+    <div class="modal-box">
+      <form method="dialog"></form>
+      <MapXmark class="mx-auto w-14 h-14 text-primary-600 mb-3" />
+      <h3 class="text-xl font-bold text-center">行程建立失敗！</h3>
+      <p class="text-center mt-3">請確認所有欄位皆已填寫。</p>
     </div>
   </dialog>
 </template>

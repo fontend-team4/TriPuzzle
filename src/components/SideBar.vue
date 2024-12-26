@@ -1,37 +1,30 @@
 <script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import LoginDialog from './LoginDialog.vue'
+import { ref } from "vue"
+import { useRouter } from "vue-router"
+import LoginDialog from "./LoginDialog.vue"
 import {
   MagnifyingGlassIcon,
   LightBulbIcon,
   UserCircleIcon,
   Bars3Icon,
-} from '@heroicons/vue/24/solid'
-import { LoginModalStore } from '@/stores/LoginModal.js'
+} from "@heroicons/vue/24/solid"
+import { LoginModalStore } from "@/stores/LoginModal.js"
 const LoginStore = LoginModalStore()
 
 const router = useRouter()
 // 判斷是否為登入狀態，未登入才會跳登入彈窗，已登入直接進到 member 頁面
 const checkIfIsLogin = () => {
-  const token = localStorage.getItem('token')
+  const token = localStorage.getItem("token")
   if (!token) {
     LoginStore.openModal()
   } else {
-    router.push('/member')
+    router.push("/member")
   }
 }
 
 const isMenuOpen = ref(false)
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value
-}
-const isLoginDialogOpen = ref(false)
-const openLoginDialog = () => {
-  isLoginDialogOpen.value = true
-}
-const closeLoginDialog = () => {
-  isLoginDialogOpen.value = false
 }
 </script>
 
@@ -55,11 +48,7 @@ const closeLoginDialog = () => {
   >
     <div class="flex items-center">
       <RouterLink to="/planner">
-        <img
-          src="https://web.chictrip.com.tw/assets/logo.26916d07.svg"
-          alt="Logo"
-          class="w-10 mb-3"
-        />
+        <img src="../assets/svg/logo-light.svg" alt="Logo" class="w-12 mb-3" />
       </RouterLink>
     </div>
     <ul class="w-full space-y-2">
@@ -100,7 +89,6 @@ const closeLoginDialog = () => {
         class="flex items-center p-2 transition-all rounded-lg hover:bg-primary-100"
       >
         <button class="flex w-full" @click="checkIfIsLogin">
-          <!-- @click="LoginStore.openModal()" -->
           <UserCircleIcon class="flex-none w-6 h-6 text-slate-500" />
           <span
             class="hidden ml-3 font-medium transition-opacity duration-500 delay-500 opacity-0 group-hover:opacity-100 group-hover:inline-block whitespace-nowrap text-slate-500 hover:text-primary-800"
@@ -111,7 +99,6 @@ const closeLoginDialog = () => {
       </li>
     </ul>
   </div>
-  <!-- <LoginDialog class="z-20" v-if="isLoginDialogOpen" @close="closeLoginDialog" /> -->
   <LoginDialog
     class="z-20"
     v-if="LoginStore.isOpen"

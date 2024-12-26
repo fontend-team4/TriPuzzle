@@ -1,23 +1,25 @@
 <script setup>
-import { ref, defineProps } from 'vue'
-import { LinkIcon, ShareIcon, ChevronDownIcon } from '@heroicons/vue/24/outline'
-import ScheduleSummaryModal from './ScheduleSummaryModal.vue'
-import ExportScheduleModal from './ExportScheduleModal.vue'
-import ExitCoEditModal from './ExitCoEditModal.vue'
+import { defineProps, defineEmits } from "vue"
+import { LinkIcon, ChevronDownIcon } from "@heroicons/vue/24/outline"
+import ScheduleSummaryModal from "./ScheduleSummaryModal.vue"
+import ExportScheduleModal from "./ExportScheduleModal.vue"
+import ExitCoEditModal from "./ExitCoEditModal.vue"
 
-// const activeTab = ref('share')
 const props = defineProps({
   activeTab: {
     type: String,
     required: true,
   },
 })
+const emit = defineEmits(["updateStatus"])
+const updateActiveTab = (status) => {
+  emit("updateStatus", status)
+}
 </script>
 
 <template>
   <dialog id="shareSchedule" class="modal">
     <div class="modal-box min-w-full md:min-w-[480px] bg-gray">
-      <!-- close button -->
       <form method="dialog">
         <div class="w-full h-10">
           <button
@@ -33,8 +35,8 @@ const props = defineProps({
           id="share"
           type="radio"
           name="tab"
-          v-model="props.activeTab"
-          value="share"
+          :checked="activeTab === 'share'"
+          @change="updateActiveTab('share')"
           class="hidden"
         />
         <label
@@ -46,8 +48,8 @@ const props = defineProps({
           id="invite"
           type="radio"
           name="tab"
-          v-model="props.activeTab"
-          value="invite"
+          :checked="activeTab === 'invite'"
+          @change="updateActiveTab('invite')"
           class="hidden"
         />
         <label
