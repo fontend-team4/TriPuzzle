@@ -22,8 +22,10 @@ const isLogin = ref(false)
 const token = localStorage.getItem("token")
 
 const hasSchedules = ref(false)
+const hasShareSchedules = ref(false)
 const checkedSchedule = ref("mine")
 const schedules = ref([])
+const shareSchedules = ref([])
 const deletedId = ref(null)
 const getSchedules = async () => {
   const config = {
@@ -46,6 +48,32 @@ const getSchedules = async () => {
     hasSchedules.value = false
   }
 }
+
+const getShareSchedules = async () => {
+  const config = {
+    headers: {
+      Authorization: token,
+    },
+  }
+  try {
+    const response = await axios.get(`${API_URL}/usersSchedules`, config)
+    if (response.data.length > 0) {
+      hasShareSchedules.value = true
+      console.log("共編", response.data)
+    }
+    shareSchedules.value = response.data
+    shareSchedules.value.forEach((item) => {
+      item.start_date = item.start_date.split("T")[0]
+      item.end_date = item.end_date.split("T")[0]
+      console.log(shareSchedules.value)
+    })
+  } catch (error) {
+    console.error(error.message)
+    hasShareSchedules.value = false
+  }
+}
+
+// 搜尋該行程的所有使用者
 
 const openDeleteModal = (id) => {
   deletedId.value = id
@@ -71,6 +99,16 @@ const login = () => {
 const listsort = ref("newest")
 const sortedSchedules = computed(() => {
   return schedules.value.sort((a, b) => {
+    if (listsort.value === "newest") {
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    } else {
+      return new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+    }
+  })
+})
+
+const sortedShareSchedules = computed(() => {
+  return shareSchedules.value.sort((a, b) => {
     if (listsort.value === "newest") {
       return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
     } else {
@@ -133,6 +171,7 @@ onMounted(async () => {
   if (token) {
     isLogin.value = true
     await getSchedules()
+    await getShareSchedules()
   }
 })
 </script>
@@ -140,12 +179,12 @@ onMounted(async () => {
 <template>
   <div class="overflow-x-hidden">
     <div
-      class="schedule-list w-full lg:w-96 h-screen bg-white shadow-xl transition-all relative"
+      class="relative w-full h-screen transition-all bg-white shadow-xl schedule-list lg:w-96"
     >
       <!-- schedule list -->
-      <div class="w-screen lg:w-full p-5 bg-white">
+      <div class="w-screen p-5 bg-white lg:w-full">
         <!-- header -->
-        <div class="pb-3 relative bg-white">
+        <div class="relative pb-3 bg-white">
           <div
             class="bg-gray-200 w-8 h-8 rounded-full absolute top-0 right-0 p-1.5 hover:cursor-pointer"
             @click="listToggle"
@@ -153,7 +192,7 @@ onMounted(async () => {
             <XMarkIcon />
           </div>
           <h2 class="text-2xl font-medium pt-10 pb-2.5">行程</h2>
-          <div class="w-full h-10 flex gap-1 mb-5 p-1 rounded-xl bg-gray">
+          <div class="flex w-full h-10 gap-1 p-1 mb-5 rounded-xl bg-gray">
             <input
               id="mine"
               type="radio"
@@ -165,7 +204,7 @@ onMounted(async () => {
             />
             <label
               for="mine"
-              class="mine-toggle w-1/2 text-center py-1 px-2 rounded-lg hover:bg-white hover:cursor-pointer"
+              class="w-1/2 px-2 py-1 text-center rounded-lg mine-toggle hover:bg-white hover:cursor-pointer"
               >我的行程</label
             >
             <input
@@ -178,12 +217,12 @@ onMounted(async () => {
             />
             <label
               for="coedit"
-              class="coedit-toggle w-1/2 text-center py-1 px-2 rounded-lg hover:bg-white hover:cursor-pointer"
+              class="w-1/2 px-2 py-1 text-center rounded-lg coedit-toggle hover:bg-white hover:cursor-pointer"
               >與我共編</label
             >
           </div>
           <select
-            class="select select-ghost max-w-xs focus:border-0 focus:outline-none"
+            class="max-w-xs select select-ghost focus:border-0 focus:outline-none"
             v-model="listsort"
             v-if="isLogin && hasSchedules"
           >
@@ -200,8 +239,9 @@ onMounted(async () => {
               <!-- 有行程 -->
               <div
                 v-if="hasSchedules"
-                class="flex flex-wrap gap-4 justify-center"
+                class="flex flex-wrap justify-center gap-4"
               >
+                <!-- 行程卡片 -->
                 <div
                   v-for="item in sortedSchedules"
                   :key="item.id"
@@ -218,9 +258,9 @@ onMounted(async () => {
                     />
                   </figure>
                   <!-- 行程右上設定 icon -->
-                  <div class="flex gap-2 absolute top-3 right-3">
+                  <div class="absolute flex gap-2 top-3 right-3">
                     <span
-                      class="w-6 h-6 rounded-full bg-gray-transparent text-white p-1 hover:cursor-pointer"
+                      class="w-6 h-6 p-1 text-white rounded-full bg-gray-transparent hover:cursor-pointer"
                       onclick="shareSchedule.showModal()"
                       @click="openShareModal"
                     >
@@ -229,18 +269,18 @@ onMounted(async () => {
                     <div class="dropdown">
                       <button
                         role="button"
-                        class="w-6 h-6 rounded-full bg-gray-transparent text-white p-1 relative"
+                        class="relative w-6 h-6 p-1 text-white rounded-full bg-gray-transparent"
                       >
                         <EllipsisHorizontalIcon />
                       </button>
                       <!-- dropdown-content 控制開關-->
                       <ul
                         tabindex="0"
-                        class="dropdown-content w-32 bg-white rounded border border-gray absolute right-0 top-10"
+                        class="absolute right-0 w-32 bg-white border rounded dropdown-content border-gray top-10"
                       >
                         <li @click="scheduleDuplicate(item.id)">
                           <a
-                            class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray"
+                            class="flex items-center gap-1 px-5 py-2 text-sm hover:bg-gray"
                             href="#"
                           >
                             <span class="inline-block w-6 h-6"
@@ -254,7 +294,7 @@ onMounted(async () => {
                           @click="openInviteModal"
                         >
                           <a
-                            class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray"
+                            class="flex items-center gap-1 px-5 py-2 text-sm hover:bg-gray"
                             href="#"
                           >
                             <span class="inline-block w-6 h-6"
@@ -269,7 +309,7 @@ onMounted(async () => {
                           onclick="deleteSchedule.showModal()"
                         >
                           <a
-                            class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray"
+                            class="flex items-center gap-1 px-5 py-2 text-sm hover:bg-gray"
                             href="#"
                           >
                             <span class="inline-block w-6 h-6"
@@ -283,10 +323,10 @@ onMounted(async () => {
                   </div>
                   <!-- 行程資訊 -->
                   <div
-                    class="flex flex-row justify-between items-center px-0 py-3"
+                    class="flex flex-row items-center justify-between px-0 py-3"
                   >
                     <div
-                      class="w-4/5 px-5 border-dotted border-r-2 border-gray"
+                      class="w-4/5 px-5 border-r-2 border-dotted border-gray"
                     >
                       <h2 class="text-lg truncate">{{ item.title }}</h2>
                       <p class="text-xs text-slate-500">
@@ -299,13 +339,13 @@ onMounted(async () => {
                       @click="openInviteModal"
                     >
                       <p class="w-6 h-6 mx-auto"><UserPlusIcon /></p>
-                      <p class="text-xs">2人</p>
+                      <p class="text-xs">{{ item.total_users }}人</p>
                     </div>
                   </div>
                 </div>
               </div>
               <!-- 無行程 -->
-              <div v-else class="w-full h-52 text-center mt-7">
+              <div v-else class="w-full text-center h-52 mt-7">
                 <img
                   class="w-[180px] h-[90] mx-auto"
                   src="https://web.chictrip.com.tw/assets/monster_empty.3a44f172.png"
@@ -318,20 +358,89 @@ onMounted(async () => {
             <div v-else>
               <!-- 有行程 -->
               <div
-                v-if="hasSchedules"
-                class="flex flex-wrap gap-4 justify-center"
+                v-if="hasShareSchedules"
+                class="flex flex-wrap justify-center gap-4"
               >
-                <img
-                  class="w-[180px] h-[103px] mx-auto"
-                  src="https://web.chictrip.com.tw/assets/master-unlock.990b2501.png"
-                  alt=""
-                />
-                <p class="mb-6">
-                  還沒有 <span class="text-primary-600">與我共編</span> 的行程哦
-                </p>
+                <!-- 行程卡片 -->
+                <div
+                  v-for="item in sortedShareSchedules"
+                  :key="item.id"
+                  class="card card-compact bg-base-100 sm:w-full md:w-[30%] lg:w-full h-[176px] lg:h-auto border-gray border mb-4 relative hover:cursor-pointer"
+                >
+                  <figure
+                    @click="detailToggle(item.id)"
+                    class="w-full h-[150px] overflow-hidden"
+                  >
+                    <img
+                      :src="item.image_url"
+                      alt="scheduleCoverImage"
+                      class="object-cover"
+                    />
+                  </figure>
+                  <!-- 行程右上設定 icon -->
+                  <div class="absolute flex gap-2 top-3 right-3">
+                    <span
+                      class="w-6 h-6 p-1 text-white rounded-full bg-gray-transparent hover:cursor-pointer"
+                      onclick="shareSchedule.showModal()"
+                      @click="openShareModal"
+                    >
+                      <ShareIcon />
+                    </span>
+                    <div class="dropdown">
+                      <button
+                        role="button"
+                        class="relative w-6 h-6 p-1 text-white rounded-full bg-gray-transparent"
+                      >
+                        <EllipsisHorizontalIcon />
+                      </button>
+                      <!-- dropdown-content 控制開關-->
+                      <ul
+                        tabindex="0"
+                        class="absolute right-0 w-32 bg-white border rounded dropdown-content border-gray top-10"
+                      >
+                        <li
+                          class="border-t border-gray"
+                          @click="openDeleteModal(item.id)"
+                          onclick="deleteSchedule.showModal()"
+                        >
+                          <a
+                            class="flex items-center gap-1 px-5 py-2 text-sm hover:bg-gray"
+                            href="#"
+                          >
+                            <span class="inline-block w-6 h-6"
+                              ><TrashIcon
+                            /></span>
+                            <p>刪除行程</p>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <!-- 行程資訊 -->
+                  <div
+                    class="flex flex-row items-center justify-between px-0 py-3"
+                  >
+                    <div
+                      class="w-4/5 px-5 border-r-2 border-dotted border-gray"
+                    >
+                      <h2 class="text-lg truncate">{{ item.title }}</h2>
+                      <p class="text-xs text-slate-500">
+                        {{ item.start_date }} ~ {{ item.end_date }}
+                      </p>
+                    </div>
+                    <div
+                      class="w-16 text-center hover:cursor-pointer"
+                      onclick="shareSchedule.showModal()"
+                      @click="openInviteModal"
+                    >
+                      <p class="w-6 h-6 mx-auto"><UserPlusIcon /></p>
+                      <p class="text-xs">{{ item.total_users }}人</p>
+                    </div>
+                  </div>
+                </div>
               </div>
               <!-- 無行程 -->
-              <div v-else class="h-52 text-center mt-7">
+              <div v-else class="text-center -full h-52 mt-7">
                 <img
                   class="w-[180px] h-[103px] mx-auto"
                   src="https://web.chictrip.com.tw/assets/master-unlock.990b2501.png"
@@ -348,7 +457,7 @@ onMounted(async () => {
             <!-- 我的 -->
             <div
               v-if="checkedSchedule === 'mine'"
-              class="w-full h-52 text-center mt-7"
+              class="w-full text-center h-52 mt-7"
             >
               <img
                 class="w-[180px] h-[90] mx-auto"
@@ -362,7 +471,7 @@ onMounted(async () => {
               </p>
             </div>
             <!-- 共編 -->
-            <div v-else class="w-full h-52 text-center mt-7">
+            <div v-else class="w-full text-center h-52 mt-7">
               <img
                 class="w-[180px] h-[90] mx-auto"
                 src="https://web.chictrip.com.tw/assets/monster_empty.3a44f172.png"
@@ -384,7 +493,7 @@ onMounted(async () => {
             class="w-full lg:w-96 h-20 px-2.5 py-5 bg-white border-gray border-t absolute bottom-0 left-0"
           >
             <button
-              class="w-full h-12 px-5 py-3 bg-primary-600 text-white text-center text-base rounded-3xl hover:bg-primary-700"
+              class="w-full h-12 px-5 py-3 text-base text-center text-white bg-primary-600 rounded-3xl hover:bg-primary-700"
               onclick="newSchedule.showModal()"
             >
               建立新行程
@@ -398,7 +507,7 @@ onMounted(async () => {
             class="w-full lg:w-96 h-38 px-2.5 py-5 bg-white border-t border-gray fixed bottom-0 right-0"
           >
             <button
-              class="w-full h-12 px-5 py-3 bg-primary-600 hover:bg-primary-700 text-white text-center rounded-3xl"
+              class="w-full h-12 px-5 py-3 text-center text-white bg-primary-600 hover:bg-primary-700 rounded-3xl"
               @click="login"
             >
               登入 / 註冊，建立新行程
@@ -409,7 +518,7 @@ onMounted(async () => {
             class="w-full lg:w-96 h-38 px-2.5 py-5 bg-white border-t border-gray fixed bottom-0 right-0"
           >
             <button
-              class="w-full h-12 px-5 py-3 bg-primary-600 hover:bg-primary-700 text-white text-center rounded-3xl"
+              class="w-full h-12 px-5 py-3 text-center text-white bg-primary-600 hover:bg-primary-700 rounded-3xl"
               @click="login"
             >
               登入 / 註冊
