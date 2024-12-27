@@ -32,6 +32,6 @@ onMounted(() => {
 
 <template>
   <SideBar />
-  <MapComponent />
-  <MainComponent class="h-screen overflow-hidden" />
+  <MapComponent map="map" />
+  <MainComponent class="h-screen overflow-hidden" map="map2" />
 </template>

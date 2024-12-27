@@ -1,66 +1,69 @@
 <!-- 右邊側欄 -->
 <script setup>
-import { ref, computed, onMounted, nextTick, watch } from 'vue'
+import { ref, computed, onMounted, nextTick, watch, defineProps } from "vue"
 import {
   XMarkIcon,
   ChevronDownIcon,
   ChevronUpIcon,
   ChevronLeftIcon,
   HandThumbUpIcon,
-} from '@heroicons/vue/24/outline'
-import { PlusCircleIcon, MapPinIcon } from '@heroicons/vue/24/solid'
-import { PlaceModalStore } from '@/stores/PlaceModal'
-import { useUserStore } from '@/stores/userStore'
-import axios from 'axios'
+} from "@heroicons/vue/24/outline"
+import { PlusCircleIcon, MapPinIcon } from "@heroicons/vue/24/solid"
+import { PlaceModalStore } from "@/stores/PlaceModal"
+import { useUserStore } from "@/stores/userStore"
+import axios from "axios"
 //googlemap
-// const apiKey = import.meta.env.VITE_GOOGLE_API_KEY
-// let map = ref('')
-// 初始化地圖
-// let map=ref('')
-// async function initMap() {
-//   try {
-//     const { Map } = await google.maps.importLibrary("maps");
-//     const mapContainer = document.getElementById("map");
-//     if (!mapContainer) {
-//       console.error("Map container not found.");
-//       return;
-//     }
-//     map.value = new Map(mapContainer, {
-//       center: { lat: 25.033964, lng: 121.564468 }, // 台北 101 中心點
-//       zoom: 14,
-//     });
-//   } catch (error) {
-//     console.error("Failed to initialize Google Maps:", error);
-//   }
-// }
-// initMap()
+const props = defineProps({
+  map: {
+    type: String,
+    required: true,
+  },
+})
+const apiKey = import.meta.env.VITE_GOOGLE_API_KEY
+let map = ref("")
+async function initMap() {
+  try {
+    const { Map } = await google.maps.importLibrary("maps")
+    const mapContainer = document.getElementById(props.map)
+    if (!mapContainer) {
+      console.error("Map container not found.")
+      return
+    }
+    map.value = new Map(mapContainer, {
+      center: { lat: 25.033964, lng: 121.564468 }, // 台北 101 中心點
+      zoom: 14,
+    })
+  } catch (error) {
+    console.error("Failed to initialize Google Maps:", error)
+  }
+}
+initMap()
 // import { Loader } from "@googlemaps/js-api-loader"
 // const loader = new Loader({
 //   apiKey: apiKey,
 //   version: "weekly",
-// });
+// })
 
 // loader.load().then(async () => {
-//   const { Map } = await google.maps.importLibrary("maps");
+//   const { Map } = await google.maps.importLibrary("maps")
 
 //   map = new Map(document.getElementById("map"), {
 //     center: { lat: -34.397, lng: 150.644 },
 //     zoom: 8,
-//   });
-// });
+//   })
+// })
 // async function initMap() {
-//   const { Map } = await google.maps.importLibrary('maps');
-//   const newMap = new Map(document.getElementById('map'), {
-//     center:{ lat: 25.0341222, lng: 121.5640212 },
+//   const { Map } = await google.maps.importLibrary("maps")
+//   const newMap = new Map(document.getElementById("map"), {
+//     center: { lat: 25.0341222, lng: 121.5640212 },
 //     zoom: 15,
 //     maxZoom: 20,
 //     minZoom: 3,
 //     streetViewControl: false,
 //     mapTypeControl: false,
 //     mapId: "83af7188f1a0650d",
-//   });
-//   map.value = newMap;
-
+//   })
+//   map.value = newMap
 // }
 // initMap()
 
@@ -72,14 +75,13 @@ onMounted(async () => {
     const res = await userStore.getUser()
     userData.value = res
   } catch (error) {
-    console.error('Error fetching user data:', error)
+    console.error("Error fetching user data:", error)
   }
 })
 
 //行程資料
 const modalStore = PlaceModalStore()
 const place = modalStore.selectedPlace
-
 
 const URL = import.meta.env.VITE_HOST_URL
 const schedules = ref([])
@@ -110,10 +112,22 @@ function formatYear(dateString) {
   const day = date.getDate()
   return `${year}/${month}/${day}`
 }
+// 建立一個以日期為鍵的 Map
+function groupPlacesByDate(schedulePlaces) {
+  const dateMap = {}
+  schedulePlaces.forEach((place) => {
+    const date = place.which_date.split("T")[0] // 擷取日期部分
+    if (!dateMap[date]) {
+      dateMap[date] = []
+    }
+    dateMap[date].push(place)
+  })
+  return dateMap
+}
 
 // 抓取行程資料
 onMounted(async () => {
-  const token = localStorage.getItem('token')
+  const token = localStorage.getItem("token")
   try {
     const res = await axios.get(`${URL}/schedules`, {
       headers: { Authorization: token },
@@ -121,93 +135,95 @@ onMounted(async () => {
     schedules.value = res.data.map((schedule) => ({
       ...schedule,
       dates: calculateDateRange(schedule.start_date, schedule.end_date),
+      groupedPlaces: groupPlacesByDate(schedule.schedule_places),
     }))
-    // console.log(schedules.value);
   } catch (error) {
-    console.error('Error fetching schedules:', error)
+    console.error("Error fetching schedules:", error)
   }
 })
 
 //加入景點到行程
-async function updateSchedulePlaces(scheduleId, updatedPlaces) {
-  const token = localStorage.getItem("token");
+async function addPlaceToSchedule(scheduleId, date, newPlace) {
+  const token = localStorage.getItem("token")
   try {
-    const response = await axios.patch(
-      `${URL}/schedules/${scheduleId}`,
-      { places: updatedPlaces },
+    // 更新後端資料
+    const response = await axios.post(
+      `${URL}/schedule_places`,
+      {
+        schedule_id: scheduleId,
+        place_id: newPlace.id,
+        which_date: date,
+        arrival_time: "08:00:00", // 預設抵達時間
+        stay_time: "01:00:00", // 預設停留時間
+      },
       { headers: { Authorization: token } }
-    );
-    console.log("更新成功:", response.data);
+    )
+
+    // 更新前端資料
+    const schedule = schedules.value.find((s) => s.id === scheduleId)
+    if (schedule) {
+      schedule.schedule_places.push(response.data)
+      schedule.groupedPlaces = groupPlacesByDate(schedule.schedule_places)
+    }
+    console.log("新增景點成功:", response.data)
   } catch (error) {
-    console.error("更新失敗:", error);
+    console.error("新增景點失敗:", error)
   }
 }
 
-// 呼叫範例
-updateSchedulePlaces(3, [
-  {
-    place_id: 1,
-    which_date: "2025-01-01T00:00:00.000Z",
-    arrival_time: "08:00:00",
-    stay_time: "01:00:00",
-    transportation_way: "WALK",
-    order: "1",
-  },
-  {
-    place_id: 2,
-    which_date: "2025-01-02T00:00:00.000Z",
-    arrival_time: "09:00:00",
-    stay_time: "02:00:00",
-    transportation_way: "CAR",
-    order: "2",
-  },
-]);
+async function addNewPlace(scheduleId, date) {
+  const newPlace = {
+    id: "ChIJd7zN_thvQjQRZd4doaUJiQU", // 假設新景點 ID
+    name: "新景點名稱",
+  }
+  await addPlaceToSchedule(scheduleId, date, newPlace)
+}
 
 // Tab的部分
-const selectedButton = ref('myRunDown')
+const selectedButton = ref("myRunDown")
 
 const selectMyRunDown = () => {
-  selectedButton.value = 'myRunDown'
+  selectedButton.value = "myRunDown"
 }
 
 const selectCoEdit = () => {
-  selectedButton.value = 'coEdit'
+  selectedButton.value = "coEdit"
 }
 
 const myRunDownCls = computed(() => {
-  return selectedButton.value === 'myRunDown'
-    ? ['text-white', 'bg-primary-600']
-    : ['bg-white', 'text-black', 'hover:bg-primary-100']
+  return selectedButton.value === "myRunDown"
+    ? ["text-white", "bg-primary-600"]
+    : ["bg-white", "text-black", "hover:bg-primary-100"]
 })
 
 const coEditCls = computed(() => {
-  return selectedButton.value === 'coEdit'
-    ? ['text-white', 'bg-primary-600']
-    : ['bg-white', 'text-black', 'hover:bg-primary-100']
+  return selectedButton.value === "coEdit"
+    ? ["text-white", "bg-primary-600"]
+    : ["bg-white", "text-black", "hover:bg-primary-100"]
 })
 
 const tab1Cls = computed(() => {
-  return selectedButton.value === 'myRunDown'
-    ? ['opacity-100', 'relative', 'z-10']
-    : ['opacity-0', 'absolute', 'z-0']
+  return selectedButton.value === "myRunDown"
+    ? ["opacity-100", "relative", "z-10"]
+    : ["opacity-0", "absolute", "z-0"]
 })
 
 const tab2Cls = computed(() => {
-  return selectedButton.value === 'coEdit'
-    ? ['opacity-100', 'relative', 'z-10']
-    : ['opacity-0', 'absolute', 'z-0']
+  return selectedButton.value === "coEdit"
+    ? ["opacity-100", "relative", "z-10"]
+    : ["opacity-0", "absolute", "z-0"]
 })
 
 // journey切換
-const openedCollapse = ref('journey1')
+const openedCollapse = ref("journey1")
 
 const toggleCollapse = (id) => {
   openedCollapse.value = openedCollapse.value === id ? null : id
 }
 
 // Day Card切換
-const currentPage = ref('page1')
-const selectedTab = ref('day1')
+const currentPage = ref("page1")
+const selectedTab = ref("day1")
 
 const switchToPage = (page, tab) => {
   currentPage.value = page
@@ -222,29 +238,29 @@ const closeAddPlaceModal = () => {
 // 卡片數據
 const cards = ref([
   {
-    location1: '❶ 饒河觀光夜市',
-    newlocation: '松山文創園區',
-    location2: '❷ 國父紀念館',
+    location1: "❶ 饒河觀光夜市",
+    newlocation: "松山文創園區",
+    location2: "❷ 國父紀念館",
   },
   {
-    location1: '❷ 國父紀念館',
-    newlocation: '松山文創園區',
-    location2: '❸ 中正紀念堂',
+    location1: "❷ 國父紀念館",
+    newlocation: "松山文創園區",
+    location2: "❸ 中正紀念堂",
   },
   {
-    location1: '❸ 中正紀念堂',
-    newlocation: '松山文創園區',
-    location2: '❹ 五倍學院',
+    location1: "❸ 中正紀念堂",
+    newlocation: "松山文創園區",
+    location2: "❹ 五倍學院",
   },
   {
-    location1: '❹ 五倍學院',
-    newlocation: '松山文創園區',
-    location2: '❺ 二二八紀念公園',
+    location1: "❹ 五倍學院",
+    newlocation: "松山文創園區",
+    location2: "❺ 二二八紀念公園",
   },
   {
-    location1: '❺ 二二八紀念公園',
-    newlocation: '松山文創園區',
-    location2: '❻ 台大醫院',
+    location1: "❺ 二二八紀念公園",
+    newlocation: "松山文創園區",
+    location2: "❻ 台大醫院",
   },
 ])
 
@@ -358,7 +374,7 @@ const selectCard = (index) => {
                 </div>
                 <div class="collapse-content p-0 pl-[1rem]">
                   <div
-                    v-for="(date, index) in schedule.dates"
+                    v-for="(places, date, index) in schedule.groupedPlaces"
                     :key="index"
                     @click="switchToPage('DayCard', `day${index + 1}`)"
                     class="relative p-2 my-[0.5rem] bg-[#f4f4f4] rounded-xl cursor-pointer hover:bg-primary-100 box-border overflow-hidden"
@@ -376,9 +392,7 @@ const selectCard = (index) => {
                     </h3>
                     <!-- 景點數量要跟我的行程連動 -->
                     <p>
-                      {{ formatDate(date) }}　{{
-                        schedule.places?.[index]?.length || 0
-                      }}
+                      {{ formatDate(date) }}　{{ places.length }}
                       個景點
                     </p>
                   </div>
@@ -617,7 +631,7 @@ const selectCard = (index) => {
           >
             <div
               class="w-full text-white border-none rounded-full btn bg-primary-600 hover:bg-primary-200 hover:text-primary-600"
-              @click="closeModal,updateSchedulePlaces"
+              @click="closeModal, addNewPlace(schedule.id, index)"
             >
               確認新增
             </div>
