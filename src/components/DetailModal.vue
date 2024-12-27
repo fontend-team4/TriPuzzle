@@ -1,105 +1,85 @@
 <script setup>
-import DetailCarousel from "./DetailCarousel.vue"
-import { computed, ref, defineEmits, onMounted } from "vue"
-import { useRoute,useRouter } from "vue-router"
+import DetailCarousel from "./DetailCarousel.vue";
+import Waterfall from "./Waterfall.vue";
+import AddPlaceBtn from "./AddPlaceBtn.vue";
+import { useRoute } from "vue-router";
+import { usePlacesStore } from "@/stores/fetchPlaces";
+import { PlaceModalStore } from "@/stores/PlaceModal";
+import { useCopyWebsiteStore } from "@/stores/copywebsite";
+import { addPlace } from "@/stores/addPlaces";
+import axios from "axios";
+import { computed, ref, defineProps, defineEmits, onMounted } from "vue";
 import {
   CalendarIcon,
   ClockIcon,
   PhoneIcon,
   GlobeAltIcon,
   MapPinIcon,
-  MagnifyingGlassIcon,
-  HeartIcon,
   ShareIcon,
-  PaperAirplaneIcon,
   XMarkIcon,
   PhotoIcon,
-  ChevronLeftIcon,
   ArrowDownTrayIcon,
   LinkIcon,
-} from "@heroicons/vue/24/outline"
-import { StarIcon } from "@heroicons/vue/24/solid"
-import Waterfall from "./Waterfall.vue"
-import AddPlaceBtn from "./AddPlaceBtn.vue"
-import { PlaceModalStore } from "@/stores/PlaceModal"
-import { usePlacesStore } from "@/stores/fetchPlaces"
-import axios from "axios"
-import { defineProps } from "vue"
-import { generateImageUrl } from "@/stores/favorites"
-import { useCopyWebsiteStore } from "@/stores/copywebsite"
-import { addPlace } from "@/stores/addPlaces"
+  HeartIcon,
+  PaperAirplaneIcon
+} from "@heroicons/vue/24/outline";
+import { StarIcon } from "@heroicons/vue/24/solid";
+import { generateImageUrl } from "@/stores/favorites";
 
+const API_URL = process.env.VITE_HOST_URL;
+const token = localStorage.getItem("token");
 const { copyToClipboard } = useCopyWebsiteStore();
 
-const API_URL = process.env.VITE_HOST_URL
-const token = localStorage.getItem("token")
+const modalStore = PlaceModalStore();
+const placesStore = usePlacesStore();
 
+const route = useRoute();
 
-const modalStore = PlaceModalStore()
-const placesStore = usePlacesStore()
+const showPhoto = ref(false); // 控制照片顯示狀態
+const place = ref({}); // 存放單一地點的詳情
+const places = ref([]); // 存放所有地點的列表
+const favorites = ref(JSON.parse(localStorage.getItem("favorites") || "[]")); // 收藏列表
 
-const route = useRoute()
-const router = useRouter();
-const showPhoto = ref(false)
-
-// CSS區
-const isPhotoShow = computed(() => {
-  return showPhoto.value
-    ? ["h-screen", "md:translate-x-0", "opacity-100", "bottom-0"]
-    : [
-        "h-0",
-        "md:translate-x-full",
-        "md:translate-y-0",
-        "opacity-0",
-        "-bottom-12",
-      ]
-})
-
-const overflowStatus = computed(() => {
-  return showPhoto.value ? ["overflow-hidden"] : [""]
-})
-const changeShowPhoto = () => {
-  return (showPhoto.value = !showPhoto.value)
-}
-
-// 接收Place物件
 const props = defineProps({
   place: {
     type: Object,
     required: false, // 改為非必需，避免報錯
   },
-})
-
-const places = ref([])
-const place = ref({})
-const favorites = ref(JSON.parse(localStorage.getItem("favorites") || "[]"));
-// 找到網址id
-const currentPlaceId = computed(() => route.query.placeId)
-
-const placeData = computed(() => {
-  return props.place || place.value;
 });
 
-// const updatePlaceIdInUrl = (placeId) => {
-//   router.replace({ query: { ...route.query, placeId } });
-// };
+// 關閉分享modal
+defineEmits(["close"]);
 
+// computed
+const currentPlaceId = computed(() => route.query.placeId); // 從 URL 中提取 placeId
+const placeData = computed(() => props.place || place.value); // 優先使用 props.place，其次使用本地加載的 place
 
 
 // 複製 URL 函數
 const copyPlaceUrl = () => {
   const placeId = currentPlaceId.value || place.value?.id; // 獲取當前地點 ID
   if (!placeId) {
-    alert('無法獲取地點 ID');
+    alert("無法獲取地點 ID");
     return;
   }
   copyToClipboard(placeId); // 傳遞地點 ID
-}
+};
 
-//關閉detailModal
-defineEmits(["close"])
-// 紀錄：打算改成用網址來渲染detailModal
-onMounted(async () => {
+// 切換顯示照片
+const changeShowPhoto = () => {
+  showPhoto.value = !showPhoto.value;
+};
+
+// 控制 CSS 樣式
+const isPhotoShow = computed(() =>
+  showPhoto.value
+    ? ["h-screen", "md:translate-x-0", "opacity-100", "bottom-0"]
+    : ["h-0", "md:translate-x-full", "md:translate-y-0", "opacity-0", "-bottom-12"]
+);
+const overflowStatus = computed(() => (showPhoto.value ? ["overflow-hidden"] : [""]));
+
+// PlaceComponent.vue 與 FavoriteComponent.vue 共用
+const fetchPlaceDetails = async () => {
   try {
     // 優先從 props 或本地 store 中加載資料
     places.value = placesStore.items;
@@ -116,7 +96,7 @@ onMounted(async () => {
       place.value = favorites.value.find((f) => f.place_id === currentPlaceId.value) || {};
     }
 
-    // 從 API 中獲取
+    // 從 API 中獲取地點詳情
     if (!Object.keys(place.value).length && currentPlaceId.value) {
       const response = await axios.get(`${API_URL}/places/${currentPlaceId.value}`, {
         headers: { Authorization: token },
@@ -124,7 +104,7 @@ onMounted(async () => {
       place.value = response.data;
     }
 
-    
+    // 若所有途徑都無法獲取地點詳情，拋出錯誤
     if (!Object.keys(place.value).length) {
       throw new Error("無法加載地點詳情，請檢查 placeId 是否有效。");
     }
@@ -132,11 +112,12 @@ onMounted(async () => {
     console.error("無法加載地點詳情:", error);
     place.value = null;
   }
-});
+};
 
 
-
+onMounted(fetchPlaceDetails);
 </script>
+
 
 <template>
   <div
