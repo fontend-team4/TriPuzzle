@@ -1,110 +1,131 @@
 <script setup>
-import { StarIcon, MapPinIcon, HeartIcon } from "@heroicons/vue/24/solid"
-import {
-  ref,
-  onMounted,
-  watch,
-  nextTick,
-  defineEmits,
-  onUnmounted,
-  computed,
-} from "vue"
-import { HeartIcon as OutlineHeartIcon } from "@heroicons/vue/24/outline"
-import AddPlaceBtn from "./AddPlaceBtn.vue"
-import { usePlacesStore } from "@/stores/fetchPlaces"
-import { useSearchStore } from "@/stores/searchPlaces"
-import { PlaceModalStore } from "@/stores/PlaceModal"
-import {
-  favorites,
-  isFavorited,
-  loadFavorites,
-  toggleFavorite,
-} from "@/stores/favorites.js"
+import { StarIcon, MapPinIcon, HeartIcon } from "@heroicons/vue/24/solid";
+import { ref, onMounted, watch, nextTick, defineEmits, onUnmounted, computed } from "vue";
+import { HeartIcon as OutlineHeartIcon } from "@heroicons/vue/24/outline";
+import AddPlaceBtn from "./AddPlaceBtn.vue";
+import { usePlacesStore } from "@/stores/fetchPlaces";
+import { useSearchStore } from "@/stores/searchPlaces";
+import { PlaceModalStore } from "@/stores/PlaceModal";
+import { favorites, isFavorited, loadFavorites, toggleFavorite } from "@/stores/favorites.js";
+import axios from "axios";
+import { useRoute, useRouter } from "vue-router";
+import { addPlace } from "@/stores/addPlaces";
 
-const placesStore = usePlacesStore()
-const searchStore = useSearchStore()
-const modalStore = PlaceModalStore()
+const placesStore = usePlacesStore();
+const searchStore = useSearchStore();
+const modalStore = PlaceModalStore();
+const router = useRouter();
+const route = useRoute();
 
-const columns = ref([]) // 每欄
-const numCols = ref(2) // 預設為兩欄
-const emit = defineEmits(["open-detail-modal", "updateIsPlacesComponent"])
+const columns = ref([]); // 每欄
+const numCols = ref(2); // 預設為兩欄
+const isLogin = ref(false);
+const token = localStorage.getItem("token");
+const userId = ref(localStorage.getItem("userId"));
 
-const isLogin = ref(false)
-const token = localStorage.getItem("token")
-const userId = ref(localStorage.getItem("userId"))
+const place = ref(null);
+const loading = ref(true);
+
+const API_URL = import.meta.env.VITE_HOST_URL;
+
+const emit = defineEmits(["open-detail-modal", "updateIsPlacesComponent"]);
+
 
 // 檢查登入狀態
 onMounted(() => {
-  isLogin.value = Boolean(token && userId.value)
+  isLogin.value = Boolean(token && userId.value);
   if (isLogin.value) {
-    loadFavorites() // 加載收藏列表
+    loadFavorites(); // 加載收藏列表
   }
-})
-
+});
 
 // 瀑布流計算
 const calculateColumns = async () => {
-  // 每次重新初始化 columns
-  columns.value = Array.from({ length: numCols.value }, () => [])
-  const heights = Array(numCols.value).fill(0)
+  columns.value = Array.from({ length: numCols.value }, () => []);
+  const heights = Array(numCols.value).fill(0);
 
   for (const item of placesStore.items) {
-    const shortestCol = heights.indexOf(Math.min(...heights))
-    columns.value[shortestCol].push(item)
-    await nextTick()
-    const img = document.getElementById(`img-${item.id}`)
+    const shortestCol = heights.indexOf(Math.min(...heights));
+    columns.value[shortestCol].push(item);
+
+    await nextTick();
+    const img = document.getElementById(`img-${item.id}`);
     if (img) {
-      heights[shortestCol] += img.offsetHeight + 16
+      heights[shortestCol] += img.offsetHeight + 16;
     }
   }
-}
+};
 
 // 監聽螢幕大小調整欄位數量
 const handleResize = () => {
-  if (window.innerWidth >= 1024) numCols.value = 4
-  else if (window.innerWidth >= 768) numCols.value = 3
-  else numCols.value = 2
-  calculateColumns()
-}
+  if (window.innerWidth >= 1024) numCols.value = 4;
+  else if (window.innerWidth >= 768) numCols.value = 3;
+  else numCols.value = 2;
+  calculateColumns();
+};
+
+const openDetailModal = (detailId) => {
+  emit("open-detail-modal", detailId); // 傳遞地點的 ID
+  router.replace({ query: { action: "placeInfo", placeId: detailId } }); // 更新URL
+};
+
+// 更新地圖中心點
+const updateMapCenter = (item) => {
+  searchStore.placeGeometry = item.geometry;
+  emit("updateIsPlacesComponent", false);
+};
+
+// 根據 place_id 載入地點詳細資訊
+const fetchPlaceById = async (placeId) => {
+  try {
+    const response = await axios.get(`${API_URL}/places/${placeId}`);
+    place.value = response.data;
+    console.log("在資料庫中找到:", place.value);
+  } catch (error) {
+    console.error("載入詳情失敗:", error);
+    alert("載入地點失敗");
+  } finally {
+    loading.value = false;
+  }
+};
+
+// 初始化和監聽事件
 
 // 初始化
 onMounted(async () => {
-  await calculateColumns() // 初始計算瀑布流
-  handleResize() // 初始化欄數
-  window.addEventListener("resize", handleResize)
-})
+  const placeId = route.query.placeId; // URL中的placeId
+  if (placeId) {
+    await fetchPlaceById(placeId); // 載入placeId對應的地點
+  }
 
-const openDetailModal = (detailId) => {
-  emit("open-detail-modal", detailId) // 傳遞地點的 ID
-}
+  await calculateColumns(); // 初始計算瀑布流
+  handleResize(); // 初始化欄數
+  window.addEventListener("resize", handleResize);
+});
 
-const updateMapCenter = (item) => {
-  searchStore.placeGeometry = item.geometry
-  emit("updateIsPlacesComponent", false)
-}
-
+// 移除事件監聽器
 onUnmounted(() => {
-  window.removeEventListener("resize", handleResize)
-})
+  window.removeEventListener("resize", handleResize);
+});
 
 // 監聽 items 的變化並重新計算瀑布流
 watch(
   () => placesStore.items,
   async (newItems) => {
-    await calculateColumns()
+    await calculateColumns();
   },
   { immediate: true }
-)
+);
 
 // 監聽 searchStore.searchData，當有更新時觸發 placesStore 更新
 watch(
   () => searchStore.searchData,
   (newData) => {
     if (newData.length > 0) {
-      placesStore.updateFromSearch(newData)
+      placesStore.updateFromSearch(newData);
     }
   }
-)
+);
 </script>
 
 <template>
@@ -125,7 +146,7 @@ watch(
         <div v-for="item in col" :key="item.id" class="group">
           <a
             href="#"
-            @click="openDetailModal(item.id), modalStore.savePlace(item)"
+            @click="openDetailModal(item.id),addPlace(item), modalStore.savePlace(item)"
           >
             <div class="relative w-full mb-2 overflow-hidden rounded-lg">
               <!-- 黑色遮罩 -->
