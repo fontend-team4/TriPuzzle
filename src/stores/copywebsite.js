@@ -12,12 +12,11 @@ export const useCopyWebsiteStore = defineStore('copyWebsite', () => {
       copySuccess.value = true; 
       alert('已複製到剪貼簿：');
 
-      // 1秒後隱藏提示
+      // 1秒後隱藏
       setTimeout(() => {
         copySuccess.value = false;
       }, 1000);
     } catch (error) {
-      console.error('複製網址失敗：', error);
       alert('複製網址失敗，請稍後再試');
     }
   };
