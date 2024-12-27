@@ -62,13 +62,13 @@ const getShareSchedules = async () => {
     const response = await axios.get(`${API_URL}/usersSchedules`, config);
     if (response.data.length > 0) {
       hasShareSchedules.value = true;
-      console.log("共編", response.data);
+      // console.log("共編", response.data);
     }
     shareSchedules.value = response.data;
     shareSchedules.value.forEach((item) => {
       item.start_date = item.start_date.split("T")[0];
       item.end_date = item.end_date.split("T")[0];
-      console.log(shareSchedules.value);
+      // console.log(shareSchedules.value);
     });
   } catch (error) {
     console.error(error.message);
@@ -209,7 +209,7 @@ const copySchedule = async () => {
   }
 };
 
-const showNewSchedule = inject("showNewSchedule");
+// const showNewSchedule = inject("showNewSchedule");
 
 onMounted(async () => {
   if (token) {

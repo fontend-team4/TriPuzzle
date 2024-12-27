@@ -1,9 +1,21 @@
 <script setup>
-import { defineProps, defineEmits, onMounted } from 'vue'
+import { defineProps, defineEmits, onMounted, ref, watch, computed } from 'vue'
 import { LinkIcon, ChevronDownIcon } from '@heroicons/vue/24/outline'
 import ScheduleSummaryModal from './ScheduleSummaryModal.vue'
 import ExportScheduleModal from './ExportScheduleModal.vue'
 import ExitCoEditModal from './ExitCoEditModal.vue'
+
+
+// 預設圖片 URL
+const defaultProfilePicUrl = "https://web.chictrip.com.tw/assets/waterview_default.f746ada9.svg";
+
+// 計算圖片 URL，若 `profile_pic_url` 不存在則使用預設值
+const creatorImageUrl = computed(() => 
+ sharePeople.creator.profile_pic_url? sharePeople.creator.profile_pic_url:defaultProfilePicUrl
+);
+
+
+const shareMembers = ref({})
 
 const copyShareLink = async () => {
   try {
@@ -38,9 +50,12 @@ const emit = defineEmits(['updateStatus'])
 const updateActiveTab = (status) => {
   emit('updateStatus', status)
 }
-const shareMembers = props.sharePeople.sharedUsers
 
-// 使用sharePeople
+
+watch(props, (newprops, oldprops)=>{
+  shareMembers.value = props.sharePeople.sharedUsers
+})
+
 
 </script>
 
@@ -131,7 +146,7 @@ const shareMembers = props.sharePeople.sharedUsers
         <div class="text-center">
           <!-- 邀請者視角 -->
           <div class="dropdown">
-            <div
+            <!-- <div
               tabindex="0"
               role="button"
               class="flex items-center justify-center w-32 mb-4 rounded-full min-h-7 bg-primary-100 text-primary-600"
@@ -140,8 +155,8 @@ const shareMembers = props.sharePeople.sharedUsers
               <span class="inline-block w-4 h-4 p-0.5"
                 ><ChevronDownIcon
               /></span>
-            </div>
-            <ul
+            </div> -->
+            <!-- <ul
               tabindex="0"
               class="dropdown-content menu w-32 bg-base-100 rounded-sm border border-gray z-[1] py-2 px-0"
             >
@@ -156,7 +171,7 @@ const shareMembers = props.sharePeople.sharedUsers
                   >可編輯</a
                 >
               </li>
-            </ul>
+            </ul> -->
           </div>
           <!-- 被邀請者視角 -->
           <!-- <div class="tooltip" data-tip="只有主揪可以設定共編權限哦">
@@ -171,8 +186,8 @@ const shareMembers = props.sharePeople.sharedUsers
             src="../assets/qrcode.svg"
             alt=""
           />
-          <p>手機掃描條碼，即可查看此行程</p>
-          <p class="mb-8 text-sm text-gray-400">24 小時內有效</p>
+          <p class="mb-8 text-gray-400">手機掃描條碼，即可查看此行程</p>
+          <!-- <p class="mb-8 text-sm text-gray-400">24 小時內有效</p> -->
           <button @click="copyShareLink"
             class="flex items-center justify-center w-full px-4 py-2 border rounded-full text-primary-600 border-primary-600" 
           >
@@ -190,7 +205,7 @@ const shareMembers = props.sharePeople.sharedUsers
           >
             <img
               class="w-11 h-11"
-              src="https://web.chictrip.com.tw/assets/waterview_default.f746ada9.svg"
+              :src="creatorImageUrl"
               alt=""
             />
             <div>
@@ -199,7 +214,8 @@ const shareMembers = props.sharePeople.sharedUsers
                   class="inline-block px-2 me-1 text-orange-400 bg-orange-200 rounded-md text-[14px]"
                   >主揪</span
                 >
-                <p>{{props.sharePeople.creator.name}}</p>
+                <!-- {{props.sharePeople.creator.name}} -->
+                <p>123</p>
               </div>
               <p class="text-gray-400">2 行程</p>
             </div>
@@ -215,6 +231,7 @@ const shareMembers = props.sharePeople.sharedUsers
             />
             <div class="flex items-center justify-between w-full">
               <div>
+                <!-- {{ menber.name }} -->
                 <p class="mb-2">{{ menber.name }}</p>
                 <p class="text-gray-400">3 行程</p>
               </div>
