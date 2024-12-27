@@ -17,7 +17,6 @@ const handleError = (error, message = "操作失敗，請稍後再試") => {
   alert(message);
 };
 
-// 檢查是否已收藏
 const isFavorited = (placeId) => {
   return favorites.value.some((fav) => fav.favorite_places === placeId);
 };
@@ -96,6 +95,7 @@ const addFavorite = async (item, headers) => {
       favorite_places: placeData.place_id,
       ...favoriteResponse.data,
     });
+    await loadFavorites(); // 重新載入收藏列表
   } catch (error) {
     handleError(error, "新增收藏失敗");
   }
@@ -117,7 +117,7 @@ const removeFavorite = async (placeId, headers) => {
       },
       headers,
     });
-
+    await loadFavorites(); // 重新載入收藏列表
     console.log("移除地點成功:", placeId);
 
     favorites.value = favorites.value.filter(
@@ -130,6 +130,7 @@ const removeFavorite = async (placeId, headers) => {
 };
 
 const removeFavoriteDirectly = async (place) => {
+  const LoginStore = LoginModalStore();
   if (!userId.value || !token) {
     LoginStore.openModal();
     return;
@@ -137,6 +138,8 @@ const removeFavoriteDirectly = async (place) => {
 
   try {
     await removeFavorite(place.place_id, { Authorization: token });
+    await loadFavorites(); // 重新載入收藏列表
+    alert("移除收藏成功");
   } catch (error) {
     handleError(error, "移除收藏失敗");
   }

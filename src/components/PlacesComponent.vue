@@ -98,7 +98,7 @@ const loading = ref(true);
 const fetchPlaceById = async (placeId) => {
   try {
     const response = await axios.get(`${API_URL}/places/${placeId}`);
-    place.value = response.data; // 存储地點详情数据
+    place.value = response.data; // 儲存地點資訊
     console.log("获取地點数据成功:", place.value);
   } catch (error) {
     

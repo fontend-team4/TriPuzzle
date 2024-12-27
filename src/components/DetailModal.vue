@@ -27,6 +27,7 @@ import axios from "axios"
 import { defineProps } from "vue"
 import { generateImageUrl } from "@/stores/favorites"
 import { useCopyWebsiteStore } from "@/stores/copywebsite"
+import { addPlace } from "@/stores/addPlaces"
 
 const { copyToClipboard } = useCopyWebsiteStore();
 
@@ -99,13 +100,13 @@ defineEmits(["close"])
 onMounted(async () => {
   try {
     // 優先從 props 或本地 store 中加載資料
+    places.value = placesStore.items;
+    place.value = places.value.find((p) => p.id === currentPlaceId.value) || {};
+
     if (props.place) {
       place.value = props.place;
       return;
     }
-
-    places.value = placesStore.items;
-    place.value = places.value.find((p) => p.id === currentPlaceId.value) || {};
 
     // 從收藏列表中查找
     if (!Object.keys(place.value).length && favorites.value.length > 0) {
@@ -251,7 +252,7 @@ onMounted(async () => {
         class="fixed md:absolute bottom-0 right-0 w-full md:w-[368px] h-[50px] border-t-2 border-t-gray inline-flex items-center justify-between px-2 bg-white"
       >
         <div class="inline-flex items-center gap-2">
-          <div class="tooltip" data-tip="分享" onclick="my_modal_2.showModal()">
+          <div class="tooltip" data-tip="分享" onclick="my_modal_2.showModal()" @click="addPlace(placeData)">
             <ShareIcon class="cursor-pointer size-6" />
           </div>
           <dialog id="my_modal_2" class="modal">
