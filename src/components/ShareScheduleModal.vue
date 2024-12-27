@@ -1,12 +1,9 @@
 <script setup>
-import { defineProps, defineEmits } from 'vue'
+import { defineProps, defineEmits, onMounted } from 'vue'
 import { LinkIcon, ChevronDownIcon } from '@heroicons/vue/24/outline'
 import ScheduleSummaryModal from './ScheduleSummaryModal.vue'
 import ExportScheduleModal from './ExportScheduleModal.vue'
 import ExitCoEditModal from './ExitCoEditModal.vue'
-
-
-
 
 const copyShareLink = async () => {
   try {
@@ -31,11 +28,19 @@ const props = defineProps({
     type: String,
     required: false, 
   },
+  sharePeople: {
+    type: Object,
+    required: false, 
+  }
 })
+
 const emit = defineEmits(['updateStatus'])
 const updateActiveTab = (status) => {
   emit('updateStatus', status)
 }
+const shareMembers = props.sharePeople.sharedUsers
+
+// 使用sharePeople
 
 </script>
 
@@ -194,14 +199,14 @@ const updateActiveTab = (status) => {
                   class="inline-block px-2 me-1 text-orange-400 bg-orange-200 rounded-md text-[14px]"
                   >主揪</span
                 >
-                <p>王先生</p>
+                <p>{{props.sharePeople.creator.name}}</p>
               </div>
               <p class="text-gray-400">2 行程</p>
             </div>
           </li>
           <li
             class="flex gap-4 pb-3 mb-3 border-b-2 border-dashed border-slate-300 tooltip tooltip-bottom"
-            data-tip="2024/11/18 加入行程"
+            data-tip="2024/11/18 加入行程" v-for="menber in shareMembers"
           >
             <img
               class="w-11 h-11"
@@ -210,16 +215,16 @@ const updateActiveTab = (status) => {
             />
             <div class="flex items-center justify-between w-full">
               <div>
-                <p class="mb-2">林小姐</p>
+                <p class="mb-2">{{ menber.name }}</p>
                 <p class="text-gray-400">3 行程</p>
               </div>
               <div class="dropdown dropdown-top dropdown-end">
                 <div
                   tabindex="0"
                   role="button"
-                  class="py-2 text-gray-400 hover:cursor-pointer"
+                  class="py-2 text-gray hover:cursor-pointer"
                 >
-                  可檢視
+                  退出共編
                   <span class="inline-block w-4 h-4 p-0.5"
                     ><ChevronDownIcon
                   /></span>

@@ -1,174 +1,198 @@
 <script setup>
-import { ref, inject, onMounted, computed } from "vue"
-import axios from "axios"
-import { EllipsisHorizontalIcon } from "@heroicons/vue/16/solid"
+import { ref, inject, onMounted, computed } from "vue";
+import axios from "axios";
+import { EllipsisHorizontalIcon } from "@heroicons/vue/16/solid";
 import {
   XMarkIcon,
   UserPlusIcon,
   ShareIcon,
   DocumentDuplicateIcon,
   TrashIcon,
-} from "@heroicons/vue/24/outline"
-import ShareScheduleModal from "./ShareScheduleModal.vue"
-import NewScheduleModal from "@/components/NewScheduleModal.vue"
-import DeleteScheduleModal from "./DeleteScheduleModal.vue"
-import { LoginModalStore } from "@/stores/LoginModal.js"
+} from "@heroicons/vue/24/outline";
+import ShareScheduleModal from "./ShareScheduleModal.vue";
+import NewScheduleModal from "@/components/NewScheduleModal.vue";
+import DeleteScheduleModal from "./DeleteScheduleModal.vue";
+import { LoginModalStore } from "@/stores/LoginModal.js";
 
-const LoginStore = LoginModalStore()
-const listToggle = inject("listToggle")
-const detailToggle = inject("detailToggle")
-const API_URL = process.env.VITE_HOST_URL
-const isLogin = ref(false)
-const token = localStorage.getItem("token")
+const LoginStore = LoginModalStore();
+const listToggle = inject("listToggle");
+const detailToggle = inject("detailToggle");
+const API_URL = process.env.VITE_HOST_URL;
+const isLogin = ref(false);
+const token = localStorage.getItem("token");
 
-const hasSchedules = ref(false)
-const hasShareSchedules = ref(false)
-const checkedSchedule = ref("mine")
-const schedules = ref([])
-const shareSchedules = ref([])
-const deletedId = ref(null)
-const shareLink = ref('')
-
+const hasSchedules = ref(false);
+const hasShareSchedules = ref(false);
+const checkedSchedule = ref("mine");
+const schedules = ref([]);
+const shareSchedules = ref([]);
+const deletedId = ref(null);
+const shareLink = ref("");
+const sharePeople = ref({});
 
 const getSchedules = async () => {
   const config = {
     headers: {
       Authorization: token,
     },
-  }
+  };
   try {
-    const response = await axios.get(`${API_URL}/schedules`, config)
+    const response = await axios.get(`${API_URL}/schedules`, config);
     if (response.data) {
-      hasSchedules.value = true
+      hasSchedules.value = true;
     }
-    schedules.value = response.data
+    schedules.value = response.data;
     schedules.value.forEach((item) => {
-      item.start_date = item.start_date.split("T")[0]
-      item.end_date = item.end_date.split("T")[0]
-    })
+      item.start_date = item.start_date.split("T")[0];
+      item.end_date = item.end_date.split("T")[0];
+    });
   } catch (error) {
-    console.error(error.message)
-    hasSchedules.value = false
+    console.error(error.message);
+    hasSchedules.value = false;
   }
-}
+};
 
 const getShareSchedules = async () => {
   const config = {
     headers: {
       Authorization: token,
     },
-  }
+  };
   try {
-    const response = await axios.get(`${API_URL}/usersSchedules`, config)
+    const response = await axios.get(`${API_URL}/usersSchedules`, config);
     if (response.data.length > 0) {
-      hasShareSchedules.value = true
-      console.log("共編", response.data)
+      hasShareSchedules.value = true;
+      console.log("共編", response.data);
     }
-    shareSchedules.value = response.data
+    shareSchedules.value = response.data;
     shareSchedules.value.forEach((item) => {
-      item.start_date = item.start_date.split("T")[0]
-      item.end_date = item.end_date.split("T")[0]
-      console.log(shareSchedules.value)
-    })
+      item.start_date = item.start_date.split("T")[0];
+      item.end_date = item.end_date.split("T")[0];
+      console.log(shareSchedules.value);
+    });
   } catch (error) {
-    console.error(error.message)
-    hasShareSchedules.value = false
+    console.error(error.message);
+    hasShareSchedules.value = false;
   }
-}
+};
 
 // 搜尋該行程的所有使用者
 
 const openDeleteModal = (id) => {
-  deletedId.value = id
-}
+  deletedId.value = id;
+};
 
 // 行程分享、共編彈窗
-const activeStatus = ref(null)
+const activeStatus = ref(null);
 const openShareModal = () => {
-  activeStatus.value = "share"
-}
+  activeStatus.value = "share";
+};
 
-const shareLinkHandler = async(id)=>{
+const shareLinkHandler = async (id) => {
   const config = {
     headers: {
       Authorization: token,
     },
-  }
+  };
+  // 取得共編網址
   try {
-    const response = await axios.post(`${API_URL}/usersSchedules/share/${id}`,{} ,config)
+    const response = await axios.post(
+      `${API_URL}/usersSchedules/share/${id}`,
+      {},
+      config
+    );
     shareLink.value = response.data.shareUrl;
     console.log(shareLink.value);
-    
-  } catch (error) {
-    console.error(error.message)
+  } catch (err) {
+    console.error(err.message);
   }
-}
+
+  // 取得人數
+  try {
+    const response = await axios.get(
+      `${API_URL}/usersSchedules/${id}/users`,
+      config
+    );
+    sharePeople.value = response.data;
+    console.log(sharePeople.value);
+  } catch (err) {
+    console.error(err.message);
+  }
+};
 
 const openInviteModal = () => {
-  activeStatus.value = "invite"
-}
+  activeStatus.value = "invite";
+};
 const updateStatus = (status) => {
-  activeStatus.value = status
-}
+  activeStatus.value = status;
+};
 
 const login = () => {
-  LoginStore.openModal()
-  listToggle()
-}
+  LoginStore.openModal();
+  listToggle();
+};
 
-const listsort = ref("newest")
+const listsort = ref("newest");
 const sortedSchedules = computed(() => {
   return schedules.value.sort((a, b) => {
     if (listsort.value === "newest") {
-      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      return (
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      );
     } else {
-      return new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+      return (
+        new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+      );
     }
-  })
-})
+  });
+});
 
 const sortedShareSchedules = computed(() => {
   return shareSchedules.value.sort((a, b) => {
     if (listsort.value === "newest") {
-      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      return (
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      );
     } else {
-      return new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+      return (
+        new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+      );
     }
-  })
-})
+  });
+});
 
 // 複製行程
-const scheduleName = ref("")
-const scheduleNote = ref("")
-const coverImage = ref("")
-const startDate = ref("")
-const endDate = ref("")
-const transportationWay = ref("")
+const scheduleName = ref("");
+const scheduleNote = ref("");
+const coverImage = ref("");
+const startDate = ref("");
+const endDate = ref("");
+const transportationWay = ref("");
 const scheduleDuplicate = async (id) => {
   const config = {
     headers: {
       Authorization: token,
     },
-  }
+  };
   try {
-    const response = await axios.get(`${API_URL}/schedules/${id}`, config)
-    scheduleName.value = response.data.title
-    scheduleNote.value = response.data.schedule_note
-    coverImage.value = response.data.image_url
-    startDate.value = response.data.start_date.split("T")[0]
-    endDate.value = response.data.end_date.split("T")[0]
-    transportationWay.value = response.data.transportation_way
-    await copySchedule()
+    const response = await axios.get(`${API_URL}/schedules/${id}`, config);
+    scheduleName.value = response.data.title;
+    scheduleNote.value = response.data.schedule_note;
+    coverImage.value = response.data.image_url;
+    startDate.value = response.data.start_date.split("T")[0];
+    endDate.value = response.data.end_date.split("T")[0];
+    transportationWay.value = response.data.transportation_way;
+    await copySchedule();
   } catch (error) {
-    console.error(error.message)
+    console.error(error.message);
   }
-}
+};
 const copySchedule = async () => {
   const config = {
     headers: {
       Authorization: token,
     },
-  }
+  };
   const ScheduleData = {
     title: scheduleName.value,
     image_url: coverImage.value,
@@ -176,26 +200,24 @@ const copySchedule = async () => {
     start_date: startDate.value,
     end_date: endDate.value,
     transportation_way: transportationWay.value,
-  }
+  };
   try {
-    await axios.post(`${API_URL}/schedules`, ScheduleData, config)
-    await getSchedules()
+    await axios.post(`${API_URL}/schedules`, ScheduleData, config);
+    await getSchedules();
   } catch (err) {
-    console.error(err.message)
+    console.error(err.message);
   }
-}
+};
 
-const showNewSchedule = inject("showNewSchedule")
+const showNewSchedule = inject("showNewSchedule");
 
 onMounted(async () => {
   if (token) {
-    isLogin.value = true
-    await getSchedules()
-    await getShareSchedules()
+    isLogin.value = true;
+    await getSchedules();
+    await getShareSchedules();
   }
-})
-
-
+});
 </script>
 
 <template>
@@ -313,7 +335,10 @@ onMounted(async () => {
                         </li>
                         <li
                           onclick="shareSchedule.showModal()"
-                          @click="openInviteModal(); shareLinkHandler(item.id)"
+                          @click="
+                            openInviteModal();
+                            shareLinkHandler(item.id);
+                          "
                         >
                           <a
                             class="flex items-center gap-1 px-5 py-2 text-sm hover:bg-gray"
@@ -358,7 +383,10 @@ onMounted(async () => {
                     <button
                       class="w-16 text-center hover:cursor-pointer"
                       onclick="shareSchedule.showModal()"
-                      @click="openInviteModal(); shareLinkHandler(item.id)"
+                      @click="
+                        openInviteModal();
+                        shareLinkHandler(item.id);
+                      "
                     >
                       <p class="w-6 h-6 mx-auto"><UserPlusIcon /></p>
                       <p class="text-xs">{{ item.total_users }}人</p>
@@ -453,7 +481,10 @@ onMounted(async () => {
                     <button
                       class="w-16 text-center hover:cursor-pointer"
                       onclick="shareSchedule.showModal()"
-                      @click="openInviteModal();shareLinkHandler(item.id)"
+                      @click="
+                        openInviteModal();
+                        shareLinkHandler(item.id);
+                      "
                     >
                       <p class="w-6 h-6 mx-auto"><UserPlusIcon /></p>
                       <p class="text-xs">{{ item.total_users }}人</p>
@@ -553,6 +584,7 @@ onMounted(async () => {
     <ShareScheduleModal
       :activeTab="activeStatus"
       :shareLink="shareLink"
+      :sharePeople="sharePeople"
       @updateStatus="updateStatus"
     />
     <DeleteScheduleModal :toBeDeleteId="deletedId" :updateList="getSchedules" />
