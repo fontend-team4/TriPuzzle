@@ -80,9 +80,11 @@ const placeData = computed(() => {
   return props.place || place.value;
 });
 
-const updatePlaceIdInUrl = (placeId) => {
-  router.replace({ query: { ...route.query, placeId } });
-};
+// const updatePlaceIdInUrl = (placeId) => {
+//   router.replace({ query: { ...route.query, placeId } });
+// };
+
+
 
 // 複製 URL 函數
 const copyPlaceUrl = () => {
@@ -114,7 +116,7 @@ onMounted(async () => {
       place.value = favorites.value.find((f) => f.place_id === currentPlaceId.value) || {};
     }
 
-    // 如果仍未找到，從 API 請求數據
+    // 從 API 中獲取
     if (!Object.keys(place.value).length && currentPlaceId.value) {
       const response = await axios.get(`${API_URL}/places/${currentPlaceId.value}`, {
         headers: { Authorization: token },
@@ -122,7 +124,7 @@ onMounted(async () => {
       place.value = response.data;
     }
 
-    // 如果所有途徑都無法獲取數據
+    
     if (!Object.keys(place.value).length) {
       throw new Error("無法加載地點詳情，請檢查 placeId 是否有效。");
     }
@@ -247,7 +249,7 @@ onMounted(async () => {
           <XMarkIcon class="size-6" />
         </button>
       </div>
-      <!-- fiexd 的那玩意 -->
+      <!-- 功能區 -->
       <div
         class="fixed md:absolute bottom-0 right-0 w-full md:w-[368px] h-[50px] border-t-2 border-t-gray inline-flex items-center justify-between px-2 bg-white"
       >
