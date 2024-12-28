@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps, defineEmits } from 'vue'
+import { defineProps } from 'vue'
 import axios from 'axios'
 const props = defineProps({
   scheduleId: {
@@ -10,44 +10,32 @@ const props = defineProps({
     type: [Number, String],
     required: true,
   },
-  toBeLeavedUserId: {
-    type: [Number, String],
-    required: true,
-  },
   updateList: {
     type: Function,
     required: true,
   },
-});
+})
 
-
-const emit = defineEmits(['scheduleUpdate']);
 const API_URL = process.env.VITE_HOST_URL
 const token = localStorage.getItem('token')
 
-// 踢出行程
-const leaveSchedule = async () => {
+const leaveSchedule = async (id) => {
   const config = {
     headers: {
       Authorization: token,
     },
-  };
-  try {
-    const response = await axios.delete(
-      `${API_URL}/usersSchedules/${props.toBeLeavedId}/${props.toBeLeavedUserId}`,
-      config
-    );
-    props.updateList(); 
-    emit('scheduleUpdate');
-  } catch (error) {
-    console.error(error.message);
   }
-};
-
+  try {
+    await axios.delete(`${API_URL}/usersSchedules/${id}`, config)
+    props.updateList()
+  } catch (error) {
+    console.error(error.message)
+  }
+}
 </script>
 
 <template>
-  <dialog id="exitToggle" class="modal">
+  <dialog id="leaveSchedule" class="modal">
     <div class="modal-box w-[384px] p-0">
       <form method="dialog">
         <button class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2">
@@ -62,19 +50,20 @@ const leaveSchedule = async () => {
         />
       </div>
       <div class="text-center">
-        <p class="text-lg font-medium">確定要踢出共編嗎？</p>
+        <p class="text-lg font-medium">確定要退出共編嗎？</p>
+        <p class="pt-1 text-gray-400">退出後將無法復原哦</p>
       </div>
       <div class="flex w-full gap-3 px-5 py-6">
         <button
           class="w-full h-12 px-5 py-3 font-medium text-center border border-primary-600 text-primary-600 hover:bg-primary-100 rounded-3xl"
-          onclick="exitToggle.close()"
+          onclick="leaveSchedule.close()"
         >
           取消
         </button>
         <button
           class="w-full h-12 px-5 py-3 font-medium text-center text-white bg-primary-600 hover:bg-primary-700 rounded-3xl"
-          @click="leaveSchedule(toBeLeavedId, toBeLeavedUserId)"
-          onclick="exitToggle.close()"
+          @click="leaveSchedule(toBeLeavedId)"
+          onclick="leaveSchedule.close()"
         >
           確定
         </button>

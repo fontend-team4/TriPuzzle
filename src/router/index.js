@@ -22,8 +22,14 @@ const router = createRouter({
       component: () => import('../views/PlannerView.vue'),
       children: [
         { path: 'detail', component: DetailModal },
+        {
+          path: 'join/:shareToken',
+          name: 'ConfirmJoinSchedule',
+          component: () => import('../components/ConfirmJoinSchedule.vue'),
+        },
       ],
     },
+    
     {
       path: "/SearchArea",
       name: "SearchArea",
@@ -33,7 +39,7 @@ const router = createRouter({
       path: "/category/:category?",
       name: "CategoryView",
       component: () => import('../views/CategoryView.vue'),
-    }
+    },
   ],
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
