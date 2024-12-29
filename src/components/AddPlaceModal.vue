@@ -101,7 +101,7 @@ onMounted(async () => {
   }
 })
 
-//行程資料
+//景點資料
 const modalStore = PlaceModalStore()
 const place = modalStore.selectedPlace
 
@@ -195,7 +195,7 @@ onMounted(async () => {
         calculateDateRange(schedule.start_date, schedule.end_date)
       ),
     }))
-    // console.log(schedules.value)
+    console.log(schedules.value)
   } catch (error) {
     console.error("Error fetching schedules:", error)
   }
@@ -235,40 +235,11 @@ const addPlaceToSchedule = async () => {
         },
       }
     );
-
     console.log("新增成功：", res.data);
   } catch (error) {
     console.error("新增失敗：", error.response?.data || error.message);
   }
 };
-
-// const addPlaceToSchedule = async (scheduleId, date) => {
-//   if (!scheduleId || !date || !place) {
-//     console.error("行程、日期或景點未選擇");
-//     return;
-//   }
-//   try {
-//     const token = localStorage.getItem("token")
-//     const res = await axios.post(      
-//       `${URL}/schedulePlaces/`,
-//       {
-//         place_id: place.id,
-//         schedule_id: scheduleId,
-//         which_date: date,
-//         transportation_way: selectedSchedule.value?.transportation_way,
-//       },
-//       {
-//         headers: {
-//           Authorization:token,
-//           "Content-Type": "application/json",
-//         },
-//       }
-//     );
-//     console.log("新增成功：", res.data);
-//   } catch (error) {
-//     console.error("新增失敗：", error.response?.data || error.message);
-//   }
-// };
 
 // Tab的部分
 const selectedButton = ref("myRunDown")
@@ -327,33 +298,24 @@ const closeAddPlaceModal = () => {
 }
 
 // 卡片數據
-const cards = ref([
-  {
-    location1: "❶ 饒河觀光夜市",
-    newlocation: "松山文創園區",
-    location2: "❷ 國父紀念館",
-  },
-  {
-    location1: "❷ 國父紀念館",
-    newlocation: "松山文創園區",
-    location2: "❸ 中正紀念堂",
-  },
-  {
-    location1: "❸ 中正紀念堂",
-    newlocation: "松山文創園區",
-    location2: "❹ 五倍學院",
-  },
-  {
-    location1: "❹ 五倍學院",
-    newlocation: "松山文創園區",
-    location2: "❺ 二二八紀念公園",
-  },
-  {
-    location1: "❺ 二二八紀念公園",
-    newlocation: "松山文創園區",
-    location2: "❻ 台大醫院",
-  },
-])
+const cards = ref([])
+// 更新卡片列表
+const updateCards = (places) => {
+  console.log("調試 places:", places);
+  cards.value = [];
+  if (!places || places.length === 0) {
+    console.log("找不到景點資料");
+    return;
+  }
+  for (let i = 0; i < places.length - 1; i++) {
+    // console.log("處理景點:", places[i]);
+    cards.value.push({
+      location1: `❶ ${places[i]?.places.name || "未知景點"}`,
+      newlocation: place.name || "新景點",
+      location2: `❷ ${places[i + 1]?.places.name || "未知景點"}`,
+    });
+  }
+};
 
 // 預設第二張卡片被選中
 const selectedCard = ref(1)
@@ -468,7 +430,7 @@ const selectCard = (index) => {
                     v-for="(date, index) in schedule.dates"
                     :key="index"
                     @click="
-                      switchToPage('DayCard', `day${index + 1}`),selectedDate = date.toISOString().split('T')[0],selectedSchedule = schedule
+                      switchToPage('DayCard', `day${index + 1}`),selectedDate = date.toISOString().split('T')[0],selectedSchedule = schedule,updateCards(schedule.groupedPlaces[date.toISOString().split('T')[0]])
                     "
                     class="relative p-2 my-[0.5rem] bg-[#f4f4f4] rounded-xl cursor-pointer hover:bg-primary-100 box-border overflow-hidden"
                   >
@@ -492,62 +454,8 @@ const selectCard = (index) => {
                       個景點
                     </p>
                   </div>
-                  <!-- <div
-                    id="openDay2"
-                    @click="switchToPage('DayCard', 'day2')"
-                    class="p-2 my-[0.5rem] bg-[#f4f4f4] rounded-xl cursor-pointer hover:bg-primary-100"
-                  >
-                    <h3 class="text-black text-semibold">第二天</h3>
-                    <p>11/02 週六，0個景點</p>
-                  </div> -->
                 </div>
               </div>
-              <!-- 行程二 -->
-              <!-- <div
-                id="journey2"
-                class="collapse ml-[-0.5rem] mr-[0.5rem] transition-opacity pt-1 mt-[0.5rem] border-t-2 border-dashed border-gray rounded-none"
-              >
-                <input
-                  type="checkbox"
-                  :checked="openedCollapse === 'journey2'"
-                  @change="toggleCollapse('journey2')"
-                />
-                <div
-                  class="collapse-title flex justify-between items-center p-0 pl-[1rem]"
-                >
-                  <div class="cursor-pointer hover:bg-primary-100 group">
-                    <h2
-                      class="text-xl font-bold group-hover:text-primary-600 text-stone-950"
-                    >
-                      行程二
-                    </h2>
-                    <p
-                      class="text-sm text-gray-600 group-hover:text-primary-600"
-                    >
-                      2024/11/01
-                    </p>
-                  </div>
-                  <ChevronDownIcon
-                    v-if="openedCollapse !== 'journey2'"
-                    class="text-black size-3"
-                  />
-                  <ChevronUpIcon v-else class="text-black size-3" />
-                </div>
-                <div class="collapse-content p-0 pl-[1rem]">
-                  <div
-                    class="p-2 my-[0.5rem] bg-[#f4f4f4] rounded-xl cursor-pointer hover:bg-primary-100"
-                  >
-                    <h3 class="text-black text-semibold">第一天</h3>
-                    <p>11/30 週六，0個景點</p>
-                  </div>
-                  <div
-                    class="p-2 my-[0.5rem] bg-[#f4f4f4] rounded-xl cursor-pointer hover:bg-primary-100"
-                  >
-                    <h3 class="text-black text-semibold">第二天</h3>
-                    <p>12/01 週日，0個景點</p>
-                  </div>
-                </div>
-              </div> -->
 
               <!-- 這裡的NewSchedule不必是動態的 -->
               <button
@@ -687,47 +595,15 @@ const selectCard = (index) => {
                 </div>
               </div>
             </div>
-
-            <!-- 第二天 -->
-            <input
-              type="radio"
-              name="dailySchedule"
-              role="tab"
-              class="rounded-lg tab hover:bg-primary-800 hover:text-white checked:bg-primary-600 checked:text-white"
-              aria-label="第二天"
-              :checked="selectedTab === 'day2'"
-              @change="selectTab('day2')"
-            />
-            <div role="tabpanel" class="p-0 tab-content">
-              <div
-                class="w-full md:h-[580px] md:overflow-y-scroll bg-primary-200"
-              >
-                <div
-                  class="border-2 border-primary-400 bg-white p-6 pl-5 mx-[1rem] mt-5 rounded-lg relative overflow-hidden"
-                >
-                  <label
-                    for=""
-                    class="absolute top-0 right-0 bg-primary-400 text-white flex items-center gap-1 p-[0.25rem] rounded-bl-xl text-xs border-box"
-                  >
-                    <HandThumbUpIcon class="size-3 ml-[0.25rem]" />加在這裡最順
-                  </label>
-                  <p class="flex items-center text-lg text-secondary-500">
-                    <MapPinIcon
-                      class="size-5 ml-[-0.2rem] fill-secondary-500"
-                    />
-                    松山文創園區
-                  </p>
-                </div>
-              </div>
-            </div>
           </div>
+          
           <!-- 確認新增並關閉視窗 -->
           <div
             class="h-[3rem] absolute bottom-4 right-0 left-0 bg-white px-4 pt-2"
           >
             <div
               class="w-full text-white border-none rounded-full btn bg-primary-600 hover:bg-primary-200 hover:text-primary-600"
-              @click="closeAddPlaceModal(),addPlaceToSchedule(),printSD()" 
+              @click="closeAddPlaceModal(),addPlaceToSchedule()" 
             >
               確認新增
             </div>
