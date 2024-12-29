@@ -27,87 +27,65 @@ import {
 import { StarIcon } from "@heroicons/vue/24/solid"
 import { generateImageUrl } from "@/stores/favorites"
 import QRCode from "qrcode"
-import { useQRCodeStore } from "@/stores/qrcode" // 引入 QR Code Store
+import { generateQRCode } from "@/utils/QRcode"
 
 const qrcodeCanvas = ref(null)
-const qrCodeStore = useQRCodeStore()
-
-const onShareClick = async () => {
-  // 確保模態框打開後生成 QR Code
-  const attractionId = currentPlaceId.value || place.value?.id
-  const baseDomain = window.location.origin
-  const url = `${baseDomain}/planner?action=placeInfo&placeId=${attractionId}`
-
+const qrCodeDataUrl = ref("")
+// 生成 QR Code
+const createQRCode = async (placeId) => {
   try {
-    if (qrcodeCanvas.value) {
-      await QRCode.toCanvas(qrcodeCanvas.value, url, { width: 200 })
-      generateQRCodePlace()
-    }
+    qrCodeDataUrl.value = await generateQRCode(placeId)
   } catch (error) {
-    console.error("生成 QR Code 時出錯：", error)
+    console.error("無法生成 QR Code:", error)
   }
 }
 
-// 從 Store 中獲取 Data URL
-const qrCodeDataUrl = qrCodeStore.qrCodeDataUrl
-
-const generateQRCodePlace = async () => {
-  const placeId = currentPlaceId.value || place.value?.id
-  await qrCodeStore.generateQRCode(placeId)
-}
-
-const renderQRCodeToCanvas = async () => {
-  const attractionId = currentPlaceId.value
-  const baseDomain = window.location.origin
-  const url = `${baseDomain}/planner?action=placeInfo&placeId=${attractionId}`
-
-  try {
-    if (qrcodeCanvas.value) {
-      // 渲染 QR Code 到 Canvas
-      await QRCode.toCanvas(qrcodeCanvas.value, url, { width: 200 })
-    } else {
-      console.error("qrcodeCanvas 的引用為空，無法渲染！")
-    }
-  } catch (error) {
-    console.error("生成 QR Code 到 Canvas 時出錯：", error)
-  }
-}
-
+// 下載 QR Code
 const downloadQRCode = () => {
-  const qrCodeDataUrl = qrCodeStore.qrCodeDataUrl // 從 Store 獲取 QR Code 的 Base64 URL
-
   if (!qrCodeDataUrl) {
     alert("QR Code 尚未生成，請稍候！")
     return
   }
-
-  // 將 Base64 URL 轉換為 Blob
-  const blob = dataURLToBlob(qrCodeDataUrl)
+  const blob = dataURLToBlob(qrCodeDataUrl.value)
   const blobUrl = URL.createObjectURL(blob)
 
-  // 創建隱藏的下載鏈接
   const link = document.createElement("a")
   link.href = blobUrl
-  link.download = "qrcode.png"
-  document.body.appendChild(link)
+  link.download = `${place.value.name}_QRCode.png`
   link.click()
 
-  // 清理
-  document.body.removeChild(link)
   URL.revokeObjectURL(blobUrl)
 }
 
-// Base64 URL 轉換為 Blob
+// 將 Base64 URL 轉換為 Blob
 const dataURLToBlob = (dataURL) => {
-  const [header, base64] = dataURL.split(",")
-  const mime = header.match(/:(.*?);/)[1]
-  const binary = atob(base64)
+  const [header, base64] = dataURL.split(",") //分割成MIME與實際數據
+  const mime = header.match(/:(.*?);/)[1] //確定格式
+  const binary = atob(base64) //將Base64解碼為二進制
   const array = []
   for (let i = 0; i < binary.length; i++) {
     array.push(binary.charCodeAt(i))
   }
   return new Blob([new Uint8Array(array)], { type: mime })
 }
+
+const onShareClick = async () => {
+  const placeId = currentPlaceId.value || place.value?.id // 不同頁面獲取的place_id
+  await createQRCode(placeId)
+}
+//動態更新QRcode圖片
+watch(qrCodeDataUrl, (newUrl) => {
+  if (newUrl) {
+    const canvas = qrcodeCanvas.value
+    const ctx = canvas.getContext("2d")
+    const image = new Image()
+    image.onload = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      ctx.drawImage(image, 0, 0, canvas.width, canvas.height)
+    }
+    image.src = newUrl
+  }
+})
 
 const API_URL = process.env.VITE_HOST_URL
 const token = localStorage.getItem("token")
@@ -362,7 +340,7 @@ onMounted(fetchPlaceDetails)
                   class="flex flex-col items-center w-full px-5 pt-10 pb-6 mb-8 bg-white rounded-xl"
                 >
                   <div class="mb-4">
-                    <canvas ref="qrcodeCanvas"></canvas>
+                    <canvas ref="qrcodeCanvas" class="block w-48 h-48"></canvas>
                   </div>
                   <p class="text-base text-stone-900">
                     手機掃描條碼，即可查看此景點
@@ -440,12 +418,6 @@ onMounted(fetchPlaceDetails)
 </template>
 
 <style>
-canvas {
-  display: block;
-  width: auto;
-  height: auto;
-}
-
 img {
   object-fit: contain;
 }
@@ -491,4 +463,4 @@ img {
 
 /* 禁止滾動 */
 </style>
-@/service/QRcode
+@/service/QRcode @/service/QRcode @/utils/QRcode
