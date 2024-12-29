@@ -14,7 +14,6 @@ const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 
 const handleError = (error, message = "操作失敗，請稍後再試") => {
   console.error(message, error);
-  alert(message);
 };
 
 const isFavorited = (placeId) => {
@@ -50,6 +49,25 @@ const toggleFavorite = async (item) => {
       await addFavorite(item, headers);
     } else {
       await removeFavorite(item.id, headers);
+    }
+  } catch (error) {
+    handleError(error, "切換收藏狀態失敗");
+  }
+};
+
+const antitoggleFavorite = async (item) => { 
+
+  const headers = { Authorization: token };
+
+  try {
+    if (isFavorited(item.place_id)) {
+      console.log(item.place_id);
+      await addFavorite(item.place_id, headers);
+
+    } else {
+      console.log(item.place_id);
+      await removeFavorite(item.place_id, headers);
+
     }
   } catch (error) {
     handleError(error, "切換收藏狀態失敗");
@@ -139,7 +157,6 @@ const removeFavoriteDirectly = async (place) => {
   try {
     await removeFavorite(place.place_id, { Authorization: token });
     await loadFavorites(); // 重新載入收藏列表
-    alert("移除收藏成功");
   } catch (error) {
     handleError(error, "移除收藏失敗");
   }
@@ -153,7 +170,7 @@ const generateImageUrl = (photoReference) => {
 };
 
 
-export { favorites, isFavorited, loadFavorites, toggleFavorite, removeFavoriteDirectly, generateImageUrl };
+export { favorites, isFavorited, loadFavorites, toggleFavorite, antitoggleFavorite, removeFavoriteDirectly, generateImageUrl };
 
 
 
