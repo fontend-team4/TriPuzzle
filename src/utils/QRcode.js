@@ -9,7 +9,6 @@ export async function generateQRCode(attractionId) {
   const baseDomain = window.location.origin;
   const url = `${baseDomain}/planner?action=placeInfo&placeId=${attractionId}`;
   console.log("生成的 URL:", url);
-
   try {
     const qrCodeDataUrl = await QRCode.toDataURL(url, { width: 200 });
     console.log("生成的 QR Code Base64 URL:", qrCodeDataUrl);

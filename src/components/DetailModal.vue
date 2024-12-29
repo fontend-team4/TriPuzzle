@@ -1,14 +1,4 @@
 <script setup>
-import DetailCarousel from "./DetailCarousel.vue"
-import Waterfall from "./Waterfall.vue"
-import AddPlaceBtn from "./AddPlaceBtn.vue"
-import { useRoute } from "vue-router"
-import { usePlacesStore } from "@/stores/fetchPlaces"
-import { PlaceModalStore } from "@/stores/PlaceModal"
-import { useCopyWebsiteStore } from "@/stores/copywebsite"
-import { addPlace } from "@/stores/addPlaces"
-import axios from "axios"
-import { computed, ref, defineProps, defineEmits, onMounted, watch } from "vue"
 import {
   CalendarIcon,
   ClockIcon,
@@ -25,43 +15,80 @@ import {
   ChevronLeftIcon,
 } from "@heroicons/vue/24/outline"
 import { StarIcon } from "@heroicons/vue/24/solid"
-import { generateImageUrl } from "@/stores/favorites"
-import QRCode from "qrcode"
+import DetailCarousel from "./DetailCarousel.vue"
+import Waterfall from "./Waterfall.vue"
+import AddPlaceBtn from "./AddPlaceBtn.vue"
+import { useRoute } from "vue-router"
+import { usePlacesStore } from "@/stores/fetchPlaces"
+import { PlaceModalStore } from "@/stores/PlaceModal"
+import { useCopyWebsiteStore } from "@/stores/copywebsite"
+import axios from "axios"
+import { computed, ref, defineProps, defineEmits, onMounted, watch } from "vue"
 import { generateQRCode } from "@/utils/QRcode"
+import { addPlace } from "@/stores/addPlaces"
+import { generateImageUrl } from "@/stores/favorites"
 
+const API_URL = process.env.VITE_HOST_URL
+const token = localStorage.getItem("token")
+
+// 控制modal、照片顯示等狀態
 const qrcodeCanvas = ref(null)
 const qrCodeDataUrl = ref("")
-// 生成 QR Code
+const showPhoto = ref(false)
+const place = ref({})
+const places = ref([])
+const favorites = ref(JSON.parse(localStorage.getItem("favorites") || "[]"))
+
+const onShareClick = async () => {
+  const placeId = currentPlaceId.value || place.value?.id // 不同頁面獲取的place_id
+  await createQRCode(placeId)
+}
+
+// Props & Emits
+const props = defineProps({
+  place: {
+    type: Object,
+    required: false,
+  },
+})
+
+defineEmits(["close"])
+
+// Stores 和路由
+const modalStore = PlaceModalStore()
+const placesStore = usePlacesStore()
+const { copyToClipboard } = useCopyWebsiteStore()
+const route = useRoute()
+
+// 計算屬性
+const currentPlaceId = computed(() => route.query.placeId)
+const placeData = computed(() => props.place || place.value)
+
+// 生成 QR Code 並下載
 const createQRCode = async (placeId) => {
   try {
     qrCodeDataUrl.value = await generateQRCode(placeId)
   } catch (error) {
-    console.error("無法生成 QR Code:", error)
+    console.error("生成 QR Code 出錯:", error)
   }
 }
-
-// 下載 QR Code
 const downloadQRCode = () => {
-  if (!qrCodeDataUrl) {
-    alert("QR Code 尚未生成，請稍候！")
+  if (!qrCodeDataUrl.value) {
+    alert("QR Code 尚未生成！")
     return
   }
   const blob = dataURLToBlob(qrCodeDataUrl.value)
   const blobUrl = URL.createObjectURL(blob)
-
   const link = document.createElement("a")
   link.href = blobUrl
   link.download = `${place.value.name}_QRCode.png`
   link.click()
-
   URL.revokeObjectURL(blobUrl)
 }
-
-// 將 Base64 URL 轉換為 Blob
 const dataURLToBlob = (dataURL) => {
-  const [header, base64] = dataURL.split(",") //分割成MIME與實際數據
-  const mime = header.match(/:(.*?);/)[1] //確定格式
-  const binary = atob(base64) //將Base64解碼為二進制
+  const [header, base64] = dataURL.split(",")
+  const mime = header.match(/:(.*?);/)[1]
+  const binary = atob(base64)
   const array = []
   for (let i = 0; i < binary.length; i++) {
     array.push(binary.charCodeAt(i))
@@ -69,11 +96,7 @@ const dataURLToBlob = (dataURL) => {
   return new Blob([new Uint8Array(array)], { type: mime })
 }
 
-const onShareClick = async () => {
-  const placeId = currentPlaceId.value || place.value?.id // 不同頁面獲取的place_id
-  await createQRCode(placeId)
-}
-//動態更新QRcode圖片
+// 動態更新 QR Code 圖片
 watch(qrCodeDataUrl, (newUrl) => {
   if (newUrl) {
     const canvas = qrcodeCanvas.value
@@ -87,45 +110,7 @@ watch(qrCodeDataUrl, (newUrl) => {
   }
 })
 
-const API_URL = process.env.VITE_HOST_URL
-const token = localStorage.getItem("token")
-const { copyToClipboard } = useCopyWebsiteStore()
-
-const modalStore = PlaceModalStore()
-const placesStore = usePlacesStore()
-
-const route = useRoute()
-
-const showPhoto = ref(false) // 控制照片顯示狀態
-const place = ref({}) // 存放單一地點的詳情
-const places = ref([]) // 存放所有地點的列表
-const favorites = ref(JSON.parse(localStorage.getItem("favorites") || "[]")) // 收藏列表
-
-const props = defineProps({
-  place: {
-    type: Object,
-    required: false, // 改為非必需，避免報錯
-  },
-})
-
-// 關閉分享modal
-defineEmits(["close"])
-
-// computed
-const currentPlaceId = computed(() => route.query.placeId) // 從 URL 中提取 placeId
-const placeData = computed(() => props.place || place.value) // 優先使用 props.place，其次使用本地加載的 place
-
-// 複製 URL 函數
-const copyPlaceUrl = () => {
-  const placeId = currentPlaceId.value || place.value?.id // 獲取當前地點 ID
-  if (!placeId) {
-    alert("無法獲取地點 ID")
-    return
-  }
-  copyToClipboard(placeId) // 傳遞地點 ID
-}
-
-// 切換顯示照片
+// 其他功能：照片切換、複製連結
 const changeShowPhoto = () => {
   showPhoto.value = !showPhoto.value
 }
@@ -146,46 +131,50 @@ const overflowStatus = computed(() =>
   showPhoto.value ? ["overflow-hidden"] : [""]
 )
 
-// PlaceComponent.vue 與 FavoriteComponent.vue 共用
+const copyPlaceUrl = () => {
+  const placeId = currentPlaceId.value || place.value?.id
+  if (!placeId) {
+    alert("無法獲取地點 ID！")
+    return
+  }
+  copyToClipboard(placeId)
+}
+
+// 加載地點詳情
 const fetchPlaceDetails = async () => {
   try {
     // 優先從 props 或本地 store 中加載資料
     places.value = placesStore.items
     place.value = places.value.find((p) => p.id === currentPlaceId.value) || {}
-
     if (props.place) {
       place.value = props.place
       return
     }
-
     // 從收藏列表中查找
     if (!Object.keys(place.value).length && favorites.value.length > 0) {
       favorites.value = JSON.parse(localStorage.getItem("favorites") || "[]")
       place.value =
         favorites.value.find((f) => f.place_id === currentPlaceId.value) || {}
     }
-
     // 從 API 中獲取地點詳情
     if (!Object.keys(place.value).length && currentPlaceId.value) {
       const response = await axios.get(
         `${API_URL}/places/${currentPlaceId.value}`,
-        {
-          headers: { Authorization: token },
-        }
+        { headers: { Authorization: token } }
       )
       place.value = response.data
     }
-
-    // 若所有途徑都無法獲取地點詳情，拋出錯誤
+    // 若所有途徑都無法獲取地點詳情
     if (!Object.keys(place.value).length) {
-      throw new Error("無法加載地點詳情，請檢查 placeId 是否有效。")
+      alert(Error("無法加載景點資訊，請再試一次。"))
     }
   } catch (error) {
+    alert(Error("無法加載景點資訊，請再試一次。"))
     console.error("無法加載地點詳情:", error)
-    place.value = null
   }
 }
 
+// 初始加載
 onMounted(fetchPlaceDetails)
 </script>
 
@@ -359,7 +348,6 @@ onMounted(fetchPlaceDetails)
                     >
                       <LinkIcon class="mr-1 size-6" /><span>複製連結</span>
                     </button>
-                    <!-- 複製成功警告組件 -->
                     <div
                       class="absolute right-0 top-1/2 md:w-[100px] md:h-[100px] w-[80px] h-[80px] -translate-y-full md:-translate-y-1/2"
                     >
