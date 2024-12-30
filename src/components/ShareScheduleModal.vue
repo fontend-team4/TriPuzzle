@@ -197,7 +197,7 @@ watch(props, ({ sharePeople }) => {
         />
         <label
           for="invite"
-          class="w-full px-2 py-1 text-center rounded-lg invite-toggle hover:bg-primary-600 hover:text-white hover:cursor-pointer"
+          class="w-full px-2 py-1 text-center text-white rounded-lg invite-toggle bg-primary-600"
           >邀請共編</label
         >
       </div>
@@ -212,7 +212,7 @@ watch(props, ({ sharePeople }) => {
       <!-- invite detail -->
       <div
         v-else
-        class="w-full px-5 pt-10 pb-6 bg-white invite-detail rounded-xl"
+        class="w-full px-5 pt-3 pb-6 bg-white invite-detail rounded-xl"
       >
 
         <div class="text-center">
