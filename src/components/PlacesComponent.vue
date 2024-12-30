@@ -90,21 +90,6 @@ const updateMapCenter = (item) => {
   emit("updateIsPlacesComponent", false);
 };
 
-// 根據 place_id 載入地點詳細資訊
-const fetchPlaceById = async (placeId) => {
-  try {
-    const response = await axios.get(`${API_URL}/places/${placeId}`);
-    place.value = response.data;
-    console.log("在資料庫中找到:", place.value);
-  } catch (error) {
-    console.error("載入詳情失敗:", error);
-    alert("載入地點失敗");
-  } finally {
-    loading.value = false;
-  }
-};
-
-// 初始化和監聽事件
 
 // 初始化
 onMounted(async () => {
