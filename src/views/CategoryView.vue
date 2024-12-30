@@ -1,16 +1,16 @@
 <script setup>
-import { ref, computed, watch } from "vue";
-import SearchCategoryNav from "../components/SearchCategoryNav.vue";
+import { ref, computed, watch } from "vue"
+import SearchCategoryNav from "../components/SearchCategoryNav.vue"
 import taiwanLocation from "../../taiwanLocation.json"
 
 // 本地數據
-const categories = ref(["推薦", "台灣", "日本", "韓國"]);
+const categories = ref(["推薦", "台灣", "日本", "韓國"])
 const destinations = ref([
   { name: "地點1", category: "推薦", image: "https://fakeimg.pl/100x100/100" },
   { name: "地點2", category: "台灣", image: "https://fakeimg.pl/100x200/300" },
   { name: "地點3", category: "日本", image: "https://fakeimg.pl/100x100/300" },
   { name: "地點4", category: "韓國", image: "https://fakeimg.pl/100x100/400" },
-]);
+])
 
 // // 從路由獲取當前分類
 // const route = useRoute();
@@ -33,7 +33,7 @@ const destinations = ref([
 </script>
 
 <template>
-  <div >
+  <div>
     <!-- 顯示篩選選單 -->
     <SearchCategoryNav :categories="categories" />
     <!-- 顯示過濾後的目的地 -->
@@ -62,5 +62,4 @@ const destinations = ref([
 .area-item img:hover {
   transform: scale(1.1);
 }
-
 </style>

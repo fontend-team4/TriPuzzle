@@ -113,13 +113,13 @@ onMounted(() => {
       <form method="dialog">
         <div class="w-full h-10">
           <button
-            class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+            class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2"
           >
             ✕
           </button>
         </div>
         <div class="h-[600px] overflow-y-scroll pb-12" ref="scheduleSummary">
-          <h3 class="text-2xl font-bold text-center mb-5">
+          <h3 class="mb-5 text-2xl font-bold text-center">
             {{ scheduleName }}
           </h3>
           <br />
@@ -134,21 +134,21 @@ onMounted(() => {
           </div>
         </div>
         <div
-          class="w-full flex gap-3 h-20 px-6 py-4 bg-white border-t border-gray absolute bottom-0 right-0"
+          class="absolute bottom-0 right-0 flex w-full h-20 gap-3 px-6 py-4 bg-white border-t border-gray"
         >
           <EmailScheduleSummary :scheduleSummaryText="scheduleSummaryText" />
           <button
             @click="generatePDF"
-            class="w-full h-12 px-5 py-3 bg-primary-600 hover:bg-primary-700 text-white text-center rounded-3xl font-medium"
+            class="w-full h-12 px-5 py-3 font-medium text-center text-white bg-primary-600 hover:bg-primary-700 rounded-3xl"
           >
-            <DocumentArrowDownIcon class="w-7 h-7 inline-block pe-2" />
+            <DocumentArrowDownIcon class="inline-block w-7 h-7 pe-2" />
             <span>匯出 PDF</span>
           </button>
         </div>
       </form>
     </div>
     <form method="dialog" class="modal-backdrop">
-      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+      <button class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2">
         ✕
       </button>
       <button>close</button>

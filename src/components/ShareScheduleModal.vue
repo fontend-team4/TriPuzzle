@@ -149,7 +149,7 @@ const copyShareLink = async () => {
 
 
 const updateActiveTab = (status) => {
-  emit('updateStatus', status)
+  emit("updateStatus", status)
 }
 
 

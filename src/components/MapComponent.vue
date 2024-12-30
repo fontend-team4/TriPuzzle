@@ -1,5 +1,13 @@
 <script setup>
-import { ref, onMounted, watch, nextTick, shallowRef, toRaw } from "vue"
+import {
+  ref,
+  onMounted,
+  watch,
+  nextTick,
+  shallowRef,
+  toRaw,
+  defineProps,
+} from "vue"
 import { MagnifyingGlassIcon, MapPinIcon } from "@heroicons/vue/24/outline"
 import PlacesModal from "@/components/PlacesModal.vue"
 import { usePlacesStore } from "@/stores/fetchPlaces"
@@ -12,9 +20,15 @@ const currentLng = ref()
 const map = shallowRef(null)
 const markers = ref([])
 
+const props = defineProps({
+  map: {
+    type: String,
+    required: true,
+  },
+})
 async function initMap(center) {
   const { Map } = await google.maps.importLibrary("maps")
-  const newMap = new Map(document.getElementById("map"), {
+  const newMap = new Map(document.getElementById(props.map), {
     center: center || { lat: 25.0341222, lng: 121.5640212 },
     zoom: 15,
     maxZoom: 20,

@@ -1,6 +1,6 @@
 <script setup>
-import { defineProps } from 'vue'
-import axios from 'axios'
+import { defineProps } from "vue"
+import axios from "axios"
 const props = defineProps({
   scheduleId: {
     type: [Number, String],
@@ -17,7 +17,7 @@ const props = defineProps({
 })
 
 const API_URL = process.env.VITE_HOST_URL
-const token = localStorage.getItem('token')
+const token = localStorage.getItem("token")
 // 刪除行程
 const deleteSchedule = async (id) => {
   const config = {

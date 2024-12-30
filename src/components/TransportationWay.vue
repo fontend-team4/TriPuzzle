@@ -1,13 +1,13 @@
 <script setup>
-import { inject } from 'vue'
+import { inject } from "vue"
 import {
   ChevronLeftIcon,
   MapPinIcon,
   ChevronDoubleDownIcon,
-} from '@heroicons/vue/24/solid'
-import { Car, Motorcycle, Bus, Walking, EditPencil } from '@iconoir/vue'
+} from "@heroicons/vue/24/solid"
+import { Car, Motorcycle, Bus, Walking, EditPencil } from "@iconoir/vue"
 
-const transportationToggle = inject('transportationToggle')
+const transportationToggle = inject("transportationToggle")
 </script>
 
 <template>

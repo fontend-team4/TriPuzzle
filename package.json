@@ -6,10 +6,12 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start":"node --max-old-space-size=4096 server.js"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
+    "@googlemaps/js-api-loader": "^1.16.8",
     "@heroicons/vue": "^2.1.5",
     "@iconoir/vue": "^7.10.1",
     "axios": "^1.7.9",

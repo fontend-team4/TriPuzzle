@@ -1,5 +1,5 @@
 <script setup>
-import { MapPinIcon } from '@heroicons/vue/24/outline'
+import { MapPinIcon } from "@heroicons/vue/24/outline"
 </script>
 
 <template>
@@ -163,10 +163,10 @@ import { MapPinIcon } from '@heroicons/vue/24/outline'
 </template>
 
 <style>
-input[type='radio']:checked ~ label > p {
+input[type="radio"]:checked ~ label > p {
   color: #2d4057;
 }
-input[type='radio']:checked ~ label > .time {
+input[type="radio"]:checked ~ label > .time {
   color: #d23430;
 }
 </style>
