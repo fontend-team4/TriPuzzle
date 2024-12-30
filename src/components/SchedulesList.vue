@@ -399,8 +399,8 @@ onMounted(async () => {
               <!-- 無行程 -->
               <div v-else class="w-full text-center h-52 mt-7">
                 <img
-                  class="w-[180px] h-[90] mx-auto"
-                  src="https://web.chictrip.com.tw/assets/monster_empty.3a44f172.png"
+                  class="w-[180px] mx-auto mb-2 p-2"
+                  src="../assets/images/cat-6.png"
                   alt=""
                 />
                 <p class="mb-6">還沒有安排新行程哦</p>
@@ -497,8 +497,8 @@ onMounted(async () => {
               <!-- 無行程 -->
               <div v-else class="text-center -full h-52 mt-7">
                 <img
-                  class="w-[180px] h-[103px] mx-auto"
-                  src="https://web.chictrip.com.tw/assets/master-unlock.990b2501.png"
+                  class="w-[200px] mx-auto"
+                  src="../assets/images/cat-3.png"
                   alt=""
                 />
                 <p class="mb-6">
@@ -516,7 +516,7 @@ onMounted(async () => {
             >
               <img
                 class="w-[180px] h-[90] mx-auto"
-                src="https://web.chictrip.com.tw/assets/monster_empty.3a44f172.png"
+                src="../assets/images/cat-8.png"
                 alt=""
               />
               <p class="mb-6">
@@ -529,7 +529,7 @@ onMounted(async () => {
             <div v-else class="w-full text-center h-52 mt-7">
               <img
                 class="w-[180px] h-[90] mx-auto"
-                src="https://web.chictrip.com.tw/assets/monster_empty.3a44f172.png"
+                src="../assets/images/cat-8.png"
                 alt=""
               />
               <p class="mb-6">

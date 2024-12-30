@@ -180,9 +180,9 @@ const registerSubmit = async () => {
         <div class="text-center">
           <div class="mb-4">
             <img
-              src="https://web.chictrip.com.tw/assets/logo.26916d07.svg"
+              src="../assets/svg/logo-dark.svg"
               alt="Logo"
-              class="h-12 w-auto mx-auto"
+              class="w-16 mx-auto"
             />
           </div>
         </div>
@@ -354,7 +354,7 @@ const registerSubmit = async () => {
           <img
             src="https://t4.ftcdn.net/jpg/03/91/79/25/360_F_391792593_BYfEk8FhvfNvXC5ERCw166qRFb8mYWya.jpg"
             alt="Google"
-            class="h-5 w-5"
+            class="h-6 w-6"
           />
         </a>
         <a
@@ -364,7 +364,7 @@ const registerSubmit = async () => {
           <img
             src="https://e7.pngegg.com/pngimages/630/685/png-clipart-line-computer-icons-social-media-line-flat-text-rectangle-thumbnail.png"
             alt="LINE"
-            class="h-5 w-5"
+            class="h-6 w-6"
           />
         </a>
       </div>

@@ -6,7 +6,7 @@ import ExitCoEditModal from './ExitCoEditModal.vue'
 import axios from 'axios'
 
 const API_URL = process.env.VITE_HOST_URL
-const defaultProfilePicUrl = "https://web.chictrip.com.tw/assets/waterview_default.f746ada9.svg";
+const defaultProfilePicUrl = "../assets/images/cat-2.png";
 const shareSchedules = ref([]);
 const hasShareSchedules = ref(false);
 const token = localStorage.getItem("token");

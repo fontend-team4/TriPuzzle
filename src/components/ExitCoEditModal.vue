@@ -56,8 +56,8 @@ const leaveSchedule = async () => {
       </form>
       <div class="object-cover px-5 py-6">
         <img
-          class="mx-auto w-72 h-36"
-          src="https://web.chictrip.com.tw/assets/master-img-warn.198cfcdc.png"
+          class="mx-auto w-48"
+          src="../assets/images/cat-4.png"
           alt=""
         />
       </div>
