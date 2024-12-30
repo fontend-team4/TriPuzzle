@@ -1,25 +1,11 @@
 <script setup>
-import { defineProps, defineEmits } from 'vue'
-import { LinkIcon, ChevronDownIcon } from '@heroicons/vue/24/outline'
-import ScheduleSummaryModal from './ScheduleSummaryModal.vue'
-import ExportScheduleModal from './ExportScheduleModal.vue'
-import ExitCoEditModal from './ExitCoEditModal.vue'
-
-const props = defineProps({
-  activeTab: {
-    type: String,
-    required: true,
-  },
-})
-const emit = defineEmits(['updateStatus'])
-const updateActiveTab = (status) => {
-  emit('updateStatus', status)
-}
+import { LinkIcon, ChevronDownIcon } from "@heroicons/vue/24/outline"
+import ExitCoEditModal from "./ExitCoEditModal.vue"
 </script>
 
 <template>
   <dialog id="shareSchedule" class="modal">
-    <div class="modal-box min-w-full md:min-w-[480px] bg-gray">
+    <div class="modal-box min-w-full md:min-w-[480px] bg-gray relative">
       <form method="dialog">
         <div class="w-full h-10">
           <button
@@ -29,78 +15,14 @@ const updateActiveTab = (status) => {
           </button>
         </div>
       </form>
-      <!-- share & invite toggle -->
       <div class="w-full h-10 flex gap-1 mb-5 p-1 rounded-xl bg-white">
-        <input
-          id="share"
-          type="radio"
-          name="tab"
-          :checked="activeTab === 'share'"
-          @change="updateActiveTab('share')"
-          class="hidden"
-        />
-        <label
-          for="share"
-          class="share-toggle w-1/2 text-center py-1 px-2 rounded-lg hover:bg-primary-600 hover:text-white hover:cursor-pointer"
-          >分享行程</label
+        <div
+          class="invite-toggle w-full text-lg text-center py-1 px-2 rounded-lg bg-primary-600 text-white"
         >
-        <input
-          id="invite"
-          type="radio"
-          name="tab"
-          :checked="activeTab === 'invite'"
-          @change="updateActiveTab('invite')"
-          class="hidden"
-        />
-        <label
-          for="invite"
-          class="invite-toggle w-1/2 text-center py-1 px-2 rounded-lg hover:bg-primary-600 hover:text-white hover:cursor-pointer"
-          >邀請共編</label
-        >
-      </div>
-      <!-- share detail -->
-      <div
-        v-if="props.activeTab === 'share'"
-        class="share-detail rounded-xl bg-white w-full pt-10 px-5 pb-6"
-      >
-        <div>
-          <img
-            class="w-40 h-40 mb-4 mx-auto"
-            src="../assets/qrcode.svg"
-            alt="schedule share QRcode"
-          />
-          <p class="mb-8 text-center">手機掃描條碼，即可查看此行程</p>
-        </div>
-        <div>
-          <p
-            class="w-[310px] m-auto text-sm text-center mb-8 text-slate-400 relative before:inline-block before:h-[1px] before:w-1/3 before:bg-gray before:absolute before:top-2 before:left-0 after:inline-block after:h-[1px] after:w-1/3 after:bg-gray after:absolute after:top-2 after:right-0"
-          >
-            其他方式
-          </p>
-          <ul class="w-[310px] m-auto flex justify-around">
-            <li>
-              <button class="hover:cursor-pointer">
-                <span
-                  class="inline-block w-14 h-14 p-3 bg-primary-100 rounded-xl text-primary-600"
-                  ><LinkIcon
-                /></span>
-                <p class="text-sm">複製連結</p>
-              </button>
-            </li>
-            <li>
-              <ScheduleSummaryModal />
-            </li>
-            <li>
-              <ExportScheduleModal />
-            </li>
-          </ul>
+          邀請共編
         </div>
       </div>
-      <!-- invite detail -->
-      <div
-        v-else
-        class="invite-detail rounded-xl bg-white w-full pt-10 px-5 pb-6"
-      >
+      <div class="invite-detail rounded-xl bg-white w-full pt-10 px-5 pb-6">
         <div class="text-center">
           <!-- 邀請者視角 -->
           <div class="dropdown">
@@ -155,7 +77,7 @@ const updateActiveTab = (status) => {
         </div>
       </div>
       <!-- 共編成員 -->
-      <div class="py-6" v-if="props.activeTab !== 'share'">
+      <div class="py-6">
         <p class="text-sm mb-4 font-medium">成員(2)</p>
         <ul>
           <li
@@ -238,13 +160,5 @@ const updateActiveTab = (status) => {
 <style scoped>
 .tooltip:before {
   font-size: 12px;
-}
-#share:checked ~ .share-toggle {
-  background-color: #d23430;
-  color: #fff;
-}
-#invite:checked ~ .invite-toggle {
-  background-color: #d23430;
-  color: #fff;
 }
 </style>
