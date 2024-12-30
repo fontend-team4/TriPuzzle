@@ -2,8 +2,6 @@
 
 import { defineProps, defineEmits, ref, watch, computed } from 'vue'
 import { LinkIcon } from '@heroicons/vue/24/outline'
-import ScheduleSummaryModal from './ScheduleSummaryModal.vue'
-import ExportScheduleModal from './ExportScheduleModal.vue'
 import ExitCoEditModal from './ExitCoEditModal.vue'
 import axios from 'axios'
 
