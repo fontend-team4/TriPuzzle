@@ -2,7 +2,6 @@ import axios from "axios";
 
 const handleError = (error, message = "操作失敗，請稍後再試") => {
   console.error(message, error);
-  alert(message);
 };
 
 const API_URL = process.env.VITE_HOST_URL
