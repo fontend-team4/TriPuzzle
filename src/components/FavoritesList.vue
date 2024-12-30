@@ -72,9 +72,9 @@ onMounted(fetchPlaces)
     <!-- 沒有收藏景點 -->
     <div v-else-if="places.length === 0" class="text-center p-6 rounded-lg">
       <img
-        src="https://web.chictrip.com.tw/assets/img-empty.65a29235.png"
+        src="../assets/images/cat-7.png"
         alt="Empty collection"
-        class="w-80 mx-auto mb-4"
+        class="w-48 mx-auto"
       />
       <p class="mb-8">「收藏」中還沒有景點哦</p>
       <RouterLink

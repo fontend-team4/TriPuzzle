@@ -48,7 +48,7 @@ const toggleMenu = () => {
   >
     <div class="flex items-center">
         <RouterLink to="/planner">
-          <img v-if="!isMenuOpen" src="../assets/svg/logo-light.svg" alt="Logo" class="w-12 mb-3" />
+          <img v-if="!isMenuOpen" src="../assets/svg/logo-dark.svg" alt="Logo" class="w-12 mb-3" />
           <img src="../assets/svg/Logo.svg" alt="Logo" 
             class="hidden ml-1 mb-4 font-medium group-hover:inline-block whitespace-nowrap text-slate-500 transform transition-transform duration-300" />
         </RouterLink>

@@ -45,8 +45,8 @@ const deleteSchedule = async (id) => {
       </form>
       <div class="py-6 px-5 object-cover">
         <img
-          class="w-72 h-36 mx-auto"
-          src="https://web.chictrip.com.tw/assets/master-img-warn.198cfcdc.png"
+          class="w-48 h-48 mx-auto"
+          src="../assets/images/cat-4.png"
           alt=""
         />
       </div>

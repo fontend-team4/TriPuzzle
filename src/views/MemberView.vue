@@ -19,7 +19,7 @@ import FavoritesList from "@/components/FavoritesList.vue"
 import DetailModal from "@/components/DetailModal.vue"
 import { usePlacesStore } from "@/stores/fetchPlaces"
 import { PlaceModalStore } from "@/stores/PlaceModal"
-import Logo from "@/assets/svg/logo-dark.svg"
+import Logo from "@/assets/images/cat-2.png"
 
 const LoginStore = LoginModalStore()
 const placesStore = usePlacesStore()
@@ -740,8 +740,8 @@ onMounted(async () => {
         </form>
         <div class="py-6 px-5 object-cover">
           <img
-            class="w-72 h-36 mx-auto"
-            src="https://web.chictrip.com.tw/assets/master-img-warn.198cfcdc.png"
+            class="w-48 h-48 mx-auto"
+            src="../assets/images/cat-4.png"
             alt=""
           />
         </div>
