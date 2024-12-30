@@ -267,7 +267,7 @@ watch(props, ({ sharePeople }) => {
           >
             <img
               class="rounded-full w-11 h-11"
-              :src="member.profile_pic_url||'https://web.chictrip.com.tw/assets/waterview_default.f746ada9.svg'"
+              :src="member.profile_pic_url||`src/assets/images/cat-2.png`"
               alt=""
             />
             <div class="flex items-center justify-between w-full">
