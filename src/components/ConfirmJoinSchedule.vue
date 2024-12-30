@@ -12,7 +12,7 @@ const shareToken = ref(route.params.shareToken);
 const loading = ref(true);
 const scheduleTitle = ref("");
 const scheduleImg = ref("");
-const error = ref(null);
+const scheduleDate = ref("");
 
 const token = localStorage.getItem("token");
 
@@ -87,6 +87,11 @@ onMounted(async () => {
     );
     scheduleTitle.value = response.data.schedule.title;
     scheduleImg.value = response.data.schedule.image_url;
+    const initStartDate = response.data.schedule.start_date.split("T")[0]
+    const initEndDate = response.data.schedule.end_date.split("T")[0]
+    scheduleDate.value = `${initStartDate} ~ ${initEndDate}`;
+    console.log(response);
+    
   } catch (err) {
     console.error("Error verifying share token:", err.message);
 
@@ -164,23 +169,28 @@ const redirectToHome = () => {
     class="fixed top-0 z-50 flex items-center justify-center w-screen h-screen overflow-hidden bg-black bg-opacity-25"
   >
     <div
-      class="pb-10 md:pb-0 h-full md:h-[calc(100vh-300px)] md:w-[480px] mx-0 md:mx-auto bg-white md:flex md:rounded-md md:overflow-hidden overflow-auto flex-col py-16 px-5 relative"
+      class="pb-10 md:pb-0 h-full md:h-[calc(100vh-540px)] md:w-[480px] mx-0 md:mx-auto bg-white md:flex md:rounded-xl md:overflow-hidden overflow-auto flex-col py-10 px-5 relative"
     >
-      <h2 class="flex items-center justify-center mb-8 text-2xl font-bold">
+      <h2 class="flex items-center justify-center mb-4 text-2xl font-bold">
         確認要加入行程嗎？
       </h2>
-      <div class="relative w-full mb-6 overflow-hidden rounded-lg h-[200px]">
+      <div class="relative w-full mb-4 overflow-hidden rounded-lg h-[200px]">
         <img
-          :src="`http://localhost:5173${scheduleImg}`"
+          :src="scheduleImg"
           class="object-cover w-full h-64"
         />
         <div
           class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"
         ></div>
         <p
-          class="absolute z-10 text-lg font-bold text-white bottom-4 left-4"
+          class="absolute z-10 text-lg font-bold text-white bottom-8 left-4"
         >
           {{ scheduleTitle }}
+        </p>
+        <p
+          class="absolute z-10 text-sm font-bold text-white bottom-3 left-4"
+        >
+          {{ scheduleDate }}
         </p>
       </div>
       <div class="absolute bottom-0 left-0 inline-flex w-full h-16 gap-4 px-5 pt-2 border-t-2 border-gray">

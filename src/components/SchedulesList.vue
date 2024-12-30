@@ -424,13 +424,6 @@ onMounted(async () => {
                   </figure>
                   <!-- 行程右上設定 icon -->
                   <div class="absolute flex gap-2 top-3 right-3">
-                    <span
-                      class="w-6 h-6 p-1 text-white rounded-full bg-gray-transparent hover:cursor-pointer"
-                      onclick="shareSchedule.showModal()"
-                      @click="openShareModal"
-                    >
-                      <ShareIcon />
-                    </span>
                     <div class="dropdown">
                       <button
                         role="button"

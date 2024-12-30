@@ -60,9 +60,9 @@ const drag = ref(false)
 </script>
 
 <template>
-  <div class="w-full lg:w-96 h-screen bg-white shadow-xl transition-all">
+  <div class="w-full h-screen transition-all bg-white shadow-xl lg:w-96">
     <!-- header -->
-    <div class="bg-primary-600 py-5 ps-4 pe-14 relative">
+    <div class="relative py-5 bg-primary-600 ps-4 pe-14">
       <div class="flex items-center justify-between gap-0.5">
         <div
           class="flex items-center hover:cursor-pointer"
@@ -71,13 +71,7 @@ const drag = ref(false)
           <span class="inline-block w-4 h-4 text-white"
             ><ChevronLeftIcon
           /></span>
-          <h2 class="text-white text-sm">行程列表</h2>
-        </div>
-        <div
-          class="w-5 h-5 text-white hover:cursor-pointer"
-          onclick="shareSchedule.showModal()"
-        >
-          <ArrowUpTrayIcon />
+          <h2 class="text-sm text-white">行程列表</h2>
         </div>
       </div>
       <label
@@ -90,68 +84,68 @@ const drag = ref(false)
     </div>
     <!-- date tab -->
     <div class="flex border-b border-gray">
-      <div class="w-full h-12 flex pt-2 ps-8 pe-3 overflow-x-scroll">
+      <div class="flex w-full h-12 pt-2 overflow-x-scroll ps-8 pe-3">
         <ul class="flex gap-4">
           <li class="whitespace-nowrap">
             <a
               href=""
-              class="pb-2 text-gray-800 font-medium text-sm border-b-2 border-primary-600"
+              class="pb-2 text-sm font-medium text-gray-800 border-b-2 border-primary-600"
               >總覽頁</a
             >
           </li>
           <li class="whitespace-nowrap">
             <a
               href=""
-              class="pb-2 text-gray-500 font-medium text-sm hover:text-gray-800 hover:border-b-2 hover:border-primary-600"
+              class="pb-2 text-sm font-medium text-gray-500 hover:text-gray-800 hover:border-b-2 hover:border-primary-600"
               >第1天</a
             >
           </li>
           <li class="whitespace-nowrap">
             <a
               href=""
-              class="pb-2 text-gray-500 font-medium text-sm hover:text-gray-800 hover:border-b-2 hover:border-primary-600"
+              class="pb-2 text-sm font-medium text-gray-500 hover:text-gray-800 hover:border-b-2 hover:border-primary-600"
               >第2天</a
             >
           </li>
           <li class="whitespace-nowrap">
             <a
               href=""
-              class="pb-2 text-gray-500 font-medium text-sm hover:text-gray-800 hover:border-b-2 hover:border-primary-600"
+              class="pb-2 text-sm font-medium text-gray-500 hover:text-gray-800 hover:border-b-2 hover:border-primary-600"
               >第3天</a
             >
           </li>
           <li class="whitespace-nowrap">
             <a
               href=""
-              class="pb-2 text-gray-500 font-medium text-sm hover:text-gray-800 hover:border-b-2 hover:border-primary-600"
+              class="pb-2 text-sm font-medium text-gray-500 hover:text-gray-800 hover:border-b-2 hover:border-primary-600"
               >第4天</a
             >
           </li>
           <li class="whitespace-nowrap">
             <a
               href=""
-              class="pb-2 text-gray-500 font-medium text-sm hover:text-gray-800 hover:border-b-2 hover:border-primary-600"
+              class="pb-2 text-sm font-medium text-gray-500 hover:text-gray-800 hover:border-b-2 hover:border-primary-600"
               >第5天</a
             >
           </li>
           <li class="whitespace-nowrap">
             <a
               href=""
-              class="pb-2 text-gray-500 font-medium text-sm hover:text-gray-800 hover:border-b-2 hover:border-primary-600"
+              class="pb-2 text-sm font-medium text-gray-500 hover:text-gray-800 hover:border-b-2 hover:border-primary-600"
               >第6天</a
             >
           </li>
           <li class="whitespace-nowrap">
             <a
               href=""
-              class="pb-2 text-gray-500 font-medium text-sm hover:text-gray-800 hover:border-b-2 hover:border-primary-600"
+              class="pb-2 text-sm font-medium text-gray-500 hover:text-gray-800 hover:border-b-2 hover:border-primary-600"
               >第7天</a
             >
           </li>
         </ul>
       </div>
-      <div class="w-12 pt-2 text-primary-600 hover:cursor-pointer text-center">
-        <span class="inline-block w-7 h-7 rounded-full hover:bg-gray"
+      <div class="w-12 pt-2 text-center text-primary-600 hover:cursor-pointer">
+        <span class="inline-block rounded-full w-7 h-7 hover:bg-gray"
           ><PlusCircleIcon
         /></span>
       </div>
@@ -160,8 +154,8 @@ const drag = ref(false)
     <!-- everyday schedule -->
     <div class="hidden">
       <!-- date -->
-      <div class="pt-5 px-5 mb-3">
-        <div class="date w-28 flex gap-1 cursor-pointer">
+      <div class="px-5 pt-5 mb-3">
+        <div class="flex gap-1 cursor-pointer date w-28">
           <p class="font-medium">11/15 週五</p>
           <div class="dropdown lg:hidden">
             <div class="w-6 h-6" tabindex="0" role="button">
@@ -190,20 +184,20 @@ const drag = ref(false)
         item-key="id"
       >
         <template #item="{ element }">
-          <div class="place-transportation container">
+          <div class="container place-transportation">
             <div
-              class="pt-2 px-5 pb-1 overflow-y-hidden overflow-x-hidden bg-white"
+              class="px-5 pt-2 pb-1 overflow-x-hidden overflow-y-hidden bg-white"
             >
               <div
                 :key="element.id"
-                class="place w-full bg-gray rounded-xl border border-gray mt-4"
+                class="w-full mt-4 border place bg-gray rounded-xl border-gray"
               >
                 <div class="flex p-1">
                   <img
                     class="w-[108px] h-[108px] rounded-xl object-cover"
                     :src="element.imgUrl"
                   />
-                  <div class="w-cal flex justify-between">
+                  <div class="flex justify-between w-cal">
                     <ul class="px-4 flex flex-col gap-0.5 justify-center">
                       <li class="text-sm font-medium text-orange-400">
                         {{ element.time }}
@@ -213,10 +207,10 @@ const drag = ref(false)
                         {{ `停留 ${element.stayhour} 時` }}
                       </li>
                     </ul>
-                    <div class="dropdown p-1">
+                    <div class="p-1 dropdown">
                       <button
                         role="button"
-                        class="w-5 h-5 rounded-full bg-gray-300 hover:bg-gray-400 text-white relative"
+                        class="relative w-5 h-5 text-white bg-gray-300 rounded-full hover:bg-gray-400"
                       >
                         <EllipsisHorizontalIcon />
                       </button>
@@ -227,7 +221,7 @@ const drag = ref(false)
                       >
                         <li @click="moveDate.showModal()">
                           <a
-                            class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray"
+                            class="flex items-center gap-1 px-5 py-2 text-sm hover:bg-gray"
                             href="#"
                           >
                             <span class="inline-block w-6 h-6"
@@ -239,7 +233,7 @@ const drag = ref(false)
                         <MoveToOtherDateModal />
                         <li>
                           <a
-                            class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray"
+                            class="flex items-center gap-1 px-5 py-2 text-sm hover:bg-gray"
                             href="#"
                           >
                             <span class="inline-block w-6 h-6"
@@ -250,7 +244,7 @@ const drag = ref(false)
                         </li>
                         <li class="border-t" @click="delete_place.showModal()">
                           <a
-                            class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray"
+                            class="flex items-center gap-1 px-5 py-2 text-sm hover:bg-gray"
                             href="#"
                           >
                             <span class="inline-block w-6 h-6"
@@ -267,11 +261,11 @@ const drag = ref(false)
                 <!-- hover:relative feature -->
                 <div class="more lg:hidden">
                   <div
-                    class="h-10 flex justify-between items-center border-t border-white"
+                    class="flex items-center justify-between h-10 border-t border-white"
                   >
                     <ul class="flex gap-4 p-3">
                       <li
-                        class="flex items-center text-gray-500 gap-1 hover:cursor-pointer"
+                        class="flex items-center gap-1 text-gray-500 hover:cursor-pointer"
                         @click="edit_place.showModal()"
                       >
                         <span class="w-3 h-3"><PencilIcon /></span>
@@ -279,13 +273,13 @@ const drag = ref(false)
                       </li>
                       <EditPlaceModal />
                       <li
-                        class="flex items-center text-gray-500 gap-1 hover:cursor-pointer"
+                        class="flex items-center gap-1 text-gray-500 hover:cursor-pointer"
                       >
                         <span class="w-3 h-3"><MagnifyingGlassIcon /></span>
                         <p class="text-xs">周邊</p>
                       </li>
                       <li
-                        class="flex items-center text-gray-500 gap-1 hover:cursor-pointer"
+                        class="flex items-center gap-1 text-gray-500 hover:cursor-pointer"
                         @click="place_note_1.showModal()"
                       >
                         <span class="w-3 h-3"><BookmarkIcon /></span>
@@ -299,13 +293,13 @@ const drag = ref(false)
                         >
                           <form method="dialog">
                             <button
-                              class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+                              class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2"
                             >
                               ✕
                             </button>
                           </form>
                           <h2
-                            class="text-2xl font-medium text-center pt-6 mb-4"
+                            class="pt-6 mb-4 text-2xl font-medium text-center"
                           >
                             景點筆記
                           </h2>
@@ -314,15 +308,15 @@ const drag = ref(false)
                             placeholder="還沒有寫筆記哦"
                           ></textarea>
                           <div
-                            class="w-full flex gap-3 h-20 px-6 py-4 bg-white border-t border-gray fixed bottom-0 right-0"
+                            class="fixed bottom-0 right-0 flex w-full h-20 gap-3 px-6 py-4 bg-white border-t border-gray"
                           >
                             <button
-                              class="w-full h-12 px-5 py-3 border border-primary-600 text-primary-600 text-center rounded-3xl font-medium hover:bg-primary-100"
+                              class="w-full h-12 px-5 py-3 font-medium text-center border border-primary-600 text-primary-600 rounded-3xl hover:bg-primary-100"
                             >
                               取消
                             </button>
                             <button
-                              class="w-full h-12 px-5 py-3 bg-primary-600 hover:bg-primary-700 text-white text-center rounded-3xl font-medium"
+                              class="w-full h-12 px-5 py-3 font-medium text-center text-white bg-primary-600 hover:bg-primary-700 rounded-3xl"
                             >
                               儲存
                             </button>
@@ -330,7 +324,7 @@ const drag = ref(false)
                         </div>
                         <form method="dialog" class="modal-backdrop">
                           <button
-                            class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+                            class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2"
                           >
                             ✕
                           </button>
@@ -339,7 +333,7 @@ const drag = ref(false)
                       </dialog>
                     </ul>
                     <span
-                      class="w-10 h-10 text-gray-500 p-3 border-l border-white hover:cursor-pointer"
+                      class="w-10 h-10 p-3 text-gray-500 border-l border-white hover:cursor-pointer"
                       ><MapPinIcon
                     /></span>
                   </div>
@@ -348,7 +342,7 @@ const drag = ref(false)
             </div>
             <p
               v-if="element !== place[place.length - 1]"
-              class="w-full ml-3 py-4 ps-3 border-l border-dashed border-gray hover:cursor-pointer"
+              class="w-full py-4 ml-3 border-l border-dashed ps-3 border-gray hover:cursor-pointer"
               @click="transportationToggle"
             >
               {{ `自訂交通 ${element.transhour} 分` }}
