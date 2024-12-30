@@ -144,10 +144,10 @@ onMounted(() => {
 <template>
   <dialog id="newSchedule" class="modal">
     <div
-      class="modal-box p-0 w-full md:max-w-[480px] sm:max-w-[100%] sm:max-h-[100%] max-md:rounded-none"
+      class="modal-box p-0 w-full md:max-w-[480px] sm:max-w-[100%] h-full sm:max-h-[100%] md:max-h-[724.75px] max-md:rounded-none"
     >
       <div
-        class="max-w-[480px] md:max-w-[480px] sm:max-w-[100%] h-[60px] px-[15px] py-[8px] sticky top-0 bg-white"
+        class="max-w-[480px] md:max-w-[480px] sm:max-w-[100%] h-[60px] px-[15px] py-[8px] sticky top-0 bg-white z-20"
       >
         <form method="dialog">
           <button
@@ -283,7 +283,7 @@ onMounted(() => {
 
       <!-- footer -->
       <div
-        class="w-[100%] h-[80px] bottom-0 sticky border-t-[1px] border-slate-200 py-[16px] px-[24px] z-20"
+        class="w-[100%] h-[80px] bottom-0 sticky border-t-[1px] border-slate-200 py-[16px] px-[24px] bg-white z-20"
       >
         <form method="dialog" class="flex gap-[12px]">
           <button

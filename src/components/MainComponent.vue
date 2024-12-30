@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, watch, onMounted } from "vue"
+import { computed, ref, watch, onMounted, defineProps } from "vue"
 import SearchBar from "./SearchBar.vue"
 import MapToggle from "./MapToggle.vue"
 import PlacesComponent from "./PlacesComponent.vue"
@@ -10,7 +10,32 @@ import AddPlaceModal from "./AddPlaceModal.vue"
 import { PlaceModalStore } from "@/stores/PlaceModal"
 import { usePlacesStore } from "@/stores/fetchPlaces"
 import { useSearchStore } from "@/stores/searchPlaces"
-
+const props = defineProps({
+  map: {
+    type: String,
+    required: true,
+  },
+})
+const apiKey = import.meta.env.VITE_GOOGLE_API_KEY
+async function initMap() {
+  console.log(props.map);
+  try {
+    const { Map } = await google.maps.importLibrary("maps")
+    const mapContainer = document.getElementById(props.map)
+    
+    if (!mapContainer) {
+      console.error("Map container not found.")
+      return
+    }
+    map.value = new Map(mapContainer, {
+      center: { lat: 25.033964, lng: 121.564468 }, // 台北 101 中心點
+      zoom: 14,
+    })
+  } catch (error) {
+    console.error("Failed to initialize Google Maps:", error)
+  }
+}
+initMap()
 const placesStore = usePlacesStore()
 const searchStore = useSearchStore()
 const modalStore = PlaceModalStore()
@@ -149,7 +174,11 @@ watch(
   </Transition>
 
   <Transition name="detail">
-    <AddPlaceModal class="fixed top-0 z-50" v-if="modalStore.isOpen" />
+    <AddPlaceModal
+      class="fixed top-0 z-50"
+      v-if="modalStore.isOpen"
+      :map="map"
+    />
   </Transition>
 </template>
 

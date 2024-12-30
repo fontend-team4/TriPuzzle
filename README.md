@@ -1,4 +1,3 @@
-
 # TriPuzzle 旅圖  
 **TriPuzzle 旅圖** 是一個讓家人朋友能夠輕鬆協作、共同打造個人化旅遊的旅遊規劃平台，致力於讓每次的旅行都能充滿共享的樂趣，讓每個瞬間都值得被珍藏！
 
@@ -14,7 +13,6 @@
 
 **開始規劃**
 
-
 1. 註冊 / 登入 ：第三方 or Email 註冊
 2. 透過搜尋欄、或是直接在 Google Map 搜尋特定範圍來查看景點資訊
 3. 立即規劃：
@@ -24,13 +22,12 @@
 * 選擇共同編輯行程夥伴（ 掃描 QR code or 複製連結邀請 ）
 * 收藏喜愛景點
 
-
-
-
 ## Git Clone
+
 ```sh
 git clone https://github.com/fontend-team4/TriPuzzle.git
 ```
+
 > 此專案為前端專案，後端專案網址 [TriPuzzle_Backend](https://github.com/fontend-team4/TriPuzzle_Backend)
 
 ## Project Setup, Compile and Hot-Reload for Development
@@ -40,10 +37,9 @@ npm install
 npm run dev
 ```
 
-
 ## 環境變數可參考 `.env.sample` 檔案
 ```
-VITE_GOOGLE_API_KEY = Google Maps Api 金鑰
+VITE_GOOGLE_API_KEY = Google Maps API 金鑰
 ```
 
 ## 團隊成員
@@ -96,5 +92,4 @@ https://gitHub.com/rodchang12
 * 簡報製作與報告
 
 https://gitHub.com/LindseyL222
-
 

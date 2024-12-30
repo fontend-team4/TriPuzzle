@@ -6,7 +6,7 @@ import ExitCoEditModal from './ExitCoEditModal.vue'
 import axios from 'axios'
 
 const API_URL = process.env.VITE_HOST_URL
-const defaultProfilePicUrl = "../assets/images/cat-2.png";
+const defaultProfilePicUrl = `src/assets/images/cat-2.png`;
 const shareSchedules = ref([]);
 const hasShareSchedules = ref(false);
 const token = localStorage.getItem("token");
@@ -149,7 +149,7 @@ const copyShareLink = async () => {
 
 
 const updateActiveTab = (status) => {
-  emit('updateStatus', status)
+  emit("updateStatus", status)
 }
 
 
@@ -163,12 +163,14 @@ watch(props, ({ sharePeople }) => {
   leavedId.value = schedule_id;
   total_users.value = totalUsers;
 
- 
   creator.value = {
-    ...creator.value,
-    ...newCreator     
+    id: newCreator.id || creator.value.id,
+    name: newCreator.name || creator.value.name,
+    email: newCreator.email || creator.value.email,
+    profile_pic_url: newCreator.profile_pic_url || defaultProfilePicUrl,
   };
 });
+
 
 
 </script>
@@ -266,7 +268,7 @@ watch(props, ({ sharePeople }) => {
             data-tip="2024/11/18 加入行程" v-for="member in shareMembers" v-if="shareMembers != []"
           >
             <img
-              class="rounded-full w-11 h-11"
+              class="w-12 rounded-full h-11"
               :src="member.profile_pic_url||`src/assets/images/cat-2.png`"
               alt=""
             />

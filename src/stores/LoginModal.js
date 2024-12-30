@@ -1,7 +1,7 @@
-import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { defineStore } from "pinia"
+import { ref } from "vue"
 
-export const LoginModalStore = defineStore('LoginDialog', () => {
+export const LoginModalStore = defineStore("LoginDialog", () => {
   const isOpen = ref(false)
   const onLoginSuccess = ref(null) // 定義登入成功的回調函數
 
@@ -25,5 +25,12 @@ export const LoginModalStore = defineStore('LoginDialog', () => {
     closeModal() // 登入成功後關閉模態框
   }
 
-  return { isOpen, openModal, closeModal, toggleModal, onLoginSuccess, loginSuccess }
+  return {
+    isOpen,
+    openModal,
+    closeModal,
+    toggleModal,
+    onLoginSuccess,
+    loginSuccess,
+  }
 })
