@@ -17,11 +17,12 @@ const props = defineProps({
   },
 })
 const apiKey = import.meta.env.VITE_GOOGLE_API_KEY
-let map = ref("")
 async function initMap() {
+  console.log(props.map);
   try {
     const { Map } = await google.maps.importLibrary("maps")
-    const mapContainer = document.getElementById(props.addPlacesMap)
+    const mapContainer = document.getElementById(props.map)
+    
     if (!mapContainer) {
       console.error("Map container not found.")
       return
@@ -176,7 +177,7 @@ watch(
     <AddPlaceModal
       class="fixed top-0 z-50"
       v-if="modalStore.isOpen"
-      map="map2"
+      :map="map"
     />
   </Transition>
 </template>
