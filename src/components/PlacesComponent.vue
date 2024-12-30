@@ -36,6 +36,7 @@ const isLogin = ref(false)
 const token = localStorage.getItem("token")
 const userId = ref(localStorage.getItem("userId"))
 
+
 const place = ref(null)
 const loading = ref(true)
 
@@ -45,9 +46,9 @@ const emit = defineEmits(["open-detail-modal", "updateIsPlacesComponent"])
 
 // 檢查登入狀態
 onMounted(() => {
-  isLogin.value = Boolean(token && userId.value)
+  isLogin.value = Boolean(token && userId.value);
   if (isLogin.value) {
-    loadFavorites() // 加載收藏列表
+    loadFavorites(); // 加載收藏列表
   }
 })
 
@@ -62,11 +63,12 @@ const calculateColumns = async () => {
 
     await nextTick()
     const img = document.getElementById(`img-${item.id}`)
+
     if (img) {
-      heights[shortestCol] += img.offsetHeight + 16
+      heights[shortestCol] += img.offsetHeight + 16;
     }
   }
-}
+};
 
 // 監聽螢幕大小調整欄位數量
 const handleResize = () => {
@@ -81,11 +83,40 @@ const openDetailModal = (detailId) => {
   router.replace({ query: { action: "placeInfo", placeId: detailId } }) // 更新URL
 }
 
+
 // 更新地圖中心點
 const updateMapCenter = (item) => {
-  searchStore.placeGeometry = item.geometry
-  emit("updateIsPlacesComponent", false)
-}
+  searchStore.placeGeometry = item.geometry;
+  emit("updateIsPlacesComponent", false);
+};
+
+// 根據 place_id 載入地點詳細資訊
+const fetchPlaceById = async (placeId) => {
+  try {
+    const response = await axios.get(`${API_URL}/places/${placeId}`);
+    place.value = response.data;
+    console.log("在資料庫中找到:", place.value);
+  } catch (error) {
+    console.error("載入詳情失敗:", error);
+    alert("載入地點失敗");
+  } finally {
+    loading.value = false;
+  }
+};
+
+// 初始化和監聽事件
+
+// 初始化
+onMounted(async () => {
+  const placeId = route.query.placeId; // URL中的placeId
+  if (placeId) {
+    await fetchPlaceById(placeId); // 載入placeId對應的地點
+  }
+
+  await calculateColumns(); // 初始計算瀑布流
+  handleResize(); // 初始化欄數
+  window.addEventListener("resize", handleResize);
+});
 
 // 根據 place_id 載入地點詳細資訊
 const fetchPlaceById = async (placeId) => {
@@ -115,29 +146,30 @@ onMounted(async () => {
   window.addEventListener("resize", handleResize)
 })
 
+
 // 移除事件監聽器
 onUnmounted(() => {
-  window.removeEventListener("resize", handleResize)
-})
+  window.removeEventListener("resize", handleResize);
+});
 
 // 監聽 items 的變化並重新計算瀑布流
 watch(
   () => placesStore.items,
   async (newItems) => {
-    await calculateColumns()
+    await calculateColumns();
   },
   { immediate: true }
-)
+);
 
 // 監聽 searchStore.searchData，當有更新時觸發 placesStore 更新
 watch(
   () => searchStore.searchData,
   (newData) => {
     if (newData.length > 0) {
-      placesStore.updateFromSearch(newData)
+      placesStore.updateFromSearch(newData);
     }
   }
-)
+);
 </script>
 
 <template>

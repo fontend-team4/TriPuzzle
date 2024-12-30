@@ -1,116 +1,200 @@
 <script setup>
-import { ref, inject, onMounted, computed } from "vue"
-import axios from "axios"
-import { EllipsisHorizontalIcon } from "@heroicons/vue/16/solid"
+import { ref, inject, onMounted, computed } from "vue";
+import axios from "axios";
+import { EllipsisHorizontalIcon } from "@heroicons/vue/16/solid";
 import {
   XMarkIcon,
   UserPlusIcon,
   ShareIcon,
   DocumentDuplicateIcon,
   TrashIcon,
-} from "@heroicons/vue/24/outline"
-import ShareScheduleModal from "./ShareScheduleModal.vue"
-import NewScheduleModal from "@/components/NewScheduleModal.vue"
-import DeleteScheduleModal from "./DeleteScheduleModal.vue"
-import { LoginModalStore } from "@/stores/LoginModal.js"
+} from "@heroicons/vue/24/outline";
+import ShareScheduleModal from "./ShareScheduleModal.vue";
+import NewScheduleModal from "@/components/NewScheduleModal.vue";
+import DeleteScheduleModal from "./DeleteScheduleModal.vue";
+import LeaveScheduleModal from "./LeaveScheduleModal.vue";
+import { LoginModalStore } from "@/stores/LoginModal.js";
 
-const LoginStore = LoginModalStore()
-const listToggle = inject("listToggle")
-const detailToggle = inject("detailToggle")
-const API_URL = process.env.VITE_HOST_URL
-const isLogin = ref(false)
-const token = localStorage.getItem("token")
+const LoginStore = LoginModalStore();
+const listToggle = inject("listToggle");
+const detailToggle = inject("detailToggle");
+const API_URL = process.env.VITE_HOST_URL;
+const isLogin = ref(false);
+const token = localStorage.getItem("token");
 
-const hasSchedules = ref(false)
-const checkedSchedule = ref("mine")
-const schedules = ref([])
-const deletedId = ref(null)
+const hasSchedules = ref(false);
+const hasShareSchedules = ref(false);
+const checkedSchedule = ref("mine");
+const schedules = ref([]);
+const shareSchedules = ref([]);
+const deletedId = ref(null);
+const leavedId = ref(null);
+const shareLink = ref("");
+const sharePeople = ref({});
+
 const getSchedules = async () => {
   const config = {
     headers: {
       Authorization: token,
     },
-  }
+  };
   try {
-    const response = await axios.get(`${API_URL}/schedules`, config)
+    const response = await axios.get(`${API_URL}/schedules`, config);
     if (response.data) {
-      hasSchedules.value = true
+      hasSchedules.value = true;
     }
-    schedules.value = response.data
+    schedules.value = response.data;
     schedules.value.forEach((item) => {
-      item.start_date = item.start_date.split("T")[0]
-      item.end_date = item.end_date.split("T")[0]
-    })
+      item.start_date = item.start_date.split("T")[0];
+      item.end_date = item.end_date.split("T")[0];
+    });
   } catch (error) {
-    console.error(error.message)
-    hasSchedules.value = false
+    console.error(error.message);
+    hasSchedules.value = false;
   }
-}
+};
+
+const getShareSchedules = async () => {  
+  const config = {
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios.get(`${API_URL}/usersSchedules`, config);
+    if (response.data.length > 0) {
+      hasShareSchedules.value = true;
+    }
+    shareSchedules.value = response.data;
+    shareSchedules.value.forEach((item) => {
+      item.start_date = item.start_date.split("T")[0];
+      item.end_date = item.end_date.split("T")[0];
+    });
+  } catch (error) {
+    console.error(error.message);
+    hasShareSchedules.value = false;
+  }
+};
+
 
 const openDeleteModal = (id) => {
-  deletedId.value = id
-}
+  deletedId.value = id;
+};
+
+const openLeaveModal = (id) => {
+  leavedId.value = id;
+};
+
 
 // 行程分享、共編彈窗
-const activeStatus = ref(null)
+const activeStatus = ref(null);
 const openShareModal = () => {
-  activeStatus.value = "share"
-}
+  activeStatus.value = "share";
+};
+
+const shareLinkHandler = async (id) => {
+  const config = {
+    headers: {
+      Authorization: token,
+    },
+  };
+
+  try {
+    const response = await axios.post(
+      `${API_URL}/usersSchedules/share/${id}`,
+      {},
+      config
+    );
+    shareLink.value = response.data.shareUrl;
+  } catch (err) {
+    console.error(err.message);
+  }
+
+  try {
+    const response = await axios.get(
+      `${API_URL}/usersSchedules/${id}/users`,
+      config
+    );
+    sharePeople.value = response.data;
+  } catch (err) {
+    console.error(err.message);
+  }
+};
+
 const openInviteModal = () => {
-  activeStatus.value = "invite"
-}
+  activeStatus.value = "invite";
+};
 const updateStatus = (status) => {
-  activeStatus.value = status
-}
+  activeStatus.value = status;
+};
+
 
 const login = () => {
-  LoginStore.openModal()
-  listToggle()
-}
+  LoginStore.openModal();
+  listToggle();
+};
 
-const listsort = ref("newest")
+const listsort = ref("newest");
 const sortedSchedules = computed(() => {
   return schedules.value.sort((a, b) => {
     if (listsort.value === "newest") {
-      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      return (
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      );
     } else {
-      return new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+      return (
+        new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+      );
     }
-  })
-})
+  });
+});
+
+const sortedShareSchedules = computed(() => {
+  return shareSchedules.value.sort((a, b) => {
+    if (listsort.value === "newest") {
+      return (
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      );
+    } else {
+      return (
+        new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+      );
+    }
+  });
+});
 
 // 複製行程
-const scheduleName = ref("")
-const scheduleNote = ref("")
-const coverImage = ref("")
-const startDate = ref("")
-const endDate = ref("")
-const transportationWay = ref("")
+const scheduleName = ref("");
+const scheduleNote = ref("");
+const coverImage = ref("");
+const startDate = ref("");
+const endDate = ref("");
+const transportationWay = ref("");
 const scheduleDuplicate = async (id) => {
   const config = {
     headers: {
       Authorization: token,
     },
-  }
+  };
   try {
-    const response = await axios.get(`${API_URL}/schedules/${id}`, config)
-    scheduleName.value = response.data.title
-    scheduleNote.value = response.data.schedule_note
-    coverImage.value = response.data.image_url
-    startDate.value = response.data.start_date.split("T")[0]
-    endDate.value = response.data.end_date.split("T")[0]
-    transportationWay.value = response.data.transportation_way
-    await copySchedule()
+    const response = await axios.get(`${API_URL}/schedules/${id}`, config);
+    scheduleName.value = response.data.title;
+    scheduleNote.value = response.data.schedule_note;
+    coverImage.value = response.data.image_url;
+    startDate.value = response.data.start_date.split("T")[0];
+    endDate.value = response.data.end_date.split("T")[0];
+    transportationWay.value = response.data.transportation_way;
+    await copySchedule();
   } catch (error) {
-    console.error(error.message)
+    console.error(error.message);
   }
-}
+};
 const copySchedule = async () => {
   const config = {
     headers: {
       Authorization: token,
     },
-  }
+  };
   const ScheduleData = {
     title: scheduleName.value,
     image_url: coverImage.value,
@@ -118,34 +202,34 @@ const copySchedule = async () => {
     start_date: startDate.value,
     end_date: endDate.value,
     transportation_way: transportationWay.value,
-  }
+  };
   try {
-    await axios.post(`${API_URL}/schedules`, ScheduleData, config)
-    await getSchedules()
+    await axios.post(`${API_URL}/schedules`, ScheduleData, config);
+    await getSchedules();
   } catch (err) {
-    console.error(err.message)
+    console.error(err.message);
   }
-}
+};
 
-const showNewSchedule = inject("showNewSchedule")
 
 onMounted(async () => {
   if (token) {
-    isLogin.value = true
-    await getSchedules()
+    isLogin.value = true;
+    await getSchedules();
+    await getShareSchedules();
   }
-})
+});
 </script>
 
 <template>
   <div class="overflow-x-hidden">
     <div
-      class="schedule-list w-full lg:w-96 h-screen bg-white shadow-xl transition-all relative"
+      class="relative w-full h-screen transition-all bg-white shadow-xl schedule-list lg:w-96"
     >
       <!-- schedule list -->
-      <div class="w-screen lg:w-full p-5 bg-white">
+      <div class="w-screen p-5 bg-white lg:w-full">
         <!-- header -->
-        <div class="pb-3 relative bg-white">
+        <div class="relative pb-3 bg-white">
           <div
             class="bg-gray-200 w-8 h-8 rounded-full absolute top-0 right-0 p-1.5 hover:cursor-pointer"
             @click="listToggle"
@@ -153,7 +237,7 @@ onMounted(async () => {
             <XMarkIcon />
           </div>
           <h2 class="text-2xl font-medium pt-10 pb-2.5">行程</h2>
-          <div class="w-full h-10 flex gap-1 mb-5 p-1 rounded-xl bg-gray">
+          <div class="flex w-full h-10 gap-1 p-1 mb-5 rounded-xl bg-gray">
             <input
               id="mine"
               type="radio"
@@ -165,7 +249,7 @@ onMounted(async () => {
             />
             <label
               for="mine"
-              class="mine-toggle w-1/2 text-center py-1 px-2 rounded-lg hover:bg-white hover:cursor-pointer"
+              class="w-1/2 px-2 py-1 text-center rounded-lg mine-toggle hover:bg-white hover:cursor-pointer"
               >我的行程</label
             >
             <input
@@ -178,12 +262,12 @@ onMounted(async () => {
             />
             <label
               for="coedit"
-              class="coedit-toggle w-1/2 text-center py-1 px-2 rounded-lg hover:bg-white hover:cursor-pointer"
+              class="w-1/2 px-2 py-1 text-center rounded-lg coedit-toggle hover:bg-white hover:cursor-pointer"
               >與我共編</label
             >
           </div>
           <select
-            class="select select-ghost max-w-xs focus:border-0 focus:outline-none"
+            class="max-w-xs select select-ghost focus:border-0 focus:outline-none"
             v-model="listsort"
             v-if="isLogin && hasSchedules"
           >
@@ -200,8 +284,9 @@ onMounted(async () => {
               <!-- 有行程 -->
               <div
                 v-if="hasSchedules"
-                class="flex flex-wrap gap-4 justify-center"
+                class="flex flex-wrap justify-center gap-4"
               >
+                <!-- 行程卡片 -->
                 <div
                   v-for="item in sortedSchedules"
                   :key="item.id"
@@ -218,29 +303,29 @@ onMounted(async () => {
                     />
                   </figure>
                   <!-- 行程右上設定 icon -->
-                  <div class="flex gap-2 absolute top-3 right-3">
+                  <div class="absolute flex gap-2 top-3 right-3">
                     <span
-                      class="w-6 h-6 rounded-full bg-gray-transparent text-white p-1 hover:cursor-pointer"
+                      class="w-6 h-6 p-1 text-white rounded-full bg-gray-transparent hover:cursor-pointer"
                       onclick="shareSchedule.showModal()"
-                      @click="openShareModal"
+                      @click="openShareModal(); shareLinkHandler(item.id)"
                     >
                       <ShareIcon />
                     </span>
                     <div class="dropdown">
                       <button
                         role="button"
-                        class="w-6 h-6 rounded-full bg-gray-transparent text-white p-1 relative"
+                        class="relative w-6 h-6 p-1 text-white rounded-full bg-gray-transparent"
                       >
                         <EllipsisHorizontalIcon />
                       </button>
                       <!-- dropdown-content 控制開關-->
                       <ul
                         tabindex="0"
-                        class="dropdown-content w-32 bg-white rounded border border-gray absolute right-0 top-10"
+                        class="absolute right-0 w-32 bg-white border rounded dropdown-content border-gray top-10"
                       >
                         <li @click="scheduleDuplicate(item.id)">
                           <a
-                            class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray"
+                            class="flex items-center gap-1 px-5 py-2 text-sm hover:bg-gray"
                             href="#"
                           >
                             <span class="inline-block w-6 h-6"
@@ -251,10 +336,14 @@ onMounted(async () => {
                         </li>
                         <li
                           onclick="shareSchedule.showModal()"
-                          @click="openInviteModal"
+                          @click="
+                            openInviteModal();
+                            shareLinkHandler(item.id);
+                          "
                         >
+
                           <a
-                            class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray"
+                            class="flex items-center gap-1 px-5 py-2 text-sm hover:bg-gray"
                             href="#"
                           >
                             <span class="inline-block w-6 h-6"
@@ -269,7 +358,7 @@ onMounted(async () => {
                           onclick="deleteSchedule.showModal()"
                         >
                           <a
-                            class="flex items-center gap-1 text-sm px-5 py-2 hover:bg-gray"
+                            class="flex items-center gap-1 px-5 py-2 text-sm hover:bg-gray"
                             href="#"
                           >
                             <span class="inline-block w-6 h-6"
@@ -283,29 +372,32 @@ onMounted(async () => {
                   </div>
                   <!-- 行程資訊 -->
                   <div
-                    class="flex flex-row justify-between items-center px-0 py-3"
+                    class="flex flex-row items-center justify-between px-0 py-3"
                   >
                     <div
-                      class="w-4/5 px-5 border-dotted border-r-2 border-gray"
+                      class="w-4/5 px-5 border-r-2 border-dotted border-gray"
                     >
                       <h2 class="text-lg truncate">{{ item.title }}</h2>
                       <p class="text-xs text-slate-500">
                         {{ item.start_date }} ~ {{ item.end_date }}
                       </p>
                     </div>
-                    <div
+                    <button
                       class="w-16 text-center hover:cursor-pointer"
                       onclick="shareSchedule.showModal()"
-                      @click="openInviteModal"
+                      @click="
+                        openInviteModal();
+                        shareLinkHandler(item.id);
+                      "
                     >
                       <p class="w-6 h-6 mx-auto"><UserPlusIcon /></p>
-                      <p class="text-xs">2人</p>
-                    </div>
+                      <p class="text-xs">{{ item.total_users }}人</p>
+                    </button>
                   </div>
                 </div>
               </div>
               <!-- 無行程 -->
-              <div v-else class="w-full h-52 text-center mt-7">
+              <div v-else class="w-full text-center h-52 mt-7">
                 <img
                   class="w-[180px] h-[90] mx-auto"
                   src="https://web.chictrip.com.tw/assets/monster_empty.3a44f172.png"
@@ -318,20 +410,92 @@ onMounted(async () => {
             <div v-else>
               <!-- 有行程 -->
               <div
-                v-if="hasSchedules"
-                class="flex flex-wrap gap-4 justify-center"
+                v-if="hasShareSchedules"
+                class="flex flex-wrap justify-center gap-4"
               >
-                <img
-                  class="w-[180px] h-[103px] mx-auto"
-                  src="https://web.chictrip.com.tw/assets/master-unlock.990b2501.png"
-                  alt=""
-                />
-                <p class="mb-6">
-                  還沒有 <span class="text-primary-600">與我共編</span> 的行程哦
-                </p>
+                <!-- 行程卡片 -->
+                <div
+                  v-for="item in sortedShareSchedules"
+                  :key="item.id"
+                  class="card card-compact bg-base-100 sm:w-full md:w-[30%] lg:w-full h-[176px] lg:h-auto border-gray border mb-4 relative hover:cursor-pointer"
+                >
+                  <figure
+                    @click="detailToggle(item.id)"
+                    class="w-full h-[150px] overflow-hidden"
+                  >
+                    <img
+                      :src="item.image_url"
+                      alt="scheduleCoverImage"
+                      class="object-cover"
+                    />
+                  </figure>
+                  <!-- 行程右上設定 icon -->
+                  <div class="absolute flex gap-2 top-3 right-3">
+                    <span
+                      class="w-6 h-6 p-1 text-white rounded-full bg-gray-transparent hover:cursor-pointer"
+                      onclick="shareSchedule.showModal()"
+                      @click="openShareModal"
+                    >
+                      <ShareIcon />
+                    </span>
+                    <div class="dropdown">
+                      <button
+                        role="button"
+                        class="relative w-6 h-6 p-1 text-white rounded-full bg-gray-transparent"
+                      >
+                        <EllipsisHorizontalIcon />
+                      </button>
+                      <!-- dropdown-content 控制開關-->
+                      <ul
+                        tabindex="0"
+                        class="absolute right-0 w-32 bg-white border rounded dropdown-content border-gray top-10"
+                      >
+                        <li
+                          class="border-t border-gray"
+                          @click="openLeaveModal(item.id)"
+                          onclick="leaveSchedule.showModal()"
+                        >
+                          <a
+                            class="flex items-center gap-1 px-5 py-2 text-sm hover:bg-gray"
+                            href="#"
+                          >
+                            <span class="inline-block w-6 h-6"
+                              ><TrashIcon
+                            /></span>
+                            <p>退出共編</p>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <!-- 行程資訊 -->
+                  <div
+                    class="flex flex-row items-center justify-between px-0 py-3"
+                  >
+                    <div
+                      class="w-4/5 px-5 border-r-2 border-dotted border-gray"
+                    >
+                      <h2 class="text-lg truncate">{{ item.title }}</h2>
+                      <p class="text-xs text-slate-500">
+                        {{ item.start_date }} ~ {{ item.end_date }}
+                      </p>
+                    </div>
+                    <button
+                      class="w-16 text-center hover:cursor-pointer"
+                      onclick="shareSchedule.showModal()"
+                      @click="
+                        openInviteModal();
+                        shareLinkHandler(item.id);
+                      "
+                    >
+                      <p class="w-6 h-6 mx-auto"><UserPlusIcon /></p>
+                      <p class="text-xs">{{ item.total_users }}人</p>
+                    </button>
+                  </div>
+                </div>
               </div>
               <!-- 無行程 -->
-              <div v-else class="h-52 text-center mt-7">
+              <div v-else class="text-center -full h-52 mt-7">
                 <img
                   class="w-[180px] h-[103px] mx-auto"
                   src="https://web.chictrip.com.tw/assets/master-unlock.990b2501.png"
@@ -348,7 +512,7 @@ onMounted(async () => {
             <!-- 我的 -->
             <div
               v-if="checkedSchedule === 'mine'"
-              class="w-full h-52 text-center mt-7"
+              class="w-full text-center h-52 mt-7"
             >
               <img
                 class="w-[180px] h-[90] mx-auto"
@@ -362,7 +526,7 @@ onMounted(async () => {
               </p>
             </div>
             <!-- 共編 -->
-            <div v-else class="w-full h-52 text-center mt-7">
+            <div v-else class="w-full text-center h-52 mt-7">
               <img
                 class="w-[180px] h-[90] mx-auto"
                 src="https://web.chictrip.com.tw/assets/monster_empty.3a44f172.png"
@@ -384,7 +548,7 @@ onMounted(async () => {
             class="w-full lg:w-96 h-20 px-2.5 py-5 bg-white border-gray border-t absolute bottom-0 left-0"
           >
             <button
-              class="w-full h-12 px-5 py-3 bg-primary-600 text-white text-center text-base rounded-3xl hover:bg-primary-700"
+              class="w-full h-12 px-5 py-3 text-base text-center text-white bg-primary-600 rounded-3xl hover:bg-primary-700"
               onclick="newSchedule.showModal()"
             >
               建立新行程
@@ -398,7 +562,7 @@ onMounted(async () => {
             class="w-full lg:w-96 h-38 px-2.5 py-5 bg-white border-t border-gray fixed bottom-0 right-0"
           >
             <button
-              class="w-full h-12 px-5 py-3 bg-primary-600 hover:bg-primary-700 text-white text-center rounded-3xl"
+              class="w-full h-12 px-5 py-3 text-center text-white bg-primary-600 hover:bg-primary-700 rounded-3xl"
               @click="login"
             >
               登入 / 註冊，建立新行程
@@ -409,7 +573,7 @@ onMounted(async () => {
             class="w-full lg:w-96 h-38 px-2.5 py-5 bg-white border-t border-gray fixed bottom-0 right-0"
           >
             <button
-              class="w-full h-12 px-5 py-3 bg-primary-600 hover:bg-primary-700 text-white text-center rounded-3xl"
+              class="w-full h-12 px-5 py-3 text-center text-white bg-primary-600 hover:bg-primary-700 rounded-3xl"
               @click="login"
             >
               登入 / 註冊
@@ -419,11 +583,17 @@ onMounted(async () => {
       </div>
     </div>
 
+
     <ShareScheduleModal
       :activeTab="activeStatus"
+      :shareLink="shareLink"
+      :sharePeople="sharePeople"
       @updateStatus="updateStatus"
+      @scheduleUpdate="getSchedules"
     />
+
     <DeleteScheduleModal :toBeDeleteId="deletedId" :updateList="getSchedules" />
+    <LeaveScheduleModal :toBeLeavedId="leavedId" :updateList="getShareSchedules" />
     <NewScheduleModal :savetoSchedules="getSchedules" />
   </div>
 </template>

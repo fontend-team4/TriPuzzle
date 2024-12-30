@@ -9,9 +9,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@heroicons/vue": "^2.1.5",
     "@iconoir/vue": "^7.10.1",
     "axios": "^1.7.9",
+    "jspdf": "^2.5.2",
     "pinia": "^2.2.6",
     "pinia-plugin-persistedstate": "^4.2.0",
     "qrcode": "^1.5.4",

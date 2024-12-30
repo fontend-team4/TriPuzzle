@@ -115,6 +115,7 @@ const changeShowPhoto = () => {
   showPhoto.value = !showPhoto.value
 }
 
+
 // 控制 CSS 樣式
 const isPhotoShow = computed(() =>
   showPhoto.value
@@ -178,6 +179,7 @@ const fetchPlaceDetails = async () => {
 onMounted(fetchPlaceDetails)
 </script>
 
+
 <template>
   <div
     class="fixed z-50 flex items-center justify-center w-screen h-screen overflow-hidden bg-black bg-opacity-25"
@@ -201,6 +203,7 @@ onMounted(fetchPlaceDetails)
             alt=""
             class="object-contain w-full"
           />
+
         </div>
         <button
           for="showPhoto"
@@ -345,9 +348,11 @@ onMounted(fetchPlaceDetails)
                     <button
                       class="inline-flex justify-center w-full px-4 py-[11px] text-white border rounded-full bg-primary-600 border-primary-600 hover:bg-primary-700"
                       @click="copyPlaceUrl"
+
                     >
                       <LinkIcon class="mr-1 size-6" /><span>複製連結</span>
                     </button>
+                    <!-- 複製成功警告組件 -->
                     <div
                       class="absolute right-0 top-1/2 md:w-[100px] md:h-[100px] w-[80px] h-[80px] -translate-y-full md:-translate-y-1/2"
                     >
