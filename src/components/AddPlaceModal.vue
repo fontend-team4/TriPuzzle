@@ -31,15 +31,18 @@ import axios from "axios"
 // const mapInstance = ref(null) // 儲存地圖實例
 
 // const initMap = async () => {
+//   console.log(props.map)
+
 //   try {
 //     await nextTick()
-//     console.log('Initializing map with ID:', props.map)
+//     console.log("Initializing map with ID:", props.map)
 //     // 確保 modal 完全渲染
-//     await new Promise(resolve => setTimeout(resolve, 200))
-//     const mapContainer = document.getElementById("map")
-//     console.log('Map container found:', !!mapContainer)
+//     await new Promise((resolve) => setTimeout(resolve, 200))
+//     const mapContainer = document.getElementById(props.map)
+//     // console.log('Map container found:', !!mapContainer)
+//     console.log(mapContainer)
 //     if (!mapContainer) {
-//       console.error('Modal map container not found')
+//       console.error("Modal map container not found")
 //       return
 //     }
 //     const { Map } = await google.maps.importLibrary("maps")
@@ -47,7 +50,7 @@ import axios from "axios"
 //       center: { lat: 25.033964, lng: 121.564468 },
 //       zoom: 14,
 //     })
-//     console.log('Modal map initialized successfully')
+//     console.log("Modal map initialized successfully")
 //   } catch (error) {
 //     console.error("Failed to initialize modal map:", error)
 //   }
@@ -163,7 +166,7 @@ function formatYear(dateString) {
   const day = date.getDate()
   return `${year}/${month}/${day}`
 }
-// 初始化每天
+// 把行程的每天拆成陣列存在物件裡，再把對應的景點塞進去
 function groupPlacesByDate(schedulePlaces, dates) {
   const dateMap = {}
   dates.forEach((date) => {
@@ -180,7 +183,7 @@ function groupPlacesByDate(schedulePlaces, dates) {
   return dateMap
 }
 
-// 抓取行程資料
+// 抓取行程資料，重構schedule中的key，新增dates跟groupedPlaces
 onMounted(async () => {
   const token = localStorage.getItem("token")
   try {
@@ -201,44 +204,41 @@ onMounted(async () => {
   }
 })
 
-
 // 獲取特定日期景點的輔助函數
 const fetchPlacesForDate = async (date) => {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token")
   const res = await axios.get(
     `${URL}/schedulePlaces/byDate/${selectedSchedule.value.id}/${date}`,
     {
       headers: { Authorization: token },
     }
-  );
-  return res.data;
-};
+  )
+  return res.data
+}
 
 //加入景點到行程
 const selectedSchedule = ref(null)
 const selectedDate = ref(null)
 const addPlaceToSchedule = async () => {
   if (!selectedCardInfo.value) {
-    console.error('未選擇插入位置');
-    return;
+    console.error("未選擇插入位置")
+    return
   }
-
   if (!selectedSchedule.value) {
-    console.error('未選擇行程');
-    return;
+    console.error("未選擇行程")
+    return
   }
-
   if (!selectedDate.value) {
-    console.error('未選擇日期');
-    return;
+    console.error("未選擇日期")
+    return
   }
   try {
     const token = localStorage.getItem("token")
-    console.log('準備發送數據:', {
-      position: selectedCardInfo.value.position,
-      schedule_id: selectedSchedule.value.id,
-      date: selectedDate.value
-    });
+    // console.log('準備發送數據:', {
+    //   order: selectedCardInfo.value.order,
+    //   schedule_id: selectedSchedule.value.id,
+    //   date: selectedDate.value
+    // });
     const res = await axios.post(
       `${URL}/schedulePlaces/`,
       {
@@ -246,7 +246,7 @@ const addPlaceToSchedule = async () => {
         schedule_id: selectedSchedule.value.id,
         which_date: selectedDate.value,
         transportation_way: selectedSchedule.value.transportation_way,
-        position: selectedCardInfo.value.position,
+        order: selectedCardInfo.value.order,
       },
       {
         headers: {
@@ -255,16 +255,121 @@ const addPlaceToSchedule = async () => {
         },
       }
     )
-     // 新增成功後重新獲取該日期的景點列表
-     const updatedPlaces = await fetchPlacesForDate(selectedDate.value);
-    updateCards(updatedPlaces);
-
-    console.log("新增成功：", res.data)
+    // 新增成功後重新獲取該日期的景點列表
+    const updatedPlaces = await fetchPlacesForDate(selectedDate.value)
+    updateCards(updatedPlaces)
+    // console.log("新增成功：", res.data)
   } catch (error) {
     console.error("新增失敗：", error.response?.data || error.message)
   }
 }
 
+const cards = ref([])
+const updateCards = (places) => {
+  // console.log("調試 places:", places)
+  cards.value = []
+
+  if (!places || places.length === 0) {
+    // console.log("找不到景點資料")
+    cards.value.push({
+      // location1: "尚無景點",
+      newlocation: place.name,
+      // location2: "尚無景點",
+      order: 0,
+    })
+    // 自動選擇第一張卡片
+    selectCard(0)
+    return
+  }
+
+  // 按照order編號排序景點
+  const sortedPlaces = Array.from(places).sort(
+    (a, b) => parseInt(a.order) - parseInt(b.order)
+  )
+
+  for (let i = 0; i <= sortedPlaces.length; i++) {
+    const card = {
+      location1: i === 0 ? "開始旅圖" : `${i} ${sortedPlaces[i - 1].places.name}`,
+      newlocation: place.name,
+      location2:
+        i === sortedPlaces.length
+          ? "沒有其他景點囉"
+          : `${i + 1} ${sortedPlaces[i].places.name}`,
+      order: i,
+    }
+    cards.value.push(card)
+  }
+  // 如果還沒有選中的卡片，預設選擇第一張
+  if (selectedCard.value === null) {
+    selectCard(0)
+  }
+  // console.log("生成的卡片:", cards.value)
+}
+
+// 預設第二張卡片被選中
+const selectedCard = ref(null)
+const selectedCardInfo = ref(null)
+
+const selectCard = (index) => {
+  selectedCard.value = index
+  selectedCardInfo.value = cards.value[index]
+  // console.log("選中的卡片信息:", selectedCardInfo.value)
+}
+// 新增用於管理當前選中天數的狀態
+const currentScheduleDays = ref([])
+const currentSchedule = ref(null)
+
+// Day Card切換
+const currentPage = ref("page1")
+const selectedTab = ref("day1")
+
+// 修改 switchToPage 函數
+const switchToPage = (page, tab, schedule = null) => {
+  currentPage.value = page
+  selectedTab.value = tab
+
+  if (schedule) {
+    if (!currentSchedule.value) {
+      currentSchedule.value = schedule
+    } else {
+      Object.assign(currentSchedule.value, schedule)
+    }
+    currentScheduleDays.value = schedule.dates
+    // console.log("Current schedule after switch:", currentSchedule.value)
+  }
+}
+
+// 滾輪移動邏輯，添加 ref 用於獲取容器參數
+const tabsContainer = ref(null)
+
+const scrollTabs = (direction) => {
+  if (!tabsContainer.value) return
+
+  const scrollAmount = 160 // 一次滾動兩個標籤的寬度
+  const currentScroll = tabsContainer.value.scrollLeft
+
+  if (direction === "left") {
+    tabsContainer.value.scrollTo({
+      left: currentScroll - scrollAmount,
+      behavior: "smooth",
+    })
+  } else {
+    tabsContainer.value.scrollTo({
+      left: currentScroll + scrollAmount,
+      behavior: "smooth",
+    })
+  }
+}
+
+// journey切換
+const openedCollapse = ref("journey1")
+const toggleCollapse = (id) => {
+  openedCollapse.value = openedCollapse.value === id ? null : id
+}
+// 關掉Modal
+const closeAddPlaceModal = () => {
+  modalStore.closeModal()
+}
 
 // Tab的部分
 const selectedButton = ref("myRunDown")
@@ -300,109 +405,6 @@ const tab2Cls = computed(() => {
     ? ["opacity-100", "relative", "z-10"]
     : ["opacity-0", "absolute", "z-0"]
 })
-
-// journey切換
-const openedCollapse = ref("journey1")
-const toggleCollapse = (id) => {
-  openedCollapse.value = openedCollapse.value === id ? null : id
-}
-// Day Card切換
-const currentPage = ref("page1")
-const selectedTab = ref("day1")
-
-// 關掉Modal
-const closeAddPlaceModal = () => {
-  modalStore.closeModal()
-}
-
-const cards = ref([])
-const updateCards = (places) => {
-  // console.log("調試 places:", places)
-  cards.value = []
-
-  if (!places || places.length === 0) {
-    console.log("找不到景點資料")
-    cards.value.push({
-      location1: "尚無景點",
-      newlocation: place.name,
-      location2: "尚無景點",
-      position: 0,
-    })
-    cards.value.push(defaultCard);
-    // 自動選擇第一張卡片
-    selectCard(0);
-    return
-  }
-  // 按照 position 排序景點
-  const sortedPlaces = Array.from(places).sort((a, b) => a.position - b.position)
-  // 為每個可能的插入位置創建卡片
-  for (let i = 0; i <= sortedPlaces.length; i++) {
-    const card = {
-      location1: i === 0 ? "起點" : `${i} ${sortedPlaces[i - 1].places.name}`,
-      newlocation: place.name,
-      location2: i === sortedPlaces.length ? "終點" : `${i + 1} ${sortedPlaces[i].places.name}`,
-      position: i,
-    }
-    cards.value.push(card)
-  }
- // 如果還沒有選中的卡片，預設選擇第一張
- if (selectedCard.value === null) {
-    selectCard(0);
-  }
-  // console.log("生成的卡片:", cards.value)
-}
-
-// 預設第二張卡片被選中
-const selectedCard = ref(null)
-const selectedCardInfo = ref(null)
-// 點擊選擇卡片
-const selectCard = (index) => {
-  selectedCard.value = index;
-  selectedCardInfo.value = cards.value[index];
-  console.log("選中的卡片信息:", selectedCardInfo.value);
-};
-// 新增用於管理當前選中天數的狀態
-const currentScheduleDays = ref([])
-const currentSchedule = ref(null)
-
-// 修改 switchToPage 函數
-const switchToPage = (page, tab, schedule = null) => {
-  currentPage.value = page
-  selectedTab.value = tab
-
-  if (schedule) {
-    if (!currentSchedule.value) {
-      currentSchedule.value = schedule
-    } else {
-      Object.assign(currentSchedule.value, schedule)
-    }
-    currentScheduleDays.value = schedule.dates
-    // console.log("Current schedule after switch:", currentSchedule.value)
-  }
-}
-
-// 添加 ref 用於獲取容器元素
-const tabsContainer = ref(null)
-
-// 添加滾動控制函數
-const scrollTabs = (direction) => {
-  if (!tabsContainer.value) return
-
-  const scrollAmount = 160 // 一次滾動兩個標籤的寬度
-  const currentScroll = tabsContainer.value.scrollLeft
-
-  if (direction === "left") {
-    tabsContainer.value.scrollTo({
-      left: currentScroll - scrollAmount,
-      behavior: "smooth",
-    })
-  } else {
-    tabsContainer.value.scrollTo({
-      left: currentScroll + scrollAmount,
-      behavior: "smooth",
-    })
-  }
-}
 </script>
 
 <template>
@@ -475,91 +477,90 @@ const scrollTabs = (direction) => {
               <!--打開的時候會變成 <ChevronUpIcon class="size-3" /> -->
               <div class="h-[calc(100vh-350px)] overflow-y-auto pr-2">
                 <div
-                v-for="(schedule, index) in schedules"
-                :key="schedule.id"
-                class="collapse ml-[-0.5rem] mr-[0.5rem] transition-opacity"
-              >
-                <input
-                  type="checkbox"
-                  :checked="openedCollapse === `journey${schedule.id}`"
-                  @change="toggleCollapse(`journey${schedule.id}`)"
-                />
-                <div
-                  class="collapse-title flex justify-between items-center p-0 pl-[1rem]"
+                  v-for="(schedule, index) in schedules"
+                  :key="schedule.id"
+                  class="collapse ml-[-0.5rem] mr-[0.5rem] transition-opacity"
                 >
-                  <div class="cursor-pointer hover:bg-primary-100 group">
-                    <h2
-                      class="text-xl font-bold group-hover:text-primary-600 text-stone-950"
-                    >
-                      {{ schedule.title }}
-                    </h2>
-                    <p
-                      class="text-sm text-gray-600 group-hover:text-primary-600"
-                    >
-                      {{ formatYear(schedule.start_date) }}
-                    </p>
-                  </div>
-                  <ChevronDownIcon
-                    v-if="openedCollapse !== `journey${schedule.id}`"
-                    class="text-black size-3"
+                  <input
+                    type="checkbox"
+                    :checked="openedCollapse === `journey${schedule.id}`"
+                    @change="toggleCollapse(`journey${schedule.id}`)"
                   />
-                  <ChevronUpIcon v-else class="text-black size-3" />
-                </div>
-                <div class="collapse-content p-0 pl-[1rem]">
                   <div
-                    v-for="(date, index) in schedule.dates"
-                    :key="index"
-                    @click="
-                      () => {
-                        selectedSchedule = schedule
-                        selectedDate = date.toISOString().split('T')[0]
-                        currentSchedule = schedule
-                        switchToPage('DayCard', `day${index + 1}`, schedule)
-                        updateCards(
-                          schedule.groupedPlaces[
-                            date.toISOString().split('T')[0]
-                          ]
-                        )
-                      }
-                    "
-                    class="relative p-2 my-[0.5rem] bg-[#f4f4f4] rounded-xl cursor-pointer hover:bg-primary-100 box-border overflow-hidden"
+                    class="collapse-title flex justify-between items-center p-0 pl-[1rem]"
                   >
-                    <label
-                      for=""
-                      class="absolute top-0 right-0 bg-secondary-500 text-white flex items-center gap-1 p-[0.25rem] rounded-bl-xl text-xs"
+                    <div class="cursor-pointer hover:bg-primary-100 group">
+                      <h2
+                        class="text-xl font-bold group-hover:text-primary-600 text-stone-950"
+                      >
+                        {{ schedule.title }}
+                      </h2>
+                      <p
+                        class="text-sm text-gray-600 group-hover:text-primary-600"
+                      >
+                        {{ formatYear(schedule.start_date) }}
+                      </p>
+                    </div>
+                    <ChevronDownIcon
+                      v-if="openedCollapse !== `journey${schedule.id}`"
+                      class="text-black size-3"
+                    />
+                    <ChevronUpIcon v-else class="text-black size-3" />
+                  </div>
+                  <div class="collapse-content p-0 pl-[1rem]">
+                    <div
+                      v-for="(date, index) in schedule.dates"
+                      :key="index"
+                      @click="
+                        () => {
+                          selectedSchedule = schedule
+                          selectedDate = date.toISOString().split('T')[0]
+                          currentSchedule = schedule
+                          switchToPage('DayCard', `day${index + 1}`, schedule)
+                          updateCards(
+                            schedule.groupedPlaces[
+                              date.toISOString().split('T')[0]
+                            ]
+                          )
+                        }
+                      "
+                      class="relative p-2 my-[0.5rem] bg-[#f4f4f4] rounded-xl cursor-pointer hover:bg-primary-100 box-border overflow-hidden"
                     >
-                      <HandThumbUpIcon
-                        class="size-3 ml-[0.25rem]"
-                      />加在這天最順
-                    </label>
-                    <h3 class="text-black text-semibold">
-                      第{{ index + 1 }}天
-                    </h3>
-                    <!-- 景點數量要跟我的行程連動 -->
-                    <p>
-                      {{ formatDate(date) }}　{{
-                        schedule.groupedPlaces[date.toISOString().split("T")[0]]
-                          ?.length || 0
-                      }}
-                      個景點
-                    </p>
+                      <label
+                        for=""
+                        class="absolute top-0 right-0 bg-secondary-500 text-white flex items-center gap-1 p-[0.25rem] rounded-bl-xl text-xs"
+                      >
+                        <HandThumbUpIcon
+                          class="size-3 ml-[0.25rem]"
+                        />加在這天最順
+                      </label>
+                      <h3 class="text-black text-semibold">
+                        第{{ index + 1 }}天
+                      </h3>
+                      <!-- 景點數量要跟我的行程連動 -->
+                      <p>
+                        {{ formatDate(date) }}　{{
+                          schedule.groupedPlaces[
+                            date.toISOString().split("T")[0]
+                          ]?.length || 0
+                        }}
+                        個景點
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <button
-                class="btn p-0 border-white bg-white flex mt-[1rem] shadow-none hover:bg-white hover:border-white group items-center"
-                onclick="NewSchedule.showModal()"
-              >
-                <PlusCircleIcon class="size-5 fill-primary-600 mr-[0.5rem]" />
-                <p
-                  class="font-bold text-black group-hover:text-primary-500 text-md"
+                <button
+                  class="btn p-0 border-white bg-white flex mt-[1rem] shadow-none hover:bg-white hover:border-white group items-center"
+                  onclick="NewSchedule.showModal()"
                 >
-                  建立新行程
-                </p>
-              </button>
+                  <PlusCircleIcon class="size-5 fill-primary-600 mr-[0.5rem]" />
+                  <p
+                    class="font-bold text-black group-hover:text-primary-500 text-md"
+                  >
+                    建立新行程
+                  </p>
+                </button>
               </div>
-            
-              
             </div>
             <!-- Tab Two -->
             <div
@@ -680,7 +681,9 @@ const scrollTabs = (direction) => {
           </div>
 
           <!-- 卡片內容區域 -->
-          <div class="p-4 bg-primary-200 h-[calc(100vh-400px)] overflow-auto flex flex-col">
+          <div
+            class="p-4 bg-primary-200 h-[calc(100vh-400px)] overflow-auto flex flex-col"
+          >
             <div
               v-for="(card, index) in cards"
               :key="index"
