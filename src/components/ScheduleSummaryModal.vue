@@ -95,12 +95,12 @@ const generatePDF = () => {
 }
 
 const scheduleSummaryText = ref("")
-watch(schedulesData, () => {
-  getSchedule(scheduleId.value)
-  if (scheduleSummary.value) {
-    scheduleSummaryText.value = scheduleSummary.value.innerText.split("\n")
-  }
-})
+// watch(schedulesData, () => {
+//   getSchedule(scheduleId.value)
+//   if (scheduleSummary.value) {
+//     scheduleSummaryText.value = scheduleSummary.value.innerText.split("\n")
+//   }
+// })
 
 onMounted(() => {
   getSchedule(scheduleId.value)
