@@ -79,7 +79,6 @@ const drag = ref(false)
         >
           <ArrowUpTrayIcon />
         </div>
-        <!-- <ShareScheduleModal /> -->
       </div>
       <label
         class="bg-gray opacity-80 text-gray-600 w-8 h-8 rounded-full absolute top-3.5 right-4 p-1.5 hover:opacity-90 tooltip tooltip-bottom hover:cursor-pointer"

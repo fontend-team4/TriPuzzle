@@ -18,3 +18,7 @@
 # start the caddy web server
 [start]
     cmd = 'exec caddy run --config Caddyfile --adapter caddyfile 2>&1' # start caddy using the Caddyfile config and caddyfile adapter
+
+[[build.static_dirs]]
+    path = "src/assets/images"
+    url_prefix = "/images"

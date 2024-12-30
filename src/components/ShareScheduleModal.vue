@@ -1,4 +1,5 @@
 <script setup>
+
 import { defineProps, defineEmits, ref, watch, computed } from 'vue'
 import { LinkIcon } from '@heroicons/vue/24/outline'
 import ScheduleSummaryModal from './ScheduleSummaryModal.vue'
@@ -172,13 +173,11 @@ watch(props, ({ sharePeople }) => {
 });
 
 
-
-
 </script>
 
 <template>
   <dialog id="shareSchedule" class="modal">
-    <div class="modal-box min-w-full md:min-w-[480px] bg-gray">
+    <div class="modal-box min-w-full md:min-w-[480px] bg-gray relative">
       <form method="dialog">
         <div class="w-full h-10">
           <button
@@ -217,6 +216,7 @@ watch(props, ({ sharePeople }) => {
         v-else
         class="w-full px-5 pt-10 pb-6 bg-white invite-detail rounded-xl"
       >
+
         <div class="text-center">
           <!-- 邀請者視角 -->
           <div class="dropdown">
@@ -309,13 +309,5 @@ watch(props, ({ sharePeople }) => {
 <style scoped>
 .tooltip:before {
   font-size: 12px;
-}
-#share:checked ~ .share-toggle {
-  background-color: #d23430;
-  color: #fff;
-}
-#invite:checked ~ .invite-toggle {
-  background-color: #d23430;
-  color: #fff;
 }
 </style>

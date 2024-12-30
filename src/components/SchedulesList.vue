@@ -85,6 +85,7 @@ const openLeaveModal = (id) => {
   leavedId.value = id;
 };
 
+
 // 行程分享、共編彈窗
 const activeStatus = ref(null);
 const openShareModal = () => {
@@ -126,6 +127,7 @@ const openInviteModal = () => {
 const updateStatus = (status) => {
   activeStatus.value = status;
 };
+
 
 const login = () => {
   LoginStore.openModal();
@@ -306,7 +308,6 @@ onMounted(async () => {
                       class="w-6 h-6 p-1 text-white rounded-full bg-gray-transparent hover:cursor-pointer"
                       onclick="shareSchedule.showModal()"
                       @click="openShareModal(); shareLinkHandler(item.id)"
-                      
                     >
                       <ShareIcon />
                     </span>
@@ -340,6 +341,7 @@ onMounted(async () => {
                             shareLinkHandler(item.id);
                           "
                         >
+
                           <a
                             class="flex items-center gap-1 px-5 py-2 text-sm hover:bg-gray"
                             href="#"
@@ -581,6 +583,7 @@ onMounted(async () => {
       </div>
     </div>
 
+
     <ShareScheduleModal
       :activeTab="activeStatus"
       :shareLink="shareLink"
@@ -588,6 +591,7 @@ onMounted(async () => {
       @updateStatus="updateStatus"
       @scheduleUpdate="getSchedules"
     />
+
     <DeleteScheduleModal :toBeDeleteId="deletedId" :updateList="getSchedules" />
     <LeaveScheduleModal :toBeLeavedId="leavedId" :updateList="getShareSchedules" />
     <NewScheduleModal :savetoSchedules="getSchedules" />
