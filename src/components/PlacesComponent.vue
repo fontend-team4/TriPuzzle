@@ -117,20 +117,6 @@ const fetchPlaceById = async (placeId) => {
   }
 }
 
-// 初始化和監聽事件
-
-// 初始化
-onMounted(async () => {
-  const placeId = route.query.placeId // URL中的placeId
-  if (placeId) {
-    await fetchPlaceById(placeId) // 載入placeId對應的地點
-  }
-
-  await calculateColumns() // 初始計算瀑布流
-  handleResize() // 初始化欄數
-  window.addEventListener("resize", handleResize)
-})
-
 
 // 移除事件監聽器
 onUnmounted(() => {
