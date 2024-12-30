@@ -33,6 +33,11 @@ const router = createRouter({
       path: "/category/:category?",
       name: "CategoryView",
       component: () => import('../views/CategoryView.vue'),
+    },
+    {
+      path : "/group",
+      name : "GroupView",
+      component : () => import('../views/Group.vue'),
     }
   ],
   scrollBehavior(to, from, savedPosition) {
