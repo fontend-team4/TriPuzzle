@@ -1,5 +1,6 @@
 <script setup>
-import { ref, inject } from "vue"
+import { ref, inject, onMounted, watchEffect } from "vue"
+import axios from "axios"
 import {
   XMarkIcon,
   ChevronLeftIcon,
@@ -22,38 +23,49 @@ import draggable from "vuedraggable"
 
 const listAndDetailToggle = inject("listAndDetailToggle")
 const detailToggle = inject("detailToggle")
+const scheduleId = inject("scheduleId")
 const transportationToggle = inject("transportationToggle")
+const place = ref([]);
+const API_URL = process.env.VITE_HOST_URL;
+const userId = ref(localStorage.getItem("userId"));
+const token = localStorage.getItem("token");
+const GOOGLE_PHOTO_BASE_URL = 'https://maps.googleapis.com/maps/api/place/photo';
+const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
+const getImageUrl = (photoReference) => {
+  return `${GOOGLE_PHOTO_BASE_URL}?maxwidth=400&photoreference=${photoReference}&key=${GOOGLE_API_KEY}`;
+};
 
-// 定義響應式陣列
-const place = ref([
-  {
-    id: 1,
-    name: "香港迪士尼樂園",
-    time: "08:00",
-    stayhour: 1,
-    imgUrl:
-      "https://lh3.googleusercontent.com/places/ANJU3Ds3MXRcZf77xt6ejMr5CyGxuySKPa3n9yUWJ5EqShizmd3EPHhQNT8_xFYRuOpksBffhO-lOh21FWclCl_ZQv94ZzST19IrWtM=s1600-w480",
-    transhour: 0,
-  },
-  {
-    id: 2,
-    name: "香港杜莎夫人蠟像館",
-    time: "09:00",
-    stayhour: 1,
-    imgUrl:
-      "https://chictirpstorageprod.blob.core.windows.net/poi/8d8b0e7e-b654-4e7f-91b8-096097b84246.jpg",
-    transhour: 0,
-  },
-  {
-    id: 3,
-    name: "天際 100",
-    time: "10:00",
-    stayhour: 1,
-    imgUrl:
-      "https://lh3.googleusercontent.com/places/ANJU3DsUY2LM1fuJKUAmH-PF1rJfdcdHY1r2gLmSddnr24aqnSDDkNAG5oMI5BNaQ1xXBbtxiJTyTnixNTKAyl541gqVjZax6o9DbsM=s1600-w480",
-    transhour: 0,
-  },
-])
+const formatDate = (dateString) => {
+  const options = { hour: '2-digit', minute: '2-digit', hour12: false };
+  return new Date(dateString).toLocaleTimeString('zh-TW', options);
+};
+
+const formatDuration = (durationString) => {
+  const duration = new Date(durationString);
+  const hours = duration.getUTCHours();
+  const minutes = duration.getUTCMinutes();
+  return `${hours} 小時 ${minutes} 分鐘`;
+};
+
+const fetchData = async () => {
+  try {
+    if (!userId.value || !token) {
+      return;
+    }
+    const response = await axios.get(`${API_URL}/schedulePlaces`, {
+      params: { schedule_id: scheduleId.value },
+      headers: { Authorization: `${token}` },
+    });
+    place.value = response.data;
+  } catch (error) {
+    console.error("無法取得行程資料:", error);
+  }
+};
+
+onMounted(() => {
+  fetchData();
+  console.log("scheduleId:", scheduleId.value);
+});
 
 // 拖曳狀態
 const drag = ref(false)
@@ -157,9 +169,9 @@ const drag = ref(false)
         /></span>
       </div>
     </div>
-    <ScheduleOverview />
+    <!-- <ScheduleOverview /> -->
     <!-- everyday schedule -->
-    <div class="hidden">
+    <div class="">
       <!-- date -->
       <div class="pt-5 px-5 mb-3">
         <div class="date w-28 flex gap-1 cursor-pointer">
@@ -182,6 +194,7 @@ const drag = ref(false)
         </div>
       </div>
       <!-- place & transportation -->
+      <div class=" overflow-y-scroll overflow-x-hidden mb-4 h-[76vh] md:h-[76vh]">
       <draggable
         v-model="place"
         :animation="250"
@@ -190,7 +203,7 @@ const drag = ref(false)
         @end="drag = false"
         item-key="id"
       >
-        <template #item="{ element }">
+        <template #item="{ element }" >
           <div class="place-transportation container">
             <div
               class="pt-2 px-5 pb-1 overflow-y-hidden overflow-x-hidden bg-white"
@@ -202,16 +215,16 @@ const drag = ref(false)
                 <div class="flex p-1">
                   <img
                     class="w-[108px] h-[108px] rounded-xl object-cover"
-                    :src="element.imgUrl"
+                    :src="getImageUrl(element.places.image_url)"
                   />
                   <div class="w-cal flex justify-between">
                     <ul class="px-4 flex flex-col gap-0.5 justify-center">
                       <li class="text-sm font-medium text-orange-400">
-                        {{ element.time }}
+                        {{ formatDate(element.arrival_time) }}
                       </li>
-                      <li class="font-medium">{{ element.name }}</li>
+                      <li class="font-medium">{{ element.places.name }}</li>
                       <li class="text-xs text-gray-400">
-                        {{ `停留 ${element.stayhour} 時` }}
+                        {{ `停留 ${formatDuration(element.stay_time)} ` }}
                       </li>
                     </ul>
                     <div class="dropdown p-1">
@@ -357,6 +370,8 @@ const drag = ref(false)
           </div>
         </template>
       </draggable>
+    </div>
+
     </div>
   </div>
 </template>
