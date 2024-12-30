@@ -1,17 +1,28 @@
 <script setup>
 import taiwanLocation from "../../taiwanLocation.json"
-import { ref } from "vue"
+import { ref, onMounted } from "vue"
+import { useSearchStore } from "../stores/searchPlaces"
 
+const searchStore = useSearchStore()
 // 縣市名稱
-const categories = ref(Object.keys(taiwanLocation))
 
+const categories = ref(Object.keys(taiwanLocation))
 const selectedCity = ref(categories.value[0])
 const selectedCityData = ref(taiwanLocation[selectedCity.value])
+const selectedDistrict = ref(selectedCityData.value["區域"][0])
 
 const selectCity = (city) => {
   selectedCity.value = city
   selectedCityData.value = taiwanLocation[city]
 }
+const selectDistrict = (area) => {
+  selectedDistrict.value = area
+  searchStore.region = selectedCity.value + area
+  searchStore.regionSearch()
+}
+onMounted(() => {
+  searchStore.region = selectedCity.value
+})
 </script>
 
 <template>
@@ -37,10 +48,17 @@ const selectCity = (city) => {
     <div class="h-full p-8" v-if="selectedCityData">
       <div class="text-lg font-medium">推薦區域</div>
       <div class="flex flex-wrap gap-4 m-4">
-        <a v-for="area in selectedCityData['熱門區域']" :key="area" href="#">
+        <a
+          v-for="area in selectedCityData['熱門區域']"
+          :key="area"
+          href="#"
+          @click="selectDistrict(area)"
+        >
           <div class="relative overflow-hidden rounded-2xl">
             <img src="https://fakeimg.pl/200x200/200" alt="" />
-            <p class="absolute text-white bottom-3 left-3">{{ area }}</p>
+            <p class="absolute text-white bottom-3 left-3">
+              {{ area }}
+            </p>
           </div>
         </a>
       </div>
@@ -49,7 +67,9 @@ const selectCity = (city) => {
         <button
           v-for="area in selectedCityData['區域']"
           :key="area"
-          class="px-4 py-2 bg-white rounded-full hover:bg-primary-200"
+          class="px-4 py-2 bg-white rounded-full hover:bg-primary-200 category-subitem"
+          :class="{ active: area === selectedDistrict }"
+          @click="selectDistrict(area)"
         >
           {{ area }}
         </button>
@@ -64,5 +84,10 @@ const selectCity = (city) => {
   border-left: 5px solid #d23430;
 
   background-color: #eeeeee;
+}
+
+.category-subitem.active {
+  color: #d23430;
+  border: 1px solid #d23430;
 }
 </style>
