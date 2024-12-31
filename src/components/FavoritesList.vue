@@ -17,12 +17,10 @@ import {
 import axios from "axios"
 import {
   favorites,
-  isFavorited,
   loadFavorites,
   toggleFavorite,
   antitoggleFavorite,
-  removeFavoriteDirectly,
-  generateImageUrl,
+  generateImageUrl
 } from "@/stores/favorites"
 
 // 定義狀態
@@ -30,7 +28,7 @@ const places = ref([])
 const loading = ref(true)
 const userId = ref(localStorage.getItem("userId"))
 const token = localStorage.getItem("token")
-const inFavorites = (placeId) => isFavorited(placeId)
+
 
 const API_URL = import.meta.env.VITE_HOST_URL
 
@@ -43,15 +41,23 @@ const fetchPlaces = async () => {
       headers: {
         Authorization: token,
       },
-    })
-    places.value = res.data.map((favorite) => favorite.places)
-    localStorage.setItem("favorites", JSON.stringify(places.value))
+    });
+
+    // 加載收藏的地點並更新收藏狀態
+    places.value = res.data.map((favorite) => {
+      const place = favorite.places;
+      place.isFavorited = true; // 初始化收藏狀態
+      return place;
+    });
+
+    localStorage.setItem("favorites", JSON.stringify(places.value));
   } catch (err) {
-    alert("無法獲取景點資料", err)
+    alert("無法獲取景點資料", err);
   } finally {
-    loading.value = false
+    loading.value = false;
   }
-}
+};
+
 const emit = defineEmits(["open-detail-modal"])
 
 const openDetailModal = (place) => {
@@ -60,6 +66,7 @@ const openDetailModal = (place) => {
 
 // 載入收藏景點
 onMounted(fetchPlaces)
+
 </script>
 
 <template>
@@ -107,22 +114,17 @@ onMounted(fetchPlaces)
               class="absolute bottom-0 flex items-center justify-between w-full p-4 transition-opacity opacity-0 z-2 group-hover:opacity-100"
             >
               <button
-                class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer bg-gray hover:bg-opacity-75 tooltip"
-                :data-tip="inFavorites ? '移除收藏' : '加入收藏'"
-                @click.prevent.stop="antitoggleFavorite(place)"
-              >
-                <component
-                  :is="inFavorites(place.id) ? OutlineHeartIcon : HeartIcon"
-                  :class="
-                    inFavorites(place.id) ? 'text-gray-500' : 'text-red-500'
-                  "
-                  class="size-6"
-                />
-              </button>
-
-              <AddPlaceBtn @click.stop @click="modalStore.savePlace(place)" />
+        class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer bg-gray hover:bg-opacity-75 tooltip"
+        :data-tip="place.isFavorited ? '移除收藏' : '加入收藏'"
+        @click.prevent.stop="antitoggleFavorite(place)"
+      >
+        <component
+          :is="place.isFavorited ? HeartIcon : OutlineHeartIcon"
+          :class="place.isFavorited ? 'text-red-500' : 'text-gray-500'"
+          class="size-6"
+        />
+      </button>
             </div>
-
             <!-- 圖片 -->
             <img
               :src="generateImageUrl(place.image_url)"

@@ -60,9 +60,12 @@ const placesStore = usePlacesStore()
 const { copyToClipboard } = useCopyWebsiteStore()
 const route = useRoute()
 
+
 // 計算屬性
 const currentPlaceId = computed(() => route.query.placeId)
 const placeData = computed(() => props.place || place.value)
+// member 路由判斷
+const isMemberRoute = computed(() => route.path.startsWith("/member"));
 
 // 生成 QR Code 並下載
 const createQRCode = async (placeId) => {
@@ -382,7 +385,9 @@ onMounted(fetchPlaceDetails)
             <PaperAirplaneIcon class="cursor-pointer size-6" />
           </div>
         </div>
-        <AddPlaceBtn />
+        <AddPlaceBtn 
+          v-if="!isMemberRoute && Object.keys(place).length"
+        />
       </div>
       <!-- 照片區 -->
       <div

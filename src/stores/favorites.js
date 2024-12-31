@@ -16,9 +16,6 @@ const handleError = (error, message = "操作失敗，請稍後再試") => {
   console.error(message, error);
 };
 
-const isFavorited = (placeId) => {
-  return favorites.value.some((fav) => fav.favorite_places === placeId);
-};
 
 // 載入收藏列表
 const loadFavorites = async () => {
@@ -28,11 +25,18 @@ const loadFavorites = async () => {
     const response = await axios.get(`${API_URL}/favorites/${userId.value}`, {
       headers: { Authorization: token },
     });
-    favorites.value = response.data; // 更新收藏列表
+
+    // 初始化收藏地點的 isFavorited 屬性
+    favorites.value = response.data.map((favorite) => ({
+      ...favorite.places,
+      isFavorited: true, // 收藏地點默認為已收藏
+    }));
+    console.log("收藏列表已更新:", favorites.value);
   } catch (error) {
     console.error("無法加載收藏資料:", error);
   }
 };
+
 
 // 切換收藏狀態
 const toggleFavorite = async (item) => {
@@ -41,42 +45,62 @@ const toggleFavorite = async (item) => {
     LoginStore.openModal();
     return;
   }
-
   const headers = { Authorization: token };
 
   try {
-    if (!isFavorited(item.id)) {
+    if (!item.isFavorited) {
       await addFavorite(item, headers);
+      item.isFavorited = true; // 更新狀態為已收藏
     } else {
       await removeFavorite(item.id, headers);
+      item.isFavorited = false; // 更新狀態為未收藏
     }
   } catch (error) {
     handleError(error, "切換收藏狀態失敗");
   }
 };
 
-const antitoggleFavorite = async (item) => { 
-
+const antitoggleFavorite = async (place) => {
   const headers = { Authorization: token };
 
   try {
-    if (isFavorited(item.place_id)) {
-      console.log(item.place_id);
-      await addFavorite(item.place_id, headers);
-
+    if (place.isFavorited) {
+      // 已收藏，執行移除收藏操作
+      await removeFavorite(place.place_id, headers);
+      place.isFavorited = false; // 更新狀態為未收藏
     } else {
-      console.log(item.place_id);
-      await removeFavorite(item.place_id, headers);
-
+      // 未收藏，執行新增收藏操作
+      await favoriteResponse(
+        {
+          favorite_user: Number(userId.value),
+          favorite_places: place.place_id,
+        },
+        headers
+      );
+      place.isFavorited = true; // 更新狀態為已收藏
     }
   } catch (error) {
     handleError(error, "切換收藏狀態失敗");
-
   }
 };
 
 
 // 新增收藏
+const favoriteResponse = async (favoriteData, headers) =>{
+  try {
+    await axios.post(`${API_URL}/favorites`,favoriteData,{ headers })
+      favorites.value.push({
+        favorite_places: favoriteData.place_id,
+        ...favoriteResponse.data,
+      })
+      await loadFavorites(); // 重新載入收藏列表
+      console.log("新增收藏成功:", favoriteData);
+    } catch (error) {
+      handleError(error, "新增收藏失敗");
+  }
+}
+
+// 新增地點與收藏
 const addFavorite = async (item, headers) => {
   try {
     const placeData = {
@@ -148,20 +172,6 @@ const removeFavorite = async (placeId, headers) => {
   }
 };
 
-const removeFavoriteDirectly = async (place) => {
-  const LoginStore = LoginModalStore();
-  if (!userId.value || !token) {
-    LoginStore.openModal();
-    return;
-  }
-
-  try {
-    await removeFavorite(place.place_id, { Authorization: token });
-    await loadFavorites(); // 重新載入收藏列表
-  } catch (error) {
-    handleError(error, "移除收藏失敗");
-  }
-};
 
 //將image_url格式轉換為URL
 const generateImageUrl = (photoReference) => {
@@ -171,7 +181,7 @@ const generateImageUrl = (photoReference) => {
 };
 
 
-export { favorites, isFavorited, loadFavorites, toggleFavorite, antitoggleFavorite, removeFavoriteDirectly, generateImageUrl };
+export { favorites, loadFavorites, toggleFavorite, antitoggleFavorite, generateImageUrl };
 
 
 
