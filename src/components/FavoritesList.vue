@@ -120,7 +120,6 @@ onMounted(fetchPlaces)
                 />
               </button>
 
-              <AddPlaceBtn @click.stop @click="modalStore.savePlace(place)" />
             </div>
 
             <!-- 圖片 -->
