@@ -16,8 +16,8 @@ const total_users = ref(1)
 const shareMembers = ref([])
 const creator = ref({
 id: 3,
-name: "aaa",
-email: "aaa@aaa.com",
+name: "PuzzleCat",
+email: "PuzzleCat@gmail.com",
 profile_pic_url: defaultProfilePicUrl
 })
 const props = defineProps({
@@ -43,8 +43,8 @@ function showMessage({ title = "訊息", message, status }) {
   }
   const buttonClass = typeClasses[status]
   if (document.querySelector("#custom_modal")) {
-    document.querySelector("#modal_title").textContent = title // 更新標題
-    document.querySelector("#modal_message").textContent = message // 更新訊息
+    document.querySelector("#modal_title").textContent = title 
+    document.querySelector("#modal_message").textContent = message 
     document
       .querySelector("#modal_button")
       .classList.remove(

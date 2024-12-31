@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from "vue";
 import { PuzzlePieceIcon, CheckIcon } from "@heroicons/vue/20/solid";
+import router from "@/router";
 
 const isCardFocused = ref(false);
 
@@ -9,22 +10,29 @@ const handleCardFocus = (status) => {
 };
 
 const btnActivate = computed(() =>
-  isCardFocused.value ? ["cursor-pointer, bg-primary-500"] : ["cursor-not-allowed, bg-primary-300"]
+  isCardFocused.value ? ["cursor-pointer, bg-secondary-500"] : ["cursor-not-allowed, bg-primary-300"]
 )
+
+const goBackPlanner = ()=>{
+  router.push('/planner')
+}
 </script>
 
 <template>
   <div
-    class="flex flex-col items-center justify-center h-auto md:h-screen bg-primary-100 focus-container"
+    class="relative flex flex-col items-center justify-center h-auto md:h-screen bg-primary-800 focus-container"
   >
-    <h1 class="px-4 md:pr-0 text-[32px] text-slate-900 hidden md:block mt-8">升級白金會員，享有完整功能！</h1>
-    <h1 class="px-4 md:pl-0 text-[32px] text-slate-900  md:hidden mt-8">升級白金會員，</h1>
-    <h1 class="px-4 md:pl-0 text-[32px] text-slate-900  md:hidden">享有完整功能！</h1>
+  <button href="" @click="goBackPlanner">
+    <img src="../assets/svg/logo-light.svg" alt="" class="absolute w-[70px] top-8 md:left-8 -translate-x-1/2 md:translate-x-0" >
+  </button>  
+    <h1 class="px-4 md:pr-0 text-[32px] text-white hidden md:block mt-8">升級白金會員，享有完整功能！</h1>
+    <h1 class="px-4 md:pl-0 text-[32px] text-white  md:hidden mt-32">升級白金會員，</h1>
+    <h1 class="px-4 md:pl-0 text-[32px] text-white  md:hidden">享有完整功能！</h1>
 
-    <p class="mt-3 text-slate-700">讓旅圖幫助你成為旅遊達人！</p>
+    <p class="mt-3 text-white">讓旅圖幫助你成為旅遊達人！</p>
     <div class="flex flex-col w-full gap-8 px-4 my-8 mb-10 md:px-20 md:flex-row">
       <div
-        class="card md:w-1/3 w-full bg-white md:h-[500px] h-auto rounded-xl flex flex-col items-center md:py-12 py-4 pb-0 relative hover:border-2 hover:border-slate-300 box-border"
+        class="card md:w-1/3 w-full bg-white md:h-[500px] h-auto rounded-xl flex flex-col items-center md:py-12 py-4 pb-0 relative hover:border-4 hover:border-slate-300 box-border"
         tabindex="0"
         @focus="handleCardFocus(true)"
         @blur="handleCardFocus(false)"
@@ -46,10 +54,11 @@ const btnActivate = computed(() =>
         <div class="flex pt-5">
           <CheckIcon class="mr-3 text-lg text-green-400 size-6" /><span class="text-lg">自訂頭像與封面</span>
         </div>
-        <p class="my-5 text-4xl font-extrabold md:absolute text-slate-400 bottom-6">Free!</p>
+        <p class="z-50 my-5 text-4xl font-extrabold md:absolute text-slate-400 bottom-6">Free!</p>
+        <img src="../assets/images/cat-7.png" alt="" class="absolute bottom-0 md:w-[200px] left-0 w-[150px]">
       </div>
       <div
-        class="card md:w-1/3 w-full bg-white h-[500px] rounded-xl flex flex-col items-center py-12 relative hover:border-2 hover:border-slate-300 box-border"
+        class="card md:w-1/3 w-full bg-white h-[500px] rounded-xl flex flex-col items-center py-12 relative hover:border-4 hover:border-slate-300 box-border"
         tabindex="0"
         @focus="handleCardFocus(true)"
         @blur="handleCardFocus(false)"
@@ -74,10 +83,11 @@ const btnActivate = computed(() =>
         <div class="flex pt-5">
           <CheckIcon class="mr-3 text-lg text-green-400 size-6" /><span class="text-lg">全站無廣告</span>
         </div>
-        <p class="absolute my-5 text-4xl font-extrabold text-primary-400 bottom-6">NT$ 60</p>
+        <p class="absolute z-50 my-5 text-4xl font-extrabold text-primary-400 bottom-6">NT$ 60 / <span class="text-2xl">Month</span></p>
+        <img src="../assets/images/cat-6.png" alt="" class="absolute -bottom-5 md:w-[175px] w-[150px] -left-8">
       </div>
       <div
-        class="card md:w-1/3 w-full bg-white h-[500px] rounded-xl flex flex-col items-center py-12 relative hover:border-2 hover:border-slate-300 box-border"
+        class="card md:w-1/3 w-full bg-white h-[500px] rounded-xl flex flex-col items-center py-12 relative hover:border-4 hover:border-slate-300 box-border"
         tabindex="0"
         @focus="handleCardFocus(true)"
         @blur="handleCardFocus(false)"
@@ -105,7 +115,8 @@ const btnActivate = computed(() =>
         <div class="flex pt-5">
           <CheckIcon class="mr-3 text-lg text-green-400 size-6" /><span class="text-lg">解鎖隱藏封面</span>
         </div>
-        <p class="absolute my-5 text-4xl font-extrabold text-secondary-400 bottom-6">NT$ 120</p>
+        <p class="absolute my-5 text-4xl font-extrabold text-secondary-400 bottom-6">NT$ 500 / <span class="text-2xl">Year</span></p>
+        <img src="../assets/images/cat-8.png" alt="" class="absolute -top-20 w-[175px] right-0">
       </div>
     </div>
     <button
@@ -144,6 +155,6 @@ const btnActivate = computed(() =>
 
 <style scoped>
 .card:focus {
-  border: 3px solid #f4a300;
+  border: 4px solid #f4a300;
 }
 </style>

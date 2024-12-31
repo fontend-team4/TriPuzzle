@@ -169,7 +169,7 @@ const redirectToHome = () => {
     class="fixed top-0 z-50 flex items-center justify-center w-screen h-screen overflow-hidden bg-black bg-opacity-25"
   >
     <div
-      class="pb-10 md:pb-0 h-full md:h-[calc(100vh-540px)] md:w-[480px] mx-0 md:mx-auto bg-white md:flex md:rounded-xl md:overflow-hidden overflow-auto flex-col py-10 px-5 relative"
+      class="pb-10 md:pb-0 h-full md:h-[380px] md:w-[480px] mx-0 md:mx-auto bg-white md:flex md:rounded-xl md:overflow-hidden overflow-auto flex-col py-10 px-5 relative"
     >
       <h2 class="flex items-center justify-center mb-4 text-2xl font-bold">
         確認要加入行程嗎？
