@@ -16,9 +16,8 @@ import { useSearchStore } from "@/stores/searchPlaces"
 import { PlaceModalStore } from "@/stores/PlaceModal"
 import {
   favorites,
-  isFavorited,
   loadFavorites,
-  toggleFavorite,
+  toggleFavorite
 } from "@/stores/favorites.js"
 import axios from "axios"
 import { useRoute, useRouter } from "vue-router"
@@ -47,8 +46,8 @@ const emit = defineEmits(["open-detail-modal", "updateIsPlacesComponent"])
 // 檢查登入狀態
 onMounted(() => {
   isLogin.value = Boolean(token && userId.value);
-  if (isLogin.value) {
-    loadFavorites(); // 加載收藏列表
+    if (isLogin.value) {
+      loadFavorites(); // 加載收藏列表
   }
 })
 
@@ -180,13 +179,13 @@ watch(
                 <button
                   v-if="isLogin"
                   class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer bg-gray hover:bg-opacity-75 tooltip"
-                  :data-tip="isFavorited(item.id) ? '已收藏' : '加入收藏'"
+                  :data-tip="item.isFavorited ? '已收藏' : '加入收藏'"
                   @click.prevent.stop="toggleFavorite(item)"
                 >
                   <component
-                    :is="isFavorited(item.id) ? HeartIcon : OutlineHeartIcon"
+                    :is="item.isFavorited ? HeartIcon : OutlineHeartIcon"
                     :class="
-                      isFavorited(item.id) ? 'text-red-500' : 'text-gray-500'
+                      item.isFavorited ? 'text-red-500' : 'text-gray-500'
                     "
                     class="size-6"
                   />
