@@ -35,6 +35,7 @@ const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 const activeTab = ref(0);
 const setActiveTab = (index) => {
     activeTab.value = index;
+    console.log(index);
 };
 const formatDateWithoutTime = (dateString) => {
   const date = new Date(dateString);
@@ -86,6 +87,7 @@ const groupByDate = (places) => {
       grouped[date] = [];
     }
     grouped[date].push(item);
+    console.log(date);
   });
   console.log('Grouped Places:', grouped);
   return grouped;
@@ -136,17 +138,17 @@ const drag = ref(false)
           <li class="whitespace-nowrap">
             <a
               @click.prevent="setActiveTab(-1)"
-              class="pb-2 text-gray-800 font-medium text-sm border-b-2 border-primary-600"
+              class="pb-2 font-medium text-sm hover:text-primary-600"
               >總覽頁</a
             >
           </li>
           <li
-            v-for="(places, date, index) in groupedPlaces"
+            v-for="(places ,date, index) in groupedPlaces"
             :key="date"
             class="whitespace-nowrap">
             <a
               @click="setActiveTab(index)"
-              class="pb-2 text-gray-500 font-medium text-sm hover:text-gray-800 hover:border-b-2 hover:border-primary-600"
+              class="pb-2 font-medium text-sm hover:text-primary-600"
               >第{{ index + 1 }}天</a
             >
           </li>
@@ -160,11 +162,8 @@ const drag = ref(false)
     </div>
     <ScheduleOverview v-if="activeTab === -1" />
     <!-- everyday schedule -->
-    <div v-if="activeTab !== -1">
-      <div
-        v-for="(places, date) in groupedPlaces"
-        :key="date"
-      >
+    <div v-for="(places, date, index) in groupedPlaces" :key="date">
+      <div v-if="activeTab === index">
         <!-- date -->
         <div class="pt-5 px-5 mb-3">
           <div class="date w-36 flex gap-1 cursor-pointer">
