@@ -6,10 +6,10 @@ import ExitCoEditModal from './ExitCoEditModal.vue'
 import axios from 'axios'
 
 const API_URL = process.env.VITE_HOST_URL
-const defaultProfilePicUrl = `src/assets/images/cat-2.png`;
+const defaultProfilePicUrl = '/images/cat-2.png';
 const shareSchedules = ref([]);
 const hasShareSchedules = ref(false);
-const token = localStorage.getItem("token");
+const token = localStorage.getItem("toen");
 const leavedId = ref(null);
 const leavedUserId = ref(null)
 const total_users = ref(1)
