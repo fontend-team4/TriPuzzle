@@ -35,7 +35,6 @@ const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 const activeTab = ref(0);
 const setActiveTab = (index) => {
     activeTab.value = index;
-    console.log(index);
 };
 const formatDateWithoutTime = (dateString) => {
   const date = new Date(dateString);
@@ -75,7 +74,7 @@ const fetchData = async () => {
     place.value = response.data;
     groupedPlaces.value = groupByDate(response.data);
   } catch (error) {
-    console.error("無法取得行程資料:", error);
+    return null;
   }
 };
 
@@ -87,9 +86,7 @@ const groupByDate = (places) => {
       grouped[date] = [];
     }
     grouped[date].push(item);
-    console.log(date);
   });
-  console.log('Grouped Places:', grouped);
   return grouped;
 };
 
