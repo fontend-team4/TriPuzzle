@@ -172,7 +172,7 @@ const redirectToHome = () => {
       class="pb-10 md:pb-0 h-full md:h-[380px] md:w-[480px] mx-0 md:mx-auto bg-white md:flex md:rounded-xl md:overflow-hidden overflow-auto flex-col py-10 px-5 relative"
     >
       <h2 class="flex items-center justify-center mb-4 text-2xl font-bold">
-        確認要加入行程嗎？
+        確認要加入共編嗎？
       </h2>
       <div class="relative w-full mb-4 overflow-hidden rounded-lg h-[200px]">
         <img
