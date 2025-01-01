@@ -418,7 +418,7 @@ onMounted(async () => {
             </div>
             <button
               class="px-4 py-2 rounded-full bg-secondary-500"
-              @click="LoginStore.openModal"
+              @click="goPremium"
             >
               <p class="text-xs text-white">立即升級</p>
             </button>

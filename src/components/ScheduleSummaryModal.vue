@@ -25,8 +25,6 @@ const getSchedule = async (id) => {
     schedulesData.value = response.data
     scheduleName.value = response.data.title
     schedulePlaces.value = response.data.schedule_places
-    console.log(schedulesData.value)
-
     const getAllDates = (startDate, endDate) => {
       const dates = []
       let currentDate = new Date(startDate)
@@ -95,12 +93,12 @@ const generatePDF = () => {
 }
 
 const scheduleSummaryText = ref("")
-// watch(schedulesData, () => {
-//   getSchedule(scheduleId.value)
-//   if (scheduleSummary.value) {
-//     scheduleSummaryText.value = scheduleSummary.value.innerText.split("\n")
-//   }
-// })
+watch(schedulesData, () => {
+  getSchedule(scheduleId.value)
+  if (scheduleSummary.value) {
+    scheduleSummaryText.value = scheduleSummary.value.innerText.split("\n")
+  }
+})
 
 onMounted(() => {
   getSchedule(scheduleId.value)
