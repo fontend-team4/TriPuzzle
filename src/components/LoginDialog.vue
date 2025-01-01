@@ -7,6 +7,7 @@ import { useUserStore } from "@/stores/userStore"
 import { LoginModalStore } from "@/stores/LoginModal.js"
 const LoginStore = LoginModalStore()
 const userStore = useUserStore()
+const isOpen=LoginStore.isOpen
 
 const API_URL = process.env.VITE_HOST_URL
 
@@ -164,7 +165,8 @@ const registerSubmit = async () => {
 
 <template>
   <div
-    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center overflow-auto"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center overflow-auto z-50"
+   :class="{ 'z-[1100]': isOpen }"
   >
     <div
       class="bg-white pb-6 w-full h-full md:w-96 md:h-max md:rounded-2xl md:mb-20"

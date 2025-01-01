@@ -20,6 +20,8 @@ import { PlusCircleIcon, MapPinIcon } from "@heroicons/vue/24/solid"
 import { PlaceModalStore } from "@/stores/PlaceModal"
 import { useUserStore } from "@/stores/userStore"
 import axios from "axios"
+import {MessageModalStore} from '@/stores/MessageModal'
+
 //googlemap
 // const props = defineProps({
 //   map: {
@@ -107,6 +109,9 @@ onMounted(async () => {
 //景點資料
 const modalStore = PlaceModalStore()
 const place = modalStore.selectedPlace
+
+//訊息彈窗
+const messageStore=MessageModalStore()
 
 //將景點資料存入places後端
 onMounted(() => {
@@ -254,13 +259,22 @@ const addPlaceToSchedule = async () => {
           "Content-Type": "application/json",
         },
       }
-    )
+    ) 
     // 新增成功後重新獲取該日期的景點列表
     const updatedPlaces = await fetchPlacesForDate(selectedDate.value)
     updateCards(updatedPlaces)
-    // console.log("新增成功：", res.data)
+    messageStore.messageModal({
+        title: "訊息",
+        message: res.data.message,
+        status: "success",
+      })
   } catch (error) {
     console.error("新增失敗：", error.response?.data || error.message)
+    messageStore.messageModal({
+        title: "訊息",
+        message: error.data.message || "未知錯誤",
+        status: "error",
+      })
   }
 }
 
