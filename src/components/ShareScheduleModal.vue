@@ -9,7 +9,7 @@ const API_URL = process.env.VITE_HOST_URL
 const defaultProfilePicUrl = '/images/cat-2.png';
 const shareSchedules = ref([]);
 const hasShareSchedules = ref(false);
-const token = localStorage.getItem("toen");
+const token = localStorage.getItem("token");
 const leavedId = ref(null);
 const leavedUserId = ref(null)
 const total_users = ref(1)
@@ -264,8 +264,8 @@ watch(props, ({ sharePeople }) => {
             </div>
           </li>
           <li
-            class="flex gap-4 pb-3 mb-3 border-b-2 border-dashed border-slate-300 tooltip tooltip-bottom"
-            data-tip="2024/11/18 加入行程" v-for="member in shareMembers" v-if="shareMembers != []"
+            class="flex gap-4 pb-3 mb-3 border-b-2 border-dashed border-slate-300"
+            v-for="member in shareMembers" v-if="shareMembers != []"
           >
             <img
               class="w-12 rounded-full h-11"
