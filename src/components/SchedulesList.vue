@@ -1,7 +1,7 @@
 <script setup>
-import { ref, inject, onMounted, computed } from "vue";
-import axios from "axios";
-import { EllipsisHorizontalIcon } from "@heroicons/vue/16/solid";
+import { ref, inject, onMounted, computed, provide } from "vue"
+import axios from "axios"
+import { EllipsisHorizontalIcon } from "@heroicons/vue/16/solid"
 import {
   XMarkIcon,
   UserPlusIcon,
@@ -293,7 +293,7 @@ onMounted(async () => {
                   class="card card-compact bg-base-100 sm:w-full md:w-[30%] lg:w-full h-[176px] lg:h-auto border-gray border mb-4 relative hover:cursor-pointer"
                 >
                   <figure
-                    @click="detailToggle(item.id)"
+                    @click="detailToggle(item.id),newClickHandler(item.id)"
                     class="w-full h-[150px] overflow-hidden"
                   >
                     <img
