@@ -12,7 +12,7 @@ import {
   XMarkIcon,
   PencilSquareIcon,
 } from "@heroicons/vue/24/outline"
-import { UserBadgeCheck, WarningTriangle, LogOut } from "@iconoir/vue"
+import { UserBadgeCheck, WarningTriangle, LogOut, MoneySquare } from "@iconoir/vue"
 import { LoginModalStore } from "@/stores/LoginModal.js"
 import FavoritesList from "@/components/FavoritesList.vue"
 import DetailModal from "@/components/DetailModal.vue"
@@ -252,7 +252,24 @@ const currentPlace = computed(() => {
 const closeDetailModal = () => {
   router.push({ path: "/member" })
 }
+
+const paymentSuccess = ref(null)
+const paymentConfirm = async () => {
+  const response = await axios.get(`${API_URL}/api/payment/confirm`);
+  if(response.data.message === "LinePay success") {
+    await paymentSuccess.value.showModal()
+    setTimeout(() => {
+      paymentSuccess.value.close()
+    }, 2000)
+    router.push({ path: "/member" })
+  }
+}
+
 onMounted(async () => {
+  const { transactionId, orderId } = route.query
+  if(transactionId && orderId) {
+    await paymentConfirm()
+  }
   try {
     await placesStore.fetchDefaultPlaces() // 抓取資料
     console.log("places:", places.value)
@@ -288,7 +305,8 @@ onMounted(async () => {
             />
             <div class="sm:mr-0">
               <div class="block pl-4 mt-2 md:mr-20 sm:mr-0">
-                <p class="mt-4 text-xl font-semibold">{{ userName }}</p>
+                <span class="mt-4 text-xl font-semibold">{{ userName }}</span>
+                <span class="text-sm px-3 py-1 mx-3 text-white rounded-full bg-primary-200">大拼圖</span>
                 <p class="mt-2">{{ userEmail }}</p>
                 <div class="flex items-center gap-3 mt-4">
                   <button
@@ -790,6 +808,23 @@ onMounted(async () => {
         <LogOut class="mx-auto mb-3 w-14 h-14 text-primary-600" />
         <h3 class="text-xl font-bold text-center">登出成功！</h3>
       </div>
+    </dialog>
+    <!-- Payment success 的 Modal -->
+    <dialog ref="paymentSuccess" class="modal w-[384px] mx-auto">
+      <div class="modal-box">
+        <form method="dialog">
+          <button class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2">✕</button>
+        </form>
+        <div class="text-center">
+          <MoneySquare class="mx-auto mb-3 w-14 h-14 text-primary-600" />
+          <h3 class="text-xl font-bold text-center">付款成功！</h3>
+          <p>恭喜升級為「大拼圖」</p>
+        </div>
+      </div>
+      <form method="dialog" class="modal-backdrop">
+        <button class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2">✕</button>
+        <button>close</button>
+      </form>
     </dialog>
   </div>
 </template>

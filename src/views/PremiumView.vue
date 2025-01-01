@@ -1,7 +1,11 @@
 <script setup>
 import { ref, computed } from "vue";
+import axios from "axios";
 import { PuzzlePieceIcon, CheckIcon } from "@heroicons/vue/20/solid";
-import router from "@/router";
+import { useRouter, useRoute } from "vue-router";
+
+const router = useRouter()
+const route = useRoute()
 
 const isCardFocused = ref(false);
 
@@ -16,6 +20,33 @@ const btnActivate = computed(() =>
 const goBackMember = ()=>{
   router.push('/member')
 }
+
+const API_URL = process.env.VITE_HOST_URL;
+const goCheckout = async () => {
+  try {
+    const productData = {
+      amount: 60,
+      currency: 'TWD',
+      packages: [
+        {
+          id: '大拼圖',
+          amount: 60,
+          products: [
+            {
+              name: '大拼圖',
+              quantity: 1,
+              price: 60
+            }
+          ]
+        }
+      ]
+    }
+    const response = await axios.post(`${API_URL}/api/payment`, productData);
+    window.location.href = response.data.redirectUrl
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
 </script>
 
 <template>
@@ -119,37 +150,14 @@ const goBackMember = ()=>{
         <img src="../assets/images/cat-8.png" alt="" class="absolute -top-20 w-[175px] right-0">
       </div>
     </div>
+    <!-- onclick="my_modal_2.showModal()" -->
     <button
       class="px-8 py-3 mb-8 text-3xl text-white transition-colors duration-300 rounded-full"
-      onclick="my_modal_2.showModal()"
       :class="btnActivate"
-
+      @click="goCheckout"
     >
       馬上升級！
     </button>
-    <dialog id="my_modal_2" class="modal">
-      <div class="modal-box">
-        <form method="dialog">
-          <button class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2">✕</button>
-        </form>
-        <h3 class="text-lg font-bold">選擇您的付款方式</h3>
-        <div class="py-4">
-          <div>
-          <input type="radio" id="linepay" name="payment" value="linepay" />
-          <label for="linepay" class="pl-3" >Line Pay</label>
-        </div>
-        <div>
-          <input type="radio" id="creditCard" name="payment" value="creditCard"  />
-          <label for="creditCard" class="pl-3">信用卡</label>
-        </div>
-        <button class="mt-3 btn">下一步</button>
-        </div>
-      </div>
-      <form method="dialog" class="modal-backdrop">
-        <button class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2">✕</button>
-        <button>close</button>
-      </form>
-    </dialog>
   </div>
 </template>
 
