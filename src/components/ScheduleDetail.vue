@@ -99,9 +99,9 @@ const drag = ref(false)
 </script>
 
 <template>
-  <div class="w-full lg:w-96 h-screen bg-white shadow-xl transition-all">
+  <div class="w-full h-screen transition-all bg-white shadow-xl lg:w-96">
     <!-- header -->
-    <div class="bg-primary-600 py-5 ps-4 pe-14 relative">
+    <div class="relative py-5 bg-primary-600 ps-4 pe-14">
       <div class="flex items-center justify-between gap-0.5">
         <div
           class="flex items-center hover:cursor-pointer"
@@ -110,15 +110,8 @@ const drag = ref(false)
           <span class="inline-block w-4 h-4 text-white"
             ><ChevronLeftIcon
           /></span>
-          <h2 class="text-white text-sm">行程列表</h2>
+          <h2 class="text-sm text-white">行程列表</h2>
         </div>
-        <div
-          class="w-5 h-5 text-white hover:cursor-pointer"
-          onclick="shareSchedule.showModal()"
-        >
-          <ArrowUpTrayIcon />
-        </div>
-        <!-- <ShareScheduleModal /> -->
       </div>
       <label
         class="bg-gray opacity-80 text-gray-600 w-8 h-8 rounded-full absolute top-3.5 right-4 p-1.5 hover:opacity-90 tooltip tooltip-bottom hover:cursor-pointer"
@@ -130,7 +123,7 @@ const drag = ref(false)
     </div>
     <!-- date tab -->
     <div class="flex border-b border-gray">
-      <div class="w-full h-12 flex pt-2 ps-8 pe-3 overflow-x-scroll">
+      <div class="flex w-full h-12 pt-2 overflow-x-scroll ps-8 pe-3">
         <ul class="flex gap-4">
           <li class="whitespace-nowrap">
             <a
@@ -151,8 +144,8 @@ const drag = ref(false)
           </li>
         </ul>
       </div>
-      <div class="w-12 pt-2 text-primary-600 hover:cursor-pointer text-center">
-        <span class="inline-block w-7 h-7 rounded-full hover:bg-gray"
+      <div class="w-12 pt-2 text-center text-primary-600 hover:cursor-pointer">
+        <span class="inline-block rounded-full w-7 h-7 hover:bg-gray"
           ><PlusCircleIcon
         /></span>
       </div>

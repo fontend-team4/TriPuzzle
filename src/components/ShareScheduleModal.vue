@@ -1,49 +1,194 @@
 <script setup>
-import { defineProps, defineEmits } from "vue"
-import { LinkIcon, ChevronDownIcon } from "@heroicons/vue/24/outline"
-import ScheduleSummaryModal from "./ScheduleSummaryModal.vue"
-import ExportScheduleModal from "./ExportScheduleModal.vue"
-import ExitCoEditModal from "./ExitCoEditModal.vue"
 
+import { defineProps, defineEmits, ref, watch, computed } from 'vue'
+import { LinkIcon } from '@heroicons/vue/24/outline'
+import ExitCoEditModal from './ExitCoEditModal.vue'
+import axios from 'axios'
+
+const API_URL = process.env.VITE_HOST_URL
+const defaultProfilePicUrl = '/images/cat-2.png';
+const shareSchedules = ref([]);
+const hasShareSchedules = ref(false);
+const token = localStorage.getItem("toen");
+const leavedId = ref(null);
+const leavedUserId = ref(null)
+const total_users = ref(1)
+const shareMembers = ref([])
+const creator = ref({
+id: 3,
+name: "PuzzleCat",
+email: "PuzzleCat@gmail.com",
+profile_pic_url: defaultProfilePicUrl
+})
 const props = defineProps({
   activeTab: {
     type: String,
     required: true,
   },
+  shareLink: {
+    type: String,
+    required: false, 
+  },
+  sharePeople: {
+    type: Object,
+    required: false, 
+  }
 })
-const emit = defineEmits(["updateStatus"])
+const emit = defineEmits(['updateStatus'])
+
+function showMessage({ title = "訊息", message, status }) {
+  const typeClasses = {
+    success: "bg-green-500 hover:bg-green-700",
+    error: "bg-primary-600 hover:bg-primary-700",
+  }
+  const buttonClass = typeClasses[status]
+  if (document.querySelector("#custom_modal")) {
+    document.querySelector("#modal_title").textContent = title 
+    document.querySelector("#modal_message").textContent = message 
+    document
+      .querySelector("#modal_button")
+      .classList.remove(
+        "bg-green-500",
+        "hover:bg-green-700",
+        "bg-primary-600",
+        "hover:bg-primary-700"
+      )
+    document
+      .querySelector("#modal_button")
+      .classList.add(...buttonClass.split(" ")) // 更新class
+    document.querySelector("#custom_modal").showModal() // 顯示 Modal
+    setTimeout(() => document.querySelector("#custom_modal").showModal() , 1000)
+    return
+  }
+
+  const modalHTML = `
+    <dialog id="custom_modal" class="modal">
+      <div class="modal-box text-center w-[450px] h-[250px]">
+        <h3 id="modal_title" class="mb-4 text-xl font-bold">${title}</h3>
+        <p id="modal_message" class="py-4">${message}</p>
+        <div class="justify-center modal-action">
+          <button id="modal_button" class="btn ${buttonClass} w-[80%] text-white py-3 rounded-full font-medium  mt-4" onclick="document.querySelector('#custom_modal').close()">確定</button>
+        </div>
+      </div>
+    </dialog>
+  `
+  // 動態插入 Modal 到 body
+  document.body.insertAdjacentHTML("beforeend", modalHTML)
+
+  // 顯示 Modal
+  document.querySelector("#custom_modal").showModal()
+}
+
+
+const scheduleUpdate = async()=>{
+  emit('scheduleUpdate');
+  const config = {
+    headers: {
+      Authorization: token,
+    },
+  };
+
+  // 更新shareMembers
+  try {
+    const response = await axios.get(
+      `${API_URL}/usersSchedules/${leavedId.value}/users`,
+      config
+    );
+    shareMembers.value = response.data.sharedUsers;
+  } catch (err) {
+    console.error(err.message);
+  }
+}
+
+const getShareSchedules = async () => {
+  const config = {
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios.get(`${API_URL}/usersSchedules`, config);
+    if (response.data.length > 0) {
+      hasShareSchedules.value = true;
+    }
+    shareSchedules.value = response.data;
+    shareSchedules.value.forEach((item) => {
+      item.start_date = item.start_date.split("T")[0];
+      item.end_date = item.end_date.split("T")[0];
+    });
+  } catch (error) {
+    console.error(error.message);
+    hasShareSchedules.value = false;
+  }
+};
+
+
+const openExitModal = (scheduleId, userId) => {
+  leavedUserId.value = userId; 
+};
+
+const copyShareLink = async () => {
+  try {
+    if (!props.shareLink) {
+      console.log('複製失敗');
+      return;
+    }
+    await navigator.clipboard.writeText(props.shareLink);
+    showMessage({
+        title: "提示",
+        message: "複製成功",
+        status: "success",
+      });
+      
+  } catch (err) {
+    console.error('複製失敗', err);
+  }
+};
+
+
+
+
 const updateActiveTab = (status) => {
   emit("updateStatus", status)
 }
+
+
+const isCreator =  computed(()=>{
+  return creator.value.id == localStorage.getItem("userId")
+})
+
+watch(props, ({ sharePeople }) => {
+  const { sharedUsers = [], schedule_id = 0, creator: newCreator = {}, totalUsers } = sharePeople || {};
+  shareMembers.value = sharedUsers;
+  leavedId.value = schedule_id;
+  total_users.value = totalUsers;
+
+  creator.value = {
+    id: newCreator.id || creator.value.id,
+    name: newCreator.name || creator.value.name,
+    email: newCreator.email || creator.value.email,
+    profile_pic_url: newCreator.profile_pic_url || defaultProfilePicUrl,
+  };
+});
+
+
+
 </script>
 
 <template>
   <dialog id="shareSchedule" class="modal">
-    <div class="modal-box min-w-full md:min-w-[480px] bg-gray">
+    <div class="modal-box min-w-full md:min-w-[480px] bg-gray relative">
       <form method="dialog">
         <div class="w-full h-10">
           <button
-            class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+            class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2"
           >
             ✕
           </button>
         </div>
       </form>
-      <!-- share & invite toggle -->
-      <div class="w-full h-10 flex gap-1 mb-5 p-1 rounded-xl bg-white">
-        <input
-          id="share"
-          type="radio"
-          name="tab"
-          :checked="activeTab === 'share'"
-          @change="updateActiveTab('share')"
-          class="hidden"
-        />
-        <label
-          for="share"
-          class="share-toggle w-1/2 text-center py-1 px-2 rounded-lg hover:bg-primary-600 hover:text-white hover:cursor-pointer"
-          >分享行程</label
-        >
+      <!--invite toggle -->
+      <div class="flex w-full h-10 gap-1 p-1 mb-5 bg-white rounded-xl">
         <input
           id="invite"
           type="radio"
@@ -54,100 +199,38 @@ const updateActiveTab = (status) => {
         />
         <label
           for="invite"
-          class="invite-toggle w-1/2 text-center py-1 px-2 rounded-lg hover:bg-primary-600 hover:text-white hover:cursor-pointer"
+          class="w-full px-2 py-1 text-center text-white rounded-lg invite-toggle bg-primary-600"
           >邀請共編</label
         >
       </div>
       <!-- share detail -->
       <div
         v-if="props.activeTab === 'share'"
-        class="share-detail rounded-xl bg-white w-full pt-10 px-5 pb-6"
+        class="w-full px-5 pt-10 pb-6 bg-white share-detail rounded-xl"
       >
         <div>
-          <img
-            class="w-40 h-40 mb-4 mx-auto"
-            src="../assets/qrcode.svg"
-            alt="schedule share QRcode"
-          />
-          <p class="mb-8 text-center">手機掃描條碼，即可查看此行程</p>
-        </div>
-        <div>
-          <p
-            class="w-[310px] m-auto text-sm text-center mb-8 text-slate-400 relative before:inline-block before:h-[1px] before:w-1/3 before:bg-gray before:absolute before:top-2 before:left-0 after:inline-block after:h-[1px] after:w-1/3 after:bg-gray after:absolute after:top-2 after:right-0"
-          >
-            其他方式
-          </p>
-          <ul class="w-[310px] m-auto flex justify-around">
-            <li>
-              <button class="hover:cursor-pointer">
-                <span
-                  class="inline-block w-14 h-14 p-3 bg-primary-100 rounded-xl text-primary-600"
-                  ><LinkIcon
-                /></span>
-                <p class="text-sm">複製連結</p>
-              </button>
-            </li>
-            <li>
-              <ScheduleSummaryModal />
-            </li>
-            <li>
-              <ExportScheduleModal />
-            </li>
-          </ul>
         </div>
       </div>
       <!-- invite detail -->
       <div
         v-else
-        class="invite-detail rounded-xl bg-white w-full pt-10 px-5 pb-6"
+        class="w-full px-5 pt-3 pb-6 bg-white invite-detail rounded-xl"
       >
+
         <div class="text-center">
           <!-- 邀請者視角 -->
           <div class="dropdown">
-            <div
-              tabindex="0"
-              role="button"
-              class="mb-4 w-32 min-h-7 flex items-center justify-center rounded-full bg-primary-100 text-primary-600"
-            >
-              <p class="text-sm font-medium p-1 me-2">僅供檢視</p>
-              <span class="inline-block w-4 h-4 p-0.5"
-                ><ChevronDownIcon
-              /></span>
-            </div>
-            <ul
-              tabindex="0"
-              class="dropdown-content menu w-32 bg-base-100 rounded-sm border border-gray z-[1] py-2 px-0"
-            >
-              <li>
-                <a class="rounded-none bg-gray text-primary-600 font-medium"
-                  >僅供檢視</a
-                >
-              </li>
-              <li>
-                <a
-                  class="rounded-none font-medium hover:bg-gray focus:bg-transparent active:bg-white"
-                  >可編輯</a
-                >
-              </li>
-            </ul>
+
           </div>
-          <!-- 被邀請者視角 -->
-          <!-- <div class="tooltip" data-tip="只有主揪可以設定共編權限哦">
-            <div class="mx-auto mb-4 w-32 min-h-7 flex items-center justify-center rounded-full bg-primary-100 text-primary-600">
-              <p class="text-sm font-medium p-1 me-2">僅供檢視</p>
-              <span class="inline-block w-4 h-4"><ExclamationCircleIcon /></span>
-            </div>
-          </div> -->
           <!-- Qrcode -->
           <img
-            class="w-40 h-40 mb-4 mx-auto"
+            class="w-40 h-40 mx-auto mb-4"
             src="../assets/qrcode.svg"
             alt=""
           />
-          <p>手機掃描條碼，即可查看此行程</p>
-          <p class="text-sm mb-8 text-gray-400">24 小時內有效</p>
-          <button
-            class="w-full flex justify-center items-center text-primary-600 border border-primary-600 rounded-full py-2 px-4"
+          <p class="mb-8 text-gray-400">手機掃描條碼，即可查看此行程</p>
+          <button @click="copyShareLink"
+            class="flex items-center justify-center w-full px-4 py-2 border rounded-full text-primary-600 border-primary-600" 
           >
             <span class="inline-block w-6 h-6 me-1"><LinkIcon /></span>
             <p class="text-sm">複製連結</p>
@@ -156,78 +239,66 @@ const updateActiveTab = (status) => {
       </div>
       <!-- 共編成員 -->
       <div class="py-6" v-if="props.activeTab !== 'share'">
-        <p class="text-sm mb-4 font-medium">成員(2)</p>
+        <p class="mb-4 text-sm font-medium">成員({{ total_users }})</p>
         <ul>
           <li
-            class="flex gap-4 pb-3 border-b-2 border-dashed border-slate-300 mb-3"
+            class="flex gap-4 pb-3 mb-3 border-b-2 border-dashed border-slate-300"
           >
-            <img
-              class="w-11 h-11"
-              src="https://web.chictrip.com.tw/assets/waterview_default.f746ada9.svg"
-              alt=""
-            />
+            <div class="overflow-hidden rounded-full w-11 h-11">
+              <img
+                class="w-11 h-11"
+                :src="creator.profile_pic_url"
+                alt=""
+              />
+            </div>
             <div>
               <div class="flex items-center mb-2">
                 <span
                   class="inline-block px-2 me-1 text-orange-400 bg-orange-200 rounded-md text-[14px]"
                   >主揪</span
                 >
-                <p>王先生</p>
+                
+                <p>{{ creator.name }}</p>
               </div>
-              <p class="text-gray-400">2 行程</p>
+              <p class="text-gray-400">{{ creator.email }}</p>
             </div>
           </li>
           <li
-            class="flex gap-4 pb-3 border-b-2 border-dashed border-slate-300 mb-3 tooltip tooltip-bottom"
-            data-tip="2024/11/18 加入行程"
+            class="flex gap-4 pb-3 mb-3 border-b-2 border-dashed border-slate-300 tooltip tooltip-bottom"
+            data-tip="2024/11/18 加入行程" v-for="member in shareMembers" v-if="shareMembers != []"
           >
             <img
-              class="w-11 h-11"
-              src="https://web.chictrip.com.tw/assets/waterview_default.f746ada9.svg"
+              class="w-12 rounded-full h-11"
+              :src="member.profile_pic_url||`src/assets/images/cat-2.png`"
               alt=""
             />
-            <div class="w-full flex justify-between items-center">
-              <div>
-                <p class="mb-2">林小姐</p>
-                <p class="text-gray-400">3 行程</p>
+            <div class="flex items-center justify-between w-full">
+              <div class="flex flex-col items-start">
+                <p class="mb-2">{{ member.name }}</p>
+                <p class="text-gray-400">{{ member.email }}</p>
               </div>
               <div class="dropdown dropdown-top dropdown-end">
-                <div
+                <button v-if="isCreator"
                   tabindex="0"
                   role="button"
-                  class="hover:cursor-pointer py-2 text-gray-400"
+                  class="py-2 text-slate-400 hover:cursor-pointer" onclick="exitToggle.showModal()" @click="openExitModal(leavedId, member.id)" 
                 >
-                  可檢視
-                  <span class="inline-block w-4 h-4 p-0.5"
-                    ><ChevronDownIcon
-                  /></span>
-                </div>
-                <ul
-                  tabindex="0"
-                  class="dropdown-content menu bg-base-100 rounded-lg z-[1] w-28 px-0 py-2 shadow-lg"
-                >
-                  <li>
-                    <a class="hover:rounded-none hover:bg-gray font-medium py-3"
-                      >可檢視</a
-                    >
-                  </li>
-                  <li>
-                    <a
-                      class="hover:rounded-none hover:bg-gray font-medium py-3"
-                      onclick="exitToggle.showModal()"
-                      >退出共編
-                    </a>
-                  </li>
-                  <ExitCoEditModal />
-                </ul>
+                  退出共編
+                </button>
               </div>
             </div>
           </li>
         </ul>
       </div>
     </div>
+    <ExitCoEditModal
+  :toBeLeavedId="leavedId"
+  :toBeLeavedUserId="leavedUserId"
+  :updateList="getShareSchedules"
+  @scheduleUpdate="scheduleUpdate"
+/>
     <form method="dialog" class="modal-backdrop">
-      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+      <button class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2">
         ✕
       </button>
       <button>close</button>
@@ -238,13 +309,5 @@ const updateActiveTab = (status) => {
 <style scoped>
 .tooltip:before {
   font-size: 12px;
-}
-#share:checked ~ .share-toggle {
-  background-color: #d23430;
-  color: #fff;
-}
-#invite:checked ~ .invite-toggle {
-  background-color: #d23430;
-  color: #fff;
 }
 </style>

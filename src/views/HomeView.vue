@@ -30,7 +30,9 @@ const scrollToAnchor = (sectionName) => {
 <template>
   <main class="bg-white">
     <Navbar @clickTab="scrollToAnchor" />
-    <img src="@/assets/images/banner.webp" ref="top" />
+    <img src="@/assets/images/BN_pc.jpg" ref="top" class="hidden md:hidden lg:block"/>
+    <img src="@/assets/images/BN_tab.jpg" ref="top" class="hidden md:block lg:hidden"/>
+    <img src="@/assets/images/BN_mobile.jpg" ref="top" class="block md:hidden lg:hidden"/>
     <div ref="carousel"></div>
     <Carousel />
     <div ref="features" class="h-1"></div>

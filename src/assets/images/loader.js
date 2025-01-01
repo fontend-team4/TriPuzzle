@@ -1,3 +1,2 @@
-const loadPNG = (name) => `@/assets/images/${name}.png`
-
+const loadPNG = (name) => `/images/${name}.png`
 export { loadPNG }

@@ -79,16 +79,16 @@ const currentPlace = computed(() => {
 const closeDetailModal = () => {
   router.push({ path: "/planner" })
 }
-
-onMounted(async () => {
-  try {
-    await placesStore.fetchDefaultPlaces() // 抓取資料
-    places.value = placesStore.items
-  } catch (error) {
-    console.error("Failed to fetch places:", error)
-    places.value = [] // 防止錯誤導致的 undefined
-  }
-})
+// 關掉後仍會地圖瀑布流能夠渲染附近地點
+// onMounted(async () => {
+//   try {
+//     await placesStore.fetchDefaultPlaces() // 抓取資料
+//     places.value = placesStore.items
+//   } catch (error) {
+//     console.error("Failed to fetch places:", error)
+//     places.value = [] // 防止錯誤導致的 undefined
+//   }
+// })
 
 // 監聽searchData
 watch(

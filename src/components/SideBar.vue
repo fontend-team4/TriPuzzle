@@ -40,16 +40,18 @@ const toggleMenu = () => {
   <div
     id="menu"
     :class="[
-      'flex-col items-start p-4 pt-6 bg-white shadow-2xl h-screen transition-all duration-200 w-20 hover:w-52 group fixed top-0 z-50',
+      'flex-col items-start p-4 pt-6 bg-white shadow-2xl h-screen transition-all duration-700 w-20 hover:w-52 group fixed top-0 z-50',
       isMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',
     ]"
     @mouseover="isMenuOpen = true"
     @mouseleave="isMenuOpen = false"
   >
     <div class="flex items-center">
-      <RouterLink to="/planner">
-        <img src="../assets/svg/logo-light.svg" alt="Logo" class="w-12 mb-3" />
-      </RouterLink>
+        <RouterLink to="/planner">
+          <img v-if="!isMenuOpen" src="../assets/svg/logo-dark.svg" alt="Logo" class="w-12 mb-3" />
+          <img src="../assets/svg/Logo.svg" alt="Logo" 
+            class="hidden ml-1 mb-4 font-medium group-hover:inline-block whitespace-nowrap text-slate-500 transform transition-transform duration-300" />
+        </RouterLink>
     </div>
     <ul class="w-full space-y-2">
       <li
