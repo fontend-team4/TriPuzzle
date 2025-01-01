@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, computed, watch } from "vue"
+import { ref, onMounted, computed } from "vue"
 import { useRouter, useRoute } from "vue-router"
 import axios from "axios"
 import SideBar from "@/components/SideBar.vue"
@@ -265,10 +265,16 @@ const paymentConfirm = async () => {
   }
 }
 
+const memberLevel = ref('小拼圖')
+const level = computed(() => {
+  return memberLevel.value === '小拼圖' ? 'hidden' : 'inline-block'
+})
+
 onMounted(async () => {
   const { transactionId, orderId } = route.query
   if(transactionId && orderId) {
     await paymentConfirm()
+    memberLevel.value = '大拼圖'
   }
   try {
     await placesStore.fetchDefaultPlaces() // 抓取資料
@@ -306,7 +312,7 @@ onMounted(async () => {
             <div class="sm:mr-0">
               <div class="block pl-4 mt-2 md:mr-20 sm:mr-0">
                 <span class="mt-4 text-xl font-semibold">{{ userName }}</span>
-                <span class="text-sm px-3 py-1 mx-3 text-white rounded-full bg-primary-200">大拼圖</span>
+                <span class="text-sm px-3 py-1 mx-3 text-white rounded-full bg-primary-200" :class="level">大拼圖</span>
                 <p class="mt-2">{{ userEmail }}</p>
                 <div class="flex items-center gap-3 mt-4">
                   <button
