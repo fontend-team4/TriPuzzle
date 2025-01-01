@@ -11,6 +11,7 @@ import {
   UsersIcon,
   ArrowUpTrayIcon,
 } from "@heroicons/vue/24/outline"
+import router from "@/router"
 
 const transprotations = ref([
   {
@@ -146,6 +147,10 @@ const upateSchedule = async (id) => {
   }
 }
 
+const goToMemberView = () => {
+  router.push("/member")
+}
+
 onMounted(() => {
   coverImage.value = defaultCoverImage
   getSchedule(scheduleId.value)
@@ -226,6 +231,7 @@ onMounted(() => {
     <ul class="flex justify-between">
       <li
         class="w-[100px] pt-4 px-2.5 pb-2.5 bg-gray rounded-xl hover:cursor-pointer hover:bg-primary-100 hover:text-primary-600"
+        @click="goToMemberView"
       >
         <img
           src="https://web.chictrip.com.tw/assets/img-myfavorite.42ac10ec.svg"

@@ -13,8 +13,8 @@ const btnActivate = computed(() =>
   isCardFocused.value ? ["cursor-pointer, bg-secondary-500"] : ["cursor-not-allowed, bg-primary-300"]
 )
 
-const goBackPlanner = ()=>{
-  router.push('/planner')
+const goBackMember = ()=>{
+  router.push('/member')
 }
 </script>
 
@@ -22,7 +22,7 @@ const goBackPlanner = ()=>{
   <div
     class="relative flex flex-col items-center justify-center h-auto md:h-screen bg-primary-800 focus-container"
   >
-  <button href="" @click="goBackPlanner">
+  <button href="" @click="goBackMember">
     <img src="../assets/svg/logo-light.svg" alt="" class="absolute w-[70px] top-8 md:left-8 -translate-x-1/2 md:translate-x-0" >
   </button>  
     <h1 class="px-4 md:pr-0 text-[32px] text-white hidden md:block mt-8">升級白金會員，享有完整功能！</h1>
