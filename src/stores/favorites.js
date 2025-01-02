@@ -106,7 +106,7 @@ const addFavorite = async (item, headers) => {
     const placeData = {
       place_id: item.id,
       name: item.name,
-      image_url: item.photos[0]?.photo_reference || null,
+      image_url: item.photos || null,
       location: item.location,
       rating: item.rating,
       phone: item.phone,

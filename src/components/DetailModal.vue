@@ -119,23 +119,23 @@ watch(qrCodeDataUrl, (newUrl) => {
 })
 
 // 其他功能：照片切換、複製連結
-const changeShowPhoto = () => {
-  showPhoto.value = !showPhoto.value
-}
+// const changeShowPhoto = () => {
+//   showPhoto.value = !showPhoto.value
+// }
 
 
 // 控制 CSS 樣式
-const isPhotoShow = computed(() =>
-  showPhoto.value
-    ? ["h-screen", "md:translate-x-0", "opacity-100", "bottom-0"]
-    : [
-        "h-0",
-        "md:translate-x-full",
-        "md:translate-y-0",
-        "opacity-0",
-        "-bottom-12",
-      ]
-)
+// const isPhotoShow = computed(() =>
+//   showPhoto.value
+//     ? ["h-screen", "md:translate-x-0", "opacity-100", "bottom-0"]
+//     : [
+//         "h-0",
+//         "md:translate-x-full",
+//         "md:translate-y-0",
+//         "opacity-0",
+//         "-bottom-12",
+//       ]
+// )
 const overflowStatus = computed(() =>
   showPhoto.value ? ["overflow-hidden"] : [""]
 )
@@ -213,14 +213,14 @@ onMounted(fetchPlaceDetails)
           />
 
         </div>
-        <button
+        <!-- <button
           for="showPhoto"
           class="absolute flex gap-1 bg-gray-100 py-[3px] px-2.5 rounded-full top-4 right-16 h-[32px] text-sm items-center bg-opacity-75 bg-white md:right-4 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
           @click="changeShowPhoto"
           @updatePhotoCount="updatePhotoCount"
         >
           <PhotoIcon class="size-5" />{{ placeData.photos_length }}
-        </button>
+        </button> -->
         <button
           class="absolute flex gap-1 bg-gray-100 py-[3px] px-2.5 rounded-full top-4 right-5 h-[32px] w-[32px] text-sm items-center bg-opacity-75 bg-white md:hidden"
           @click="$emit('close')"
@@ -385,7 +385,7 @@ onMounted(fetchPlaceDetails)
           </dialog>
           <div class="tooltip" 
             :data-tip="place.isFavorited ? '移除收藏' : '加入收藏'">
-            <button class="cursor-pointer" @click="antitoggleFavorite(place)">
+            <button class="cursor-pointer" @click="toggleFavorite(place)">
               <component
                 :is="place.isFavorited ? HeartIcon : OutlineHeartIcon"
                 :class="place.isFavorited ? 'text-red-500' : 'text-gray-500'"
@@ -402,7 +402,7 @@ onMounted(fetchPlaceDetails)
         />
       </div>
       <!-- 照片區 -->
-      <div
+      <!-- <div
         class="absolute md:top-0 right-0 z-40 w-screen h-0 transition-all duration-300 transform bg-white md:w-[368px] md:right-0 overflow-auto"
         :class="isPhotoShow"
       >
@@ -422,7 +422,7 @@ onMounted(fetchPlaceDetails)
           v-if="Object.keys(place).length"
           :place="place"
         />
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
