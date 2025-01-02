@@ -15,8 +15,8 @@ import {
   ChevronLeftIcon,
 } from "@heroicons/vue/24/outline"
 import { StarIcon } from "@heroicons/vue/24/solid"
-import DetailCarousel from "./DetailCarousel.vue"
-import Waterfall from "./Waterfall.vue"
+// import DetailCarousel from "./DetailCarousel.vue"
+// import Waterfall from "./Waterfall.vue"
 import AddPlaceBtn from "./AddPlaceBtn.vue"
 import { useRoute } from "vue-router"
 import { usePlacesStore } from "@/stores/fetchPlaces"
@@ -405,11 +405,11 @@ onMounted(fetchPlaceDetails)
           </div>
           <button><XMarkIcon class="size-6" /></button>
         </div>
-        <Waterfall
+        <!-- <Waterfall
           class="mt-16"
           v-if="Object.keys(place).length"
           :place="place"
-        />
+        /> -->
       </div>
     </div>
   </div>
