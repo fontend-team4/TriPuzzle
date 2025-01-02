@@ -33,7 +33,7 @@ onMounted(() => {
 <template>
   <div class="relative h-screen">
     <SideBar />
-    <MapComponent />
+    <MapComponent map="map"/>
     <MainComponent class="h-screen overflow-hidden" />
     <!-- 渲染子路由內容 -->
     <router-view />
