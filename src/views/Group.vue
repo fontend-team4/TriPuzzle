@@ -41,37 +41,46 @@ const updateGroupMembers = (newMembers) => {
 
 <template>
   <div class="group border m-4">
-    <h1 class="text-lg">GroupView.vue</h1>
+    <h1 class="text-[36px] text-center font-bold text-primary-500 mb-4">
+      TriPayer 旅費
+    </h1>
+    <h2>GroupView.vue : 分帳群組頁面</h2>
 
     <!-- 分享群組 -->
     <section>
-      <h2 class="my-2">-- ShareGroup.vue: 邀請成員 --</h2>
+      <h2 class="title">-- ShareGroup.vue: 邀請成員 --</h2>
       <ShareGroup
         :groupMembers="groupMembers"
         @update-members="updateGroupMembers"
       />
-      <h2 class="my-2">--ShareGroup--</h2>
     </section>
 
     <!-- 新增帳目表單 -->
     <section>
-      <h2 class="my-2">--AccountForm.vue : 新增帳目--</h2>
+      <h2 class="title">--AccountForm.vue : 新增帳目--</h2>
       <AccountForm :categories="categories" @add-account="addAccount" />
-      <h2 class="my-2">--AccountForm--</h2>
     </section>
 
     <!-- 帳目清單 -->
     <section>
-      <h2 class="my-2">--AccountList.vue : 顯示帳目--</h2>
+      <h2 class="title">--AccountList.vue : 顯示帳目--</h2>
       <AccountList :accounts="accounts" @remove-account="removeAccount" />
-      <h2 class="my-2">--AccountList--</h2>
     </section>
 
     <!-- 攤銷金額 -->
     <section>
-      <h2 class="my-2">--BalanceSummary.vue : 顯示攤銷金額 --</h2>
+      <h2 class="title">--BalanceSummary.vue : 顯示攤銷金額 --</h2>
       <BalanceSummary :balances="balances" />
-      <h2 class="my-2">-- BalanceSummary --</h2>
     </section>
   </div>
 </template>
+
+<style scoped>
+.title {
+  text-align: center;
+  justify-items: center;
+  margin-top: 5px;
+  margin-bottom: px;
+  color: grey;
+}
+</style>

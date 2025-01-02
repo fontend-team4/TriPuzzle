@@ -1,13 +1,30 @@
 <template>
-  <div>
-    <h2>攤銷金額</h2>
-    <ul>
-      <li v-for="(member, index) in balanceSummary" :key="index">
+  <div class="p-4 bg-white shadow-md rounded-lg">
+    <h2 class="text-xl font-bold text-primary-500 mb-4">攤銷金額</h2>
+    <ul class="divide-y divide-gray-200">
+      <li
+        v-for="(member, index) in balances"
+        :key="index"
+        class="py-2 flex justify-between"
+      >
+        <div class="text-lg text-gray-800">{{ member.name }}</div>
         <div>
-          <strong>{{ member.name }}</strong>
-        </div>
-        <div>
-          應付: {{ member.shouldPay }} | 已付: {{ member.paid }} | 差額: {{ member.balance }}
+          <div class="text-sm text-gray-500">
+            應付:
+            <span class="font-bold text-primary-500">{{
+              member.shouldPay
+            }}</span>
+          </div>
+          <div class="text-sm text-gray-500">
+            已付:
+            <span class="font-bold text-primary-500">{{ member.paid }}</span>
+          </div>
+          <div
+            class="text-sm"
+            :class="member.balance >= 0 ? 'text-green-500' : 'text-red-500'"
+          >
+            差額: {{ member.balance }}
+          </div>
         </div>
       </li>
     </ul>
@@ -15,11 +32,10 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref } from "vue"
 
-// 測試數據（實際應從父組件或 API 獲取）
-const balanceSummary = ref([
+const balances = ref([
   { name: "Alice", shouldPay: 1000, paid: 1200, balance: 200 },
   { name: "Bob", shouldPay: 1000, paid: 800, balance: -200 },
-]);
+])
 </script>

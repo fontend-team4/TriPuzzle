@@ -1,13 +1,28 @@
 <template>
-  <div>
-    <h2>帳目清單</h2>
-    <ul>
-      <li v-for="(account, index) in accounts" :key="index">
+  <div class="p-4 bg-white shadow-md rounded-lg">
+    <h2 class="text-xl font-bold text-primary-500 mb-4">帳目清單</h2>
+    <ul class="divide-y divide-gray-200">
+      <li
+        v-for="(account, index) in accounts"
+        :key="index"
+        class="py-2 flex justify-between items-center"
+      >
         <div>
-          <strong>{{ account.category }}</strong> - {{ account.description }}
+          <div class="text-lg text-gray-800">{{ account.category }}</div>
+          <div class="text-sm text-gray-500">{{ account.description }}</div>
         </div>
-        <div>金額: {{ account.amount }} | 日期: {{ account.date }}</div>
-        <button @click="removeAccount(index)">刪除</button>
+        <div class="text-right">
+          <div class="text-lg font-bold text-primary-500">
+            {{ account.amount }}
+          </div>
+          <div class="text-sm text-gray-400">{{ account.date }}</div>
+        </div>
+        <button
+          @click="removeAccount(index)"
+          class="ml-4 px-3 py-1 bg-red-500 text-white text-sm font-medium rounded hover:bg-red-600"
+        >
+          刪除
+        </button>
       </li>
     </ul>
   </div>
@@ -16,13 +31,12 @@
 <script setup>
 import { ref } from "vue"
 
-// 測試數據（實際應從父組件或 API 獲取）
 const accounts = ref([
   { category: "餐飲", description: "晚餐", amount: 500, date: "2024-01-01" },
   { category: "交通", description: "高鐵票", amount: 1200, date: "2024-01-02" },
 ])
 
 const removeAccount = (index) => {
-  accounts.value.splice(index, 1) // 從列表中移除帳目
+  accounts.value.splice(index, 1)
 }
 </script>
