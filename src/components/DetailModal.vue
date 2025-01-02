@@ -10,10 +10,11 @@ import {
   PhotoIcon,
   ArrowDownTrayIcon,
   LinkIcon,
-  HeartIcon,
   PaperAirplaneIcon,
   ChevronLeftIcon,
 } from "@heroicons/vue/24/outline"
+import { HeartIcon } from "@heroicons/vue/24/solid"
+import { HeartIcon as OutlineHeartIcon } from "@heroicons/vue/24/outline"
 import { StarIcon } from "@heroicons/vue/24/solid"
 import DetailCarousel from "./DetailCarousel.vue"
 import Waterfall from "./Waterfall.vue"
@@ -26,7 +27,11 @@ import axios from "axios"
 import { computed, ref, defineProps, defineEmits, onMounted, watch } from "vue"
 import { generateQRCode } from "@/utils/QRcode"
 import { addPlace } from "@/stores/addPlaces"
-import { generateImageUrl } from "@/stores/favorites"
+import {
+  loadFavorites,
+  toggleFavorite,
+  antitoggleFavorite,
+  generateImageUrl } from "@/stores/favorites"
 
 const API_URL = process.env.VITE_HOST_URL
 const token = localStorage.getItem("token")
@@ -378,9 +383,16 @@ onMounted(fetchPlaceDetails)
               <button>close</button>
             </form>
           </dialog>
-          <div class="tooltip" data-tip="加到最愛">
-            <HeartIcon class="cursor-pointer size-6" />
-          </div>
+          <div class="tooltip" 
+            :data-tip="place.isFavorited ? '移除收藏' : '加入收藏'">
+            <button class="cursor-pointer" @click="antitoggleFavorite(place)">
+              <component
+                :is="place.isFavorited ? HeartIcon : OutlineHeartIcon"
+                :class="place.isFavorited ? 'text-red-500' : 'text-gray-500'"
+                class="size-6"
+              />
+            </button>
+            </div>
           <div class="tooltip" data-tip="導航">
             <PaperAirplaneIcon class="cursor-pointer size-6" />
           </div>
