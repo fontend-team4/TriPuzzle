@@ -30,7 +30,7 @@ export const usePlacesStore = defineStore("places", {
     initializeItems() {
       this.items = this.places.map((location) => ({
         id: location.place_id,
-        url: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference=${location.photos[0]?.photo_reference}&key=${GOOGLE_API_KEY}`,
+        url: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference=${location.photos}&key=${GOOGLE_API_KEY}`,
         name: location.name,
 
         rating: location.rating || "",
