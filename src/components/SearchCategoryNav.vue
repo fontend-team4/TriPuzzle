@@ -17,12 +17,13 @@ const selectCity = (city) => {
 }
 const selectDistrict = (area) => {
   selectedDistrict.value = area
-  searchStore.region = selectedCity.value + area
+  searchStore.region = selectedCity.value + selectedDistrict.value
+  console.log(searchStore.region)
+  console.log(searchStore.searchData[0])
   searchStore.regionSearch()
+  searchStore.placeGeometry = searchStore.searchData[0].geometry
+  console.log(searchStore.searchData[0])
 }
-onMounted(() => {
-  searchStore.region = selectedCity.value
-})
 </script>
 
 <template>
