@@ -1,5 +1,6 @@
 <script setup>
-import { ref } from "vue"
+import { ref, onMounted, defineProps } from "vue"
+import { RouterView, useRouter } from "vue-router"
 
 // 引入子組件
 import ShareGroup from "@/components/splitbill/ShareGroup.vue"
@@ -7,71 +8,63 @@ import AccountForm from "@/components/splitbill/AccountForm.vue"
 import AccountList from "@/components/splitbill/AccountList.vue"
 import BalanceSummary from "@/components/splitbill/BalanceSummary.vue"
 
-// 測試數據（實際應從 API 獲取）
-const groupMembers = ref([
-  { name: "Alice", email: "alice@example.com" },
-  { name: "Bob", email: "bob@example.com" },
-])
+const router = useRouter()
 
-const accounts = ref([
-  { category: "餐飲", description: "晚餐", amount: 500, date: "2024-01-01" },
-  { category: "交通", description: "高鐵票", amount: 1200, date: "2024-01-02" },
-])
-
-const categories = ["餐飲", "交通", "住宿", "購物"]
-
-const balances = ref([
-  { name: "Alice", shouldPay: 1000, paid: 1200, balance: 200 },
-  { name: "Bob", shouldPay: 1000, paid: 800, balance: -200 },
-])
-
-// 方法
-const addAccount = (account) => {
-  accounts.value.push(account)
-}
-
-const removeAccount = (index) => {
-  accounts.value.splice(index, 1)
-}
-
-const updateGroupMembers = (newMembers) => {
-  groupMembers.value = newMembers
-}
+onMounted(() => {
+  router.push("/groups/account-form")
+})
 </script>
 
 <template>
-  <div class="group border m-4">
-    <h1 class="text-[36px] text-center font-bold text-primary-500 mb-4">
-      TriPayer 旅費
-    </h1>
-    <h2>GroupView.vue : 分帳群組頁面</h2>
+  <div class="bg-primary-700">
+    <div class="border-round bg-primary-700 w-[48rem] mx-auto h-[100vh]">
+      <div class="title mb-4">
+        <div class="flex text-center justify-center p-4">
+          <img
+            src="../assets/svg/logo-light.svg"
+            alt="Logo"
+            class="w-12 mr-2"
+          />
+          <h1 class="text-[36px] text-center font-bold text-primary-100 my-2">
+            TriAccount 旅費分帳
+          </h1>
+        </div>
+        <h2 class="text-xl font-bold text-center text-primary-100">
+          【 schedule.id 或 schedule.name 】
+        </h2>
+      </div>
 
-    <!-- 分享群組 -->
-    <section>
-      <h2 class="title">-- ShareGroup.vue: 邀請成員 --</h2>
-      <ShareGroup
-        :groupMembers="groupMembers"
-        @update-members="updateGroupMembers"
-      />
-    </section>
+      <nav
+        class="flex justify-center space-x-4 flex-row bg-primary-700 p-4 shadow-md"
+      >
+        <ul class="flex flex-row text-primary-100 gap-10">
+          <li class="hover:text-primary-300">
+            <router-link to="/groups/account-form" class="nav-link"
+              >新增花費</router-link
+            >
+          </li>
+          <li class="hover:text-primary-300">
+            <router-link to="/groups/account-list" class="nav-link"
+              >花費列表</router-link
+            >
+          </li>
+          <li class="hover:text-primary-300">
+            <router-link to="/groups/balance-summary" class="nav-link"
+              >分帳狀態</router-link
+            >
+          </li>
+          <li class="hover:text-primary-300">
+            <router-link to="/groups/share-group" class="nav-link"
+              >編輯群組</router-link
+            >
+          </li>
+        </ul>
+      </nav>
 
-    <!-- 新增帳目表單 -->
-    <section>
-      <h2 class="title">--AccountForm.vue : 新增帳目--</h2>
-      <AccountForm :categories="categories" @add-account="addAccount" />
-    </section>
-
-    <!-- 帳目清單 -->
-    <section>
-      <h2 class="title">--AccountList.vue : 顯示帳目--</h2>
-      <AccountList :accounts="accounts" @remove-account="removeAccount" />
-    </section>
-
-    <!-- 攤銷金額 -->
-    <section>
-      <h2 class="title">--BalanceSummary.vue : 顯示攤銷金額 --</h2>
-      <BalanceSummary :balances="balances" />
-    </section>
+      <main>
+        <router-view />
+      </main>
+    </div>
   </div>
 </template>
 
@@ -81,6 +74,12 @@ const updateGroupMembers = (newMembers) => {
   justify-items: center;
   margin-top: 5px;
   margin-bottom: px;
-  color: grey;
+  color: rgb(162, 157, 157);
+}
+
+.nav-link {
+  text-decoration: none;
+  padding: 5px 10px;
+  border-radius: 5px;
 }
 </style>

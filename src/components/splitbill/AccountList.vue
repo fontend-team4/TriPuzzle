@@ -7,22 +7,24 @@
         :key="index"
         class="py-2 flex justify-between items-center"
       >
-        <div>
-          <div class="text-lg text-gray-800">{{ account.category }}</div>
-          <div class="text-sm text-gray-500">{{ account.description }}</div>
+        <div class="flex flex-col text-center gap-4 justify-between">
+          <div class="text-sm text-gray-800 bg-gray rounded px-2 py-1">
+            {{ account.category }}
+          </div>
+          <div class="text-m text-gray-500">{{ account.description }}</div>
         </div>
         <div class="text-right">
           <div class="text-lg font-bold text-primary-500">
             {{ account.amount }}
           </div>
           <div class="text-sm text-gray-400">{{ account.date }}</div>
+          <button
+            @click="removeAccount(index)"
+            class="ml-4 px-3 py-1 bg-red-500 text-white text-sm font-sm rounded hover:bg-red-600"
+          >
+            刪除
+          </button>
         </div>
-        <button
-          @click="removeAccount(index)"
-          class="ml-4 px-3 py-1 bg-red-500 text-white text-sm font-medium rounded hover:bg-red-600"
-        >
-          刪除
-        </button>
       </li>
     </ul>
   </div>
