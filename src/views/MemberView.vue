@@ -41,6 +41,7 @@ const userBirthday = ref("")
 const userDescription = ref("")
 const userLoginWay = ref("")
 const userImg = ref(Logo)
+const memberLevel = ref('小拼圖')
 
 const getUser = async () => {
   try {
@@ -60,6 +61,7 @@ const getUser = async () => {
     userBirthday.value = user.value.birthday // 2000-12-12T00:00:00.000Z
     userDescription.value = user.value.description
     userLoginWay.value = user.value.login_way
+    memberLevel.value = user.value.level
     if (user.value.profile_pic_url !== null) {
       userImg.value = user.value.profile_pic_url
       return
@@ -254,27 +256,14 @@ const closeDetailModal = () => {
 }
 
 const paymentSuccess = ref(null)
-const paymentConfirm = async () => {
-  const response = await axios.get(`${API_URL}/api/payment/confirm`);
-  if(response.data.message === "LinePay success") {
+
+onMounted(async () => {
+  const { order } = route.query
+  if(order) {
     await paymentSuccess.value.showModal()
     setTimeout(() => {
       paymentSuccess.value.close()
     }, 2000)
-    router.push({ path: "/member" })
-  }
-}
-
-const memberLevel = ref('小拼圖')
-const level = computed(() => {
-  return memberLevel.value === '小拼圖' ? 'hidden' : 'inline-block'
-})
-
-onMounted(async () => {
-  const { transactionId, orderId } = route.query
-  if(transactionId && orderId) {
-    await paymentConfirm()
-    memberLevel.value = '大拼圖'
   }
   try {
     await placesStore.fetchDefaultPlaces() // 抓取資料
@@ -312,7 +301,8 @@ onMounted(async () => {
             <div class="sm:mr-0">
               <div class="block pl-4 mt-2 md:mr-20 sm:mr-0">
                 <span class="mt-4 text-xl font-semibold">{{ userName }}</span>
-                <span class="text-sm px-3 py-1 mx-3 text-white rounded-full bg-primary-200" :class="level">大拼圖</span>
+                <span v-if="memberLevel === '大拼圖'" class="text-sm px-3 py-1 mx-3 text-white rounded-full bg-primary-200" :class="level">大拼圖</span>
+                <span v-if="memberLevel === 'VIP拼圖達人'" class="text-sm px-3 py-1 mx-3 text-white rounded-full bg-primary-200" :class="level">VIP 拼圖達人</span>
                 <p class="mt-2">{{ userEmail }}</p>
                 <div class="flex items-center gap-3 mt-4">
                   <button
@@ -824,7 +814,7 @@ onMounted(async () => {
         <div class="text-center">
           <MoneySquare class="mx-auto mb-3 w-14 h-14 text-primary-600" />
           <h3 class="text-xl font-bold text-center">付款成功！</h3>
-          <p>恭喜升級為「大拼圖」</p>
+          <p>恭喜升級為「{{ memberLevel }}」</p>
         </div>
       </div>
       <form method="dialog" class="modal-backdrop">

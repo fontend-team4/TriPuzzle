@@ -5,7 +5,7 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
 } from "@heroicons/vue/20/solid"
-import { loadPNG } from "@/assets/images/loader"
+import { loadJpg } from "@/assets/images/loader"
 
 const currentIndex = ref(0)
 const maxIndex = computed(() => images.length - 3)
@@ -47,7 +47,7 @@ const images = [
         }"
       >
         <img
-          :src="loadPNG(image)"
+          :src="loadJpg(image)"
           class="carousel-items"
           v-for="(image, index) in images"
           :key="index"
@@ -60,7 +60,7 @@ const images = [
         }"
       >
         <img
-          :src="loadPNG(image)"
+          :src="loadJpg(image)"
           class="carousel-items-md"
           v-for="(image, index) in images"
           :key="index"
