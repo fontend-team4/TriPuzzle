@@ -7,7 +7,6 @@ import {
   MapPinIcon,
   ShareIcon,
   XMarkIcon,
-  PhotoIcon,
   ArrowDownTrayIcon,
   LinkIcon,
   HeartIcon,
@@ -199,23 +198,15 @@ onMounted(fetchPlaceDetails)
         <!--輪播圖  -->
         <!-- <DetailCarousel /> -->
         <div
-          class="inline-flex items-center justify-center w-full h-full overflow-hidden bg-black"
+          class="inline-flex items-center justify-center w-full h-full overflow-hidden bg-black" 
         >
           <img
             :src="placeData.url || generateImageUrl(placeData.image_url)"
             alt=""
-            class="object-contain w-full"
+            class="object-contain w-full h-full"
           />
 
         </div>
-        <button
-          for="showPhoto"
-          class="absolute flex gap-1 bg-gray-100 py-[3px] px-2.5 rounded-full top-4 right-16 h-[32px] text-sm items-center bg-opacity-75 bg-white md:right-4 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
-          @click="changeShowPhoto"
-          @updatePhotoCount="updatePhotoCount"
-        >
-          <PhotoIcon class="size-5" />{{ placeData.photos_length }}
-        </button>
         <button
           class="absolute flex gap-1 bg-gray-100 py-[3px] px-2.5 rounded-full top-4 right-5 h-[32px] w-[32px] text-sm items-center bg-opacity-75 bg-white md:hidden"
           @click="$emit('close')"

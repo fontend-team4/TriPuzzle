@@ -21,9 +21,9 @@ export const useSearchStore = defineStore("searchStore", () => {
       })
       searchParams.value = params
       searchData.value = data
-      console.log(data[0])
-      console.log(searchData.value[0])
-
+      if (data) {
+        placeGeometry.value=searchData.value[0].geometry
+      }
       return data
     } catch (error) {
       return null

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, inject, onMounted, watchEffect } from "vue"
+import { ref, inject, onMounted, watchEffect, watch } from "vue"
 import axios from "axios"
 import {
   XMarkIcon,
@@ -20,7 +20,11 @@ import MoveToOtherDateModal from "./MoveToOtherDateModal.vue"
 import DeletePerPlaceModal from "./DeletePerPlaceModal.vue"
 import ScheduleOverview from "./ScheduleOverview.vue"
 import draggable from "vuedraggable"
+import { useSearchStore } from "@/stores/searchPlaces"
+import { usePlacesStore } from "@/stores/fetchPlaces"
 
+const placesStore = usePlacesStore()
+const searchStore = useSearchStore()
 const listAndDetailToggle = inject("listAndDetailToggle")
 const detailToggle = inject("detailToggle")
 const scheduleId = inject("scheduleId")
@@ -89,6 +93,26 @@ const groupByDate = (places) => {
 onMounted(() => {
   fetchData();
 });
+
+// const nearbySearch = () => {
+//   searchStore.mapSearch()
+// }
+
+const updateMapCenter = (item) => {
+
+  searchStore.placeGeometry = item.geometry;
+};
+
+watch(
+  () => searchStore.searchData,
+  (newData) => {
+    if (newData.length > 0) {
+      placesStore.updateFromSearch(newData)
+      defaultPlacesData.value = placesStore.items
+    }
+  },
+  { immediate: true }
+)
 
 // 拖曳狀態
 const drag = ref(false)
@@ -195,7 +219,7 @@ const drag = ref(false)
                       class="w-[108px] h-[108px] rounded-xl object-cover"
                       :src="element.places.image_url"
                     />
-                    <div class="flex justify-between w-cal">
+                    <div class="relative flex justify-between w-cal">
                       <ul class="px-4 flex flex-col gap-0.5 justify-center">
                         <li class="text-sm font-medium text-orange-400">
                           {{ formatDate(element.arrival_time) }}
@@ -205,12 +229,15 @@ const drag = ref(false)
                           {{ `停留 ${formatDuration(element.stay_time)} ` }}
                         </li>
                       </ul>
+                      <button class="absolute z-50 right-1 bottom-2" @click="updateMapCenter(element.places)">
+                        <MapPinIcon  class="size-5"/>
+                      </button>
                       <div class="p-1 dropdown">
                         <button
                           role="button"
                           class="relative w-5 h-5 text-white bg-gray-300 rounded-full hover:bg-gray-400"
                         >
-                          <EllipsisHorizontalIcon />
+                          <EllipsisHorizontalIcon class="text-black"/>
                         </button>
                         <!-- dropdown 控制開關 -->
                         <ul
@@ -257,85 +284,6 @@ const drag = ref(false)
                     </div>
                   </div>
                   <!-- hover:relative feature -->
-                  <div class="more lg:hidden">
-                    <div
-                      class="flex items-center justify-between h-10 border-t border-white"
-                    >
-                      <ul class="flex gap-4 p-3">
-                        <li
-                          class="flex items-center gap-1 text-gray-500 hover:cursor-pointer"
-                          @click="edit_place.showModal()"
-                        >
-                          <span class="w-3 h-3"><PencilIcon /></span>
-                          <p class="text-xs">編輯</p>
-                        </li>
-                        <EditPlaceModal />
-                        <li
-                          class="flex items-center gap-1 text-gray-500 hover:cursor-pointer"
-                        >
-                          <span class="w-3 h-3"><MagnifyingGlassIcon /></span>
-                          <p class="text-xs">周邊</p>
-                        </li>
-                        <li
-                          class="flex items-center gap-1 text-gray-500 hover:cursor-pointer"
-                          @click="place_note_1.showModal()"
-                        >
-                          <span class="w-3 h-3"><BookmarkIcon /></span>
-                          <p class="text-xs">筆記</p>
-                        </li>
-                        <!-- place & transportation -->
-                        <!-- place note -->
-                        <dialog id="place_note_1" class="modal">
-                          <div
-                            class="modal-box min-w-full md:min-w-[480px] min-h-screen md:min-h-[90%]"
-                          >
-                            <form method="dialog">
-                              <button
-                                class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2"
-                              >
-                                ✕
-                              </button>
-                            </form>
-                            <h2
-                              class="pt-6 mb-4 text-2xl font-medium text-center"
-                            >
-                              景點筆記
-                            </h2>
-                            <textarea
-                              class="w-full h-[500px] textarea textarea-lg focus:border-0 focus:outline-none"
-                              placeholder="還沒有寫筆記哦"
-                            ></textarea>
-                            <div
-                              class="fixed bottom-0 right-0 flex w-full h-20 gap-3 px-6 py-4 bg-white border-t border-gray"
-                            >
-                              <button
-                                class="w-full h-12 px-5 py-3 font-medium text-center border border-primary-600 text-primary-600 rounded-3xl hover:bg-primary-100"
-                              >
-                                取消
-                              </button>
-                              <button
-                                class="w-full h-12 px-5 py-3 font-medium text-center text-white bg-primary-600 hover:bg-primary-700 rounded-3xl"
-                              >
-                                儲存
-                              </button>
-                            </div>
-                          </div>
-                          <form method="dialog" class="modal-backdrop">
-                            <button
-                              class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2"
-                            >
-                              ✕
-                            </button>
-                            <button>close</button>
-                          </form>
-                        </dialog>
-                      </ul>
-                      <span
-                        class="w-10 h-10 p-3 text-gray-500 border-l border-white hover:cursor-pointer"
-                        ><MapPinIcon
-                      /></span>
-                    </div>
-                  </div>
                 </div>
               </div>
               <p
