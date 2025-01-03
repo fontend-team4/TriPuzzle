@@ -29,8 +29,7 @@ import { generateQRCode } from "@/utils/QRcode"
 import { addPlace } from "@/stores/addPlaces"
 import {
   loadFavorites,
-  toggleFavorite,
-  antitoggleFavorite,
+  toggleFavoriteStatus,
   generateImageUrl } from "@/stores/favorites"
 
 const API_URL = process.env.VITE_HOST_URL
@@ -65,12 +64,25 @@ const placesStore = usePlacesStore()
 const { copyToClipboard } = useCopyWebsiteStore()
 const route = useRoute()
 
+// 切換收藏狀態的按鈕事件處理
+const handleToggleFavorite = async (place,item) => {
+  let formattedPlace;
 
+    formattedPlace = { ...place, place_id: placeId }; // 不更改 place_id
+    console.log("formattedPlace", formattedPlace);
+
+  // 執行收藏切換操作
+  await toggleFavoriteStatus(formattedPlace);
+
+  // 更新收藏狀態以刷新顯示
+  place.isFavorited = formattedPlace.isFavorited;
+};
 // 計算屬性
 const currentPlaceId = computed(() => route.query.placeId)
 const placeData = computed(() => props.place || place.value)
 // member 路由判斷
 const isMemberRoute = computed(() => route.path.startsWith("/member"));
+const placeId = currentPlaceId.value || place.value?.id
 
 // 生成 QR Code 並下載
 const createQRCode = async (placeId) => {
@@ -385,7 +397,7 @@ onMounted(fetchPlaceDetails)
           </dialog>
           <div class="tooltip" 
             :data-tip="place.isFavorited ? '移除收藏' : '加入收藏'">
-            <button class="cursor-pointer" @click="toggleFavorite(place)">
+            <button class="cursor-pointer" @click="handleToggleFavorite (place)">
               <component
                 :is="place.isFavorited ? HeartIcon : OutlineHeartIcon"
                 :class="place.isFavorited ? 'text-red-500' : 'text-gray-500'"

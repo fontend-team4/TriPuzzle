@@ -18,8 +18,7 @@ import axios from "axios"
 import {
   favorites,
   loadFavorites,
-  toggleFavorite,
-  antitoggleFavorite,
+  toggleFavoriteStatus,
   generateImageUrl
 } from "@/stores/favorites"
 
@@ -116,7 +115,7 @@ onMounted(fetchPlaces)
               <button
         class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer bg-gray hover:bg-opacity-75 tooltip"
         :data-tip="place.isFavorited ? '移除收藏' : '加入收藏'"
-        @click.prevent.stop="antitoggleFavorite(place)"
+        @click.prevent.stop="toggleFavoriteStatus (place)"
       >
         <component
           :is="place.isFavorited ? HeartIcon : OutlineHeartIcon"
