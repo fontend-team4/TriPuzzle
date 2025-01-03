@@ -5,6 +5,7 @@ import PlacesModal from "@/components/PlacesModal.vue"
 import { usePlacesStore } from "@/stores/fetchPlaces"
 import { useSearchStore } from "../stores/searchPlaces"
 
+
 const placesStore = usePlacesStore()
 const searchStore = useSearchStore()
 const currentLat = ref()
@@ -93,7 +94,6 @@ async function updateMarkers() {
     </button>
   </div>
 `
-
     const marker = new AdvancedMarkerElement({
       position: place.geometry,
       map: map.value,
@@ -221,7 +221,7 @@ watch(
   >
     <MapPinIcon class="size-5 text-primary-400" />
   </button>
-  <PlacesModal class="hidden md:block" />
+  <PlacesModal />
 </template>
 
 <style>

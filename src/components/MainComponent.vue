@@ -37,17 +37,21 @@ const waterFallSwitch = computed(() => {
     : "px-10"
 })
 
+const searchBarBg = computed(() => {
+  return isPlacesComponent.value?"bg-slate-100": ""
+})
+
 const isModalOpen = computed(() => route.query.action === "placeInfo")
 const currentPlaceId = computed(() => route.query.placeId)
 const handleOpenDetailModal = (detailId) => {
   router.push({
     path: "/planner",
-    query: { action: "placeInfo", placeId: detailId }, // 傳遞地點 ID
+    query: { action: "placeInfo", placeId: detailId }, 
   })
 }
 
 const currentPlace = computed(() => {
-  if (!currentPlaceId.value || !places.value.length) return null // 確保資料存在
+  if (!currentPlaceId.value || !places.value.length) return null
   return places.value.find((place) => place.id === currentPlaceId.value)
 })
 
@@ -77,7 +81,7 @@ watch(
 )
 
 const handleUpdateIsPlacesComponent = (value) => {
-  isPlacesComponent.value = value
+  isPlacesComponent.value = value  
 }
 
 // 避免打開或關掉任何Modal時往卷軸彈到最上方
@@ -109,7 +113,7 @@ watch(
 </script>
 
 <template>
-  <div class="fixed top-0 z-40 w-full h-20 bg-slate-100">
+  <div class="fixed top-0 z-40 w-full h-20" :class="searchBarBg">
     <div
       class="absolute top-0 left-0 z-10 flex gap-4 transition-all item-center lg:top-5 lg:left-8"
       :class="topBarSwitch"
