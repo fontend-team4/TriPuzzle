@@ -56,6 +56,7 @@ const switchToCategoryMode = () => {
 const searchStore = useSearchStore()
 const inputKeyword = () => {
   searchStore.textSearch()
+  searchStore.placeGeometry = searchStore.searchData[0].geometry
 }
 
 // 監聽 CategoryFilter 的 update-categories 事件

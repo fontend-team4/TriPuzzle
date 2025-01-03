@@ -4,7 +4,6 @@ import axios from "axios"
 
 const API_URL = import.meta.env.VITE_HOST_URL
 
-
 export const useSearchStore = defineStore("searchStore", () => {
   const keyword = ref("")
   const region = ref("")
@@ -15,16 +14,16 @@ export const useSearchStore = defineStore("searchStore", () => {
   const searchData = ref([])
   const placeGeometry = ref({})
 
-
-
   const fetchData = async (params) => {
     try {
       const { data } = await axios.get(`${API_URL}/places/search`, {
         params,
       })
-
       searchParams.value = params
       searchData.value = data
+      console.log(data[0])
+      console.log(searchData.value[0])
+
       return data
     } catch (error) {
       return null
