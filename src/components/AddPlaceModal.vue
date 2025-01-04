@@ -8,6 +8,7 @@ import {
   watch,
   defineProps,
   onBeforeUnmount,
+  shallowRef
 } from "vue"
 import {
   XMarkIcon,
@@ -22,81 +23,10 @@ import { useUserStore } from "@/stores/userStore"
 import axios from "axios"
 import { MessageModalStore } from '@/stores/MessageModal'
 
-//googlemap
-// const props = defineProps({
-//   map: {
-//     type: String,
-//     required: true,
-//   },
-// })
-
-// const mapInstance = ref(null) // 儲存地圖實例
-
-// const initMap = async () => {
-//   console.log(props.map)
-
-//   try {
-//     await nextTick()
-//     console.log("Initializing map with ID:", props.map)
-//     // 確保 modal 完全渲染
-//     await new Promise((resolve) => setTimeout(resolve, 200))
-//     const mapContainer = document.getElementById(props.map)
-//     // console.log('Map container found:', !!mapContainer)
-//     console.log(mapContainer)
-//     if (!mapContainer) {
-//       console.error("Modal map container not found")
-//       return
-//     }
-//     const { Map } = await google.maps.importLibrary("maps")
-//     mapInstance.value = new Map(mapContainer, {
-//       center: { lat: 25.033964, lng: 121.564468 },
-//       zoom: 14,
-//     })
-//     console.log("Modal map initialized successfully")
-//   } catch (error) {
-//     console.error("Failed to initialize modal map:", error)
-//   }
-// }
-// onMounted(() => {
-//   initMap()
-// })
-// onBeforeUnmount(() => {
-//   if (mapInstance.value) {
-//     mapInstance.value = null
-//   }
-// })
-// import { Loader } from "@googlemaps/js-api-loader"
-// const loader = new Loader({
-//   apiKey: apiKey,
-//   version: "weekly",
-// })
-
-// loader.load().then(async () => {
-//   const { Map } = await google.maps.importLibrary("maps")
-
-//   map = new Map(document.getElementById("map"), {
-//     center: { lat: -34.397, lng: 150.644 },
-//     zoom: 8,
-//   })
-// })
-// async function initMap() {
-//   const { Map } = await google.maps.importLibrary("maps")
-//   const newMap = new Map(document.getElementById("map"), {
-//     center: { lat: 25.0341222, lng: 121.5640212 },
-//     zoom: 15,
-//     maxZoom: 20,
-//     minZoom: 3,
-//     streetViewControl: false,
-//     mapTypeControl: false,
-//     mapId: "83af7188f1a0650d",
-//   })
-//   map.value = newMap
-// }
-// initMap()
-
 //抓user資料
 const userStore = useUserStore()
 const userData = ref(null)
+const map = shallowRef(null)
 onMounted(async () => {
   try {
     const res = await userStore.getUser()
@@ -106,9 +36,91 @@ onMounted(async () => {
   }
 })
 
+
+
+// 地圖區
+async function initMap(center) {
+  const { Map } = await google.maps.importLibrary("maps")
+  const newMap = new Map(document.getElementById("map2"), {
+    center: place.geometry || { lat: 25.0341222, lng: 121.5640212 },
+    zoom: 13,
+    maxZoom: 20,
+    minZoom: 3,
+    streetViewControl: false,
+    mapTypeControl: false,
+    mapId: "83af7188f1a0650d",
+  })
+  map.value = newMap
+}
+
+const allMarkers = ref([])
+const getAllMarker = async(date, schedule)=>{
+  clearMarkers()
+  allMarkers.value.push(place.geometry)
+  console.log(date, "分隔",schedule);
+  // date是第幾天的意思，我要拿到schedules[schedule].schedule_places.places[i].geometry，push進allMarkers
+ 
+
+  
+  
+  // 拿到place.geometry，push進allMarkers
+  // 點按下的行程，取得按下的是第index多少天，對照index拿到天數，拿到schedules[index].schedule_places.places.geometry，push進allMarkers
+  // const targetSchedule = schedules[index].value[initDate];
+  // if (!targetSchedule || !targetSchedule.schedule_places) {
+  //   console.error("無法找到目標的 schedule 或 schedule_places 為 undefined");
+  //   return;
+  // }
+
+  // // 遍歷 schedule_places，將 geometry 推入 allMarkers
+  // initSchedule.schedule_places.forEach((place) => {
+  //   if (place.places && place.places.geometry) {
+  //     allMarkers.value.push(place.places.geometry);
+  //   }
+  // });
+
+
+  console.log("所有的 markers：", allMarkers.value);
+  // updateMarkers()
+}
+async function updateMarkers() {
+  const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+
+  if (!map.value) {
+    console.error("地圖尚未初始化，無法新增標記");
+    return;
+  }
+
+  // 為每個位置新增標記
+  allMarkers.value.forEach((geometry) => {
+    const marker = new AdvancedMarkerElement({
+      position: geometry, // 直接使用經緯度對象
+      map: map.value,
+      draggable: false,
+    });
+
+    // 將 marker 實例保存到 allMarkers 中，方便後續操作
+    allMarkers.value.push(marker);
+  });
+}
+function clearMarkers() {
+  if (allMarkers.value.length > 0) {
+    allMarkers.value.forEach((marker) => {
+      if (marker instanceof google.maps.marker.AdvancedMarkerElement) {
+        marker.setMap(null);
+      }
+    });
+  }
+  allMarkers.value = []; // 清空標記數組
+}
+
+
+
+
 //景點資料
 const modalStore = PlaceModalStore()
 const place = modalStore.selectedPlace
+console.log("place有選取地點的經緯度",place);
+
 
 //訊息彈窗
 const messageStore = MessageModalStore()
@@ -203,7 +215,7 @@ onMounted(async () => {
         calculateDateRange(schedule.start_date, schedule.end_date)
       ),
     }))
-    // console.log(schedules.value)
+    console.log("schedules",schedules.value)
   } catch (error) {
     console.error("Error fetching schedules:", error)
   }
@@ -353,6 +365,22 @@ const switchToPage = (page, tab, schedule = null) => {
   }
 }
 
+watch(
+  () => selectedTab.value, // 監聽 selectedTab 的變化
+  (newTab) => {
+    console.log("觸發watch");
+    
+    if (!newTab || !currentSchedule.value) return;
+
+    // 從 selectedTab 提取 index
+    const match = newTab.match(/day(\d+)/);
+    if (match) {
+      const index = parseInt(match[1], 10) - 1; // 將 dayN 轉為索引
+      getAllMarker(index); // 這變成行程的index了我要的是天數的index
+    }
+  }
+);
+
 // 滾輪移動邏輯，添加 ref 用於獲取容器參數
 const tabsContainer = ref(null)
 
@@ -460,8 +488,8 @@ const tab2Cls = computed(() => {
           </div>
 
           <!-- Tab One -->
-          <div class="relative h-full mt-8 flex flex-col">
-            <div role="tabpanel" id="panel-1" class="transition duration-300 tab-panel flex-1 overflow-y-auto"
+          <div class="relative flex flex-col h-full mt-8">
+            <div role="tabpanel" id="panel-1" class="flex-1 overflow-y-auto transition duration-300 tab-panel"
               :class="tab1Cls">
               <!-- 行程一 -->
               <!-- 行程一二只能擇一打開 -->
@@ -494,7 +522,9 @@ const tab2Cls = computed(() => {
                           date.toISOString().split('T')[0]
                           ]
                         )
-                      }
+                        initMap()
+                        getAllMarker(date, schedule.groupedPlaces)
+                      } 
                       "
                       class="relative p-2 my-[0.5rem] bg-[#f4f4f4] rounded-xl cursor-pointer hover:bg-primary-100 box-border overflow-hidden">
                       <label for=""
@@ -516,14 +546,6 @@ const tab2Cls = computed(() => {
                     </div>
                   </div>
                 </div>
-                <button
-                  class="btn p-0 border-white bg-white flex mt-[1rem] shadow-none hover:bg-white hover:border-white group items-center"
-                  onclick="NewSchedule.showModal()">
-                  <PlusCircleIcon class="size-5 fill-primary-600 mr-[0.5rem]" />
-                  <p class="font-bold text-black group-hover:text-primary-500 text-md">
-                    建立新行程
-                  </p>
-                </button>
               </div>
             </div>
             <!-- Tab Two -->
@@ -548,7 +570,7 @@ const tab2Cls = computed(() => {
         </button>
 
         <!-- 左邊 -->
-        <div class="md:w-2/3 bg-gray h-screen google-map min-w-screen" id="map"></div>
+        <div class="h-screen md:w-2/3 bg-gray google-map min-w-screen" id="map2"></div>
         <!-- 右邊 -->
         <div class="box-border relative overflow-hidden bg-white md:w-1/3">
           <h2 class="pt-[3.5rem] pb-[1rem] pl-[1rem] text-3xl font-bold text-black">
@@ -569,7 +591,7 @@ const tab2Cls = computed(() => {
                 </button>
 
                 <!-- 標籤容器 -->
-                <div ref="tabsContainer" class="flex overflow-x-auto scrollbar-hide mx-10">
+                <div ref="tabsContainer" class="flex mx-10 overflow-x-auto scrollbar-hide">
                   <div v-for="(date, index) in currentSchedule.dates" :key="index" @click="() => {
                       selectedTab = `day${index + 1}`
                       if (date) {
@@ -595,7 +617,7 @@ const tab2Cls = computed(() => {
                   class="absolute right-0 z-10 flex items-center justify-center w-8 h-8 group">
                   <div
                     class="p-1 transition-all duration-200 hover:border-[1px] hover:border-primary-600 hover:rounded-full group-hover:text-primary-600">
-                    <ChevronLeftIcon class="w-4 h-4 text-gray-600 group-hover:text-primary-600 rotate-180" />
+                    <ChevronLeftIcon class="w-4 h-4 text-gray-600 rotate-180 group-hover:text-primary-600" />
                   </div>
                 </button>
               </div>
