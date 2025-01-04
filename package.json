@@ -24,6 +24,7 @@
     "sortablejs": "^1.15.6",
     "vue": "^3.5.12",
     "vue-router": "^4.4.5",
+    "vue3-loading-overlay": "^0.0.0",
     "vuedraggable": "^4.1.0"
   },
   "devDependencies": {

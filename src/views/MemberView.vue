@@ -3,7 +3,6 @@ import { ref, onMounted, computed } from "vue"
 import { useRouter, useRoute } from "vue-router"
 import axios from "axios"
 import SideBar from "@/components/SideBar.vue"
-
 import {
   HeartIcon,
   PencilIcon,
@@ -13,19 +12,15 @@ import {
   PencilSquareIcon,
 } from "@heroicons/vue/24/outline"
 import { UserBadgeCheck, WarningTriangle, LogOut, MoneySquare } from "@iconoir/vue"
-import { LoginModalStore } from "@/stores/LoginModal.js"
 import FavoritesList from "@/components/FavoritesList.vue"
 import DetailModal from "@/components/DetailModal.vue"
 import { usePlacesStore } from "@/stores/fetchPlaces"
-import { PlaceModalStore } from "@/stores/PlaceModal"
 import Logo from "@/assets/images/cat-2.png"
+import { useLoadingStore } from "@/stores/loading"
 
-const LoginStore = LoginModalStore()
+const loadingStore = useLoadingStore()
 const placesStore = usePlacesStore()
-const modalStore = PlaceModalStore()
-
 const places = ref([])
-
 const route = useRoute()
 const router = useRouter()
 const API_URL = process.env.VITE_HOST_URL
@@ -76,9 +71,11 @@ const getUser = async () => {
 // User Logout
 const logoutSuccess = ref(null)
 const logout = () => {
+  loadingStore.showLoading()
   localStorage.removeItem("token")
   localStorage.removeItem("userId")
   logoutSuccess.value.showModal()
+  loadingStore.hideLoading()
   setTimeout(() => {
     router.push("/planner")
   }, 1000)
@@ -134,17 +131,15 @@ const updateUser = async () => {
       setTimeout(() => {
         UpdateSuccess.value.close()
       }, 1000)
-    } else {
-      UpdateFailed.value.showModal()
-      setTimeout(() => {
-        UpdateFailed.value.close()
-      }, 1000)
-    }
+    } 
     user.value = response.data.updatedData // 更新後的資料
     await getUser()
   } catch (error) {
     errorMsg.value = error.message
     UpdateFailed.value.showModal()
+    setTimeout(() => {
+      UpdateFailed.value.close()
+    }, 1000)
   }
 }
 
@@ -180,7 +175,9 @@ const deleteUser = async () => {
 }
 
 const goPremium =()=>{
+  loadingStore.showLoading()
   router.push("/premium");
+  loadingStore.hideLoading()
 }
 
 onMounted(async () => {
@@ -275,6 +272,11 @@ onMounted(async () => {
 </script>
 
 <template>
+  <LoadingOverlay :active="loadingStore.isLoading">
+    <div class="loadingio-spinner-ellipsis-nq4q5u6dq7r"><div class="ldio-x2uulkbinbj">
+    <div></div><div></div><div></div><div></div><div></div>
+    </div></div>
+  </LoadingOverlay>
   <SideBar />
   <div
     class="flex flex-col min-h-screen bg-white lg:ml-16 transition-all duration-300 ease-in-out text-[#2d4057]"

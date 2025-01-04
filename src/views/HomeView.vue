@@ -6,7 +6,6 @@ import Features from '@/components/Features.vue'
 import Tutorial from '@/components/Tutorial.vue'
 import Footer from '@/components/Footer.vue'
 
-
 const top = ref(null)
 const carousel = ref(null)
 const features = ref(null)
