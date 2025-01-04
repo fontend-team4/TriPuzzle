@@ -236,7 +236,6 @@ const handleOpenDetailModal = (detailId) => {
     console.error("Invalid detailId passed:", detailId)
     return
   }
-  console.log("detailId:", detailId)
 
   router.push({
     path: "/member",

@@ -45,7 +45,7 @@ const emit = defineEmits(["open-detail-modal", "updateIsPlacesComponent"])
 
 
 const items = ref(JSON.parse(localStorage.getItem("items") || "[]"));
-
+const localFavorites = ref(JSON.parse(localStorage.getItem("favorites") || "[]"));
 // 切換收藏狀態的按鈕事件處理
 const handleToggleFavorite = async (item) => {
   const formattedItem = { ...item, place_id: item.id }; // 確保格式一致
@@ -55,6 +55,7 @@ const handleToggleFavorite = async (item) => {
 
   // 更新當前 `item` 的 `isFavorited` 狀態
   item.isFavorited = formattedItem.isFavorited; // 根據 toggleFavoriteStatus 的結果更新
+  localFavorites.isFavorited = formattedItem.isFavorited; // 更新本地收藏狀態
 };
 
 // 初始化頁面時，同步收藏狀態
@@ -225,7 +226,7 @@ watch(
                   v-else
                   class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer bg-gray hover:bg-opacity-75 tooltip"
                   data-tip="請先登入!"
-                  @click.prevent.stop="toggleFavorite(item)"
+                  @click.prevent.stop="handleToggleFavorite(item)"
                 >
                   <OutlineHeartIcon class="text-gray-500 size-6" />
                 </button>

@@ -63,6 +63,7 @@ const modalStore = PlaceModalStore()
 const placesStore = usePlacesStore()
 const { copyToClipboard } = useCopyWebsiteStore()
 const route = useRoute()
+const items = ref(JSON.parse(localStorage.getItem("items") || "[]"));
 
 // 切換收藏狀態的按鈕事件處理
 const handleToggleFavorite = async (place,item) => {
@@ -76,6 +77,7 @@ const handleToggleFavorite = async (place,item) => {
 
   // 更新收藏狀態以刷新顯示
   place.isFavorited = formattedPlace.isFavorited;
+
 };
 // 計算屬性
 const currentPlaceId = computed(() => route.query.placeId)
