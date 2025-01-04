@@ -5,8 +5,13 @@ import { EyeIcon, EyeSlashIcon } from "@heroicons/vue/24/outline"
 import axios from "axios"
 import { useUserStore } from "@/stores/userStore"
 import { LoginModalStore } from "@/stores/LoginModal.js"
+import { MessageModalStore } from '@/stores/MessageModal'
+
+const messageStore = MessageModalStore()
+
 const LoginStore = LoginModalStore()
 const userStore = useUserStore()
+const isOpen=LoginStore.isOpen
 
 const API_URL = process.env.VITE_HOST_URL
 
@@ -28,48 +33,6 @@ const email = ref('')
 const registerPassword = ref('')
 const URL=import.meta.env.VITE_HOST_URL
 
-//成功、錯誤訊息彈窗
-function showMessage({ title = '訊息', message, status }) {
-  const typeClasses = {
-    success: 'bg-green-500 hover:bg-green-700',
-    error: 'bg-primary-600 hover:bg-primary-700',
-  }
-  const buttonClass = typeClasses[status]
-  if (document.querySelector('#custom_modal')) {
-    document.querySelector('#modal_title').textContent = title // 更新標題
-    document.querySelector('#modal_message').textContent = message // 更新訊息
-    document
-      .querySelector('#modal_button')
-      .classList.remove(
-        'bg-green-500',
-        'hover:bg-green-700',
-        'bg-primary-600',
-        'hover:bg-primary-700'
-      )
-    document
-      .querySelector('#modal_button')
-      .classList.add(...buttonClass.split(' ')) // 更新class
-    document.querySelector('#custom_modal').showModal() // 顯示 Modal
-    return
-  }
-
-  const modalHTML = `
-    <dialog id="custom_modal" class="modal">
-      <div class="modal-box text-center w-[450px] h-[250px]">
-        <h3 id="modal_title" class="text-xl font-bold font-bold mb-4">${title}</h3>
-        <p id="modal_message" class="py-4">${message}</p>
-        <div class="modal-action justify-center">
-          <button id="modal_button" class="btn ${buttonClass} w-[80%] text-white py-3 rounded-full font-medium  mt-4" onclick="document.querySelector('#custom_modal').close()">確定</button>
-        </div>
-      </div>
-    </dialog>
-  `
-  // 動態插入 Modal 到 body
-  document.body.insertAdjacentHTML('beforeend', modalHTML)
-
-  // 顯示 Modal
-  document.querySelector('#custom_modal').showModal()
-}
 
 const loginSubmit = async () => {
   try {
@@ -94,8 +57,7 @@ const loginSubmit = async () => {
       localStorage.setItem("userId", res.data.user.id)
       localStorage.setItem("token", res.data.token)
       LoginStore.closeModal()
-      showMessage({
-        title: "登入成功",
+      messageStore.messageModal({
         message: res.data.message,
         status: "success",
       })
@@ -107,7 +69,7 @@ const loginSubmit = async () => {
     }
   } catch (err) {
     const errorMessage = err.response?.data?.message || "未知錯誤"
-    showMessage({
+    messageStore.messageModal({
       title: "登入失敗",
       message: errorMessage,
       status: "error",
@@ -145,7 +107,7 @@ const registerSubmit = async () => {
       email.value = ''
       registerPassword.value = ''
       switchLogRes.value = 'login'
-      showMessage({
+      messageStore.messageModal({
         title: '註冊成功',
         message: res.data.message,
         status: 'success',
@@ -153,7 +115,7 @@ const registerSubmit = async () => {
     }
   } catch (err) {
     const errorMessage = err.response?.data?.message || '未知錯誤'
-    showMessage({
+    messageStore.messageModal({
       title: '註冊失敗',
       message: errorMessage,
       status: 'error',
@@ -164,7 +126,8 @@ const registerSubmit = async () => {
 
 <template>
   <div
-    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center overflow-auto"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center overflow-auto z-50"
+   :class="{ 'z-[1100]': isOpen }"
   >
     <div
       class="bg-white pb-6 w-full h-full md:w-96 md:h-max md:rounded-2xl md:mb-20"

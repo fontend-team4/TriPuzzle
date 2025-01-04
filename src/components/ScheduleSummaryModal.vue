@@ -5,6 +5,7 @@ import "../assets/fonts/NotoSansTC.js"
 import axios from "axios"
 import EmailScheduleSummary from "./EmailScheduleSummary.vue"
 import { DocumentArrowDownIcon } from "@heroicons/vue/24/outline"
+import { debounce } from 'lodash';
 
 const API_URL = process.env.VITE_HOST_URL
 const token = localStorage.getItem("token")
@@ -14,7 +15,7 @@ const scheduleName = ref("")
 const schedulePlaces = ref("")
 const groupedData = ref("")
 
-const getSchedule = async (id) => {
+const getSchedule = debounce(async (id) => {
   const config = {
     headers: {
       Authorization: token,
@@ -25,8 +26,6 @@ const getSchedule = async (id) => {
     schedulesData.value = response.data
     scheduleName.value = response.data.title
     schedulePlaces.value = response.data.schedule_places
-    console.log(schedulesData.value)
-
     const getAllDates = (startDate, endDate) => {
       const dates = []
       let currentDate = new Date(startDate)
@@ -76,7 +75,7 @@ const getSchedule = async (id) => {
   } catch (error) {
     console.error(error)
   }
-}
+}, 3000)
 
 const scheduleSummary = ref(null)
 const generatePDF = () => {
@@ -95,12 +94,12 @@ const generatePDF = () => {
 }
 
 const scheduleSummaryText = ref("")
-// watch(schedulesData, () => {
-//   getSchedule(scheduleId.value)
-//   if (scheduleSummary.value) {
-//     scheduleSummaryText.value = scheduleSummary.value.innerText.split("\n")
-//   }
-// })
+watch(schedulesData, (newVal, oldVal) => {
+  if (newVal !== oldVal && scheduleSummary.value) {
+    getSchedule(scheduleId.value)
+    scheduleSummaryText.value = scheduleSummary.value.innerText.split("\n")
+  }
+})
 
 onMounted(() => {
   getSchedule(scheduleId.value)

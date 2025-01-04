@@ -20,6 +20,8 @@ import { PlusCircleIcon, MapPinIcon } from "@heroicons/vue/24/solid"
 import { PlaceModalStore } from "@/stores/PlaceModal"
 import { useUserStore } from "@/stores/userStore"
 import axios from "axios"
+import { MessageModalStore } from '@/stores/MessageModal'
+
 //googlemap
 // const props = defineProps({
 //   map: {
@@ -107,6 +109,9 @@ onMounted(async () => {
 //景點資料
 const modalStore = PlaceModalStore()
 const place = modalStore.selectedPlace
+
+//訊息彈窗
+const messageStore = MessageModalStore()
 
 //將景點資料存入places後端
 onMounted(() => {
@@ -258,9 +263,18 @@ const addPlaceToSchedule = async () => {
     // 新增成功後重新獲取該日期的景點列表
     const updatedPlaces = await fetchPlacesForDate(selectedDate.value)
     updateCards(updatedPlaces)
-    // console.log("新增成功：", res.data)
+    messageStore.messageModal({
+      title: "訊息",
+      message: res.data.message,
+      status: "success",
+    })
   } catch (error) {
     console.error("新增失敗：", error.response?.data || error.message)
+    messageStore.messageModal({
+      title: "訊息",
+      message: error.data.message || "未知錯誤",
+      status: "error",
+    })
   }
 }
 
@@ -408,31 +422,19 @@ const tab2Cls = computed(() => {
 </script>
 
 <template>
-  <div
-    class="fixed top-0 z-50 flex items-center justify-center w-screen h-screen bg-black bg-opacity-25"
-    @click="closeAddPlaceModal"
-    @click.stop
-  >
+  <div class="fixed top-0 z-50 flex items-center justify-center w-screen h-screen bg-black bg-opacity-25"
+    @click="closeAddPlaceModal" @click.stop>
     <div
       class="pb-10 w-full md:pb-0 h-full md:h-[calc(100vh-160px)] lg:w-[1032px] mx-0 md:mx-auto bg-white md:flex md:rounded-md md:overflow-hidden overflow-auto relative"
-      @click.stop
-    >
-      <div
-        v-if="currentPage === 'page1'"
-        id="page1"
-        class="relative h-[calc(100vh - 160px)] w-full md:max-h-[800px] md:max-w-[1032px] md:mx-0 bg-white md:flex md:rounded-md overflow-hidden"
-      >
+      @click.stop>
+      <div v-if="currentPage === 'page1'" id="page1"
+        class="relative h-[calc(100vh - 160px)] w-full md:max-h-[800px] md:max-w-[1032px] md:mx-0 bg-white md:flex md:rounded-md overflow-hidden">
         <div class="hidden md:block md:w-2/3 md:bg-[#f4f4f4]">
           <div class="flex h-full">
-            <img
-              src="https://web.chictrip.com.tw/assets/join_placeholder.2950886f.png"
-              class="m-auto"
-            />
+            <img src="https://web.chictrip.com.tw/assets/join_placeholder.2950886f.png" class="m-auto" />
           </div>
         </div>
-        <div
-          class="w-full h-full px-[15px] py-[8px] top-0 mr-0 md:w-1/3 flex-wrap relative"
-        >
+        <div class="w-full h-full px-[15px] py-[8px] top-0 mr-0 md:w-1/3 flex-wrap relative">
           <form method="dialog " class="flex items-end justify-between">
             <h2 class="mt-[30px] mx-[10px] text-2xl text-black font-bold">
               要加在哪?
@@ -443,96 +445,61 @@ const tab2Cls = computed(() => {
           </form>
 
           <div
-            class="relative w-full mt-[1rem] mx-auto h-[2.5rem] grid grid-cols-2 items-center px-[3px] rounded-lg bg-gray-900/20 overflow-hidden shadow-md shadow-[#eeeeee] transition bg-white"
-          >
+            class="relative w-full mt-[1rem] mx-auto h-[2.5rem] grid grid-cols-2 items-center px-[3px] rounded-lg bg-gray-900/20 overflow-hidden shadow-md shadow-[#eeeeee] transition bg-white">
             <!-- 我的行程 -->
-            <button
-              @click="selectMyRunDown"
-              class="relative block h-10 px-6 transition duration-300 rounded-lg tab"
-              :class="myRunDownCls"
-            >
+            <button @click="selectMyRunDown" class="relative block h-10 px-6 transition duration-300 rounded-lg tab"
+              :class="myRunDownCls">
               <span class="text-base">我的行程</span>
             </button>
 
             <!-- 與我共編 -->
-            <button
-              @click="selectCoEdit"
-              class="relative block h-10 px-6 transition duration-300 rounded-lg tab"
-              :class="coEditCls"
-            >
+            <button @click="selectCoEdit" class="relative block h-10 px-6 transition duration-300 rounded-lg tab"
+              :class="coEditCls">
               <span class="text-base">與我共編</span>
             </button>
           </div>
 
           <!-- Tab One -->
           <div class="relative h-full mt-8 flex flex-col">
-            <div
-              role="tabpanel"
-              id="panel-1"
-              class="transition duration-300 tab-panel flex-1 overflow-y-auto"
-              :class="tab1Cls"
-            >
+            <div role="tabpanel" id="panel-1" class="transition duration-300 tab-panel flex-1 overflow-y-auto"
+              :class="tab1Cls">
               <!-- 行程一 -->
               <!-- 行程一二只能擇一打開 -->
               <!--打開的時候會變成 <ChevronUpIcon class="size-3" /> -->
               <div class="h-[calc(100vh-350px)] overflow-y-auto pr-2">
-                <div
-                  v-for="(schedule, index) in schedules"
-                  :key="schedule.id"
-                  class="collapse ml-[-0.5rem] mr-[0.5rem] transition-opacity"
-                >
-                  <input
-                    type="checkbox"
-                    :checked="openedCollapse === `journey${schedule.id}`"
-                    @change="toggleCollapse(`journey${schedule.id}`)"
-                  />
-                  <div
-                    class="collapse-title flex justify-between items-center p-0 pl-[1rem]"
-                  >
+                <div v-for="(schedule, index) in schedules" :key="schedule.id"
+                  class="collapse ml-[-0.5rem] mr-[0.5rem] transition-opacity">
+                  <input type="checkbox" :checked="openedCollapse === `journey${schedule.id}`"
+                    @change="toggleCollapse(`journey${schedule.id}`)" />
+                  <div class="collapse-title flex justify-between items-center p-0 pl-[1rem]">
                     <div class="cursor-pointer hover:bg-primary-100 group">
-                      <h2
-                        class="text-xl font-bold group-hover:text-primary-600 text-stone-950"
-                      >
+                      <h2 class="text-xl font-bold group-hover:text-primary-600 text-stone-950">
                         {{ schedule.title }}
                       </h2>
-                      <p
-                        class="text-sm text-gray-600 group-hover:text-primary-600"
-                      >
+                      <p class="text-sm text-gray-600 group-hover:text-primary-600">
                         {{ formatYear(schedule.start_date) }}
                       </p>
                     </div>
-                    <ChevronDownIcon
-                      v-if="openedCollapse !== `journey${schedule.id}`"
-                      class="text-black size-3"
-                    />
+                    <ChevronDownIcon v-if="openedCollapse !== `journey${schedule.id}`" class="text-black size-3" />
                     <ChevronUpIcon v-else class="text-black size-3" />
                   </div>
                   <div class="collapse-content p-0 pl-[1rem]">
-                    <div
-                      v-for="(date, index) in schedule.dates"
-                      :key="index"
-                      @click="
-                        () => {
-                          selectedSchedule = schedule
-                          selectedDate = date.toISOString().split('T')[0]
-                          currentSchedule = schedule
-                          switchToPage('DayCard', `day${index + 1}`, schedule)
-                          updateCards(
-                            schedule.groupedPlaces[
-                              date.toISOString().split('T')[0]
-                            ]
-                          )
-                        }
+                    <div v-for="(date, index) in schedule.dates" :key="index" @click="() => {
+                        selectedSchedule = schedule
+                        selectedDate = date.toISOString().split('T')[0]
+                        currentSchedule = schedule
+                        switchToPage('DayCard', `day${index + 1}`, schedule)
+                        updateCards(
+                          schedule.groupedPlaces[
+                          date.toISOString().split('T')[0]
+                          ]
+                        )
+                      }
                       "
-                      class="relative p-2 my-[0.5rem] bg-[#f4f4f4] rounded-xl cursor-pointer hover:bg-primary-100 box-border overflow-hidden"
-                    >
-                      <label
-                        for=""
-                        class="absolute top-0 right-0 bg-secondary-500 text-white flex items-center gap-1 p-[0.25rem] rounded-bl-xl text-xs"
-                      >
-                        <HandThumbUpIcon
-                          class="size-3 ml-[0.25rem]"
-                        />加在這天最順
+                      class="relative p-2 my-[0.5rem] bg-[#f4f4f4] rounded-xl cursor-pointer hover:bg-primary-100 box-border overflow-hidden">
+                      <label for=""
+                        class="absolute top-0 right-0 bg-secondary-500 text-white flex items-center gap-1 p-[0.25rem] rounded-bl-xl text-xs">
+                        <HandThumbUpIcon class="size-3 ml-[0.25rem]" />加在這天最順
                       </label>
                       <h3 class="text-black text-semibold">
                         第{{ index + 1 }}天
@@ -551,129 +518,84 @@ const tab2Cls = computed(() => {
                 </div>
                 <button
                   class="btn p-0 border-white bg-white flex mt-[1rem] shadow-none hover:bg-white hover:border-white group items-center"
-                  onclick="NewSchedule.showModal()"
-                >
+                  onclick="NewSchedule.showModal()">
                   <PlusCircleIcon class="size-5 fill-primary-600 mr-[0.5rem]" />
-                  <p
-                    class="font-bold text-black group-hover:text-primary-500 text-md"
-                  >
+                  <p class="font-bold text-black group-hover:text-primary-500 text-md">
                     建立新行程
                   </p>
                 </button>
               </div>
             </div>
             <!-- Tab Two -->
-            <div
-              role="tabpanel"
-              id="panel-2"
+            <div role="tabpanel" id="panel-2"
               class="absolute top-0 flex justify-center p-6 transition duration-300 opacity-0 tab-panel"
-              :class="tab2Cls"
-            >
-              <img
-                src="https://web.chictrip.com.tw/assets/join_placeholder.2950886f.png"
-                alt=""
-              />
+              :class="tab2Cls">
+              <img src="https://web.chictrip.com.tw/assets/join_placeholder.2950886f.png" alt="" />
             </div>
           </div>
         </div>
       </div>
-      <button
-        class="btn btn-sm absolute btn-circle btn-ghost right-[1rem] top-[1rem] z-10"
-        @click="closeAddPlaceModal"
-      >
+      <button class="btn btn-sm absolute btn-circle btn-ghost right-[1rem] top-[1rem] z-10" @click="closeAddPlaceModal">
         <XMarkIcon class="text-black" />
       </button>
 
       <!-- 第O天卡片 -->
-      <div
-        v-if="currentPage === 'DayCard'"
-        id="dayCard"
-        class="relative h-[100vh] w-full md:max-h-[calc(100vh-160px)] md:max-w-[1032px] md:mx-auto bg-white md:flex md:rounded-md overflow-hidden"
-      >
-        <button
-          @click="switchToPage('page1')"
-          class="absolute left-[1rem] top-[1rem] hover:opacity-40"
-        >
+      <div v-if="currentPage === 'DayCard'" id="dayCard"
+        class="relative h-[100vh] w-full md:max-h-[calc(100vh-160px)] md:max-w-[1032px] md:mx-auto bg-white md:flex md:rounded-md overflow-hidden">
+        <button @click="switchToPage('page1')" class="absolute left-[1rem] top-[1rem] hover:opacity-40">
           <ChevronLeftIcon
-            class="size-8 text-black bg-white border-2 border-white hover:text-primary-600 hover:bg-primary-100 hover:size-9 hover:border-1 hover:border-primary-600 rounded-full p-[0.25rem] pr-[0.5rem]"
-          />
+            class="size-8 text-black bg-white border-2 border-white hover:text-primary-600 hover:bg-primary-100 hover:size-9 hover:border-1 hover:border-primary-600 rounded-full p-[0.25rem] pr-[0.5rem]" />
         </button>
 
         <!-- 左邊 -->
-        <div
-          class="md:w-2/3 bg-gray h-screen google-map min-w-screen"
-          id="map"
-        ></div>
+        <div class="md:w-2/3 bg-gray h-screen google-map min-w-screen" id="map"></div>
         <!-- 右邊 -->
         <div class="box-border relative overflow-hidden bg-white md:w-1/3">
-          <h2
-            class="pt-[3.5rem] pb-[1rem] pl-[1rem] text-3xl font-bold text-black"
-          >
+          <h2 class="pt-[3.5rem] pb-[1rem] pl-[1rem] text-3xl font-bold text-black">
             要加在哪？
           </h2>
 
           <!-- 新的標籤列 -->
           <div class="flex border-lg">
             <template v-if="currentSchedule && currentSchedule.dates">
-              <div
-                class="relative flex items-center w-full border-slate-300 border-b-[1px]"
-              >
+              <div class="relative flex items-center w-full border-slate-300 border-b-[1px]">
                 <!-- 左箭頭 -->
-                <button
-                  @click="scrollTabs('left')"
-                  class="absolute left-0 z-10 flex items-center justify-center w-8 h-8 group"
-                >
+                <button @click="scrollTabs('left')"
+                  class="absolute left-0 z-10 flex items-center justify-center w-8 h-8 group">
                   <div
-                    class="p-1 transition-all duration-200 hover:border-[1px] hover:border-primary-600 hover:rounded-full group-hover:text-primary-600"
-                  >
-                    <ChevronLeftIcon
-                      class="w-4 h-4 text-gray-600 group-hover:text-primary-600"
-                    />
+                    class="p-1 transition-all duration-200 hover:border-[1px] hover:border-primary-600 hover:rounded-full group-hover:text-primary-600">
+                    <ChevronLeftIcon class="w-4 h-4 text-gray-600 group-hover:text-primary-600" />
                   </div>
                 </button>
 
                 <!-- 標籤容器 -->
-                <div
-                  ref="tabsContainer"
-                  class="flex overflow-x-auto scrollbar-hide mx-10"
-                >
-                  <div
-                    v-for="(date, index) in currentSchedule.dates"
-                    :key="index"
-                    @click="
-                      () => {
-                        selectedTab = `day${index + 1}`
-                        if (date) {
-                          selectedDate = date.toISOString().split('T')[0]
-                          updateCards(
-                            currentSchedule.groupedPlaces[selectedDate]
-                          )
-                        }
+                <div ref="tabsContainer" class="flex overflow-x-auto scrollbar-hide mx-10">
+                  <div v-for="(date, index) in currentSchedule.dates" :key="index" @click="() => {
+                      selectedTab = `day${index + 1}`
+                      if (date) {
+                        selectedDate = date.toISOString().split('T')[0]
+                        updateCards(
+                          currentSchedule.groupedPlaces[selectedDate]
+                        )
                       }
+                    }
                     "
                     class="flex-shrink-0 pb-[4px] px-[16px] text-base cursor-pointer rounded-t-lg transition-colors duration-200 ease-in-out text-center"
                     :class="[
                       selectedTab === `day${index + 1}`
                         ? 'bg-primary-600 text-white'
                         : 'text-black hover:bg-primary-200 hover:text-primary-600',
-                    ]"
-                    role="tab"
-                  >
+                    ]" role="tab">
                     第{{ index + 1 }}天
                   </div>
                 </div>
 
                 <!-- 右箭頭 -->
-                <button
-                  @click="scrollTabs('right')"
-                  class="absolute right-0 z-10 flex items-center justify-center w-8 h-8 group"
-                >
+                <button @click="scrollTabs('right')"
+                  class="absolute right-0 z-10 flex items-center justify-center w-8 h-8 group">
                   <div
-                    class="p-1 transition-all duration-200 hover:border-[1px] hover:border-primary-600 hover:rounded-full group-hover:text-primary-600"
-                  >
-                    <ChevronLeftIcon
-                      class="w-4 h-4 text-gray-600 group-hover:text-primary-600 rotate-180"
-                    />
+                    class="p-1 transition-all duration-200 hover:border-[1px] hover:border-primary-600 hover:rounded-full group-hover:text-primary-600">
+                    <ChevronLeftIcon class="w-4 h-4 text-gray-600 group-hover:text-primary-600 rotate-180" />
                   </div>
                 </button>
               </div>
@@ -681,67 +603,44 @@ const tab2Cls = computed(() => {
           </div>
 
           <!-- 卡片內容區域 -->
-          <div
-            class="p-4 bg-primary-200 h-[calc(100vh-400px)] overflow-auto flex flex-col"
-          >
-            <div
-              v-for="(card, index) in cards"
-              :key="index"
-              @click="selectCard(index)"
-              :class="[
-                'p-5 pl-5 mx-[1rem] mt-5 rounded-lg relative transition-colors cursor-pointer',
-                selectedCard === index
-                  ? 'bg-white border-primary-300 border-2'
-                  : 'bg-primary-100 border-none hover:bg-primary-50',
-              ]"
-            >
-              <p
-                class="text-lg font-medium"
-                :class="
-                  selectedCard === index ? 'text-black' : 'text-[#c7c7c7]'
-                "
-              >
+          <div class="p-4 bg-primary-200 h-[calc(100vh-400px)] overflow-auto flex flex-col">
+            <div v-for="(card, index) in cards" :key="index" @click="selectCard(index)" :class="[
+              'p-5 pl-5 mx-[1rem] mt-5 rounded-lg relative transition-colors cursor-pointer',
+              selectedCard === index
+                ? 'bg-white border-primary-300 border-2'
+                : 'bg-primary-100 border-none hover:bg-primary-50',
+            ]">
+              <p class="text-lg font-medium" :class="selectedCard === index ? 'text-black' : 'text-[#c7c7c7]'
+                ">
                 {{ card.location1 }}
               </p>
 
-              <p
-                class="flex items-center mt-2 text-lg"
-                :class="
+              <p class="flex items-center mt-2 text-lg" :class="selectedCard === index
+                  ? 'text-secondary-500'
+                  : 'text-[#c7c7c7]'
+                ">
+                <MapPinIcon :class="[
+                  'size-5 ml-[-0.2rem]',
                   selectedCard === index
-                    ? 'text-secondary-500'
-                    : 'text-[#c7c7c7]'
-                "
-              >
-                <MapPinIcon
-                  :class="[
-                    'size-5 ml-[-0.2rem]',
-                    selectedCard === index
-                      ? 'fill-secondary-500'
-                      : 'fill-[#c7c7c7]',
-                  ]"
-                />
+                    ? 'fill-secondary-500'
+                    : 'fill-[#c7c7c7]',
+                ]" />
                 {{ card.newlocation }}
               </p>
 
-              <p
-                class="mt-2 text-lg"
-                :class="[
-                  selectedCard === index ? 'text-black' : 'text-[#c7c7c7]',
-                ]"
-              >
+              <p class="mt-2 text-lg" :class="[
+                selectedCard === index ? 'text-black' : 'text-[#c7c7c7]',
+              ]">
                 {{ card.location2 }}
               </p>
             </div>
           </div>
 
           <!-- 確認新增並關閉視窗 -->
-          <div
-            class="h-[4rem] absolute bottom-0 right-0 left-0 bg-white px-4 pt-2"
-          >
+          <div class="h-[4rem] absolute bottom-0 right-0 left-0 bg-white px-4 pt-2">
             <div
               class="w-full text-white border-none rounded-full btn bg-primary-600 hover:bg-primary-200 hover:text-primary-600"
-              @click="closeAddPlaceModal(), addPlaceToSchedule()"
-            >
+              @click="closeAddPlaceModal(), addPlaceToSchedule()">
               確認新增
             </div>
           </div>

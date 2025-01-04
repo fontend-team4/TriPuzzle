@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed } from "vue"
-import { loadPNG } from "@/assets/images/loader"
+import { loadJpg } from "@/assets/images/loader"
 
 const tabs = [
   {
@@ -93,7 +93,7 @@ const currentTab = computed(() => tabs[activeTab.value])
           </p>
         </div>
         <img
-          :src="loadPNG(currentTab.image)"
+          :src="loadJpg(currentTab.image)"
           class="lg:w-[400px] xl:w-[450px] 2xl:w-[500px]"
         />
       </div>

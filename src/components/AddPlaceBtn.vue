@@ -2,12 +2,18 @@
 import { PlusCircleIcon } from "@heroicons/vue/24/solid";
 import { computed ,ref, defineProps, defineEmits, nextTick } from 'vue'
 import { PlaceModalStore } from "@/stores/PlaceModal";
+import { LoginModalStore } from "@/stores/LoginModal.js"
 
+const LoginStore = LoginModalStore()
 const modalStore = PlaceModalStore();
 
 const openAppPlaceModal = async() => {
   // console.log('Opening modal') // 新增除錯訊息
   // await nextTick()
+  const token=localStorage.getItem('token')
+  if(!token){
+    LoginStore.openModal()
+  }else
   modalStore.openModal(); // 打開 Modal
 };
 

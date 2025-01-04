@@ -16,6 +16,7 @@ import { PlaceModalStore } from "@/stores/PlaceModal"
 const placesStore = usePlacesStore()
 const searchStore = useSearchStore()
 const modalStore = PlaceModalStore()
+const isOpen=placesStore.isOpen
 
 const router = useRouter()
 
@@ -75,6 +76,7 @@ const updateMapCenter = (item) => {
     class="fixed items-center hidden w-12 h-12 px-2 transition-all duration-300 bg-white rounded-full shadow-md cursor-pointer top-24 left-10 lg:left-28 group hover:w-32 md:flex"
     @click="sideToggle"
     :cls="hamburgerCls"
+    :class="{ 'z-[1000]': isOpen }"
   >
     <div class="flex-shrink-0">
       <ListBulletIcon class="size-8" />
@@ -88,9 +90,9 @@ const updateMapCenter = (item) => {
 
   <!-- 側欄 -->
   <!-- fixed -->
-  <div class="hidden h-full w-96 md:block">
+  <div class="relative hidden w-96 md:block">
     <div
-      class="w-96 h-[calc(100vh-72px)] bg-white absolute bottom-0 left-0 lg:left-20 rounded-tr-3xl drop-shadow-md transition-all duration-300"
+      class="w-96 h-[calc(100vh-72px)] bg-white fixed bottom-0 left-0 lg:left-20 rounded-tr-3xl drop-shadow-md transition-all duration-300"
       :class="sideCls"
     >
       <div

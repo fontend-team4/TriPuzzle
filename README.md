@@ -3,11 +3,15 @@
 
 > 現在就點擊進入 **[TriPuzzle 旅圖](https://tripuzzle-production.up.railway.app/)** 開啟你的旅途！
 
-在首頁我們詳細說明了 **TriPuzzle** 提供您哪些服務：
+在首頁我們詳細說明了 **TriPuzzle** 提供您哪些服務
+![image](https://tripuzzle-s3.s3.ap-southeast-2.amazonaws.com/coverImages/banner.png)
 ![image](https://tripuzzle-s3.s3.ap-southeast-2.amazonaws.com/coverImages/home.png)
 
-進到規劃頁面，我們可以透過「動態瀑布流」查看景點，也可以透過「地圖」查看地標，找到喜歡的景點隨時加入收藏：
+進到規劃頁面，我們可以透過「動態瀑布流」查看景點
 ![image](https://tripuzzle-s3.s3.ap-southeast-2.amazonaws.com/coverImages/planner.png)
+也可以透過「地圖」查看地標，找到喜歡的景點隨時加入收藏！
+![image](https://tripuzzle-s3.s3.ap-southeast-2.amazonaws.com/coverImages/map.png)
+（網站景點用圖皆來自 Google Map API，僅供練習專案使用）
 
 ## 歡迎來到 TripPuzzle！以下是您使用 TripPuzzle 的重要資訊和步驟指南。
 
@@ -30,7 +34,7 @@ git clone https://github.com/fontend-team4/TriPuzzle.git
 
 > 此專案為前端專案，後端專案網址 [TriPuzzle_Backend](https://github.com/fontend-team4/TriPuzzle_Backend)
 
-## Project Setup, Compile and Hot-Reload for Development
+## Project Setup
 
 ```sh
 npm install
@@ -40,7 +44,39 @@ npm run dev
 ## 環境變數可參考 `.env.sample` 檔案
 ```
 VITE_GOOGLE_API_KEY = Google Maps API 金鑰
+VITE_HOST_URL= 後端網域
+VITE_EMAILJS_PUBLIC_KEY= EMAILJS 相關設定
+VITE_EMAILJS_SERVICE_ID= EMAILJS 相關設定
+VITE_EMAILJS_TEMPLATE_ID= EMAILJS 相關設定
 ```
+
+## 網站技術與工具
+* 專案規劃
+  * Figma
+  * GitHub
+  * Notion
+  * Miro
+  * Excalidraw
+
+* 前端開發
+  * Vue.js
+  * Vite
+  * Pinia
+  * Tailwind CSS
+  * daisyUI
+
+* 後端開發
+  * Node.js
+  * Express
+  * MySQL
+  * Prisma
+  * AWS S3
+
+* 金流工具
+  * LinePay
+
+* 網站部署
+  * Railway
 
 ## 團隊成員
 **宋柏叡**
