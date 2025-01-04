@@ -407,6 +407,7 @@ onMounted(fetchPlaceDetails)
         />
       </div>
       <!-- 照片區 -->
+      
       <!-- <div
         class="absolute md:top-0 right-0 z-40 w-screen h-0 transition-all duration-300 transform bg-white md:w-[368px] md:right-0 overflow-auto"
         :class="isPhotoShow"
@@ -422,12 +423,12 @@ onMounted(fetchPlaceDetails)
           </div>
           <button><XMarkIcon class="size-6" /></button>
         </div>
-        <!-- <Waterfall
+        <Waterfall
           class="mt-16"
           v-if="Object.keys(place).length"
           :place="place"
-        /> -->
-      </div>
+        />
+      </div> -->
     </div>
   </div>
 </template>
@@ -478,4 +479,4 @@ img {
 
 /* 禁止滾動 */
 </style>
-@/service/QRcode @/service/QRcode @/utils/QRcode
+
