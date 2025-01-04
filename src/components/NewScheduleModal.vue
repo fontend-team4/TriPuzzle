@@ -10,6 +10,9 @@ import {
   ArrowUpTrayIcon,
 } from "@heroicons/vue/24/solid"
 import { CalendarCheck, MapXmark } from "@iconoir/vue"
+import { useLoadingStore } from "@/stores/loading"
+
+const loadingStore = useLoadingStore()
 
 const transprotations = ref([
   {
@@ -115,8 +118,10 @@ const addSchedule = async () => {
     end_date: endDate.value,
     transportation_way: transportationWay.value,
   }
+  loadingStore.showLoading()
   try {
     await axios.post(`${API_URL}/schedules`, ScheduleData, config)
+    loadingStore.hideLoading()
     addSuccess.value.showModal()
     setTimeout(() => {
       addSuccess.value.close()
@@ -142,6 +147,11 @@ onMounted(() => {
 </script>
 
 <template>
+  <LoadingOverlay :active="loadingStore.isLoading">
+    <div class="loadingio-spinner-ellipsis-nq4q5u6dq7r"><div class="ldio-x2uulkbinbj">
+    <div></div><div></div><div></div><div></div><div></div>
+    </div></div>
+  </LoadingOverlay>
   <dialog id="newSchedule" class="modal">
     <div
       class="modal-box p-0 w-full md:max-w-[480px] sm:max-w-[100%] h-full sm:max-h-[100%] md:max-h-[724.75px] max-md:rounded-none"
