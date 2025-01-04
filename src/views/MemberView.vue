@@ -1,4 +1,5 @@
 <script setup>
+import '@/assets/loading.css'
 import { ref, onMounted, computed } from "vue"
 import { useRouter, useRoute } from "vue-router"
 import axios from "axios"
@@ -175,14 +176,8 @@ const deleteUser = async () => {
 }
 
 const goPremium =()=>{
-  loadingStore.showLoading()
   router.push("/premium");
-  loadingStore.hideLoading()
 }
-
-onMounted(async () => {
-  await getUser()
-})
 
 // Upload Profile Image
 const imgFile = ref(null)
@@ -254,19 +249,22 @@ const closeDetailModal = () => {
 const paymentSuccess = ref(null)
 
 onMounted(async () => {
+  loadingStore.showLoading()
+  try {
+    await getUser()
+    await placesStore.fetchDefaultPlaces() // 抓取資料
+    loadingStore.hideLoading()
+    console.log("places:", places.value)
+  } catch (error) {
+    console.error("Failed to fetch places:", error)
+    places.value = [] // 防止錯誤導致的 undefined
+  }
   const { order } = route.query
   if(order) {
     await paymentSuccess.value.showModal()
     setTimeout(() => {
       paymentSuccess.value.close()
     }, 2000)
-  }
-  try {
-    await placesStore.fetchDefaultPlaces() // 抓取資料
-    console.log("places:", places.value)
-  } catch (error) {
-    console.error("Failed to fetch places:", error)
-    places.value = [] // 防止錯誤導致的 undefined
   }
 })
 </script>

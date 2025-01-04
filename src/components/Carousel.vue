@@ -7,15 +7,11 @@ import {
 } from "@heroicons/vue/20/solid"
 import { loadJpg } from "@/assets/images/loader"
 import { useRouter } from "vue-router"
-import { useLoadingStore } from "@/stores/loading"
 
-const loadingStore = useLoadingStore()
 const router = useRouter()
 
 const goToPlanner = () => {
-  loadingStore.showLoading()
   router.push("/planner")
-  loadingStore.hideLoading()
 }
 
 const currentIndex = ref(0)
@@ -31,11 +27,6 @@ const images = [
 ]
 </script>
 <template>
-  <LoadingOverlay :active="loadingStore.isLoading">
-    <div class="loadingio-spinner-ellipsis-nq4q5u6dq7r"><div class="ldio-x2uulkbinbj">
-    <div></div><div></div><div></div><div></div><div></div>
-    </div></div>
-  </LoadingOverlay>
   <section class="w-9/12 max-w-7xl mx-auto my-5 md:my-20">
     <h1
       class="text-3xl text-center text-neutral-800 mb-4 md:text-[40px] lg:mb-1 lg:text-left"
@@ -120,64 +111,4 @@ const images = [
 .chevron {
   @apply p-1 rounded-full bg-neutral-800/60 absolute top-1/2 -translate-y-1/2;
 }
-@keyframes ldio-x2uulkbinbj {
-  0% { transform: translate(14px,82px) scale(0); }
-  25% { transform: translate(14px,82px) scale(0); }
-  50% { transform: translate(14px,82px) scale(1); }
-  75% { transform: translate(82px,82px) scale(1); }
-  100% { transform: translate(150px,82px) scale(1); }
-}
-@keyframes ldio-x2uulkbinbj-r {
-  0% { transform: translate(150px,82px) scale(1); }
-  100% { transform: translate(150px,82px) scale(0); }
-}
-@keyframes ldio-x2uulkbinbj-c {
-  0% { background: #b12824 }
-  25% { background: #fbcecd }
-  50% { background: #f17b78 }
-  75% { background: #d23430 }
-  100% { background: #b12824 }
-}
-.ldio-x2uulkbinbj div {
-  position: absolute;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  transform: translate(82px,82px) scale(1);
-  background: #b12824;
-  animation: ldio-x2uulkbinbj 2.5s infinite cubic-bezier(0,0.5,0.5,1);
-}
-.ldio-x2uulkbinbj div:nth-child(1) {
-  background: #d23430;
-  transform: translate(150px,82px) scale(1);
-  animation: ldio-x2uulkbinbj-r 0.625s infinite cubic-bezier(0,0.5,0.5,1), ldio-x2uulkbinbj-c 2.5s infinite step-start;
-}.ldio-x2uulkbinbj div:nth-child(2) {
-  animation-delay: -0.625s;
-  background: #b12824;
-}.ldio-x2uulkbinbj div:nth-child(3) {
-  animation-delay: -1.25s;
-  background: #d23430;
-}.ldio-x2uulkbinbj div:nth-child(4) {
-  animation-delay: -1.875s;
-  background: #f17b78;
-}.ldio-x2uulkbinbj div:nth-child(5) {
-  animation-delay: -2.5s;
-  background: #fbcecd;
-}
-.loadingio-spinner-ellipsis-nq4q5u6dq7r {
-  width: 200px;
-  height: 200px;
-  display: inline-block;
-  overflow: hidden;
-  background: none;
-}
-.ldio-x2uulkbinbj {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  transform: translateZ(0) scale(1);
-  backface-visibility: hidden;
-  transform-origin: 0 0; /* see note above */
-}
-.ldio-x2uulkbinbj div { box-sizing: content-box; }
 </style>

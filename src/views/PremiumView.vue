@@ -1,9 +1,12 @@
 <script setup>
-import { ref, computed } from "vue";
+import '@/assets/loading.css'
+import { ref, computed, onMounted } from "vue";
 import axios from "axios";
 import { PuzzlePieceIcon, CheckIcon } from "@heroicons/vue/20/solid";
 import { useRouter } from "vue-router";
+import { useLoadingStore } from "@/stores/loading"
 
+const loadingStore = useLoadingStore()
 const router = useRouter()
 
 const isCard1Focused = ref(false);
@@ -59,9 +62,21 @@ const goCheckout = async (product, amount) => {
     console.error("Error:", error);
   }
 };
+
+onMounted(() => {
+  loadingStore.showLoading();
+  setTimeout(() => {
+    loadingStore.hideLoading();
+  }, 1000);
+});
 </script>
 
 <template>
+  <LoadingOverlay :active="loadingStore.isLoading">
+    <div class="loadingio-spinner-ellipsis-nq4q5u6dq7r"><div class="ldio-x2uulkbinbj">
+    <div></div><div></div><div></div><div></div><div></div>
+    </div></div>
+  </LoadingOverlay>
   <div
     class="relative flex flex-col items-center justify-center h-auto md:h-screen bg-primary-800 focus-container"
   >

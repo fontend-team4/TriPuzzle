@@ -17,8 +17,10 @@ const clickTab = (sectionName) => {
 }
 const goToPlanner = () => {
   loadingStore.showLoading()
-  router.push("/planner")
-  loadingStore.hideLoading()
+  setTimeout(() => {
+    router.push("/planner")
+    loadingStore.hideLoading()
+  }, 1000)
 }
 </script>
 
@@ -118,66 +120,3 @@ const goToPlanner = () => {
     </div>
   </nav>
 </template>
-
-<style>
-@keyframes ldio-x2uulkbinbj {
-  0% { transform: translate(14px,82px) scale(0); }
-  25% { transform: translate(14px,82px) scale(0); }
-  50% { transform: translate(14px,82px) scale(1); }
-  75% { transform: translate(82px,82px) scale(1); }
-  100% { transform: translate(150px,82px) scale(1); }
-}
-@keyframes ldio-x2uulkbinbj-r {
-  0% { transform: translate(150px,82px) scale(1); }
-  100% { transform: translate(150px,82px) scale(0); }
-}
-@keyframes ldio-x2uulkbinbj-c {
-  0% { background: #b12824 }
-  25% { background: #fbcecd }
-  50% { background: #f17b78 }
-  75% { background: #d23430 }
-  100% { background: #b12824 }
-}
-.ldio-x2uulkbinbj div {
-  position: absolute;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  transform: translate(82px,82px) scale(1);
-  background: #b12824;
-  animation: ldio-x2uulkbinbj 2.5s infinite cubic-bezier(0,0.5,0.5,1);
-}
-.ldio-x2uulkbinbj div:nth-child(1) {
-  background: #d23430;
-  transform: translate(150px,82px) scale(1);
-  animation: ldio-x2uulkbinbj-r 0.625s infinite cubic-bezier(0,0.5,0.5,1), ldio-x2uulkbinbj-c 2.5s infinite step-start;
-}.ldio-x2uulkbinbj div:nth-child(2) {
-  animation-delay: -0.625s;
-  background: #b12824;
-}.ldio-x2uulkbinbj div:nth-child(3) {
-  animation-delay: -1.25s;
-  background: #d23430;
-}.ldio-x2uulkbinbj div:nth-child(4) {
-  animation-delay: -1.875s;
-  background: #f17b78;
-}.ldio-x2uulkbinbj div:nth-child(5) {
-  animation-delay: -2.5s;
-  background: #fbcecd;
-}
-.loadingio-spinner-ellipsis-nq4q5u6dq7r {
-  width: 200px;
-  height: 200px;
-  display: inline-block;
-  overflow: hidden;
-  background: none;
-}
-.ldio-x2uulkbinbj {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  transform: translateZ(0) scale(1);
-  backface-visibility: hidden;
-  transform-origin: 0 0; /* see note above */
-}
-.ldio-x2uulkbinbj div { box-sizing: content-box; }
-</style>
