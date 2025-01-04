@@ -29,22 +29,11 @@ const router = createRouter({
         },
       ],
     },
-    
-    {
-      path: "/SearchArea",
-      name: "SearchArea",
-      component: () => import('../views/CategoryView.vue'),
-    },
     {
       path: "/premium",
       name: "PremiumView",
       component: () => import('../views/PremiumView.vue'),
-    },
-    // {
-    //   path: "/category/:category?",
-    //   name: "CategoryView",
-    //   component: () => import('../views/CategoryView.vue'),
-    // },
+    }
   ],
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
