@@ -422,12 +422,12 @@ onMounted(fetchPlaceDetails)
           </div>
           <button><XMarkIcon class="size-6" /></button>
         </div>
-        <!-- <Waterfall
+        <Waterfall
           class="mt-16"
           v-if="Object.keys(place).length"
           :place="place"
-        /> -->
-      </div>
+        /> 
+      </div> -->
     </div>
   </div>
 </template>
