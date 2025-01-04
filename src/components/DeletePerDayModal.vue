@@ -1,4 +1,19 @@
+<script setup>
+import '@/assets/loading.css'
+import { useLoadingStore } from "@/stores/loading"
+
+const loadingStore = useLoadingStore() 
+// loading 樣式已新增，刪除函式可插入 loadingStore.showLoading() 和 loadingStore.hideLoading() 使用
+
+
+</script>
+
 <template>
+  <LoadingOverlay :active="loadingStore.isLoading">
+    <div class="loadingio-spinner-ellipsis-nq4q5u6dq7r"><div class="ldio-x2uulkbinbj">
+    <div></div><div></div><div></div><div></div><div></div>
+    </div></div>
+  </LoadingOverlay>
   <dialog id="delete_date" class="modal">
     <div class="modal-box w-[384px] p-0">
       <form method="dialog">
@@ -8,7 +23,7 @@
         <img class="w-48 mx-auto" src="../assets/images/cat-4.png" alt="">
       </div>
       <div class="text-center">
-        <p class="text-lg font-medium">確定要刪除第 1 天及這天所有行程嗎？</p>
+        <p class="text-lg font-medium">確定要刪除這天所有行程嗎？</p>
         <p class="text-gray-400 pt-1">刪除後將無法復原哦</p>
       </div>
       <div class="w-full flex gap-3 px-5 py-6">
