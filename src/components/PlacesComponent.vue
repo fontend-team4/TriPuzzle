@@ -17,7 +17,7 @@ import { PlaceModalStore } from "@/stores/PlaceModal"
 import {
   favorites,
   loadFavorites,
-  toggleFavorite
+  toggleFavoriteStatus
 } from "@/stores/favorites.js"
 import axios from "axios"
 import { useRoute, useRouter } from "vue-router"
@@ -43,13 +43,44 @@ const API_URL = import.meta.env.VITE_HOST_URL
 
 const emit = defineEmits(["open-detail-modal", "updateIsPlacesComponent"])
 
-// 檢查登入狀態
-onMounted(() => {
+
+const items = ref(JSON.parse(localStorage.getItem("items") || "[]"));
+const localFavorites = ref(JSON.parse(localStorage.getItem("favorites") || "[]"));
+// 切換收藏狀態的按鈕事件處理
+const handleToggleFavorite = async (item) => {
+  const formattedItem = { ...item, place_id: item.id }; // 確保格式一致
+
+  // 執行收藏切換操作
+  await toggleFavoriteStatus(formattedItem);
+
+  // 更新當前 `item` 的 `isFavorited` 狀態
+  item.isFavorited = formattedItem.isFavorited; // 根據 toggleFavoriteStatus 的結果更新
+  localFavorites.isFavorited = formattedItem.isFavorited; // 更新本地收藏狀態
+};
+
+// 初始化頁面時，同步收藏狀態
+const syncFavoritesWithItems = () => {
+  const favoriteSet = new Set(favorites.value.map((fav) => fav.place_id)); // 儲存收藏的 place_id
+  items.value = items.value.map((item) => ({
+    ...item,
+    isFavorited: favoriteSet.has(item.id), // 如果 favorites 列表包含 item.id，標記為已收藏
+  }));
+};
+
+onMounted(async () => {
   isLogin.value = Boolean(token && userId.value);
-    if (isLogin.value) {
-      loadFavorites(); // 加載收藏列表
+  if (isLogin.value) {
+    await loadFavorites(); // 從後端 API 載入收藏列表
   }
-})
+  syncFavoritesWithItems(); // 同步收藏狀態
+});
+// // 檢查登入狀態
+// onMounted(() => {
+//   isLogin.value = Boolean(token && userId.value);
+//     if (isLogin.value) {
+//       loadFavorites(); // 加載收藏列表
+//   }
+// })
 
 // 瀑布流計算
 const calculateColumns = async () => {
@@ -180,7 +211,7 @@ watch(
                   v-if="isLogin"
                   class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer bg-gray hover:bg-opacity-75 tooltip"
                   :data-tip="item.isFavorited ? '已收藏' : '加入收藏'"
-                  @click.prevent.stop="toggleFavorite(item)"
+                  @click.prevent.stop="handleToggleFavorite(item)"
                 >
                   <component
                     :is="item.isFavorited ? HeartIcon : OutlineHeartIcon"
@@ -195,7 +226,7 @@ watch(
                   v-else
                   class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer bg-gray hover:bg-opacity-75 tooltip"
                   data-tip="請先登入!"
-                  @click.prevent.stop="toggleFavorite(item)"
+                  @click.prevent.stop="handleToggleFavorite(item)"
                 >
                   <OutlineHeartIcon class="text-gray-500 size-6" />
                 </button>

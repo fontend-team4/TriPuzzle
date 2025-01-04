@@ -38,50 +38,44 @@ const loadFavorites = async () => {
 };
 
 
-// 切換收藏狀態
-const toggleFavorite = async (item) => {
-  const LoginStore = LoginModalStore();
+const toggleFavoriteStatus = async (place) => {
+  const headers = { Authorization: token };
   if (!userId.value || !token) {
+    const LoginStore = LoginModalStore();
     LoginStore.openModal();
     return;
   }
-  const headers = { Authorization: token };
 
   try {
-    if (!item.isFavorited) {
-      await addFavorite(item, headers);
-      item.isFavorited = true; // 更新狀態為已收藏
+    const wasFavorited = place.isFavorited;
+    place.isFavorited = !wasFavorited;
+    if (!wasFavorited) {
+      console.log("嘗試新增收藏:", place.place_id);
+      await axios.post(`${API_URL}/favorites`, {
+        favorite_user: Number(userId.value),
+        favorite_places: place.place_id,
+      }, { headers });
+      favorites.value.push(place);
     } else {
-      await removeFavorite(item.id, headers);
-      item.isFavorited = false; // 更新狀態為未收藏
+      await axios.delete(`${API_URL}/favorites`, {
+        data: {
+          favorite_user: Number(userId.value),
+          favorite_places: place.place_id,
+        },
+        headers,
+      });
+      favorites.value = favorites.value.filter((fav) => fav.favorite_places !== place.place_id);
     }
+
+    updateLocalStorage(); // 同步 localStorage
+    console.log(`收藏狀態已更新: ${place.name} => ${place.isFavorited ? "已收藏" : "未收藏"}`);
   } catch (error) {
     handleError(error, "切換收藏狀態失敗");
   }
 };
 
-const antitoggleFavorite = async (place) => {
-  const headers = { Authorization: token };
-
-  try {
-    if (place.isFavorited) {
-      // 已收藏，執行移除收藏操作
-      await removeFavorite(place.place_id, headers);
-      place.isFavorited = false; // 更新狀態為未收藏
-    } else {
-      // 未收藏，執行新增收藏操作
-      await favoriteResponse(
-        {
-          favorite_user: Number(userId.value),
-          favorite_places: place.place_id,
-        },
-        headers
-      );
-      place.isFavorited = true; // 更新狀態為已收藏
-    }
-  } catch (error) {
-    handleError(error, "切換收藏狀態失敗");
-  }
+const updateLocalStorage = () => {
+  localStorage.setItem("favorites", JSON.stringify(favorites.value));
 };
 
 
@@ -181,7 +175,7 @@ const generateImageUrl = (photoReference) => {
 };
 
 
-export { favorites, loadFavorites, toggleFavorite, antitoggleFavorite, generateImageUrl };
+export { favorites, loadFavorites,toggleFavoriteStatus , generateImageUrl };
 
 
 

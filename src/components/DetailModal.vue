@@ -9,10 +9,11 @@ import {
   XMarkIcon,
   ArrowDownTrayIcon,
   LinkIcon,
-  HeartIcon,
   PaperAirplaneIcon,
   ChevronLeftIcon,
 } from "@heroicons/vue/24/outline"
+import { HeartIcon } from "@heroicons/vue/24/solid"
+import { HeartIcon as OutlineHeartIcon } from "@heroicons/vue/24/outline"
 import { StarIcon } from "@heroicons/vue/24/solid"
 // import DetailCarousel from "./DetailCarousel.vue"
 // import Waterfall from "./Waterfall.vue"
@@ -25,7 +26,10 @@ import axios from "axios"
 import { computed, ref, defineProps, defineEmits, onMounted, watch } from "vue"
 import { generateQRCode } from "@/utils/QRcode"
 import { addPlace } from "@/stores/addPlaces"
-import { generateImageUrl } from "@/stores/favorites"
+import {
+  loadFavorites,
+  toggleFavoriteStatus,
+  generateImageUrl } from "@/stores/favorites"
 
 const API_URL = process.env.VITE_HOST_URL
 const token = localStorage.getItem("token")
@@ -58,13 +62,28 @@ const modalStore = PlaceModalStore()
 const placesStore = usePlacesStore()
 const { copyToClipboard } = useCopyWebsiteStore()
 const route = useRoute()
+const items = ref(JSON.parse(localStorage.getItem("items") || "[]"));
 
+// 切換收藏狀態的按鈕事件處理
+const handleToggleFavorite = async (place,item) => {
+  let formattedPlace;
 
+    formattedPlace = { ...place, place_id: placeId }; // 不更改 place_id
+    console.log("formattedPlace", formattedPlace);
+
+  // 執行收藏切換操作
+  await toggleFavoriteStatus(formattedPlace);
+
+  // 更新收藏狀態以刷新顯示
+  place.isFavorited = formattedPlace.isFavorited;
+
+};
 // 計算屬性
 const currentPlaceId = computed(() => route.query.placeId)
 const placeData = computed(() => props.place || place.value)
 // member 路由判斷
 const isMemberRoute = computed(() => route.path.startsWith("/member"));
+const placeId = currentPlaceId.value || place.value?.id
 
 // 生成 QR Code 並下載
 const createQRCode = async (placeId) => {
@@ -113,23 +132,23 @@ watch(qrCodeDataUrl, (newUrl) => {
 })
 
 // 其他功能：照片切換、複製連結
-const changeShowPhoto = () => {
-  showPhoto.value = !showPhoto.value
-}
+// const changeShowPhoto = () => {
+//   showPhoto.value = !showPhoto.value
+// }
 
 
 // 控制 CSS 樣式
-const isPhotoShow = computed(() =>
-  showPhoto.value
-    ? ["h-screen", "md:translate-x-0", "opacity-100", "bottom-0"]
-    : [
-        "h-0",
-        "md:translate-x-full",
-        "md:translate-y-0",
-        "opacity-0",
-        "-bottom-12",
-      ]
-)
+// const isPhotoShow = computed(() =>
+//   showPhoto.value
+//     ? ["h-screen", "md:translate-x-0", "opacity-100", "bottom-0"]
+//     : [
+//         "h-0",
+//         "md:translate-x-full",
+//         "md:translate-y-0",
+//         "opacity-0",
+//         "-bottom-12",
+//       ]
+// )
 const overflowStatus = computed(() =>
   showPhoto.value ? ["overflow-hidden"] : [""]
 )
@@ -369,9 +388,16 @@ onMounted(fetchPlaceDetails)
               <button>close</button>
             </form>
           </dialog>
-          <div class="tooltip" data-tip="加到最愛">
-            <HeartIcon class="cursor-pointer size-6" />
-          </div>
+          <div class="tooltip" 
+            :data-tip="place.isFavorited ? '移除收藏' : '加入收藏'">
+            <button class="cursor-pointer" @click="handleToggleFavorite (place)">
+              <component
+                :is="place.isFavorited ? HeartIcon : OutlineHeartIcon"
+                :class="place.isFavorited ? 'text-red-500' : 'text-gray-500'"
+                class="size-6"
+              />
+            </button>
+            </div>
           <div class="tooltip" data-tip="導航">
             <PaperAirplaneIcon class="cursor-pointer size-6" />
           </div>
@@ -381,7 +407,7 @@ onMounted(fetchPlaceDetails)
         />
       </div>
       <!-- 照片區 -->
-      <div
+      <!-- <div
         class="absolute md:top-0 right-0 z-40 w-screen h-0 transition-all duration-300 transform bg-white md:w-[368px] md:right-0 overflow-auto"
         :class="isPhotoShow"
       >

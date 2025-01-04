@@ -10,7 +10,7 @@ const addPlace = async (item) => {
   const placeData = {
     place_id: item.id,
     name: item.name,
-    image_url: item.photos[0]?.photo_reference || null,
+    image_url: item.photos,
     location: item.location,
     rating: item.rating,
     phone: item.phone,
@@ -18,7 +18,6 @@ const addPlace = async (item) => {
     opening_hours: item.opening_hours,
     summary: item.summary,
     photos: item.photos,
-    photos_length: item.photos.length,
     geometry: item.geometry,
     address: item.address,
     website: item.website,
@@ -29,6 +28,7 @@ const addPlace = async (item) => {
     const existingPlaceResponse = await axios.get(`${API_URL}/places/${item.id}`);
     
     if (existingPlaceResponse.data) {
+      console.log("地點已存在於資料庫中");
       return; 
     } 
     // 資料庫中沒有該地點
