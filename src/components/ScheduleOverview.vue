@@ -246,12 +246,14 @@ onMounted(() => {
       <li
         class="w-[100px] pt-4 px-2.5 pb-2.5 bg-gray rounded-xl hover:cursor-pointer hover:bg-primary-100 hover:text-primary-600"
       >
-        <img
-          src="https://web.chictrip.com.tw/assets/img-exportbook.a62ae1d0.svg"
-          class="mx-auto"
-          alt=""
-        />
-        <p class="text-center font-medium mt-2">分帳</p>
+        <router-link to="/groups">
+          <img
+            src="https://web.chictrip.com.tw/assets/img-exportbook.a62ae1d0.svg"
+            class="mx-auto"
+            alt=""
+          />
+          <p class="text-center font-medium mt-2">分帳</p>
+        </router-link>
       </li>
     </ul>
   </div>
