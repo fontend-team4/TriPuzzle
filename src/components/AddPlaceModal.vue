@@ -54,54 +54,50 @@ async function initMap(center) {
 }
 
 const allMarkers = ref([])
-const getAllMarker = async(date, schedule)=>{
+const getAllMarker = async()=>{
   clearMarkers()
-  allMarkers.value.push(place.geometry)
-  console.log(date, "分隔",schedule);
-  // date是第幾天的意思，我要拿到schedules[schedule].schedule_places.places[i].geometry，push進allMarkers
  
+  allMarkers.value.push(place.geometry)
 
-  
-  
-  // 拿到place.geometry，push進allMarkers
-  // 點按下的行程，取得按下的是第index多少天，對照index拿到天數，拿到schedules[index].schedule_places.places.geometry，push進allMarkers
-  // const targetSchedule = schedules[index].value[initDate];
-  // if (!targetSchedule || !targetSchedule.schedule_places) {
-  //   console.error("無法找到目標的 schedule 或 schedule_places 為 undefined");
-  //   return;
-  // }
-
-  // // 遍歷 schedule_places，將 geometry 推入 allMarkers
-  // initSchedule.schedule_places.forEach((place) => {
-  //   if (place.places && place.places.geometry) {
-  //     allMarkers.value.push(place.places.geometry);
-  //   }
-  // });
-
-
-  console.log("所有的 markers：", allMarkers.value);
-  // updateMarkers()
+  if (Array.isArray(todayPlaces.value)) {
+    todayPlaces.value.forEach((place) => {
+      if (place.places && place.places.geometry) {
+        allMarkers.value.push(place.places.geometry);
+      }
+    });
+  }
+  updateMarkers()
 }
+
 async function updateMarkers() {
-  const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+  const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary("marker");
 
   if (!map.value) {
     console.error("地圖尚未初始化，無法新增標記");
     return;
   }
 
-  // 為每個位置新增標記
-  allMarkers.value.forEach((geometry) => {
+  allMarkers.value = allMarkers.value.map((geometry, index) => {
+    const pinOptions = index === 0
+      ? { background: "#FFD700", glyph: "+", glyphColor: "white" } 
+      : { background: "#5B5B5B", borderColor: "#5B5B5B", glyphColor: "white",glyph: `${index}`  }; 
+
+    const pinElement = new PinElement(pinOptions);
+
+
     const marker = new AdvancedMarkerElement({
-      position: geometry, // 直接使用經緯度對象
       map: map.value,
-      draggable: false,
+      position: geometry, 
+      content: pinElement.element,
     });
 
-    // 將 marker 實例保存到 allMarkers 中，方便後續操作
-    allMarkers.value.push(marker);
+    return marker;
   });
 }
+
+
+
+
 function clearMarkers() {
   if (allMarkers.value.length > 0) {
     allMarkers.value.forEach((marker) => {
@@ -119,7 +115,7 @@ function clearMarkers() {
 //景點資料
 const modalStore = PlaceModalStore()
 const place = modalStore.selectedPlace
-console.log("place有選取地點的經緯度",place);
+
 
 
 //訊息彈窗
@@ -215,7 +211,6 @@ onMounted(async () => {
         calculateDateRange(schedule.start_date, schedule.end_date)
       ),
     }))
-    console.log("schedules",schedules.value)
   } catch (error) {
     console.error("Error fetching schedules:", error)
   }
@@ -251,11 +246,6 @@ const addPlaceToSchedule = async () => {
   }
   try {
     const token = localStorage.getItem("token")
-    // console.log('準備發送數據:', {
-    //   order: selectedCardInfo.value.order,
-    //   schedule_id: selectedSchedule.value.id,
-    //   date: selectedDate.value
-    // });
     const res = await axios.post(
       `${URL}/schedulePlaces/`,
       {
@@ -290,9 +280,12 @@ const addPlaceToSchedule = async () => {
   }
 }
 
+const todayPlaces = ref([])
+
 const cards = ref([])
 const updateCards = (places) => {
   // console.log("調試 places:", places)
+  todayPlaces.value = places
   cards.value = []
 
   if (!places || places.length === 0) {
@@ -368,7 +361,7 @@ const switchToPage = (page, tab, schedule = null) => {
 watch(
   () => selectedTab.value, // 監聽 selectedTab 的變化
   (newTab) => {
-    console.log("觸發watch");
+    // console.log("觸發watch");
     
     if (!newTab || !currentSchedule.value) return;
 
@@ -523,7 +516,8 @@ const tab2Cls = computed(() => {
                           ]
                         )
                         initMap()
-                        getAllMarker(date, schedule.groupedPlaces)
+                        getAllMarker(selectedDate, schedule.groupedPlaces)
+                        // schedule.groupedPlaces只有在按下第一天時有用
                       } 
                       "
                       class="relative p-2 my-[0.5rem] bg-[#f4f4f4] rounded-xl cursor-pointer hover:bg-primary-100 box-border overflow-hidden">
@@ -600,6 +594,8 @@ const tab2Cls = computed(() => {
                           currentSchedule.groupedPlaces[selectedDate]
                         )
                       }
+                      // console.log('我要的更新AllMarker資料在這裡',currentSchedule.groupedPlaces[selectedDate]);
+                      
                     }
                     "
                     class="flex-shrink-0 pb-[4px] px-[16px] text-base cursor-pointer rounded-t-lg transition-colors duration-200 ease-in-out text-center"
