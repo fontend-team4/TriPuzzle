@@ -1,18 +1,22 @@
 <script setup>
-import { ref, inject } from 'vue'
-import { XMarkIcon } from '@heroicons/vue/24/solid'
-import { EyeIcon, EyeSlashIcon } from '@heroicons/vue/24/outline'
-import axios from 'axios'
-import { useUserStore } from '@/stores/userStore'
-import { LoginModalStore } from '@/stores/LoginModal.js'
+import { ref } from "vue"
+import { XMarkIcon } from "@heroicons/vue/24/solid"
+import { EyeIcon, EyeSlashIcon } from "@heroicons/vue/24/outline"
+import axios from "axios"
+import { useUserStore } from "@/stores/userStore"
+import { LoginModalStore } from "@/stores/LoginModal.js"
+import { MessageModalStore } from '@/stores/MessageModal'
+
+const loadingForBtn = ref(false)
+const messageStore = MessageModalStore()
 const LoginStore = LoginModalStore()
 const userStore = useUserStore()
+const isOpen=LoginStore.isOpen
 
 const API_URL = process.env.VITE_HOST_URL
 
 const Google_login = `${API_URL}/api/auth/google/callback`
-const Line_login =`${API_URL}api/auth/line/callback`
-
+const Line_login = `${API_URL}/api/auth/line/callback`
 
 const showPassword = ref(false)
 function togglePasswordVisibility() {
@@ -27,54 +31,14 @@ const loginPassword = ref('')
 const name = ref('')
 const email = ref('')
 const registerPassword = ref('')
+const URL=import.meta.env.VITE_HOST_URL
 
-//成功、錯誤訊息彈窗
-function showMessage({ title = '訊息', message, status }) {
-  const typeClasses = {
-    success: 'bg-green-500 hover:bg-green-700',
-    error: 'bg-primary-600 hover:bg-primary-700',
-  }
-  const buttonClass = typeClasses[status]
-  if (document.querySelector('#custom_modal')) {
-    document.querySelector('#modal_title').textContent = title // 更新標題
-    document.querySelector('#modal_message').textContent = message // 更新訊息
-    document
-      .querySelector('#modal_button')
-      .classList.remove(
-        'bg-green-500',
-        'hover:bg-green-700',
-        'bg-primary-600',
-        'hover:bg-primary-700'
-      )
-    document
-      .querySelector('#modal_button')
-      .classList.add(...buttonClass.split(' ')) // 更新class
-    document.querySelector('#custom_modal').showModal() // 顯示 Modal
-    return
-  }
-
-  const modalHTML = `
-    <dialog id="custom_modal" class="modal">
-      <div class="modal-box text-center w-[450px] h-[250px]">
-        <h3 id="modal_title" class="text-xl font-bold font-bold mb-4">${title}</h3>
-        <p id="modal_message" class="py-4">${message}</p>
-        <div class="modal-action justify-center">
-          <button id="modal_button" class="btn ${buttonClass} w-[80%] text-white py-3 rounded-full font-medium  mt-4" onclick="document.querySelector('#custom_modal').close()">確定</button>
-        </div>
-      </div>
-    </dialog>
-  `
-  // 動態插入 Modal 到 body
-  document.body.insertAdjacentHTML('beforeend', modalHTML)
-
-  // 顯示 Modal
-  document.querySelector('#custom_modal').showModal()
-}
 
 const loginSubmit = async () => {
+  loadingForBtn.value = true
   try {
     const res = await axios.post(
-      `${API_URL}/users/login`,
+      `${URL}/users/login`,
       {
         identifier: identifier.value,
         password: loginPassword.value,
@@ -86,37 +50,37 @@ const loginSubmit = async () => {
       }
     )
     if (res.data.status == 200) {
-      identifier.value = ''
-      loginPassword.value = ''
+      identifier.value = ""
+      loginPassword.value = ""
       userStore.setUser(res.data.user)
       userStore.setToken(res.data.token)
       // 提供 MemberView 讀取用戶資料使用
-      localStorage.setItem('userId', res.data.user.id)
-      localStorage.setItem('token', res.data.token)
+      localStorage.setItem("userId", res.data.user.id)
+      localStorage.setItem("token", res.data.token)
       LoginStore.closeModal()
-      showMessage({
-        title: '登入成功',
+      loadingForBtn.value = false
+      messageStore.messageModal({
         message: res.data.message,
-        status: 'success',
+        status: "success",
       })
-
       // 加入頁面重整的邏輯
       setTimeout(() => {
         window.location.reload()
       }, 1000)
     }
   } catch (err) {
-    const errorMessage = err.response?.data?.message || '未知錯誤'
-    showMessage({
-      title: '登入失敗',
+    loadingStore.hideLoading()
+    const errorMessage = err.response?.data?.message || "未知錯誤"
+    messageStore.messageModal({
+      title: "登入失敗",
       message: errorMessage,
-      status: 'error',
+      status: "error",
     })
   }
 }
 
 const hasAgreed = ref(false)
-const errorMessage = ref('')
+const errorMessage = ref("")
 // const isSubmitted = ref(false);
 
 const registerSubmit = async () => {
@@ -126,9 +90,10 @@ const registerSubmit = async () => {
     return
   }
   errorMessage.value = ''
+  loadingForBtn.value = true
   try {
     const res = await axios.post(
-      `${API_URL}/users/register`,
+      `${URL}/users/register`,
       {
         name: name.value,
         email: email.value,
@@ -141,11 +106,12 @@ const registerSubmit = async () => {
       }
     )
     if (res.data.status == 201) {
+      loadingForBtn.value = false
       name.value = ''
       email.value = ''
       registerPassword.value = ''
       switchLogRes.value = 'login'
-      showMessage({
+      messageStore.messageModal({
         title: '註冊成功',
         message: res.data.message,
         status: 'success',
@@ -153,18 +119,23 @@ const registerSubmit = async () => {
     }
   } catch (err) {
     const errorMessage = err.response?.data?.message || '未知錯誤'
-    showMessage({
+    messageStore.messageModal({
       title: '註冊失敗',
       message: errorMessage,
       status: 'error',
     })
   }
 }
+const service_term = ref(null)
+const openServiceModal = () => {
+  service_term.value.showModal()
+}
 </script>
 
 <template>
   <div
-    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center overflow-auto"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center overflow-auto z-50"
+    :class="{ 'z-[1100]': isOpen }"
   >
     <div
       class="bg-white pb-6 w-full h-full md:w-96 md:h-max md:rounded-2xl md:mb-20"
@@ -181,14 +152,13 @@ const registerSubmit = async () => {
         <div class="text-center">
           <div class="mb-4">
             <img
-              src="https://web.chictrip.com.tw/assets/logo.26916d07.svg"
+              src="../assets/svg/logo-dark.svg"
               alt="Logo"
-              class="h-12 w-auto mx-auto"
+              class="w-16 mx-auto"
             />
           </div>
         </div>
       </div>
-
       <div class="flex justify-center items-center">
         <div class="text-center w-full" v-if="switchLogRes === 'login'">
           <h2 class="text-xl font-bold">會員登入</h2>
@@ -240,10 +210,17 @@ const registerSubmit = async () => {
             </button>
           </div>
           <button
+            v-if="!loadingForBtn"
             @click="loginSubmit"
             class="w-[80%] bg-primary-600 text-white py-3 rounded-full font-medium hover:bg-primary-700 mt-10"
           >
             會員登入
+          </button>
+          <button
+            v-else
+            class="w-[80%] bg-primary-600 text-white py-3 rounded-full font-medium hover:bg-primary-700 mt-4"
+          >
+            <span class="loading loading-dots loading-md"></span>
           </button>
         </div>
       </div>
@@ -331,7 +308,7 @@ const registerSubmit = async () => {
             />
             <label for="agreement" class="ml-2 text-sm">
               我已閱讀並同意
-              <a href="#" class="text-blue-500 underline">旅圖會員服務條款</a>
+              <span @click="openServiceModal" class="text-blue-500 underline cursor-pointer">旅圖會員服務條款</span>
             </label>
           </div>
           <p class="text-red-500 text-sm font-light" v-if="errorMessage">
@@ -339,10 +316,17 @@ const registerSubmit = async () => {
           </p>
 
           <button
+            v-if="!loadingForBtn" 
             @click="registerSubmit"
             class="w-[80%] bg-primary-600 text-white py-3 rounded-full font-medium hover:bg-primary-700 mt-4"
           >
             會員註冊
+          </button>
+          <button
+            v-else
+            class="w-[80%] bg-primary-600 text-white py-3 rounded-full font-medium hover:bg-primary-700 mt-4"
+          >
+            <span class="loading loading-dots loading-md"></span>
           </button>
         </div>
       </div>
@@ -355,7 +339,7 @@ const registerSubmit = async () => {
           <img
             src="https://t4.ftcdn.net/jpg/03/91/79/25/360_F_391792593_BYfEk8FhvfNvXC5ERCw166qRFb8mYWya.jpg"
             alt="Google"
-            class="h-5 w-5"
+            class="h-6 w-6"
           />
         </a>
         <a
@@ -365,12 +349,31 @@ const registerSubmit = async () => {
           <img
             src="https://e7.pngegg.com/pngimages/630/685/png-clipart-line-computer-icons-social-media-line-flat-text-rectangle-thumbnail.png"
             alt="LINE"
-            class="h-5 w-5"
+            class="h-6 w-6"
           />
         </a>
       </div>
     </div>
   </div>
+  <dialog ref="service_term" class="modal">
+    <div class="modal-box">
+      <form method="dialog">
+        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+      </form>
+      <h3 class="text-2xl font-bold my-5 text-center">「Tripuzzle 旅圖」會員服務條款</h3>
+      <ul class="p-4">
+        <li class="mb-4">1. <span class="font-bold">會員帳號管理：</span>會員需妥善保管個人帳號及密碼，不得洩露或轉讓予他人使用。如發現帳號遭盜用，請立即通知我們進行處理。</li>
+        <li class="mb-4">2. <span class="font-bold">個人資料保護：</span>我們將依法保護您的個人資訊安全，不會未經您同意而對外公開或使用。您可隨時查閱、更正或要求刪除您的個人資料。</li>
+        <li class="mb-4">3. <span class="font-bold">服務使用限制：</span>會員不得利用本網站從事任何違法或不當行為，如有違反將被終止會員資格並承擔相關法律責任。</li>
+        <li class="mb-4">4. <span class="font-bold">智慧財產權：</span>本網站所有內容（包括但不限於文字、圖片、影音）均為「Tripuzzle 旅圖」所有，未經授權不得擅自使用或轉載。</li>
+        <li class="mb-4">5. <span class="font-bold">免責聲明：</span>對於因不可抗力因素或會員自身原因造成的損失，「Tripuzzle 旅圖」概不負責。如有任何爭議，以本網站公告的最新條款為準。</li>
+      </ul>
+    </div>
+    <form method="dialog" class="modal-backdrop">
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+      <button>close</button>
+    </form>
+  </dialog>
 </template>
 
 <style scoped></style>

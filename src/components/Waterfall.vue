@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, nextTick, onBeforeUnmount } from 'vue'
+import { ref, onMounted, nextTick, onBeforeUnmount } from "vue"
 
 const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
 const containerRef = ref(null) // 參考外容器

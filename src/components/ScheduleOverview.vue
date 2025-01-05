@@ -2,14 +2,16 @@
 import { ref, inject, onMounted } from "vue"
 import axios from "axios"
 import ScheduleCoverImgModal from "./ScheduleCoverImgModal.vue"
+import ScheduleSummaryModal from "./ScheduleSummaryModal.vue"
 import defaultCoverImage from "../assets/images/coverimage-1.jpg"
 import { CalendarCheck, EditPencil } from "@iconoir/vue"
 import {
   XMarkIcon,
   ArrowLongRightIcon,
-  PencilIcon,
+  UsersIcon,
   ArrowUpTrayIcon,
-} from "@heroicons/vue/24/solid"
+} from "@heroicons/vue/24/outline"
+import router from "@/router"
 
 const transprotations = ref([
   {
@@ -145,6 +147,10 @@ const upateSchedule = async (id) => {
   }
 }
 
+const goToMemberView = () => {
+  router.push("/member")
+}
+
 onMounted(() => {
   coverImage.value = defaultCoverImage
   getSchedule(scheduleId.value)
@@ -225,6 +231,7 @@ onMounted(() => {
     <ul class="flex justify-between">
       <li
         class="w-[100px] pt-4 px-2.5 pb-2.5 bg-gray rounded-xl hover:cursor-pointer hover:bg-primary-100 hover:text-primary-600"
+        @click="goToMemberView"
       >
         <img
           src="https://web.chictrip.com.tw/assets/img-myfavorite.42ac10ec.svg"
@@ -235,14 +242,16 @@ onMounted(() => {
       </li>
       <li
         class="w-[100px] pt-4 px-2.5 pb-2.5 bg-gray rounded-xl hover:cursor-pointer hover:bg-primary-100 hover:text-primary-600"
+        onclick="scheduleSummaryModal.showModal()"
       >
         <img
           src="https://web.chictrip.com.tw/assets/img-share.7c89cdf8.svg"
           class="mx-auto"
           alt=""
         />
-        <p class="text-center font-medium mt-2">共編</p>
+        <p class="text-center font-medium mt-2">摘要</p>
       </li>
+      <ScheduleSummaryModal />
       <li
         class="w-[100px] pt-4 px-2.5 pb-2.5 bg-gray rounded-xl hover:cursor-pointer hover:bg-primary-100 hover:text-primary-600"
       >

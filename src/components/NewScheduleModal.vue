@@ -10,6 +10,9 @@ import {
   ArrowUpTrayIcon,
 } from "@heroicons/vue/24/solid"
 import { CalendarCheck, MapXmark } from "@iconoir/vue"
+import { useLoadingStore } from "@/stores/loading"
+
+const loadingStore = useLoadingStore()
 
 const transprotations = ref([
   {
@@ -115,8 +118,10 @@ const addSchedule = async () => {
     end_date: endDate.value,
     transportation_way: transportationWay.value,
   }
+  loadingStore.showLoading()
   try {
     await axios.post(`${API_URL}/schedules`, ScheduleData, config)
+    loadingStore.hideLoading()
     addSuccess.value.showModal()
     setTimeout(() => {
       addSuccess.value.close()
@@ -142,12 +147,17 @@ onMounted(() => {
 </script>
 
 <template>
+  <LoadingOverlay :active="loadingStore.isLoading">
+    <div class="loadingio-spinner-ellipsis-nq4q5u6dq7r"><div class="ldio-x2uulkbinbj">
+    <div></div><div></div><div></div><div></div><div></div>
+    </div></div>
+  </LoadingOverlay>
   <dialog id="newSchedule" class="modal">
     <div
-      class="modal-box p-0 w-full md:max-w-[480px] sm:max-w-[100%] sm:max-h-[100%] max-md:rounded-none"
+      class="modal-box p-0 w-full md:max-w-[480px] sm:max-w-[100%] h-full sm:max-h-[100%] md:max-h-[724.75px] max-md:rounded-none"
     >
       <div
-        class="max-w-[480px] md:max-w-[480px] sm:max-w-[100%] h-[60px] px-[15px] py-[8px] sticky top-0 bg-white"
+        class="max-w-[480px] md:max-w-[480px] sm:max-w-[100%] h-[60px] px-[15px] py-[8px] sticky top-0 bg-white z-20"
       >
         <form method="dialog">
           <button
@@ -283,7 +293,7 @@ onMounted(() => {
 
       <!-- footer -->
       <div
-        class="w-[100%] h-[80px] bottom-0 sticky border-t-[1px] border-slate-200 py-[16px] px-[24px] z-20"
+        class="w-[100%] h-[80px] bottom-0 sticky border-t-[1px] border-slate-200 py-[16px] px-[24px] bg-white z-20"
       >
         <form method="dialog" class="flex gap-[12px]">
           <button

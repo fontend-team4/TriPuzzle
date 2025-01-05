@@ -22,17 +22,17 @@ const router = createRouter({
       component: () => import('../views/PlannerView.vue'),
       children: [
         { path: 'detail', component: DetailModal },
+        {
+          path: 'join/:shareToken',
+          name: 'ConfirmJoinSchedule',
+          component: () => import('../components/ConfirmJoinSchedule.vue'),
+        },
       ],
     },
     {
-      path: "/SearchArea",
-      name: "SearchArea",
-      component: () => import('../views/CategoryView.vue'),
-    },
-    {
-      path: "/category/:category?",
-      name: "CategoryView",
-      component: () => import('../views/CategoryView.vue'),
+      path: "/premium",
+      name: "PremiumView",
+      component: () => import('../views/PremiumView.vue'),
     },
     groupRoutes,
   ],

@@ -1,4 +1,4 @@
+const loadSvg = (name) => `src/assets/images/${name}.svg`
 const loadImage = (name) => `src/assets/images/${name}.jpg`
-const loadPNG = (name) => `src/assets/images/${name}.png`
 
-export { loadImage, loadPNG }
+export { loadSvg, loadImage }

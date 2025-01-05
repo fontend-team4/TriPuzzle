@@ -5,18 +5,25 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
 } from "@heroicons/vue/20/solid"
-import { loadPNG } from "@/assets/images/loadImage"
+import { loadJpg } from "@/assets/images/loader"
+import { useRouter } from "vue-router"
+
+const router = useRouter()
+
+const goToPlanner = () => {
+  router.push("/planner")
+}
 
 const currentIndex = ref(0)
 const maxIndex = computed(() => images.length - 3)
 const images = [
-  loadPNG("carousel-valley"),
-  loadPNG("carousel-spain"),
-  loadPNG("carousel-finland"),
-  loadPNG("carousel-japan"),
-  loadPNG("carousel-rainforest"),
-  loadPNG("carousel-glacier"),
-  loadPNG("carousel-sled"),
+  "carousel-valley",
+  "carousel-spain",
+  "carousel-finland",
+  "carousel-japan",
+  "carousel-rainforest",
+  "carousel-glacier",
+  "carousel-sled",
 ]
 </script>
 <template>
@@ -34,10 +41,10 @@ const images = [
           class="sm:hidden"
         />旅圖的每一刻都將充滿新鮮發現
       </h2>
-      <RouterLink to="/planner" class="linkBtn">
+      <button @click="goToPlanner" class="linkBtn">
         看更多熱門景點
         <ArrowRightIcon class="w-5 h-5 text-neutral-50" />
-      </RouterLink>
+      </button>
     </div>
     <div class="relative overflow-hidden">
       <div
@@ -47,7 +54,7 @@ const images = [
         }"
       >
         <img
-          :src="image"
+          :src="loadJpg(image)"
           class="carousel-items"
           v-for="(image, index) in images"
           :key="index"
@@ -60,7 +67,7 @@ const images = [
         }"
       >
         <img
-          :src="image"
+          :src="loadJpg(image)"
           class="carousel-items-md"
           v-for="(image, index) in images"
           :key="index"
