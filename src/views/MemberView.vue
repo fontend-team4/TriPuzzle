@@ -1,5 +1,4 @@
 <script setup>
-import '@/assets/loading.css'
 import { ref, onMounted, computed } from "vue"
 import { useRouter, useRoute } from "vue-router"
 import axios from "axios"
@@ -16,10 +15,12 @@ import { UserBadgeCheck, WarningTriangle, LogOut, MoneySquare } from "@iconoir/v
 import FavoritesList from "@/components/FavoritesList.vue"
 import DetailModal from "@/components/DetailModal.vue"
 import { usePlacesStore } from "@/stores/fetchPlaces"
-import Logo from "@/assets/images/cat-2.png"
+import defaultUserImage from "/images/cat-2.png"
+import '@/assets/loading.css'
 import { useLoadingStore } from "@/stores/loading"
 
 const loadingStore = useLoadingStore()
+const loadingForBtn = ref(false)
 const placesStore = usePlacesStore()
 const places = ref([])
 const route = useRoute()
@@ -36,7 +37,7 @@ const userGender = ref("")
 const userBirthday = ref("")
 const userDescription = ref("")
 const userLoginWay = ref("")
-const userImg = ref(Logo)
+const userImg = ref(defaultUserImage)
 const memberLevel = ref('小拼圖')
 
 const getUser = async () => {
@@ -108,25 +109,30 @@ const errorMsg = ref("")
 const UpdateSuccess = ref(null)
 const UpdateFailed = ref(null)
 const updateUser = async () => {
+  const config = {
+    headers: {
+      Authorization: token,
+    },
+  }
+  const updatedUserData = {
+    name: userName.value,
+    email: userEmail.value,
+    profile_pic_url: userImg.value,
+    gender: userGender.value,
+    birthday: userBirthday.value,
+    description: userDescription.value,
+  }
+  loadingForBtn.value = true
   try {
-    const config = {
-      headers: {
-        Authorization: token,
-      },
-    }
-    const updatedUserData = {
-      name: userName.value,
-      email: userEmail.value,
-      profile_pic_url: userImg.value,
-      gender: userGender.value,
-      birthday: userBirthday.value,
-      description: userDescription.value,
-    }
     const response = await axios.patch(
       `${API_URL}/users/profile/${userId}`,
       updatedUserData,
       config
     )
+    loadingForBtn.value = false
+    closeNickNameModal()
+    closeProfileModal()
+    closePersonalInformationModal()
     if (response.data.message === "User update successful") {
       UpdateSuccess.value.showModal()
       setTimeout(() => {
@@ -136,6 +142,7 @@ const updateUser = async () => {
     user.value = response.data.updatedData // 更新後的資料
     await getUser()
   } catch (error) {
+    loadingForBtn.value = false
     errorMsg.value = error.message
     UpdateFailed.value.showModal()
     setTimeout(() => {
@@ -151,16 +158,18 @@ const deleteComfire = () => {
 }
 const deletedSuccess = ref(null)
 const deleteUser = async () => {
+  const config = {
+    headers: {
+      Authorization: token,
+    },
+  }
+  loadingForBtn.value = true
   try {
-    const config = {
-      headers: {
-        Authorization: token,
-      },
-    }
     const response = await axios.delete(
       `${API_URL}/users/profile/${userId}`,
       config
     )
+    loadingForBtn.value = false
     if (response.data.message === `成功刪除 ID:${userId} 使用者`) {
       user.value = ""
       localStorage.removeItem("token")
@@ -171,6 +180,7 @@ const deleteUser = async () => {
       }, 1000)
     }
   } catch (error) {
+    loadingForBtn.value = false
     console.error(error.message)
   }
 }
@@ -206,21 +216,23 @@ const uploadImg = async () => {
   }
 }
 
+const Editmodal = ref(null)
 const closeEditmodal = () => {
-  const dialog = document.getElementById("Editmodal")
-  dialog?.close()
+  Editmodal.value.close()
 }
+
+const NickNameModal = ref(null)
 const closeNickNameModal = () => {
-  const dialog = document.getElementById("NickNameModal")
-  dialog?.close()
+  NickNameModal.value.close()
 }
+
+const ProfileModal = ref(null)
 const closeProfileModal = () => {
-  const dialog = document.getElementById("ProfileModal")
-  dialog?.close()
+  ProfileModal.value.close()
 }
-const closePersonalInformatioMmodal = () => {
-  const dialog = document.getElementById("PersonalInformatioMmodal")
-  dialog?.close()
+const PersonalInformationModal = ref(null)
+const closePersonalInformationModal = () => {
+  PersonalInformationModal.value.close()
 }
 
 const isModalOpen = computed(() => route.query.action === "placeInfo")
@@ -306,7 +318,7 @@ onMounted(async () => {
                 <div class="flex items-center gap-3 mt-4">
                   <button
                     class="flex items-center px-3 py-1 transition border rounded-full border-slate-400 hover:bg-primary-100 hover:text-primary-800"
-                    onclick="Editmodal.showModal()"
+                    @click="Editmodal.showModal()"
                   >
                     <PencilIcon class="w-4 h-4 mr-1" />
                     <span class="w-10">編輯</span>
@@ -351,7 +363,7 @@ onMounted(async () => {
         />
       </div>
     </div>
-    <dialog id="Editmodal" class="modal" @click.self="closeEditmodal">
+    <dialog ref="Editmodal" class="modal" @click.self="closeEditmodal">
       <div
         class="w-full h-full p-6 bg-white rounded-none md:w-96 md:h-max md:rounded-2xl md:mb-20"
       >
@@ -391,8 +403,8 @@ onMounted(async () => {
         <div class="bg-gray rounded-2xl">
           <button
             class="flex justify-between w-full p-2"
-            onclick="document.getElementById('NickNameModal').showModal()"
-          >
+            @click="NickNameModal.showModal()"
+            >
             <div class="flex flex-col items-start p-2">
               <span class="text-xs text-slate-400">暱稱</span>
               <p class="font-bold">{{ userName }}</p>
@@ -402,7 +414,7 @@ onMounted(async () => {
           <hr class="w-11/12 mx-auto border-slate-300" />
           <button
             class="flex justify-between w-full p-2"
-            onclick="document.getElementById('ProfileModal').showModal()"
+            @click="ProfileModal.showModal()"
           >
             <div class="flex flex-col items-start p-2">
               <span class="text-xs text-slate-400">個人簡介</span>
@@ -413,7 +425,7 @@ onMounted(async () => {
           <hr class="w-11/12 mx-auto border-slate-300" />
           <button
             class="flex justify-between w-full p-2"
-            onclick="document.getElementById('PersonalInformatioMmodal').showModal()"
+            @click="PersonalInformationModal.showModal()"
           >
             <div class="flex flex-col items-start p-2">
               <span class="text-xs text-slate-400">打造你的旅行名片</span>
@@ -466,7 +478,7 @@ onMounted(async () => {
         <button>close</button>
       </form>
     </dialog>
-    <dialog id="NickNameModal" class="modal" @click.self="closeNickNameModal">
+    <dialog ref="NickNameModal" class="modal" @click.self="closeNickNameModal">
       <div
         class="w-full h-full p-6 bg-white rounded-none md:w-96 md:h-max md:rounded-2xl md:mb-40"
       >
@@ -506,16 +518,22 @@ onMounted(async () => {
           <button
             type="button"
             class="w-full p-3 rounded-full text-primary-600 ring-1 ring-primary-600 hover:bg-primary-100"
-            onclick="document.getElementById('NickNameModal').close()"
+            @click="closeNickNameModal"
           >
             取消
           </button>
           <button
+            v-if="!loadingForBtn"
             class="w-full p-3 text-white rounded-full bg-primary-600 hover:bg-primary-800"
             @click="updateUser"
-            onclick="document.getElementById('NickNameModal').close()"
           >
             儲存
+          </button>
+          <button
+            v-else
+            class="w-full p-3 text-white rounded-full bg-primary-600 hover:bg-primary-800"
+          >
+            <span class="loading loading-dots loading-md"></span>
           </button>
         </div>
       </div>
@@ -526,7 +544,7 @@ onMounted(async () => {
         <button>close</button>
       </form>
     </dialog>
-    <dialog id="ProfileModal" class="modal" @click.self="closeProfileModal">
+    <dialog ref="ProfileModal" class="modal" @click.self="closeProfileModal">
       <div
         class="w-full h-full p-6 bg-white rounded-none md:w-96 md:h-max md:rounded-2xl md:mb-40"
       >
@@ -558,17 +576,23 @@ onMounted(async () => {
             <button
               type="button"
               class="w-full p-3 rounded-full text-primary-600 ring-1 ring-primary-600 hover:bg-primary-100"
-              onclick="document.getElementById('ProfileModal').close()"
+              @click="closeProfileModal"
             >
               取消
             </button>
             <button
+              v-if="!loadingForBtn"
               class="w-full p-3 text-white rounded-full bg-primary-600 hover:bg-primary-800"
               @click="updateUser"
-              onclick="document.getElementById('ProfileModal').close()"
             >
               儲存
             </button>
+            <button
+              v-else
+              class="w-full p-3 text-white rounded-full bg-primary-600 hover:bg-primary-800"
+            >
+            <span class="loading loading-dots loading-md"></span>
+          </button>
           </div>
         </div>
       </div>
@@ -580,9 +604,9 @@ onMounted(async () => {
       </form>
     </dialog>
     <dialog
-      id="PersonalInformatioMmodal"
+      ref="PersonalInformationModal"
       class="modal"
-      @click.self="closePersonalInformatioMmodal"
+      @click.self="closePersonalInformationModal"
     >
       <div
         class="w-full h-full p-6 bg-white rounded-none md:w-96 md:h-max md:rounded-2xl md:mb-40"
@@ -603,7 +627,7 @@ onMounted(async () => {
           </div>
           <div class="relative">
             <input
-              id="PersonalInformatio"
+              id="PersonalInformation"
               class="w-full p-2 px-4 pr-10 border rounded-lg"
               type="text"
               placeholder="輸入Email"
@@ -612,7 +636,7 @@ onMounted(async () => {
             <button
               type="button"
               class="absolute transform -translate-y-1/2 right-3 top-1/2"
-              onclick="document.getElementById('PersonalInformatio').value=''"
+              onclick="document.getElementById('PersonalInformation').value=''"
             >
               <XMarkIcon class="w-5 h-5" />
             </button>
@@ -677,16 +701,22 @@ onMounted(async () => {
           <button
             type="button"
             class="w-full p-3 rounded-full text-primary-600 ring-1 ring-primary-600 hover:bg-primary-100"
-            onclick="document.getElementById('PersonalInformatioMmodal').close()"
+            @click="closePersonalInformationModal"
           >
             取消
           </button>
           <button
+            v-if="!loadingForBtn"
             class="w-full p-3 text-white rounded-full bg-primary-600 hover:bg-primary-800"
             @click="updateUser"
-            onclick="document.getElementById('PersonalInformatioMmodal').close()"
           >
             儲存
+          </button>
+          <button
+              v-else
+              class="w-full p-3 text-white rounded-full bg-primary-600 hover:bg-primary-800"
+            >
+            <span class="loading loading-dots loading-md"></span>
           </button>
         </div>
       </div>
@@ -768,10 +798,17 @@ onMounted(async () => {
             取消
           </button>
           <button
+            v-if="!loadingForBtn"
             class="w-full h-12 px-5 py-3 font-medium text-center text-white bg-primary-600 hover:bg-primary-700 rounded-3xl"
             @click="deleteUser"
           >
             刪除
+          </button>
+          <button
+            v-else
+            class="w-full h-12 px-5 py-3 font-medium text-center text-white bg-primary-600 hover:bg-primary-700 rounded-3xl"
+          >
+            <span class="loading loading-dots loading-md"></span>
           </button>
         </div>
       </div>

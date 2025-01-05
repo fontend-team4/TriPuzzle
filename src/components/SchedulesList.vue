@@ -1,11 +1,10 @@
 <script setup>
-import { ref, inject, onMounted, computed, provide } from "vue"
+import { ref, inject, onMounted, computed } from "vue"
 import axios from "axios"
 import { EllipsisHorizontalIcon } from "@heroicons/vue/16/solid"
 import {
   XMarkIcon,
   UserPlusIcon,
-  ShareIcon,
   DocumentDuplicateIcon,
   TrashIcon,
 } from "@heroicons/vue/24/outline";
@@ -196,7 +195,7 @@ const copySchedule = async () => {
     },
   };
   const ScheduleData = {
-    title: scheduleName.value,
+    title: `${scheduleName.value} - 複製`,
     image_url: coverImage.value,
     schedule_note: scheduleNote.value,
     start_date: startDate.value,
