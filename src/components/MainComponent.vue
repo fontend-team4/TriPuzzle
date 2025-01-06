@@ -58,16 +58,6 @@ const currentPlace = computed(() => {
 const closeDetailModal = () => {
   router.push({ path: "/planner" })
 }
-// 關掉後仍會地圖瀑布流能夠渲染附近地點
-// onMounted(async () => {
-//   try {
-//     await placesStore.fetchDefaultPlaces() // 抓取資料
-//     places.value = placesStore.items
-//   } catch (error) {
-//     console.error("Failed to fetch places:", error)
-//     places.value = [] // 防止錯誤導致的 undefined
-//   }
-// })
 
 // 監聽searchData
 watch(
@@ -113,7 +103,7 @@ watch(
 </script>
 
 <template>
-  <div class="fixed top-11 lg:top-0 z-40 w-full lg:h-20" :class="searchBarBg">
+  <div class="fixed z-40 w-full top-11 lg:top-0 lg:h-20" :class="searchBarBg">
     <div
       class="absolute top-0 left-0 z-10 flex gap-4 transition-all item-center lg:top-5 lg:left-8"
       :class="topBarSwitch"

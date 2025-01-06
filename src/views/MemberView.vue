@@ -265,7 +265,6 @@ onMounted(async () => {
   loadingStore.showLoading()
   try {
     await getUser()
-    await placesStore.fetchDefaultPlaces() // 抓取資料
     loadingStore.hideLoading()
     console.log("places:", places.value)
   } catch (error) {
@@ -296,7 +295,7 @@ onMounted(async () => {
       <img
         src="../assets/svg/Logo.svg"
         alt=""
-        class="w-0 lg:w-24 mt-6 ml-8 lg:ml-1 md:ml-8 sm:ml-8"
+        class="w-0 mt-6 ml-8 lg:w-24 lg:ml-1 md:ml-8 sm:ml-8"
       />
     </div>
     <div class="flex-1 p-2 sm:ml-1 md:ml-1 lg:ml-10">
@@ -313,8 +312,8 @@ onMounted(async () => {
             <div class="sm:mr-0">
               <div class="block pl-4 mt-2 md:mr-20 sm:mr-0">
                 <span class="mt-4 text-xl font-semibold">{{ userName }}</span>
-                <span v-if="memberLevel === '大拼圖'" class="text-sm px-3 py-1 mx-3 text-white rounded-full bg-primary-200" :class="level">大拼圖</span>
-                <span v-if="memberLevel === 'VIP拼圖達人'" class="text-sm px-3 py-1 mx-3 text-white rounded-full bg-primary-200" :class="level">VIP 拼圖達人</span>
+                <span v-if="memberLevel === '大拼圖'" class="px-3 py-1 mx-3 text-sm text-white rounded-full bg-primary-200" :class="level">大拼圖</span>
+                <span v-if="memberLevel === 'VIP拼圖達人'" class="px-3 py-1 mx-3 text-sm text-white rounded-full bg-primary-200" :class="level">VIP 拼圖達人</span>
                 <p class="mt-2">{{ userEmail }}</p>
                 <div class="flex items-center gap-3 mt-4">
                   <button
