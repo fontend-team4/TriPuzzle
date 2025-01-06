@@ -128,6 +128,7 @@ const addSchedule = async () => {
     }, 1000)
     props.savetoSchedules()
   } catch (err) {
+    loadingStore.hideLoading()
     console.error(err.message)
     addFailed.value.showModal()
     setTimeout(() => {

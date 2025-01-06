@@ -24,10 +24,8 @@ import {
 
 // 定義狀態
 const places = ref([])
-const loading = ref(true)
 const userId = ref(localStorage.getItem("userId"))
 const token = localStorage.getItem("token")
-
 
 const API_URL = import.meta.env.VITE_HOST_URL
 
@@ -52,8 +50,6 @@ const fetchPlaces = async () => {
     localStorage.setItem("favorites", JSON.stringify(places.value));
   } catch (err) {
     alert("無法獲取景點資料", err);
-  } finally {
-    loading.value = false;
   }
 };
 
@@ -70,13 +66,8 @@ onMounted(fetchPlaces)
 
 <template>
   <div class="favorites">
-    <!-- 載入中 -->
-    <div v-if="loading" class="text-center">
-      <p>載入中...</p>
-    </div>
-
     <!-- 沒有收藏景點 -->
-    <div v-else-if="places.length === 0" class="text-center p-6 rounded-lg">
+    <div v-if="places.length === 0" class="text-center p-6 rounded-lg">
       <img
         src="../assets/images/cat-7.png"
         alt="Empty collection"
