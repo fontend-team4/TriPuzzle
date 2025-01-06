@@ -153,7 +153,7 @@ const goToMemberView = () => {
 
 
 const goToGroupView = () => {
-  router.push({
+  router.replace({
     name: 'GroupView', // 使用命名路由，確保與 `groups.js` 名稱一致
     params: { scheduleId: scheduleId.value },
   });
