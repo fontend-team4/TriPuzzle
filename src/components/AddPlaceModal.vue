@@ -7,8 +7,10 @@ import {
   nextTick,
   watch,
   defineProps,
-  onBeforeUnmount
-} from 'vue';
+  onBeforeUnmount,
+  shallowRef
+} from "vue"
+
 import {
   XMarkIcon,
   ChevronDownIcon,
@@ -22,24 +24,12 @@ import { useUserStore } from '@/stores/userStore';
 import axios from 'axios';
 import { MessageModalStore } from '@/stores/MessageModal';
 
-//googlemap
-async function initMap() {
-  const { Map } = await google.maps.importLibrary('maps');
-  const newMap = new Map(document.getElementById('map2'), {
-    center: { lat: 25.0341222, lng: 121.5640212 },
-    zoom: 15,
-    maxZoom: 20,
-    minZoom: 3,
-    streetViewControl: false,
-    mapTypeControl: false,
-    mapId: '83af7188f1a0650d'
-  });
-  map.value = newMap;
-}
 
 //抓user資料
-const userStore = useUserStore();
-const userData = ref(null);
+const userStore = useUserStore()
+const userData = ref(null)
+const map = shallowRef(null)
+
 onMounted(async () => {
   try {
     const res = await userStore.getUser();
@@ -49,9 +39,87 @@ onMounted(async () => {
   }
 });
 
+
+
+// 地圖區
+async function initMap(center) {
+  const { Map } = await google.maps.importLibrary("maps")
+  const newMap = new Map(document.getElementById("map2"), {
+    center: place.geometry || { lat: 25.0341222, lng: 121.5640212 },
+    zoom: 13,
+    maxZoom: 20,
+    minZoom: 3,
+    streetViewControl: false,
+    mapTypeControl: false,
+    mapId: "83af7188f1a0650d",
+  })
+  map.value = newMap
+}
+
+const allMarkers = ref([])
+const getAllMarker = async()=>{
+  clearMarkers()
+ 
+  allMarkers.value.push(place.geometry)
+
+  if (Array.isArray(todayPlaces.value)) {
+    todayPlaces.value.forEach((place) => {
+      if (place.places && place.places.geometry) {
+        allMarkers.value.push(place.places.geometry);
+      }
+    });
+  }
+  updateMarkers()
+}
+
+async function updateMarkers() {
+  const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary("marker");
+
+  if (!map.value) {
+    console.error("地圖尚未初始化，無法新增標記");
+    return;
+  }
+
+  allMarkers.value = allMarkers.value.map((geometry, index) => {
+    const pinOptions = index === 0
+      ? { background: "#FFD700", glyph: "+", glyphColor: "white" } 
+      : { background: "#5B5B5B", borderColor: "#5B5B5B", glyphColor: "white",glyph: `${index}`  }; 
+
+    const pinElement = new PinElement(pinOptions);
+
+
+    const marker = new AdvancedMarkerElement({
+      map: map.value,
+      position: geometry, 
+      content: pinElement.element,
+    });
+
+    return marker;
+  });
+}
+
+
+
+
+function clearMarkers() {
+  if (allMarkers.value.length > 0) {
+    allMarkers.value.forEach((marker) => {
+      if (marker instanceof google.maps.marker.AdvancedMarkerElement) {
+        marker.setMap(null);
+      }
+    });
+  }
+  allMarkers.value = []; // 清空標記數組
+}
+
+
+
+
 //景點資料
 const modalStore = PlaceModalStore();
 const place = modalStore.selectedPlace;
+
+
 
 //訊息彈窗
 const messageStore = MessageModalStore();
@@ -220,11 +288,13 @@ const addPlaceToSchedule = async () => {
   }
 };
 
-const cards = ref([]);
+
+const todayPlaces = ref([])
+const cards = ref([])
 const updateCards = (places) => {
   // console.log("調試 places:", places)
-  cards.value = [];
-
+  todayPlaces.value = places
+  cards.value = []
   if (!places || places.length === 0) {
     // console.log("找不到景點資料")
     cards.value.push({
@@ -303,6 +373,22 @@ const switchToPage = (page, tab, schedule = null) => {
     // console.log("Current schedule after switch:", currentSchedule.value)
   }
 };
+
+watch(
+  () => selectedTab.value, // 監聽 selectedTab 的變化
+  (newTab) => {
+    // console.log("觸發watch");
+    
+    if (!newTab || !currentSchedule.value) return;
+
+    // 從 selectedTab 提取 index
+    const match = newTab.match(/day(\d+)/);
+    if (match) {
+      const index = parseInt(match[1], 10) - 1; // 將 dayN 轉為索引
+      getAllMarker(index); // 這變成行程的index了我要的是天數的index
+    }
+  }
+);
 
 // 滾輪移動邏輯，添加 ref 用於獲取容器參數
 const tabsContainer = ref(null);
@@ -650,22 +736,19 @@ const tab2Cls = computed(() => {
                     <ChevronUpIcon v-else class="text-black size-3" />
                   </div>
                   <div class="collapse-content p-0 pl-[1rem]">
-                    <div
-                      v-for="(date, index) in schedule.dates"
-                      :key="index"
-                      @click="
-                        () => {
-                          selectedSchedule = schedule;
-                          selectedDate = date.toISOString().split('T')[0];
-                          currentSchedule = schedule;
-                          switchToPage('DayCard', `day${index + 1}`, schedule);
-                          updateCards(
-                            schedule.groupedPlaces[
-                              date.toISOString().split('T')[0]
-                            ]
-                          );
-                          initMap();
-                        }
+                    <div v-for="(date, index) in schedule.dates" :key="index" @click="() => {
+                        selectedSchedule = schedule
+                        selectedDate = date.toISOString().split('T')[0]
+                        currentSchedule = schedule
+                        switchToPage('DayCard', `day${index + 1}`, schedule)
+                        updateCards(
+                          schedule.groupedPlaces[
+                          date.toISOString().split('T')[0]
+                          ]
+                        )
+                        initMap()
+                        getAllMarker(selectedDate, schedule.groupedPlaces)
+                      } 
                       "
                       class="relative p-2 my-[0.5rem] bg-[#f4f4f4] rounded-xl cursor-pointer hover:bg-primary-100 box-border overflow-hidden"
                     >
@@ -746,10 +829,7 @@ const tab2Cls = computed(() => {
         </button>
 
         <!-- 左邊 -->
-        <div
-          class="md:w-2/3 bg-gray h-screen google-map min-w-screen"
-          id="map2"
-        ></div>
+        <div class="h-screen md:w-2/3 bg-gray google-map min-w-screen" id="map2"></div>
         <!-- 右邊 -->
         <div class="box-border relative overflow-hidden bg-white md:w-1/3">
           <h2
@@ -779,23 +859,16 @@ const tab2Cls = computed(() => {
                 </button>
 
                 <!-- 標籤容器 -->
-                <div
-                  ref="tabsContainer"
-                  class="flex overflow-x-auto scrollbar-hide mx-10"
-                >
-                  <div
-                    v-for="(date, index) in currentSchedule.dates"
-                    :key="index"
-                    @click="
-                      () => {
-                        selectedTab = `day${index + 1}`;
-                        if (date) {
-                          selectedDate = date.toISOString().split('T')[0];
-                          updateCards(
-                            currentSchedule.groupedPlaces[selectedDate]
-                          );
-                        }
+                <div ref="tabsContainer" class="flex mx-10 overflow-x-auto scrollbar-hide">
+                  <div v-for="(date, index) in currentSchedule.dates" :key="index" @click="() => {
+                      selectedTab = `day${index + 1}`
+                      if (date) {
+                        selectedDate = date.toISOString().split('T')[0]
+                        updateCards(
+                          currentSchedule.groupedPlaces[selectedDate]
+                        )
                       }
+                    }
                     "
                     class="flex-shrink-0 pb-[4px] px-[16px] text-base cursor-pointer rounded-t-lg transition-colors duration-200 ease-in-out text-center"
                     :class="[
@@ -815,11 +888,8 @@ const tab2Cls = computed(() => {
                   class="absolute right-0 z-10 flex items-center justify-center w-8 h-8 group"
                 >
                   <div
-                    class="p-1 transition-all duration-200 hover:border-[1px] hover:border-primary-600 hover:rounded-full group-hover:text-primary-600"
-                  >
-                    <ChevronLeftIcon
-                      class="w-4 h-4 text-gray-600 group-hover:text-primary-600 rotate-180"
-                    />
+                    class="p-1 transition-all duration-200 hover:border-[1px] hover:border-primary-600 hover:rounded-full group-hover:text-primary-600">
+                    <ChevronLeftIcon class="w-4 h-4 text-gray-600 rotate-180 group-hover:text-primary-600" />
                   </div>
                 </button>
               </div>
