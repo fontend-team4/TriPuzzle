@@ -61,8 +61,8 @@ provide("transportationToggle", transportationToggle)
     <span class="inline-block w-6 h-6"><GlobeAsiaAustraliaIcon /></span>
     <p class="text-sm pl-0.5 font-medium hidden">行程</p>
   </div>
-  <SchedulesList v-if="listOpen" class="absolute top-0 right-0 z-20" />
-  <ScheduleDetail v-if="detailOpen" class="absolute top-0 right-0 z-20" />
+  <SchedulesList v-if="listOpen" class="fixed top-0 right-0 z-20" />
+  <ScheduleDetail v-if="detailOpen" class="fixed top-0 right-0 z-20" />
   <TransportationWay
     v-if="transportationOpen"
     class="absolute top-0 right-0 z-20"

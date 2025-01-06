@@ -113,7 +113,7 @@ watch(
 </script>
 
 <template>
-  <div class="fixed top-0 z-40 w-full h-20" :class="searchBarBg">
+  <div class="fixed top-11 lg:top-0 z-40 w-full lg:h-20" :class="searchBarBg">
     <div
       class="absolute top-0 left-0 z-10 flex gap-4 transition-all item-center lg:top-5 lg:left-8"
       :class="topBarSwitch"
@@ -128,7 +128,7 @@ watch(
         v-model:isPlacesComponent="isPlacesComponent"
       />
     </div>
-    <ScheduleSideBar ref="schedulesListRef" />
+    <ScheduleSideBar ref="schedulesListRef" class="z-20"/>
   </div>
 
   <!-- 瀑布流 -->
