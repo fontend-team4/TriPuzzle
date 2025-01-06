@@ -74,13 +74,6 @@ onMounted(async () => {
   }
   syncFavoritesWithItems(); // 同步收藏狀態
 });
-// // 檢查登入狀態
-// onMounted(() => {
-//   isLogin.value = Boolean(token && userId.value);
-//     if (isLogin.value) {
-//       loadFavorites(); // 加載收藏列表
-//   }
-// })
 
 // 瀑布流計算
 const calculateColumns = async () => {
@@ -114,14 +107,14 @@ const openDetailModal = (detailId) => {
 }
 
 
-// 更新地圖中心點
+
 const updateMapCenter = (item) => {
   searchStore.placeGeometry = item.geometry;
   emit("updateIsPlacesComponent", false);
 };
 
 
-// 初始化
+
 onMounted(async () => {
   const placeId = route.query.placeId; // URL中的placeId
   if (placeId) {

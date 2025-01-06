@@ -1,10 +1,6 @@
 import { defineStore } from "pinia"
-import axios from "axios"
 
 const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
-
-const API_URL = import.meta.env.VITE_HOST_URL
-
 
 export const usePlacesStore = defineStore("places", {
   state: () => ({
@@ -13,20 +9,6 @@ export const usePlacesStore = defineStore("places", {
   }),
 
   actions: {
-    async fetchDefaultPlaces(lat = 25.0341222, lng = 121.5640212) {
-      this.items = []
-      try {
-        const response = await axios.get(
-          `${API_URL}/places/search?latitude=${lat}&longitude=${lng}&type=tourist_attraction`
-        )
-        this.places = response.data
-        this.initializeItems()
-      } catch (err) {
-        console.error(err.message)
-        alert("搜尋失敗")
-      }
-    },
-
     initializeItems() {
       this.items = this.places.map((location) => ({
         id: location.place_id,
@@ -52,9 +34,5 @@ export const usePlacesStore = defineStore("places", {
       this.places = searchData
       this.initializeItems()
     },
-  },
-
-  persist: {
-    path: ["places", "items"],
   },
 })
