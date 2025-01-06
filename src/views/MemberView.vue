@@ -1,4 +1,5 @@
 <script setup>
+import '@/assets/loading.css'
 import { ref, onMounted, computed } from "vue"
 import { useRouter, useRoute } from "vue-router"
 import axios from "axios"
@@ -295,7 +296,7 @@ onMounted(async () => {
       <img
         src="../assets/svg/Logo.svg"
         alt=""
-        class="w-24 mt-1 ml-8 lg:ml-1 md:ml-8 sm:ml-8"
+        class="w-0 lg:w-24 mt-6 ml-8 lg:ml-1 md:ml-8 sm:ml-8"
       />
     </div>
     <div class="flex-1 p-2 sm:ml-1 md:ml-1 lg:ml-10">
