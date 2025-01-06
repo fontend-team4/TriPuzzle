@@ -1,10 +1,12 @@
 <script setup>
-
-import { defineProps, defineEmits, ref, watch, computed } from 'vue'
+import { defineProps, defineEmits, ref, watch, computed, onMounted } from 'vue'
 import { LinkIcon } from '@heroicons/vue/24/outline'
 import ExitCoEditModal from './ExitCoEditModal.vue'
 import axios from 'axios'
+import '@/assets/loading.css'
+import { useLoadingStore } from "@/stores/loading"
 
+const loadingStore = useLoadingStore()
 const API_URL = process.env.VITE_HOST_URL
 const defaultProfilePicUrl = '/images/cat-2.png';
 const shareSchedules = ref([]);
@@ -79,7 +81,6 @@ function showMessage({ title = "訊息", message, status }) {
   document.querySelector("#custom_modal").showModal()
 }
 
-
 const scheduleUpdate = async()=>{
   emit('scheduleUpdate');
   const config = {
@@ -122,7 +123,6 @@ const getShareSchedules = async () => {
   }
 };
 
-
 const openExitModal = (scheduleId, userId) => {
   leavedUserId.value = userId; 
 };
@@ -145,37 +145,39 @@ const copyShareLink = async () => {
   }
 };
 
-
-
-
 const updateActiveTab = (status) => {
   emit("updateStatus", status)
 }
-
 
 const isCreator =  computed(()=>{
   return creator.value.id == localStorage.getItem("userId")
 })
 
 watch(props, ({ sharePeople }) => {
+  loadingStore.showLoading()
   const { sharedUsers = [], schedule_id = 0, creator: newCreator = {}, totalUsers } = sharePeople || {};
   shareMembers.value = sharedUsers;
   leavedId.value = schedule_id;
   total_users.value = totalUsers;
-
   creator.value = {
     id: newCreator.id || creator.value.id,
     name: newCreator.name || creator.value.name,
     email: newCreator.email || creator.value.email,
     profile_pic_url: newCreator.profile_pic_url || defaultProfilePicUrl,
   };
-});
-
-
+  setTimeout(() => {
+    loadingStore.hideLoading()
+  }, 3000);
+})
 
 </script>
 
 <template>
+  <LoadingOverlay :active="loadingStore.isLoading">
+    <div class="loadingio-spinner-ellipsis-nq4q5u6dq7r"><div class="ldio-x2uulkbinbj">
+    <div></div><div></div><div></div><div></div><div></div>
+    </div></div>
+  </LoadingOverlay>
   <dialog id="shareSchedule" class="modal">
     <div class="modal-box min-w-full md:min-w-[480px] bg-gray relative">
       <form method="dialog">

@@ -16,6 +16,7 @@ const scheduleDate = ref("");
 
 const token = localStorage.getItem("token");
 
+const loadingForBtn = ref(false)
 
 function showMessage({ title = "訊息", message, status }) {
   const typeClasses = {
@@ -58,8 +59,6 @@ function showMessage({ title = "訊息", message, status }) {
   // 顯示 Modal
   document.querySelector("#custom_modal").showModal()
 }
-
-
 
 onMounted(async () => {
   const token = localStorage.getItem("token");
@@ -111,14 +110,11 @@ onMounted(async () => {
         status: "error",
       });
     }
-
     router.push("/planner");
   } finally {
     loading.value = false;
   }
 });
-
-
 
 const joinSchedule = async () => {
   const config = {
@@ -126,13 +122,14 @@ const joinSchedule = async () => {
       Authorization: token,
     },
   };
-
+  loadingForBtn.value = true
   try {
     await axios.post(
       `${API_URL}/usersSchedules/join/${shareToken.value}`,
       {},
       config
     );
+  loadingForBtn.value = false
     showMessage({
       title: "成功",
       message: "您已成功加入行程！",
@@ -141,7 +138,7 @@ const joinSchedule = async () => {
     router.push("/planner");
   } catch (err) {
     console.error("Error joining schedule:", err.message);
-
+    loadingForBtn.value = false
     const errorMessage = err.response?.data?.error || "發生未知錯誤";
     showMessage({
       title: "小提醒",
@@ -150,10 +147,6 @@ const joinSchedule = async () => {
     });
   }
 };
-
-
-
-
 
 const redirectToHome = () => {
   router.push("/planner");
@@ -201,10 +194,17 @@ const redirectToHome = () => {
           我再想想
         </button>
         <button
+          v-if="!loadingForBtn"
           @click="joinSchedule"
           class="w-[50%] h-[48px] bg-primary-600 rounded-3xl text-white font-bold text-sm justify-center items-center px-[12px] py-[8px] hover:bg-primary-700"
         >
           確定加入！
+        </button>
+        <button
+          v-else
+          class="w-[50%] h-[48px] bg-primary-600 rounded-3xl text-white font-bold text-sm justify-center items-center px-[12px] py-[8px] hover:bg-primary-700"
+        >
+          <span class="loading loading-dots loading-md"></span>
         </button>
       </div>
     </div>
