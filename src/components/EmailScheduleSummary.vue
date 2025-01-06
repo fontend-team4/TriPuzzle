@@ -1,7 +1,9 @@
 <script setup>
 import { ref, defineProps } from "vue"
 import emailjs from "@emailjs/browser"
-import { SendMail, MailOut } from "@iconoir/vue"
+import { SendMail, MailOut, MailOpen } from "@iconoir/vue"
+
+const loadingForBtn = ref(false)
 
 const props = defineProps({
   scheduleSummaryText: {
@@ -10,19 +12,29 @@ const props = defineProps({
   },
 })
 
-const PUBLIC_KEY = process.env.VITE_EMAILJS_PUBLIC_KEY
-const SERVICE_ID = process.env.VITE_EMAILJS_SERVICE_ID
-const TEMPLATE_ID = process.env.VITE_EMAILJS_TEMPLATE_ID
+const EmailScheduleSummary = ref(null)
+const closeModal = () => {
+  EmailScheduleSummary.value.close()
+}
+
+const { VITE_EMAILJS_PUBLIC_KEY, VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID } = process.env
 const email = ref("")
 const emailSendSuccess = ref(null)
 const sendSuccessMsg = ref("")
+const emailSendfaild = ref(null)
+const sendfaildMsg = ref("")
+
 const sendEmail = () => {
   const templateParams = {
     scheduleSummary: props.scheduleSummaryText.join("\n"),
     email: email.value,
   }
-  emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY).then(
+  loadingForBtn.value = true
+  emailjs.send(VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID, templateParams, VITE_EMAILJS_PUBLIC_KEY)
+  .then(
     (response) => {
+      loadingForBtn.value = false
+      closeModal()
       sendSuccessMsg.value = "信件寄送成功!"
       emailSendSuccess.value.showModal()
       setTimeout(() => {
@@ -30,7 +42,13 @@ const sendEmail = () => {
       }, 1500)
     },
     (error) => {
-      console.log("信件寄送失敗...", error)
+      loadingForBtn.value = false
+      closeModal()
+      sendfaildMsg.value = "尚未輸入寄送信箱"
+      emailSendfaild.value.showModal()
+      setTimeout(() => {
+        emailSendfaild.value.close()
+      }, 1500)
     }
   )
   email.value = ""
@@ -40,12 +58,12 @@ const sendEmail = () => {
 <template>
   <button
     class="w-full h-12 px-5 py-3 border border-primary-600 text-primary-600 hover:bg-primary-100 text-center rounded-3xl font-medium"
-    onclick="EmailScheduleSummary.showModal()"
+    @click="EmailScheduleSummary.showModal()"
   >
     <SendMail class="w-7 h-7 inline-block pe-2" />
     <span>寄送 Email</span>
   </button>
-  <dialog id="EmailScheduleSummary" class="modal">
+  <dialog ref="EmailScheduleSummary" class="modal">
     <div class="modal-box w-screen md:w-[480px] relative">
       <form method="dialog">
         <div class="w-full h-10">
@@ -70,14 +88,22 @@ const sendEmail = () => {
           >
             <button
               class="w-full h-12 px-5 py-3 border border-primary-600 text-primary-600 text-center rounded-3xl font-medium hover:bg-primary-100"
+              @click="closeModal"
             >
               取消
             </button>
             <button
+              v-if="!loadingForBtn"
               class="w-full h-12 px-5 py-3 bg-primary-600 hover:bg-primary-700 text-white text-center rounded-3xl font-medium"
               @click="sendEmail"
             >
               寄送
+            </button>
+            <button
+              v-else
+              class="w-full h-12 px-5 py-3 bg-primary-600 hover:bg-primary-700 text-white text-center rounded-3xl font-medium"
+            >
+              <span class="loading loading-dots loading-md"></span>
             </button>
           </div>
         </div>
@@ -96,6 +122,14 @@ const sendEmail = () => {
       <form method="dialog"></form>
       <MailOut class="mx-auto w-14 h-14 text-primary-600 mb-3" />
       <h3 class="text-xl font-bold text-center">{{ sendSuccessMsg }}</h3>
+    </div>
+  </dialog>
+  <!-- schedule summary send faild Modal -->
+  <dialog ref="emailSendfaild" class="modal w-[384px] mx-auto">
+    <div class="modal-box">
+      <form method="dialog"></form>
+      <MailOpen class="mx-auto w-14 h-14 text-primary-600 mb-3" />
+      <h3 class="text-xl font-bold text-center">{{ sendfaildMsg }}</h3>
     </div>
   </dialog>
 </template>

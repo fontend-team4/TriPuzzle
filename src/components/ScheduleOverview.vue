@@ -13,6 +13,11 @@ import {
 } from "@heroicons/vue/24/outline"
 import router from "@/router"
 
+import '@/assets/loading.css'
+import { useLoadingStore } from "@/stores/loading"
+
+const loadingStore = useLoadingStore()
+
 const transprotations = ref([
   {
     id: 1,
@@ -121,12 +126,14 @@ const upateSchedule = async (id) => {
     end_date: endDate.value,
     transportation_way: transportationWay.value,
   }
+  loadingStore.showLoading()
   try {
     const response = await axios.patch(
       `${API_URL}/schedules/${id}`,
       data,
       config
     )
+    loadingStore.hideLoading()
     scheduleNote.value = await response.data.updatedSchedule.schedule_note
     scheduleName.value = await response.data.updatedSchedule.title
     coverImage.value = await response.data.updatedSchedule.image_url
@@ -169,11 +176,16 @@ onMounted(() => {
 </script>
 
 <template>
+  <LoadingOverlay :active="loadingStore.isLoading">
+    <div class="loadingio-spinner-ellipsis-nq4q5u6dq7r"><div class="ldio-x2uulkbinbj">
+    <div></div><div></div><div></div><div></div><div></div>
+    </div></div>
+  </LoadingOverlay>
   <!-- schedule title -->
   <div class="w-full pt-5 px-6 pb-8">
     <div class="flex items-center gap-1">
       <p class="text-2xl font-medium mb-2">{{ scheduleName }}</p>
-      <span @click="editSchedule.showModal()">
+      <span @click="openEditSchedule">
         <EditPencil class="inline-block w-5 h-5 mb-2 hover:cursor-pointer" />
       </span>
     </div>

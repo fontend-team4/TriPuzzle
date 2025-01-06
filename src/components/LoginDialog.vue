@@ -69,7 +69,7 @@ const loginSubmit = async () => {
       }, 1000)
     }
   } catch (err) {
-    loadingStore.hideLoading()
+    loadingForBtn.value = false
     const errorMessage = err.response?.data?.message || "未知錯誤"
     messageStore.messageModal({
       title: "登入失敗",
@@ -118,6 +118,7 @@ const registerSubmit = async () => {
       })
     }
   } catch (err) {
+    loadingForBtn.value = false
     const errorMessage = err.response?.data?.message || '未知錯誤'
     messageStore.messageModal({
       title: '註冊失敗',
