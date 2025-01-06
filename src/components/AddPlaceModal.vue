@@ -412,18 +412,58 @@ const optimizeTrail = async (schedule) => {
       (a, b) => new Date(a.which_date) - new Date(b.which_date)
     );
 
+    const closestPlaceOfDayIndex = sortedSameDayPlaces.findIndex(
+      (place) => place.id === closestPlace.id
+    );
     if (sortedSameDayPlaces.length === 1) {
       bestPosition.value = 1;
+      return;
+    }
+    //如果當天只有兩個景點
+    if (sortedSameDayPlaces.length === 2 && closestPlaceIndex == 1) {
+      const [currentDistance, preSpotToNewSpotDistance] = await Promise.all([
+        calculateDistance(
+          sortedSameDayPlaces[closestPlaceOfDayIndex - 1].places.place_id,
+          sortedSameDayPlaces[closestPlaceOfDayIndex].places.place_id,
+          schedule.transportation_way
+        ),
+        calculateDistance(
+          sortedSameDayPlaces[closestPlaceOfDayIndex - 1].places.place_id,
+          place.id,
+          schedule.transportation_way
+        )
+      ]);
+      if (preSpotToNewSpotDistance[0].distance < currentDistance[0].distance) {
+        bestPosition.value = closestPlaceOfDayIndex;
+      } else {
+        bestPosition.value = closestPlaceOfDayIndex + 1;
+      }
     } else {
-      const closestPlaceOfDayIndex = sortedSameDayPlaces.findIndex(
-        (place) => place.id === closestPlace.id
-      );
-
       // 如果是第一個或最後一個景點，特別處理
       if (closestPlaceOfDayIndex === 0) {
         bestPosition.value = 1;
+        //若為最後一個景點
       } else if (closestPlaceOfDayIndex === sortedSameDayPlaces.length - 1) {
-        bestPosition.value = closestPlaceOfDayIndex;
+        const [currentDistance, preSpotToNewSpotDistance] = await Promise.all([
+          calculateDistance(
+            sortedSameDayPlaces[closestPlaceOfDayIndex - 1].places.place_id,
+            sortedSameDayPlaces[closestPlaceOfDayIndex].places.place_id,
+            schedule.transportation_way
+          ),
+          calculateDistance(
+            sortedSameDayPlaces[closestPlaceOfDayIndex - 1].places.place_id,
+            place.id,
+            schedule.transportation_way
+          )
+        ]);
+        if (
+          preSpotToNewSpotDistance[0].distance < currentDistance[0].distance
+        ) {
+          bestPosition.value = closestPlaceOfDayIndex;
+        } else {
+          bestPosition.value = closestPlaceOfDayIndex + 1;
+        }
+        return;
       } else {
         const [previousDistance, nextDistance] = await Promise.all([
           calculateDistance(
@@ -437,7 +477,6 @@ const optimizeTrail = async (schedule) => {
             schedule.transportation_way
           )
         ]);
-
         // 比較距離決定擺放位置
         if (previousDistance[0].distance < nextDistance[0].distance) {
           bestPosition.value = closestPlaceOfDayIndex;
