@@ -39,7 +39,7 @@ const toggleMenu = () => {
         <Bars3Icon class="w-5 h-5" />
       </button>
       <router-link to='/'>
-        <img class="w-20" src="../assets/svg/logo.svg" alt="">
+        <img class="w-20" src="../assets/svg/Logo.svg" alt="">
       </router-link>
     </div>
   </div>
