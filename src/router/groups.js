@@ -5,7 +5,7 @@ import BalanceSummary from '@/components/splitbill/BalanceSummary.vue';
 import ShareGroup from '@/components/splitbill/ShareGroup.vue';
 
 export const groupRoutes = {
-  path: '/groups',
+  path: '/groups/:scheduleId',
   name: 'GroupView',
   component: () => import('@/views/Group.vue'),
   children: [

@@ -151,6 +151,17 @@ const goToMemberView = () => {
   router.push("/member")
 }
 
+
+const goToGroupView = () => {
+  router.push({
+    name: 'GroupView', // 使用命名路由，確保與 `groups.js` 名稱一致
+    params: { scheduleId: scheduleId.value },
+  });
+  console.log('scheduleId:', scheduleId.value)
+};
+
+
+
 onMounted(() => {
   coverImage.value = defaultCoverImage
   getSchedule(scheduleId.value)
@@ -254,15 +265,14 @@ onMounted(() => {
       <ScheduleSummaryModal />
       <li
         class="w-[100px] pt-4 px-2.5 pb-2.5 bg-gray rounded-xl hover:cursor-pointer hover:bg-primary-100 hover:text-primary-600"
-      >
-        <router-link to="/groups">
+        @click="goToGroupView"
+        >
           <img
             src="https://web.chictrip.com.tw/assets/img-exportbook.a62ae1d0.svg"
             class="mx-auto"
             alt=""
           />
           <p class="text-center font-medium mt-2">分帳</p>
-        </router-link>
       </li>
     </ul>
   </div>
