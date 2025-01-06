@@ -168,7 +168,7 @@ watch(props, ({ sharePeople }) => {
   };
   setTimeout(() => {
     loadingStore.hideLoading()
-  }, 3000);
+  }, 5000);
 })
 
 const qrcodeCanvas = ref(null); //綁定canvas
