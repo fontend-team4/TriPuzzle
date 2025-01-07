@@ -33,7 +33,6 @@ const email = ref('')
 const registerPassword = ref('')
 const URL=import.meta.env.VITE_HOST_URL
 
-
 const loginSubmit = async () => {
   loadingForBtn.value = true
   try {
@@ -60,7 +59,7 @@ const loginSubmit = async () => {
       LoginStore.closeModal()
       loadingForBtn.value = false
       messageStore.messageModal({
-        message: res.data.message,
+        message: "登入成功",
         status: "success",
       })
       // 加入頁面重整的邏輯
@@ -69,10 +68,9 @@ const loginSubmit = async () => {
       }, 1000)
     }
   } catch (err) {
-    loadingStore.hideLoading()
+    loadingForBtn.value = false
     const errorMessage = err.response?.data?.message || "未知錯誤"
     messageStore.messageModal({
-      title: "登入失敗",
       message: errorMessage,
       status: "error",
     })
@@ -105,22 +103,21 @@ const registerSubmit = async () => {
         },
       }
     )
-    if (res.data.status == 201) {
+    if (res.data.message === 'Registration successful') {
       loadingForBtn.value = false
       name.value = ''
       email.value = ''
       registerPassword.value = ''
       switchLogRes.value = 'login'
       messageStore.messageModal({
-        title: '註冊成功',
-        message: res.data.message,
+        message: "註冊成功",
         status: 'success',
       })
     }
   } catch (err) {
+    loadingForBtn.value = false
     const errorMessage = err.response?.data?.message || '未知錯誤'
     messageStore.messageModal({
-      title: '註冊失敗',
       message: errorMessage,
       status: 'error',
     })

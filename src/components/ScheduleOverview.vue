@@ -4,7 +4,7 @@ import axios from "axios"
 import ScheduleCoverImgModal from "./ScheduleCoverImgModal.vue"
 import ScheduleSummaryModal from "./ScheduleSummaryModal.vue"
 import defaultCoverImage from "../assets/images/coverimage-1.jpg"
-import { CalendarCheck, EditPencil } from "@iconoir/vue"
+import { EditPencil } from "@iconoir/vue"
 import {
   XMarkIcon,
   ArrowLongRightIcon,
@@ -12,6 +12,12 @@ import {
   ArrowUpTrayIcon,
 } from "@heroicons/vue/24/outline"
 import router from "@/router"
+import '@/assets/loading.css'
+import { useLoadingStore } from "@/stores/loading"
+import { MessageModalStore } from '@/stores/MessageModal'
+
+const messageStore = MessageModalStore()
+const loadingStore = useLoadingStore()
 
 const transprotations = ref([
   {
@@ -105,8 +111,6 @@ const getSchedule = async (id) => {
   }
 }
 
-const saveSuccessMsg = ref("")
-const saveSuccess = ref(null)
 const upateSchedule = async (id) => {
   const config = {
     headers: {
@@ -121,12 +125,14 @@ const upateSchedule = async (id) => {
     end_date: endDate.value,
     transportation_way: transportationWay.value,
   }
+  loadingStore.showLoading()
   try {
     const response = await axios.patch(
       `${API_URL}/schedules/${id}`,
       data,
       config
     )
+    loadingStore.hideLoading()
     scheduleNote.value = await response.data.updatedSchedule.schedule_note
     scheduleName.value = await response.data.updatedSchedule.title
     coverImage.value = await response.data.updatedSchedule.image_url
@@ -137,11 +143,10 @@ const upateSchedule = async (id) => {
     transportationWay.value = await response.data.updatedSchedule
       .transportation_way
     noteDialog.value.close()
-    saveSuccessMsg.value = "行程已更新"
-    saveSuccess.value.showModal()
-    setTimeout(() => {
-      saveSuccess.value.close()
-    }, 1000)
+    messageStore.messageModal({
+    message: "行程已更新",
+    status: "success",
+  })
   } catch (error) {
     console.error(error.message)
   }
@@ -151,6 +156,14 @@ const goToMemberView = () => {
   router.push("/member")
 }
 
+const goToGroupView = () => {
+  router.replace({
+    name: 'GroupView', // 使用命名路由，確保與 `groups.js` 名稱一致
+    params: { scheduleId: scheduleId.value },
+  });
+  console.log('scheduleId:', scheduleId.value)
+};
+
 onMounted(() => {
   coverImage.value = defaultCoverImage
   getSchedule(scheduleId.value)
@@ -158,11 +171,16 @@ onMounted(() => {
 </script>
 
 <template>
+  <LoadingOverlay :active="loadingStore.isLoading">
+    <div class="loadingio-spinner-ellipsis-nq4q5u6dq7r"><div class="ldio-x2uulkbinbj">
+    <div></div><div></div><div></div><div></div><div></div>
+    </div></div>
+  </LoadingOverlay>
   <!-- schedule title -->
   <div class="w-full pt-5 px-6 pb-8">
     <div class="flex items-center gap-1">
       <p class="text-2xl font-medium mb-2">{{ scheduleName }}</p>
-      <span @click="editSchedule.showModal()">
+      <span @click="openEditSchedule">
         <EditPencil class="inline-block w-5 h-5 mb-2 hover:cursor-pointer" />
       </span>
     </div>
@@ -254,24 +272,17 @@ onMounted(() => {
       <ScheduleSummaryModal />
       <li
         class="w-[100px] pt-4 px-2.5 pb-2.5 bg-gray rounded-xl hover:cursor-pointer hover:bg-primary-100 hover:text-primary-600"
-      >
-        <img
-          src="https://web.chictrip.com.tw/assets/img-exportbook.a62ae1d0.svg"
-          class="mx-auto"
-          alt=""
-        />
-        <p class="text-center font-medium mt-2">分帳</p>
+        @click="goToGroupView"
+        >
+          <img
+            src="https://web.chictrip.com.tw/assets/img-exportbook.a62ae1d0.svg"
+            class="mx-auto"
+            alt=""
+          />
+          <p class="text-center font-medium mt-2">分帳</p>
       </li>
     </ul>
   </div>
-  <!-- schedule note save success Modal -->
-  <dialog ref="saveSuccess" class="modal w-[384px] mx-auto">
-    <div class="modal-box">
-      <form method="dialog"></form>
-      <CalendarCheck class="mx-auto w-14 h-14 text-primary-600 mb-3" />
-      <h3 class="text-xl font-bold text-center">{{ saveSuccessMsg }}</h3>
-    </div>
-  </dialog>
   <!-- edit schedule Modal -->
   <dialog ref="editSchedule" class="modal">
     <div
@@ -306,16 +317,6 @@ onMounted(() => {
           <p class="font-bold mb-[5px]">封面照片</p>
           <!-- 隱藏的 Checkbox -->
           <input type="checkbox" id="changeImg-toggle" class="hidden peer" />
-
-          <!-- 使用 Label 包裹按鈕 -->
-          <!-- <label
-            for="changeImg-toggle"
-            class="w-[85px] h-[32px] absolute right-[20px] bottom-[16px] z-10 flex items-center justify-center gap-2 border-[1px] border-white rounded-3xl py-[4px] px-[12px] cursor-pointer"
-          >
-            <PencilIcon class="size-5 font-bold text-white" />
-            <p class="font-bold text-sm text-white">更換</p>
-          </label> -->
-
           <!-- 下拉選單(插入更換圖片modal) -->
           <ul
             class="font-bold replace-img-btn absolute right-0 top-full mt-2 w-[153px] h-[80px] bg-white rounded-lg shadow-lg transition-all duration-300 ease-in-out max-h-0 overflow-hidden opacity-0 peer-checked:max-h-[150px] peer-checked:opacity-100 z-10"

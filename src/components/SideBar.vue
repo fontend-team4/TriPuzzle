@@ -29,14 +29,20 @@ const toggleMenu = () => {
 </script>
 
 <template>
-  <button
-    class="fixed z-50 p-2 text-black bg-white rounded-lg shadow top-4 left-5 lg:hidden"
-    @click="toggleMenu"
-    aria-label="Toggle Menu"
-    :aria-expanded="isMenuOpen ? 'true' : 'false'"
-  >
-    <Bars3Icon class="w-4 h-4" />
-  </button>
+  <div class="fixed z-10 p-2 text-black bg-white shadow top-0 left-0 w-full lg:hidden">
+    <div class="flex justify-between">
+      <button
+        @click="toggleMenu"
+        aria-label="Toggle Menu"
+        :aria-expanded="isMenuOpen ? 'true' : 'false'"
+      >
+        <Bars3Icon class="w-5 h-5" />
+      </button>
+      <router-link to='/'>
+        <img class="w-20" src="../assets/svg/Logo.svg" alt="">
+      </router-link>
+    </div>
+  </div>
   <div
     id="menu"
     :class="[

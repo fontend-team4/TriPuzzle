@@ -14,6 +14,7 @@ import {
   PlusCircleIcon,
 } from "@heroicons/vue/24/outline"
 import { EllipsisHorizontalIcon, MapPinIcon } from "@heroicons/vue/24/solid"
+import { UserBadgeCheck, UserXmark } from '@iconoir/vue'
 import EditPlaceModal from "./EditPlaceModal.vue"
 import DeletePerDayModal from "./DeletePerDayModal.vue"
 import MoveToOtherDateModal from "./MoveToOtherDateModal.vue"

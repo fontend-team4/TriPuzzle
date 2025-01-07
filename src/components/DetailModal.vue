@@ -367,10 +367,10 @@ onMounted(fetchPlaceDetails)
                     </button>
                     <!-- 複製成功警告組件 -->
                     <div
-                      class="absolute right-0 top-1/2 md:w-[100px] md:h-[100px] w-[80px] h-[80px] -translate-y-full md:-translate-y-1/2"
+                      class="absolute right-0 top-1/3 md:w-[150px] md:h-[100px] w-[100px] h-[100px] -translate-y-full md:-translate-y-1/3"
                     >
                       <img
-                        src="../assets/monster_take_phone.png"
+                        src="/images/cat-3.png"
                         alt=""
                         class="object-contain"
                       />

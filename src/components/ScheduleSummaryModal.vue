@@ -77,8 +77,10 @@ const getSchedule = debounce(async (id) => {
   }
 }, 3000)
 
+const loadingForBtn = ref(false)
 const scheduleSummary = ref(null)
 const generatePDF = () => {
+  loadingForBtn.value = true
   const doc = new jsPDF()
   doc.setFont("NotoSansTC-VariableFont_wght", "normal")
   doc.setFontSize(12)
@@ -90,7 +92,8 @@ const generatePDF = () => {
     doc.text(line, 10, 10 + i * 5) // 設定文字位置
   })
 
-  doc.save("schedule_summary.pdf")
+  doc.save("行程摘要_Tripuzzle.pdf")
+  loadingForBtn.value = false
 }
 
 const scheduleSummaryText = ref("")
@@ -137,11 +140,18 @@ onMounted(() => {
         >
           <EmailScheduleSummary :scheduleSummaryText="scheduleSummaryText" />
           <button
+            v-if="!loadingForBtn"
             @click="generatePDF"
             class="w-full h-12 px-5 py-3 font-medium text-center text-white bg-primary-600 hover:bg-primary-700 rounded-3xl"
           >
             <DocumentArrowDownIcon class="inline-block w-7 h-7 pe-2" />
             <span>匯出 PDF</span>
+          </button>
+          <button
+            v-else
+            class="w-full h-12 px-5 py-3 font-medium text-center text-white bg-primary-600 hover:bg-primary-700 rounded-3xl"
+          >
+            <span class="loading loading-dots loading-md"></span>
           </button>
         </div>
       </form>

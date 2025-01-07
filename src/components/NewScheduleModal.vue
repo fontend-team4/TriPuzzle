@@ -9,9 +9,10 @@ import {
   PencilIcon,
   ArrowUpTrayIcon,
 } from "@heroicons/vue/24/solid"
-import { CalendarCheck, MapXmark } from "@iconoir/vue"
 import { useLoadingStore } from "@/stores/loading"
+import { MessageModalStore } from '@/stores/MessageModal'
 
+const messageStore = MessageModalStore()
 const loadingStore = useLoadingStore()
 
 const transprotations = ref([
@@ -98,8 +99,6 @@ const uploadImg = async () => {
   }
 }
 
-const addSuccess = ref(null)
-const addFailed = ref(null)
 const token = localStorage.getItem("token")
 const addSchedule = async () => {
   const config = {
@@ -122,17 +121,18 @@ const addSchedule = async () => {
   try {
     await axios.post(`${API_URL}/schedules`, ScheduleData, config)
     loadingStore.hideLoading()
-    addSuccess.value.showModal()
-    setTimeout(() => {
-      addSuccess.value.close()
-    }, 1000)
+    messageStore.messageModal({
+      message: "行程建立成功",
+      status: "success",
+    })
     props.savetoSchedules()
   } catch (err) {
+    loadingStore.hideLoading()
     console.error(err.message)
-    addFailed.value.showModal()
-    setTimeout(() => {
-      addFailed.value.close()
-    }, 1500)
+    messageStore.messageModal({
+      message: "行程建立失敗",
+      status: "error",
+    })
   }
   coverImage.value = defaultCoverImage
   ScheduleName.value = ""
@@ -271,7 +271,6 @@ onMounted(() => {
             />
           </div>
         </div>
-
         <!-- 主要交通方式 -->
         <div>
           <p class="mb-2 font-bold">主要交通方式</p>
@@ -290,7 +289,6 @@ onMounted(() => {
           </select>
         </div>
       </div>
-
       <!-- footer -->
       <div
         class="w-[100%] h-[80px] bottom-0 sticky border-t-[1px] border-slate-200 py-[16px] px-[24px] bg-white z-20"
@@ -313,23 +311,6 @@ onMounted(() => {
     <form method="dialog" class="modal-backdrop">
       <button>close</button>
     </form>
-  </dialog>
-  <!-- add schedule success 的 Modal -->
-  <dialog ref="addSuccess" class="modal w-[384px] mx-auto">
-    <div class="modal-box">
-      <form method="dialog"></form>
-      <CalendarCheck class="mx-auto w-14 h-14 text-primary-600 mb-3" />
-      <h3 class="text-xl font-bold text-center">行程建立成功！</h3>
-    </div>
-  </dialog>
-  <!-- add schedule failed 的 Modal -->
-  <dialog ref="addFailed" class="modal w-[384px] mx-auto">
-    <div class="modal-box">
-      <form method="dialog"></form>
-      <MapXmark class="mx-auto w-14 h-14 text-primary-600 mb-3" />
-      <h3 class="text-xl font-bold text-center">行程建立失敗！</h3>
-      <p class="text-center mt-3">請確認所有欄位皆已填寫。</p>
-    </div>
   </dialog>
 </template>
 

@@ -46,10 +46,8 @@ const openDetailModal = (detailId) => {
   })
 }
 
-// 初始化並抓取資料
 onMounted(async () => {
-  await placesStore.fetchDefaultPlaces() // 抓取資料
-  defaultPlacesData.value = placesStore.items // 賦值給本地變數
+  defaultPlacesData.value = placesStore.items 
 })
 
 watch(
