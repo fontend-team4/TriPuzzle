@@ -63,12 +63,11 @@ const goToPlanner = () => {
         >
           功能特點
         </li>
-        <li
+        <router-link to="/about"
           class="p-2 hover:bg-primary-100 hover:text-primary-800"
-          @click="clickTab('register')"
         >
-          註冊會員
-        </li>
+          關於我們
+        </router-link>
       </ul>
     </div>
   </nav>
@@ -103,12 +102,11 @@ const goToPlanner = () => {
         >
           關於旅圖
         </li>
-        <li
+        <router-link to="/about"
           class="px-[18px] py-4 cursor-pointer hover:text-primary-800"
-          @click="clickTab('register')"
         >
-          註冊會員
-        </li>
+          關於我們
+        </router-link>
       </ul>
       <button
         @click="goToPlanner"

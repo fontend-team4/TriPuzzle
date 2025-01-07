@@ -33,7 +33,13 @@ const router = createRouter({
       path: "/premium",
       name: "PremiumView",
       component: () => import('../views/PremiumView.vue'),
-    }
+    },
+    {
+      path: "/about",
+      name: "About",
+      component: () => import('../views/AboutUsView.vue'),
+    },
+
   ],
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
