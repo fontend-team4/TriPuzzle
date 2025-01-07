@@ -2,7 +2,9 @@
 import { ref, defineProps } from "vue"
 import emailjs from "@emailjs/browser"
 import { SendMail, MailOut, MailOpen } from "@iconoir/vue"
+import { MessageModalStore } from '@/stores/MessageModal'
 
+const messageStore = MessageModalStore()
 const loadingForBtn = ref(false)
 
 const props = defineProps({
@@ -19,10 +21,6 @@ const closeModal = () => {
 
 const { VITE_EMAILJS_PUBLIC_KEY, VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID } = process.env
 const email = ref("")
-const emailSendSuccess = ref(null)
-const sendSuccessMsg = ref("")
-const emailSendfaild = ref(null)
-const sendfaildMsg = ref("")
 
 const sendEmail = () => {
   const templateParams = {
@@ -35,20 +33,18 @@ const sendEmail = () => {
     (response) => {
       loadingForBtn.value = false
       closeModal()
-      sendSuccessMsg.value = "信件寄送成功!"
-      emailSendSuccess.value.showModal()
-      setTimeout(() => {
-        emailSendSuccess.value.close()
-      }, 1500)
+      messageStore.messageModal({
+        message: "信件寄送成功",
+        status: "success",
+      })
     },
     (error) => {
       loadingForBtn.value = false
       closeModal()
-      sendfaildMsg.value = "尚未輸入寄送信箱"
-      emailSendfaild.value.showModal()
-      setTimeout(() => {
-        emailSendfaild.value.close()
-      }, 1500)
+      messageStore.messageModal({
+        message: "尚未輸入收件人信箱",
+        status: "error",
+      })
     }
   )
   email.value = ""
@@ -115,21 +111,5 @@ const sendEmail = () => {
       </button>
       <button>close</button>
     </form>
-  </dialog>
-  <!-- schedule summary send success Modal -->
-  <dialog ref="emailSendSuccess" class="modal w-[384px] mx-auto">
-    <div class="modal-box">
-      <form method="dialog"></form>
-      <MailOut class="mx-auto w-14 h-14 text-primary-600 mb-3" />
-      <h3 class="text-xl font-bold text-center">{{ sendSuccessMsg }}</h3>
-    </div>
-  </dialog>
-  <!-- schedule summary send faild Modal -->
-  <dialog ref="emailSendfaild" class="modal w-[384px] mx-auto">
-    <div class="modal-box">
-      <form method="dialog"></form>
-      <MailOpen class="mx-auto w-14 h-14 text-primary-600 mb-3" />
-      <h3 class="text-xl font-bold text-center">{{ sendfaildMsg }}</h3>
-    </div>
   </dialog>
 </template>

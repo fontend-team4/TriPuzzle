@@ -6,7 +6,9 @@ import axios from 'axios'
 import '@/assets/loading.css'
 import { useLoadingStore } from "@/stores/loading"
 import { generateShareQRCode } from "@/utils/QRcode"
+import { MessageModalStore } from '@/stores/MessageModal'
 
+const messageStore = MessageModalStore()
 const loadingStore = useLoadingStore()
 const API_URL = process.env.VITE_HOST_URL
 const defaultProfilePicUrl = '/images/cat-2.png';
@@ -38,49 +40,6 @@ const props = defineProps({
   }
 })
 const emit = defineEmits(['updateStatus'])
-
-function showMessage({ title = "訊息", message, status }) {
-  const typeClasses = {
-    success: "bg-green-500 hover:bg-green-700",
-    error: "bg-primary-600 hover:bg-primary-700",
-  }
-  const buttonClass = typeClasses[status]
-  if (document.querySelector("#custom_modal")) {
-    document.querySelector("#modal_title").textContent = title 
-    document.querySelector("#modal_message").textContent = message 
-    document
-      .querySelector("#modal_button")
-      .classList.remove(
-        "bg-green-500",
-        "hover:bg-green-700",
-        "bg-primary-600",
-        "hover:bg-primary-700"
-      )
-    document
-      .querySelector("#modal_button")
-      .classList.add(...buttonClass.split(" ")) // 更新class
-    document.querySelector("#custom_modal").showModal() // 顯示 Modal
-    setTimeout(() => document.querySelector("#custom_modal").showModal() , 1000)
-    return
-  }
-
-  const modalHTML = `
-    <dialog id="custom_modal" class="modal">
-      <div class="modal-box text-center w-[450px] h-[250px]">
-        <h3 id="modal_title" class="mb-4 text-xl font-bold">${title}</h3>
-        <p id="modal_message" class="py-4">${message}</p>
-        <div class="justify-center modal-action">
-          <button id="modal_button" class="btn ${buttonClass} w-[80%] text-white py-3 rounded-full font-medium  mt-4" onclick="document.querySelector('#custom_modal').close()">確定</button>
-        </div>
-      </div>
-    </dialog>
-  `
-  // 動態插入 Modal 到 body
-  document.body.insertAdjacentHTML("beforeend", modalHTML)
-
-  // 顯示 Modal
-  document.querySelector("#custom_modal").showModal()
-}
 
 const scheduleUpdate = async()=>{
   emit('scheduleUpdate');
@@ -135,12 +94,10 @@ const copyShareLink = async () => {
       return;
     }
     await navigator.clipboard.writeText(props.shareLink);
-    showMessage({
-        title: "提示",
-        message: "複製成功",
-        status: "success",
-      });
-      
+    messageStore.messageModal({
+      message: '複製成功',
+      status: "success",
+    })
   } catch (err) {
     console.error('複製失敗', err);
   }
