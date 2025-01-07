@@ -647,7 +647,7 @@ const tab2Cls = computed(() => {
       >
         <div class="hidden md:block md:w-2/3 md:bg-[#f4f4f4]">
           <div class="flex h-full">
-            <img src="/public/images/7.png" class="m-auto" />
+            <img src="/public/images/1.png" class="m-auto h-full" />
           </div>
         </div>
         <div
@@ -794,7 +794,7 @@ const tab2Cls = computed(() => {
               class="absolute top-0 flex justify-center p-6 transition duration-300 opacity-0 tab-panel"
               :class="tab2Cls"
             >
-              <img src="/public/images/8.png" alt="" />
+              <img src="/public/images/7.png" alt="" />
             </div>
           </div>
         </div>
