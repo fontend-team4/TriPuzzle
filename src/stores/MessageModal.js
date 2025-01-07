@@ -14,13 +14,14 @@ export const MessageModalStore = defineStore('MessageModal',()=>{
   }
 
   const modalHTML = `
+
     <dialog id="message_modal" class="modal">
       <div class="modal-box w-full md:w-[450px] h-[200px]">
         <img class="w-28 h-28 mx-auto" src="${showImage}">
         <p id="modal_message" class="py-4 text-center">${message}</p>
       </div>
     </dialog>
-    `
+    
   // 動態插入 Modal 到 body
   document.body.insertAdjacentHTML('beforeend', modalHTML)
 

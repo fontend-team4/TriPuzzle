@@ -7,6 +7,7 @@ import { useUserStore } from "@/stores/userStore"
 import { LoginModalStore } from "@/stores/LoginModal.js"
 import { MessageModalStore } from '@/stores/MessageModal'
 
+
 const loadingForBtn = ref(false)
 const messageStore = MessageModalStore()
 const LoginStore = LoginModalStore()
@@ -57,9 +58,10 @@ const loginSubmit = async () => {
       localStorage.setItem("userId", res.data.user.id)
       localStorage.setItem("token", res.data.token)
       LoginStore.closeModal()
+
       loadingForBtn.value = false
       messageStore.messageModal({
-        message: "登入成功",
+        message: res.data.message,
         status: "success",
       })
       // 加入頁面重整的邏輯
@@ -110,7 +112,7 @@ const registerSubmit = async () => {
       registerPassword.value = ''
       switchLogRes.value = 'login'
       messageStore.messageModal({
-        message: "註冊成功",
+        message: res.data.message,
         status: 'success',
       })
     }
@@ -132,7 +134,7 @@ const openServiceModal = () => {
 <template>
   <div
     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center overflow-auto z-50"
-    :class="{ 'z-[1100]': isOpen }"
+   :class="{ 'z-[1100]': isOpen }"
   >
     <div
       class="bg-white pb-6 w-full h-full md:w-96 md:h-max md:rounded-2xl md:mb-20"

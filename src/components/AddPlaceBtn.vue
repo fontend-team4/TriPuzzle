@@ -12,7 +12,8 @@ const openAppPlaceModal = async() => {
   const token=localStorage.getItem('token')
   if(!token){
     LoginStore.openModal()
-  }else
+  }else 
+
   modalStore.openModal(); // 打開 Modal
 };
 

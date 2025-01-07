@@ -146,7 +146,7 @@ watch(
     <AddPlaceModal
       class="fixed top-0 z-50"
       v-if="modalStore.isOpen"
-      :map="map"
+      map="map"
     />
   </Transition>
 </template>
