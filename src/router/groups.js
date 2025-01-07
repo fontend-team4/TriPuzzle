@@ -1,13 +1,7 @@
-import Group from '@/views/Group.vue';
-import AccountForm from '@/components/splitbill/AccountForm.vue';
-import AccountList from '@/components/splitbill/AccountList.vue';
-import BalanceSummary from '@/components/splitbill/BalanceSummary.vue';
-import ShareGroup from '@/components/splitbill/ShareGroup.vue';
-
 export const groupRoutes = {
   path: '/groups/:scheduleId',
   name: 'GroupView',
-  component: () => import('@/views/Group.vue'),
+  component: () => import('@/views/GroupView.vue'),
   children: [
     {
       path: 'account-form',
