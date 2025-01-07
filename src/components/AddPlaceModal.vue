@@ -23,6 +23,10 @@ import { PlaceModalStore } from '@/stores/PlaceModal';
 import { useUserStore } from '@/stores/userStore';
 import axios from 'axios';
 import { MessageModalStore } from '@/stores/MessageModal';
+import '@/assets/loading.css';
+import { useLoadingStore } from '@/stores/loading';
+
+const loadingStore = useLoadingStore();
 
 //抓user資料
 const userStore = useUserStore();
@@ -199,6 +203,7 @@ function groupPlacesByDate(schedulePlaces, dates) {
 
 // 抓取行程資料，重構schedule中的key，新增dates跟groupedPlaces
 onMounted(async () => {
+  loadingStore.showLoading();
   try {
     const res = await axios.get(`${URL}/schedules`, {
       headers: { Authorization: token }
@@ -211,10 +216,10 @@ onMounted(async () => {
         calculateDateRange(schedule.start_date, schedule.end_date)
       )
     }));
+    loadingStore.hideLoading();
     if (schedules.value.length > 0) {
       await optimizeTrail(schedules.value[0]);
     }
-    // console.log(schedules.value)
   } catch (error) {
     console.error('Error fetching schedules:', error);
   }
@@ -235,6 +240,7 @@ const fetchPlacesForDate = async (date) => {
 const selectedSchedule = ref(null);
 const selectedDate = ref(null);
 const addPlaceToSchedule = async () => {
+  loadingStore.showLoading();
   if (!selectedCardInfo.value) {
     console.error('未選擇插入位置');
     return;
@@ -269,6 +275,7 @@ const addPlaceToSchedule = async () => {
         }
       }
     );
+    loadingStore.hideLoading();
     // 新增成功後重新獲取該日期的景點列表
     const updatedPlaces = await fetchPlacesForDate(selectedDate.value);
     updateCards(updatedPlaces);
@@ -632,6 +639,17 @@ const tab2Cls = computed(() => {
 </script>
 
 <template>
+  <LoadingOverlay :active="loadingStore.isLoading">
+    <div class="loadingio-spinner-ellipsis-nq4q5u6dq7r">
+      <div class="ldio-x2uulkbinbj">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+  </LoadingOverlay>
   <div
     class="fixed top-0 z-50 flex items-center justify-center w-screen h-screen bg-black bg-opacity-25"
     @click="closeAddPlaceModal"
@@ -648,7 +666,7 @@ const tab2Cls = computed(() => {
       >
         <div class="hidden md:block md:w-2/3 md:bg-[#f4f4f4]">
           <div class="flex h-full">
-            <img src="/public/images/1.png" class="m-auto h-full" />
+            <img src="/images/cat-1.png" class="m-auto h-full" />
           </div>
         </div>
         <div
@@ -775,17 +793,6 @@ const tab2Cls = computed(() => {
                     </div>
                   </div>
                 </div>
-                <button
-                  class="btn p-0 border-white bg-white flex mt-[1rem] shadow-none hover:bg-white hover:border-white group items-center"
-                  onclick="NewSchedule.showModal()"
-                >
-                  <PlusCircleIcon class="size-5 fill-primary-600 mr-[0.5rem]" />
-                  <p
-                    class="font-bold text-black group-hover:text-primary-500 text-md"
-                  >
-                    建立新行程
-                  </p>
-                </button>
               </div>
             </div>
             <!-- Tab Two -->
@@ -795,7 +802,7 @@ const tab2Cls = computed(() => {
               class="absolute top-0 flex justify-center p-6 transition duration-300 opacity-0 tab-panel"
               :class="tab2Cls"
             >
-              <img src="/public/images/7.png" alt="" />
+              <img class="w-32 h-32" src="/images/cat-7.png" alt="" />
             </div>
           </div>
         </div>
@@ -824,7 +831,7 @@ const tab2Cls = computed(() => {
 
         <!-- 左邊 -->
         <div
-          class="h-screen md:w-2/3 bg-gray google-map min-w-screen"
+          class="hidden md:block h-screen md:w-2/3 bg-gray google-map min-w-screen"
           id="map2"
         ></div>
         <!-- 右邊 -->
@@ -906,7 +913,7 @@ const tab2Cls = computed(() => {
           <!-- 卡片內容區域 -->
 
           <div
-            class="p-4 bg-primary-200 h-[calc(100vh-400px)] overflow-auto flex flex-col"
+            class="p-4 pb-32 bg-primary-200 h-[calc(100vh-50px)] md:h-[calc(100vh-400px)] overflow-y-scroll flex flex-col"
           >
             <div
               v-for="(card, index) in cards"
@@ -971,7 +978,7 @@ const tab2Cls = computed(() => {
 
           <!-- 確認新增並關閉視窗 -->
           <div
-            class="h-[4rem] absolute bottom-0 right-0 left-0 bg-white px-4 pt-2"
+            class="h-[4rem] fixed md:absolute bottom-0 right-0 left-0 bg-white px-4 pt-2 z-50"
           >
             <div
               class="w-full text-white border-none rounded-full btn bg-primary-600 hover:bg-primary-200 hover:text-primary-600"
