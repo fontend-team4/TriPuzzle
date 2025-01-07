@@ -159,6 +159,7 @@ onMounted(() => {
 
 const URL = import.meta.env.VITE_HOST_URL;
 const schedules = ref([]);
+const coSchedules = ref([]);
 
 function calculateDateRange(startDate, endDate) {
   const start = new Date(startDate);
@@ -222,6 +223,25 @@ onMounted(async () => {
     }
   } catch (error) {
     console.error('Error fetching schedules:', error);
+  }
+  try {
+    const res = await axios.get(`${URL}/usersschedules`, {
+      headers: { Authorization: token }
+    });
+    coSchedules.value = res.data.map((schedule) => ({
+      ...schedule,
+      dates: calculateDateRange(schedule.start_date, schedule.end_date),
+      groupedPlaces: groupPlacesByDate(
+        schedule.schedule_places,
+        calculateDateRange(schedule.start_date, schedule.end_date)
+      )
+    }));
+    if (coSchedules.value.length > 0) {
+      await optimizeTrail(coSchedules.value[0]);
+    }
+    console.log("coSchedules.value",coSchedules.value)
+  } catch (error) {
+    console.error('Error fetching coSchedules:', error);
   }
 });
 
@@ -636,6 +656,15 @@ const tab2Cls = computed(() => {
     ? ['opacity-100', 'relative', 'z-10']
     : ['opacity-0', 'absolute', 'z-0'];
 });
+
+
+const hasSchedules = computed(() => {  
+  return schedules.value.length>0
+});
+
+const hasCoSchedules = computed(() => {
+  return coSchedules.value.length>0
+});
 </script>
 
 <template>
@@ -704,11 +733,11 @@ const tab2Cls = computed(() => {
           </div>
 
           <!-- Tab One -->
-          <div class="relative h-full mt-8 flex flex-col">
+          <div class="relative flex flex-col h-full mt-8">
             <div
               role="tabpanel"
               id="panel-1"
-              class="transition duration-300 tab-panel flex-1 overflow-y-auto"
+              class="flex-1 overflow-y-auto transition duration-300 tab-panel"
               :class="tab1Cls"
             >
               <!-- 行程一 -->
@@ -716,6 +745,7 @@ const tab2Cls = computed(() => {
               <!--打開的時候會變成 <ChevronUpIcon class="size-3" /> -->
               <div class="h-[calc(100vh-350px)] overflow-y-auto pr-2">
                 <div
+                v-if="hasSchedules"
                   v-for="(schedule, index) in schedules"
                   :key="schedule.id"
                   class="collapse ml-[-0.5rem] mr-[0.5rem] transition-opacity"
@@ -793,16 +823,110 @@ const tab2Cls = computed(() => {
                     </div>
                   </div>
                 </div>
+                <div  v-else class="flex flex-col items-center justify-center h-full ">
+                  <div class="w-72">
+                    <img src="../assets/images/cat-3.png" alt="">
+                  </div>
+                  <div class="mb-20">目前還沒有行程喔！</div>
+                </div>
               </div>
             </div>
             <!-- Tab Two -->
             <div
               role="tabpanel"
               id="panel-2"
-              class="absolute top-0 flex justify-center p-6 transition duration-300 opacity-0 tab-panel"
+              class="flex-1 overflow-y-auto transition duration-300 tab-panel"
               :class="tab2Cls"
             >
-              <img class="w-32 h-32" src="/images/cat-7.png" alt="" />
+              <!-- 行程一 -->
+              <!-- 行程一二只能擇一打開 -->
+              <!--打開的時候會變成 <ChevronUpIcon class="size-3" /> -->
+              <div class="h-[calc(100vh-350px)] overflow-y-auto pr-2">
+                <div v-if="hasCoSchedules"
+                  v-for="(schedule, index) in coSchedules"
+                  :key="schedule.id"
+                  class="collapse ml-[-0.5rem] mr-[0.5rem] transition-opacity"
+                >
+                  <input
+                    type="checkbox"
+                    :checked="openedCollapse === `journey${schedule.id}`"
+                    @change="toggleCollapse(`journey${schedule.id}`)"
+                  />
+                  <div
+                    class="collapse-title flex justify-between items-center p-0 pl-[1rem]"
+                  >
+                    <div class="cursor-pointer hover:bg-primary-100 group">
+                      <h2
+                        class="text-xl font-bold group-hover:text-primary-600 text-stone-950"
+                      >
+                        {{ schedule.title }}
+                      </h2>
+                      <p
+                        class="text-sm text-gray-600 group-hover:text-primary-600"
+                      >
+                        {{ formatYear(schedule.start_date) }}
+                      </p>
+                    </div>
+                    <ChevronDownIcon
+                      v-if="openedCollapse !== `journey${schedule.id}`"
+                      class="text-black size-3"
+                    />
+                    <ChevronUpIcon v-else class="text-black size-3" />
+                  </div>
+                  <div class="collapse-content p-0 pl-[1rem]">
+                    <div
+                      v-for="(date, index) in schedule.dates"
+                      :key="index"
+                      @click="
+                        () => {
+                          selectedSchedule = schedule;
+                          selectedDate = date.toISOString().split('T')[0];
+                          currentSchedule = schedule;
+                          switchToPage('DayCard', `day${index + 1}`, schedule);
+                          updateCards(
+                            schedule.groupedPlaces[
+                              date.toISOString().split('T')[0]
+                            ]
+                          );
+                          initMap();
+                          getAllMarker(selectedDate, schedule.groupedPlaces);
+                        }
+                      "
+                      class="relative p-2 my-[0.5rem] bg-[#f4f4f4] rounded-xl cursor-pointer hover:bg-primary-100 box-border overflow-hidden"
+                    >
+                      <label
+                        for=""
+                        v-if="
+                          new Date(date).toISOString().split('T')[0] ===
+                          new Date(bestDay).toISOString().split('T')[0]
+                        "
+                        class="absolute top-0 right-0 bg-secondary-500 text-white flex items-center gap-1 p-[0.25rem] rounded-bl-xl text-xs"
+                      >
+                        <HandThumbUpIcon class="size-3 ml-[0.25rem]" />
+                        加在這天最順
+                      </label>
+                      <h3 class="text-black text-semibold">
+                        第{{ index + 1 }}天
+                      </h3>
+                      <!-- 景點數量要跟我的行程連動 -->
+                      <p>
+                        {{ formatDate(date) }}　{{
+                          schedule.groupedPlaces[
+                            date.toISOString().split('T')[0]
+                          ]?.length || 0
+                        }}
+                        個景點
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div  v-else class="flex flex-col items-center justify-center h-full ">
+                  <div class="w-72">
+                    <img src="../assets/images/cat-3.png" alt="">
+                  </div>
+                  <div class="mb-20">目前還沒有共編行程喔！</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
