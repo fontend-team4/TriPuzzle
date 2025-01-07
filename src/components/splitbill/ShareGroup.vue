@@ -1,43 +1,22 @@
 <script setup>
-import { ref, onMounted } from "vue"
+import { ref, onMounted,inject } from "vue"
 import axios from "axios"
 
-const groupMembers = ref([])
 const token = localStorage.getItem("token");
 const API_URL = process.env.VITE_HOST_URL;
+
+const groupMembers = inject("groupMembers"); // 從父組件獲取成員列表
+const scheduleId = inject("scheduleId"); // 從父組件獲取 scheduleId
 
 
 onMounted(async() => {
   console.log('mounted');
-  await getMember();
 })
-
-
-const getMember = async()=>{
-  const config = {
-    headers: {
-      Authorization: token,
-    },
-  };
-
-  // 更新shareMembers
-  try {
-    const {data} = await axios.get(
-      `${API_URL}/usersSchedules/1/users`,
-      config
-    );
-    groupMembers.value = data;
-    console.log("groupMembers", groupMembers.value);
-  } catch (err) {
-    console.error(err.message);
-  }
-}
-
 </script>
 
 <template>
   <div class="p-4 bg-white shadow-md rounded-lg">
-    <h2 class="text-xl font-bold text-primary-500 mb-2">{{ groupMembers.title}} - 群組成員</h2>
+    <h2 class="text-xl font-bold text-primary-500 mb-2">【{{ groupMembers.title}}】 - 群組成員</h2>
     <p class="text-gray-800 mb-4"></p>
     <ul class="">
         <span class="font-bold">主辦人</span>
@@ -63,4 +42,3 @@ const getMember = async()=>{
     <p v-else class="mt-4 text-red-500">無法載入成員總數</p>
   </div>
 </template>
-
