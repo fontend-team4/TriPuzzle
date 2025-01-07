@@ -84,6 +84,32 @@ const getShareSchedules = async () => {
   }
 };
 
+const getShareSchedules = async () => {
+  const config = {
+    headers: {
+      Authorization: token,
+    },
+  }
+  try {
+    const response = await axios.get(`${API_URL}/usersSchedules`, config)
+    if (response.data.length > 0) {
+      hasShareSchedules.value = true
+      console.log("共編", response.data)
+    }
+    shareSchedules.value = response.data
+    shareSchedules.value.forEach((item) => {
+      item.start_date = item.start_date.split("T")[0]
+      item.end_date = item.end_date.split("T")[0]
+      console.log(shareSchedules.value)
+    })
+  } catch (error) {
+    console.error(error.message)
+    hasShareSchedules.value = false
+  }
+}
+
+// 搜尋該行程的所有使用者
+
 const openDeleteModal = (id) => {
   deletedId.value = id;
 };
@@ -167,6 +193,16 @@ const sortedShareSchedules = computed(() => {
     }
   });
 });
+
+const sortedShareSchedules = computed(() => {
+  return shareSchedules.value.sort((a, b) => {
+    if (listsort.value === "newest") {
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    } else {
+      return new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+    }
+  })
+})
 
 // 複製行程
 const scheduleName = ref("");
