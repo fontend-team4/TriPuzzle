@@ -12,7 +12,7 @@ import {
   XMarkIcon,
   PencilSquareIcon,
 } from "@heroicons/vue/24/outline"
-import { UserBadgeCheck, WarningTriangle, LogOut, MoneySquare } from "@iconoir/vue"
+import { MoneySquare } from "@iconoir/vue"
 import FavoritesList from "@/components/FavoritesList.vue"
 import DetailModal from "@/components/DetailModal.vue"
 import { usePlacesStore } from "@/stores/fetchPlaces"
@@ -29,6 +29,9 @@ const router = useRouter()
 const API_URL = process.env.VITE_HOST_URL
 const token = localStorage.getItem("token")
 const userId = localStorage.getItem("userId")
+import { MessageModalStore } from '@/stores/MessageModal'
+const messageStore = MessageModalStore()
+
 
 // GET User Profile
 const user = ref("")
@@ -72,12 +75,14 @@ const getUser = async () => {
   }
 }
 // User Logout
-const logoutSuccess = ref(null)
 const logout = () => {
   loadingStore.showLoading()
   localStorage.removeItem("token")
   localStorage.removeItem("userId")
-  logoutSuccess.value.showModal()
+  messageStore.messageModal({
+    message: "登出成功",
+    status: "success",
+  })
   loadingStore.hideLoading()
   setTimeout(() => {
     router.push("/planner")
@@ -107,8 +112,6 @@ const userBirthdayInput = computed({
 
 // Update User Profile
 const errorMsg = ref("")
-const UpdateSuccess = ref(null)
-const UpdateFailed = ref(null)
 const updateUser = async () => {
   const config = {
     headers: {
@@ -135,20 +138,20 @@ const updateUser = async () => {
     closeProfileModal()
     closePersonalInformationModal()
     if (response.data.message === "User update successful") {
-      UpdateSuccess.value.showModal()
-      setTimeout(() => {
-        UpdateSuccess.value.close()
-      }, 1000)
+      messageStore.messageModal({
+        message: "用戶資料更新成功",
+        status: "success",
+      })
     } 
     user.value = response.data.updatedData // 更新後的資料
     await getUser()
   } catch (error) {
     loadingForBtn.value = false
     errorMsg.value = error.message
-    UpdateFailed.value.showModal()
-    setTimeout(() => {
-      UpdateFailed.value.close()
-    }, 1000)
+    messageStore.messageModal({
+      message: "用戶資料更新失敗",
+      status: "success",
+    })
   }
 }
 
@@ -157,7 +160,6 @@ const DeleteUser = ref(null)
 const deleteComfire = () => {
   DeleteUser.value.showModal()
 }
-const deletedSuccess = ref(null)
 const deleteUser = async () => {
   const config = {
     headers: {
@@ -175,7 +177,10 @@ const deleteUser = async () => {
       user.value = ""
       localStorage.removeItem("token")
       localStorage.removeItem("userId")
-      deletedSuccess.value.showModal()
+      messageStore.messageModal({
+        message: "用戶已刪除",
+        status: "success",
+      })
       setTimeout(() => {
         router.push("/planner")
       }, 1000)
@@ -727,47 +732,6 @@ onMounted(async () => {
         <button>close</button>
       </form>
     </dialog>
-    <!-- update success 的 Modal -->
-    <dialog ref="UpdateSuccess" class="modal w-[384px] mx-auto">
-      <div class="modal-box">
-        <form method="dialog">
-          <button
-            class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2"
-          >
-            ✕
-          </button>
-        </form>
-        <UserBadgeCheck class="mx-auto mb-3 w-14 h-14 text-primary-600" />
-        <h3 class="text-xl font-bold text-center">用戶資料修改成功！</h3>
-      </div>
-      <form method="dialog" class="modal-backdrop">
-        <button class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2">
-          ✕
-        </button>
-        <button>close</button>
-      </form>
-    </dialog>
-    <!-- update failed 的 Modal -->
-    <dialog ref="UpdateFailed" class="modal w-[384px] mx-auto">
-      <div class="modal-box">
-        <form method="dialog">
-          <button
-            class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2"
-          >
-            ✕
-          </button>
-        </form>
-        <WarningTriangle class="mx-auto mb-3 w-14 h-14 text-primary-600" />
-        <h3 class="text-xl font-bold text-center">用戶資料修改失敗！</h3>
-        <p class="py-4 text-center">{{ errorMsg }}</p>
-      </div>
-      <form method="dialog" class="modal-backdrop">
-        <button class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2">
-          ✕
-        </button>
-        <button>close</button>
-      </form>
-    </dialog>
     <!-- delete user 的 Modal -->
     <dialog ref="DeleteUser" class="modal">
       <div class="modal-box w-[384px] p-0">
@@ -818,28 +782,6 @@ onMounted(async () => {
         </button>
         <button>close</button>
       </form>
-    </dialog>
-    <!-- deleted success 的 Modal -->
-    <dialog ref="deletedSuccess" class="modal w-[384px] mx-auto">
-      <div class="modal-box">
-        <form method="dialog">
-          <button
-            class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2"
-          >
-            ✕
-          </button>
-        </form>
-        <UserBadgeCheck class="mx-auto mb-3 w-14 h-14 text-primary-600" />
-        <h3 class="text-xl font-bold text-center">用戶刪除成功！</h3>
-      </div>
-    </dialog>
-    <!-- logout success 的 Modal -->
-    <dialog ref="logoutSuccess" class="modal w-[384px] mx-auto">
-      <div class="modal-box">
-        <form method="dialog"></form>
-        <LogOut class="mx-auto mb-3 w-14 h-14 text-primary-600" />
-        <h3 class="text-xl font-bold text-center">登出成功！</h3>
-      </div>
     </dialog>
     <!-- Payment success 的 Modal -->
     <dialog ref="paymentSuccess" class="modal w-[384px] mx-auto">
