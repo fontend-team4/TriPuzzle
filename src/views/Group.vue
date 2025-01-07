@@ -58,7 +58,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="bg-primary-700">
+  <div class="bg-primary-700 h-[100vh] flex justify-center items-center overflow-y-auto">
     <div class="border-round bg-primary-700 w-[48rem] mx-auto h-[100vh]">
       <div class="title mb-4">
         <div class="flex text-center justify-center items-center p-4">
@@ -74,7 +74,7 @@ onMounted(() => {
             <button class="btn absolute top-8 right-10 bg-primary-100 border-round text-primary-700">回到行程</button>  
           </router-link>
         </div>
-        <h2 class="text-[64px] font-bold text-center text-primary-50">
+        <h2 class="text-[48px] font-bold text-center text-primary-50">
           {{ groupMembers.title}} 
         </h2>
       </div>
