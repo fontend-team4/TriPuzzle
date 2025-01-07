@@ -1,28 +1,29 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
+import { MessageModalStore } from './MessageModal'
 
 export const useCopyWebsiteStore = defineStore('copyWebsite', () => {
-  const copySuccess = ref(false);
+  const messageStore = MessageModalStore()
 
   const copyToClipboard = async (placeId) => {
     try {
       const baseDomain = window.location.origin;
       const url = `${baseDomain}/planner?action=placeInfo&placeId=${placeId}`; 
       await navigator.clipboard.writeText(url);
-      copySuccess.value = true; 
-      alert('已複製到剪貼簿：');
-
-      // 1秒後隱藏
-      setTimeout(() => {
-        copySuccess.value = false;
-      }, 1000);
+      messageStore.messageModal({
+        message: '已複製到剪貼簿',
+        status: "success",
+      })
+      
     } catch (error) {
-      alert('複製網址失敗，請稍後再試');
+      messageStore.messageModal({
+        message: '複製網址失敗，請稍後再試',
+        status: "error",
+      })
     }
   };
 
   return {
-    copySuccess,
     copyToClipboard,
   };
 });

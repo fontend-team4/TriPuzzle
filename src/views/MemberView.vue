@@ -1,9 +1,9 @@
 <script setup>
-import { ref, onMounted, computed, watch } from "vue"
+import '@/assets/loading.css'
+import { ref, onMounted, computed } from "vue"
 import { useRouter, useRoute } from "vue-router"
 import axios from "axios"
 import SideBar from "@/components/SideBar.vue"
-
 import {
   HeartIcon,
   PencilIcon,
@@ -12,25 +12,26 @@ import {
   XMarkIcon,
   PencilSquareIcon,
 } from "@heroicons/vue/24/outline"
-import { UserBadgeCheck, WarningTriangle, LogOut } from "@iconoir/vue"
-import { LoginModalStore } from "@/stores/LoginModal.js"
+import { MoneySquare } from "@iconoir/vue"
 import FavoritesList from "@/components/FavoritesList.vue"
 import DetailModal from "@/components/DetailModal.vue"
 import { usePlacesStore } from "@/stores/fetchPlaces"
-import { PlaceModalStore } from "@/stores/PlaceModal"
-import Logo from "@/assets/images/cat-2.png"
+import defaultUserImage from "/images/cat-2.png"
+import '@/assets/loading.css'
+import { useLoadingStore } from "@/stores/loading"
 
-const LoginStore = LoginModalStore()
+const loadingStore = useLoadingStore()
+const loadingForBtn = ref(false)
 const placesStore = usePlacesStore()
-const modalStore = PlaceModalStore()
-
 const places = ref([])
-
 const route = useRoute()
 const router = useRouter()
 const API_URL = process.env.VITE_HOST_URL
 const token = localStorage.getItem("token")
 const userId = localStorage.getItem("userId")
+import { MessageModalStore } from '@/stores/MessageModal'
+const messageStore = MessageModalStore()
+
 
 // GET User Profile
 const user = ref("")
@@ -40,7 +41,8 @@ const userGender = ref("")
 const userBirthday = ref("")
 const userDescription = ref("")
 const userLoginWay = ref("")
-const userImg = ref(Logo)
+const userImg = ref(defaultUserImage)
+const memberLevel = ref('小拼圖')
 
 const getUser = async () => {
   try {
@@ -60,6 +62,7 @@ const getUser = async () => {
     userBirthday.value = user.value.birthday // 2000-12-12T00:00:00.000Z
     userDescription.value = user.value.description
     userLoginWay.value = user.value.login_way
+    memberLevel.value = user.value.level
     if (user.value.profile_pic_url !== null) {
       userImg.value = user.value.profile_pic_url
       return
@@ -72,11 +75,15 @@ const getUser = async () => {
   }
 }
 // User Logout
-const logoutSuccess = ref(null)
 const logout = () => {
+  loadingStore.showLoading()
   localStorage.removeItem("token")
   localStorage.removeItem("userId")
-  logoutSuccess.value.showModal()
+  messageStore.messageModal({
+    message: "登出成功",
+    status: "success",
+  })
+  loadingStore.hideLoading()
   setTimeout(() => {
     router.push("/planner")
   }, 1000)
@@ -105,44 +112,46 @@ const userBirthdayInput = computed({
 
 // Update User Profile
 const errorMsg = ref("")
-const UpdateSuccess = ref(null)
-const UpdateFailed = ref(null)
 const updateUser = async () => {
+  const config = {
+    headers: {
+      Authorization: token,
+    },
+  }
+  const updatedUserData = {
+    name: userName.value,
+    email: userEmail.value,
+    profile_pic_url: userImg.value,
+    gender: userGender.value,
+    birthday: userBirthday.value,
+    description: userDescription.value,
+  }
+  loadingForBtn.value = true
   try {
-    const config = {
-      headers: {
-        Authorization: token,
-      },
-    }
-    const updatedUserData = {
-      name: userName.value,
-      email: userEmail.value,
-      profile_pic_url: userImg.value,
-      gender: userGender.value,
-      birthday: userBirthday.value,
-      description: userDescription.value,
-    }
     const response = await axios.patch(
       `${API_URL}/users/profile/${userId}`,
       updatedUserData,
       config
     )
+    loadingForBtn.value = false
+    closeNickNameModal()
+    closeProfileModal()
+    closePersonalInformationModal()
     if (response.data.message === "User update successful") {
-      UpdateSuccess.value.showModal()
-      setTimeout(() => {
-        UpdateSuccess.value.close()
-      }, 1000)
-    } else {
-      UpdateFailed.value.showModal()
-      setTimeout(() => {
-        UpdateFailed.value.close()
-      }, 1000)
-    }
+      messageStore.messageModal({
+        message: "用戶資料更新成功",
+        status: "success",
+      })
+    } 
     user.value = response.data.updatedData // 更新後的資料
     await getUser()
   } catch (error) {
+    loadingForBtn.value = false
     errorMsg.value = error.message
-    UpdateFailed.value.showModal()
+    messageStore.messageModal({
+      message: "用戶資料更新失敗",
+      status: "success",
+    })
   }
 }
 
@@ -151,28 +160,33 @@ const DeleteUser = ref(null)
 const deleteComfire = () => {
   DeleteUser.value.showModal()
 }
-const deletedSuccess = ref(null)
 const deleteUser = async () => {
+  const config = {
+    headers: {
+      Authorization: token,
+    },
+  }
+  loadingForBtn.value = true
   try {
-    const config = {
-      headers: {
-        Authorization: token,
-      },
-    }
     const response = await axios.delete(
       `${API_URL}/users/profile/${userId}`,
       config
     )
+    loadingForBtn.value = false
     if (response.data.message === `成功刪除 ID:${userId} 使用者`) {
       user.value = ""
       localStorage.removeItem("token")
       localStorage.removeItem("userId")
-      deletedSuccess.value.showModal()
+      messageStore.messageModal({
+        message: "用戶已刪除",
+        status: "success",
+      })
       setTimeout(() => {
         router.push("/planner")
       }, 1000)
     }
   } catch (error) {
+    loadingForBtn.value = false
     console.error(error.message)
   }
 }
@@ -180,10 +194,6 @@ const deleteUser = async () => {
 const goPremium =()=>{
   router.push("/premium");
 }
-
-onMounted(async () => {
-  await getUser()
-})
 
 // Upload Profile Image
 const imgFile = ref(null)
@@ -212,21 +222,23 @@ const uploadImg = async () => {
   }
 }
 
+const Editmodal = ref(null)
 const closeEditmodal = () => {
-  const dialog = document.getElementById("Editmodal")
-  dialog?.close()
+  Editmodal.value.close()
 }
+
+const NickNameModal = ref(null)
 const closeNickNameModal = () => {
-  const dialog = document.getElementById("NickNameModal")
-  dialog?.close()
+  NickNameModal.value.close()
 }
+
+const ProfileModal = ref(null)
 const closeProfileModal = () => {
-  const dialog = document.getElementById("ProfileModal")
-  dialog?.close()
+  ProfileModal.value.close()
 }
-const closePersonalInformatioMmodal = () => {
-  const dialog = document.getElementById("PersonalInformatioMmodal")
-  dialog?.close()
+const PersonalInformationModal = ref(null)
+const closePersonalInformationModal = () => {
+  PersonalInformationModal.value.close()
 }
 
 const isModalOpen = computed(() => route.query.action === "placeInfo")
@@ -236,7 +248,6 @@ const handleOpenDetailModal = (detailId) => {
     console.error("Invalid detailId passed:", detailId)
     return
   }
-  console.log("detailId:", detailId)
 
   router.push({
     path: "/member",
@@ -252,18 +263,35 @@ const currentPlace = computed(() => {
 const closeDetailModal = () => {
   router.push({ path: "/member" })
 }
+
+const paymentSuccess = ref(null)
+
 onMounted(async () => {
+  loadingStore.showLoading()
   try {
-    await placesStore.fetchDefaultPlaces() // 抓取資料
+    await getUser()
+    loadingStore.hideLoading()
     console.log("places:", places.value)
   } catch (error) {
     console.error("Failed to fetch places:", error)
     places.value = [] // 防止錯誤導致的 undefined
   }
+  const { order } = route.query
+  if(order) {
+    await paymentSuccess.value.showModal()
+    setTimeout(() => {
+      paymentSuccess.value.close()
+    }, 2000)
+  }
 })
 </script>
 
 <template>
+  <LoadingOverlay :active="loadingStore.isLoading">
+    <div class="loadingio-spinner-ellipsis-nq4q5u6dq7r"><div class="ldio-x2uulkbinbj">
+    <div></div><div></div><div></div><div></div><div></div>
+    </div></div>
+  </LoadingOverlay>
   <SideBar />
   <div
     class="flex flex-col min-h-screen bg-white lg:ml-16 transition-all duration-300 ease-in-out text-[#2d4057]"
@@ -272,7 +300,7 @@ onMounted(async () => {
       <img
         src="../assets/svg/Logo.svg"
         alt=""
-        class="w-24 mt-1 ml-8 lg:ml-1 md:ml-8 sm:ml-8"
+        class="w-0 mt-6 ml-8 lg:w-24 lg:ml-1 md:ml-8 sm:ml-8"
       />
     </div>
     <div class="flex-1 p-2 sm:ml-1 md:ml-1 lg:ml-10">
@@ -288,12 +316,14 @@ onMounted(async () => {
             />
             <div class="sm:mr-0">
               <div class="block pl-4 mt-2 md:mr-20 sm:mr-0">
-                <p class="mt-4 text-xl font-semibold">{{ userName }}</p>
+                <span class="mt-4 text-xl font-semibold">{{ userName }}</span>
+                <span v-if="memberLevel === '大拼圖'" class="px-3 py-1 mx-3 text-sm text-white rounded-full bg-primary-200" :class="level">大拼圖</span>
+                <span v-if="memberLevel === 'VIP拼圖達人'" class="px-3 py-1 mx-3 text-sm text-white rounded-full bg-primary-200" :class="level">VIP 拼圖達人</span>
                 <p class="mt-2">{{ userEmail }}</p>
                 <div class="flex items-center gap-3 mt-4">
                   <button
                     class="flex items-center px-3 py-1 transition border rounded-full border-slate-400 hover:bg-primary-100 hover:text-primary-800"
-                    onclick="Editmodal.showModal()"
+                    @click="Editmodal.showModal()"
                   >
                     <PencilIcon class="w-4 h-4 mr-1" />
                     <span class="w-10">編輯</span>
@@ -338,7 +368,7 @@ onMounted(async () => {
         />
       </div>
     </div>
-    <dialog id="Editmodal" class="modal" @click.self="closeEditmodal">
+    <dialog ref="Editmodal" class="modal" @click.self="closeEditmodal">
       <div
         class="w-full h-full p-6 bg-white rounded-none md:w-96 md:h-max md:rounded-2xl md:mb-20"
       >
@@ -378,8 +408,8 @@ onMounted(async () => {
         <div class="bg-gray rounded-2xl">
           <button
             class="flex justify-between w-full p-2"
-            onclick="document.getElementById('NickNameModal').showModal()"
-          >
+            @click="NickNameModal.showModal()"
+            >
             <div class="flex flex-col items-start p-2">
               <span class="text-xs text-slate-400">暱稱</span>
               <p class="font-bold">{{ userName }}</p>
@@ -389,7 +419,7 @@ onMounted(async () => {
           <hr class="w-11/12 mx-auto border-slate-300" />
           <button
             class="flex justify-between w-full p-2"
-            onclick="document.getElementById('ProfileModal').showModal()"
+            @click="ProfileModal.showModal()"
           >
             <div class="flex flex-col items-start p-2">
               <span class="text-xs text-slate-400">個人簡介</span>
@@ -400,7 +430,7 @@ onMounted(async () => {
           <hr class="w-11/12 mx-auto border-slate-300" />
           <button
             class="flex justify-between w-full p-2"
-            onclick="document.getElementById('PersonalInformatioMmodal').showModal()"
+            @click="PersonalInformationModal.showModal()"
           >
             <div class="flex flex-col items-start p-2">
               <span class="text-xs text-slate-400">打造你的旅行名片</span>
@@ -418,7 +448,7 @@ onMounted(async () => {
             </div>
             <button
               class="px-4 py-2 rounded-full bg-secondary-500"
-              @click="LoginStore.openModal"
+              @click="goPremium"
             >
               <p class="text-xs text-white">立即升級</p>
             </button>
@@ -453,7 +483,7 @@ onMounted(async () => {
         <button>close</button>
       </form>
     </dialog>
-    <dialog id="NickNameModal" class="modal" @click.self="closeNickNameModal">
+    <dialog ref="NickNameModal" class="modal" @click.self="closeNickNameModal">
       <div
         class="w-full h-full p-6 bg-white rounded-none md:w-96 md:h-max md:rounded-2xl md:mb-40"
       >
@@ -493,16 +523,22 @@ onMounted(async () => {
           <button
             type="button"
             class="w-full p-3 rounded-full text-primary-600 ring-1 ring-primary-600 hover:bg-primary-100"
-            onclick="document.getElementById('NickNameModal').close()"
+            @click="closeNickNameModal"
           >
             取消
           </button>
           <button
+            v-if="!loadingForBtn"
             class="w-full p-3 text-white rounded-full bg-primary-600 hover:bg-primary-800"
             @click="updateUser"
-            onclick="document.getElementById('NickNameModal').close()"
           >
             儲存
+          </button>
+          <button
+            v-else
+            class="w-full p-3 text-white rounded-full bg-primary-600 hover:bg-primary-800"
+          >
+            <span class="loading loading-dots loading-md"></span>
           </button>
         </div>
       </div>
@@ -513,7 +549,7 @@ onMounted(async () => {
         <button>close</button>
       </form>
     </dialog>
-    <dialog id="ProfileModal" class="modal" @click.self="closeProfileModal">
+    <dialog ref="ProfileModal" class="modal" @click.self="closeProfileModal">
       <div
         class="w-full h-full p-6 bg-white rounded-none md:w-96 md:h-max md:rounded-2xl md:mb-40"
       >
@@ -545,17 +581,23 @@ onMounted(async () => {
             <button
               type="button"
               class="w-full p-3 rounded-full text-primary-600 ring-1 ring-primary-600 hover:bg-primary-100"
-              onclick="document.getElementById('ProfileModal').close()"
+              @click="closeProfileModal"
             >
               取消
             </button>
             <button
+              v-if="!loadingForBtn"
               class="w-full p-3 text-white rounded-full bg-primary-600 hover:bg-primary-800"
               @click="updateUser"
-              onclick="document.getElementById('ProfileModal').close()"
             >
               儲存
             </button>
+            <button
+              v-else
+              class="w-full p-3 text-white rounded-full bg-primary-600 hover:bg-primary-800"
+            >
+            <span class="loading loading-dots loading-md"></span>
+          </button>
           </div>
         </div>
       </div>
@@ -567,9 +609,9 @@ onMounted(async () => {
       </form>
     </dialog>
     <dialog
-      id="PersonalInformatioMmodal"
+      ref="PersonalInformationModal"
       class="modal"
-      @click.self="closePersonalInformatioMmodal"
+      @click.self="closePersonalInformationModal"
     >
       <div
         class="w-full h-full p-6 bg-white rounded-none md:w-96 md:h-max md:rounded-2xl md:mb-40"
@@ -590,7 +632,7 @@ onMounted(async () => {
           </div>
           <div class="relative">
             <input
-              id="PersonalInformatio"
+              id="PersonalInformation"
               class="w-full p-2 px-4 pr-10 border rounded-lg"
               type="text"
               placeholder="輸入Email"
@@ -599,7 +641,7 @@ onMounted(async () => {
             <button
               type="button"
               class="absolute transform -translate-y-1/2 right-3 top-1/2"
-              onclick="document.getElementById('PersonalInformatio').value=''"
+              onclick="document.getElementById('PersonalInformation').value=''"
             >
               <XMarkIcon class="w-5 h-5" />
             </button>
@@ -664,61 +706,26 @@ onMounted(async () => {
           <button
             type="button"
             class="w-full p-3 rounded-full text-primary-600 ring-1 ring-primary-600 hover:bg-primary-100"
-            onclick="document.getElementById('PersonalInformatioMmodal').close()"
+            @click="closePersonalInformationModal"
           >
             取消
           </button>
           <button
+            v-if="!loadingForBtn"
             class="w-full p-3 text-white rounded-full bg-primary-600 hover:bg-primary-800"
             @click="updateUser"
-            onclick="document.getElementById('PersonalInformatioMmodal').close()"
           >
             儲存
+          </button>
+          <button
+              v-else
+              class="w-full p-3 text-white rounded-full bg-primary-600 hover:bg-primary-800"
+            >
+            <span class="loading loading-dots loading-md"></span>
           </button>
         </div>
       </div>
       <form method="dialog" class="hidden modal-backdrop md:block">
-        <button class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2">
-          ✕
-        </button>
-        <button>close</button>
-      </form>
-    </dialog>
-    <!-- update success 的 Modal -->
-    <dialog ref="UpdateSuccess" class="modal w-[384px] mx-auto">
-      <div class="modal-box">
-        <form method="dialog">
-          <button
-            class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2"
-          >
-            ✕
-          </button>
-        </form>
-        <UserBadgeCheck class="mx-auto mb-3 w-14 h-14 text-primary-600" />
-        <h3 class="text-xl font-bold text-center">用戶資料修改成功！</h3>
-      </div>
-      <form method="dialog" class="modal-backdrop">
-        <button class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2">
-          ✕
-        </button>
-        <button>close</button>
-      </form>
-    </dialog>
-    <!-- update failed 的 Modal -->
-    <dialog ref="UpdateFailed" class="modal w-[384px] mx-auto">
-      <div class="modal-box">
-        <form method="dialog">
-          <button
-            class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2"
-          >
-            ✕
-          </button>
-        </form>
-        <WarningTriangle class="mx-auto mb-3 w-14 h-14 text-primary-600" />
-        <h3 class="text-xl font-bold text-center">用戶資料修改失敗！</h3>
-        <p class="py-4 text-center">{{ errorMsg }}</p>
-      </div>
-      <form method="dialog" class="modal-backdrop">
         <button class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2">
           ✕
         </button>
@@ -755,10 +762,17 @@ onMounted(async () => {
             取消
           </button>
           <button
+            v-if="!loadingForBtn"
             class="w-full h-12 px-5 py-3 font-medium text-center text-white bg-primary-600 hover:bg-primary-700 rounded-3xl"
             @click="deleteUser"
           >
             刪除
+          </button>
+          <button
+            v-else
+            class="w-full h-12 px-5 py-3 font-medium text-center text-white bg-primary-600 hover:bg-primary-700 rounded-3xl"
+          >
+            <span class="loading loading-dots loading-md"></span>
           </button>
         </div>
       </div>
@@ -769,27 +783,22 @@ onMounted(async () => {
         <button>close</button>
       </form>
     </dialog>
-    <!-- deleted success 的 Modal -->
-    <dialog ref="deletedSuccess" class="modal w-[384px] mx-auto">
+    <!-- Payment success 的 Modal -->
+    <dialog ref="paymentSuccess" class="modal w-[384px] mx-auto">
       <div class="modal-box">
         <form method="dialog">
-          <button
-            class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2"
-          >
-            ✕
-          </button>
+          <button class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2">✕</button>
         </form>
-        <UserBadgeCheck class="mx-auto mb-3 w-14 h-14 text-primary-600" />
-        <h3 class="text-xl font-bold text-center">用戶刪除成功！</h3>
+        <div class="text-center">
+          <MoneySquare class="mx-auto mb-3 w-14 h-14 text-primary-600" />
+          <h3 class="text-xl font-bold text-center">付款成功！</h3>
+          <p>恭喜升級為「{{ memberLevel }}」</p>
+        </div>
       </div>
-    </dialog>
-    <!-- logout success 的 Modal -->
-    <dialog ref="logoutSuccess" class="modal w-[384px] mx-auto">
-      <div class="modal-box">
-        <form method="dialog"></form>
-        <LogOut class="mx-auto mb-3 w-14 h-14 text-primary-600" />
-        <h3 class="text-xl font-bold text-center">登出成功！</h3>
-      </div>
+      <form method="dialog" class="modal-backdrop">
+        <button class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2">✕</button>
+        <button>close</button>
+      </form>
     </dialog>
   </div>
 </template>

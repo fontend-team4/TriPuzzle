@@ -40,11 +40,12 @@ const additionalCategories = ref([
 
 const categories = ref([...defaultCategories])
 
-const emit = defineEmits("update-categories")
+const emit = defineEmits(["update-categories", "update-md-categories"])
 
 // 監聽 categories 的變化
 watch(categories, (newCategories) => {
   emit("update-categories", newCategories)
+  emit("update-md-categories", newCategories)
 })
 
 // 新增分類
@@ -55,6 +56,7 @@ const addCategory = (category) => {
       (item) => item.name !== category.name
     )
     emit("update-categories", categories.value)
+    emit("update-md-categories", categories.value)
   }
 }
 
@@ -65,6 +67,7 @@ const removeCategory = (index) => {
     additionalCategories.value.push(removed)
   }
   emit("update-categories", categories.value)
+  emit("update-md-categories", categories.value)
 }
 
 // 點擊外框關閉
@@ -134,9 +137,7 @@ onMounted(() => {
         <!-- 我的分類 -->
         <div class="block-my flex flex-col w-[100%-36px] h-full mx-4">
           <div class="flex flex-col justify-start items-center mb-2">
-            <h3 class="text-2xl font-bold text-black mb-1">我的分類</h3>
-            <p class="text-sm text-gray-500 mb-4">拖動即可排序</p>
-            <!-- 待新增:拖曳功能 -->
+            <h3 class="text-2xl font-bold text-black mb-4">我的分類</h3>
             <div
               class="list-group flex justify-start space-between flex-wrap w-full h-1/2 gap-2 px-6 pb-8"
             >

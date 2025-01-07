@@ -1,6 +1,10 @@
 <script setup>
 import { defineProps, defineEmits } from 'vue'
 import axios from 'axios'
+import '@/assets/loading.css'
+import { useLoadingStore } from "@/stores/loading"
+
+const loadingStore = useLoadingStore()
 const props = defineProps({
   scheduleId: {
     type: [Number, String],
@@ -32,21 +36,27 @@ const leaveSchedule = async () => {
       Authorization: token,
     },
   };
+  loadingStore.showLoading();
   try {
-    const response = await axios.delete(
+    await axios.delete(
       `${API_URL}/usersSchedules/${props.toBeLeavedId}/${props.toBeLeavedUserId}`,
       config
     );
     props.updateList(); 
     emit('scheduleUpdate');
+    loadingStore.hideLoading();
   } catch (error) {
     console.error(error.message);
   }
 };
-
 </script>
 
 <template>
+  <LoadingOverlay :active="loadingStore.isLoading">
+    <div class="loadingio-spinner-ellipsis-nq4q5u6dq7r"><div class="ldio-x2uulkbinbj">
+    <div></div><div></div><div></div><div></div><div></div>
+    </div></div>
+  </LoadingOverlay>
   <dialog id="exitToggle" class="modal">
     <div class="modal-box w-[384px] p-0">
       <form method="dialog">
@@ -62,7 +72,7 @@ const leaveSchedule = async () => {
         />
       </div>
       <div class="text-center">
-        <p class="text-lg font-medium">確定要踢出共編嗎？</p>
+        <p class="text-lg font-medium">確定要移除共編權限嗎？</p>
       </div>
       <div class="flex w-full gap-3 px-5 py-6">
         <button

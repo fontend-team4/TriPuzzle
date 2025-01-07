@@ -1,6 +1,10 @@
 <script setup>
 import { defineProps } from 'vue'
 import axios from 'axios'
+import '@/assets/loading.css'
+import { useLoadingStore } from "@/stores/loading"
+
+const loadingStore = useLoadingStore()
 const props = defineProps({
   scheduleId: {
     type: [Number, String],
@@ -25,9 +29,11 @@ const leaveSchedule = async (id) => {
       Authorization: token,
     },
   }
+  loadingStore.showLoading()
   try {
     await axios.delete(`${API_URL}/usersSchedules/${id}`, config)
     props.updateList()
+    loadingStore.hideLoading()
   } catch (error) {
     console.error(error.message)
   }
@@ -35,6 +41,11 @@ const leaveSchedule = async (id) => {
 </script>
 
 <template>
+  <LoadingOverlay :active="loadingStore.isLoading">
+    <div class="loadingio-spinner-ellipsis-nq4q5u6dq7r"><div class="ldio-x2uulkbinbj">
+    <div></div><div></div><div></div><div></div><div></div>
+    </div></div>
+  </LoadingOverlay>
   <dialog id="leaveSchedule" class="modal">
     <div class="modal-box w-[384px] p-0">
       <form method="dialog">

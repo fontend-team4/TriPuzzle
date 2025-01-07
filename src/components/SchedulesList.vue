@@ -1,11 +1,10 @@
 <script setup>
-import { ref, inject, onMounted, computed } from "vue";
-import axios from "axios";
-import { EllipsisHorizontalIcon } from "@heroicons/vue/16/solid";
+import { ref, inject, onMounted, computed } from "vue"
+import axios from "axios"
+import { EllipsisHorizontalIcon } from "@heroicons/vue/16/solid"
 import {
   XMarkIcon,
   UserPlusIcon,
-  ShareIcon,
   DocumentDuplicateIcon,
   TrashIcon,
 } from "@heroicons/vue/24/outline";
@@ -16,6 +15,9 @@ import LeaveScheduleModal from "./LeaveScheduleModal.vue";
 import { LoginModalStore } from "@/stores/LoginModal.js";
 
 const LoginStore = LoginModalStore();
+const loadingForMineList = ref(false)
+const loadingForShareList = ref(false)
+const loadingForCopy = ref(false)
 const listToggle = inject("listToggle");
 const detailToggle = inject("detailToggle");
 const API_URL = process.env.VITE_HOST_URL;
@@ -38,17 +40,20 @@ const getSchedules = async () => {
       Authorization: token,
     },
   };
+  loadingForMineList.value = true
   try {
     const response = await axios.get(`${API_URL}/schedules`, config);
     if (response.data) {
       hasSchedules.value = true;
     }
     schedules.value = response.data;
+    loadingForMineList.value = false
     schedules.value.forEach((item) => {
       item.start_date = item.start_date.split("T")[0];
       item.end_date = item.end_date.split("T")[0];
     });
   } catch (error) {
+    loadingForMineList.value = false
     console.error(error.message);
     hasSchedules.value = false;
   }
@@ -60,22 +65,24 @@ const getShareSchedules = async () => {
       Authorization: token,
     },
   };
+  loadingForShareList.value = true
   try {
     const response = await axios.get(`${API_URL}/usersSchedules`, config);
     if (response.data.length > 0) {
       hasShareSchedules.value = true;
     }
     shareSchedules.value = response.data;
+    loadingForShareList.value = false
     shareSchedules.value.forEach((item) => {
       item.start_date = item.start_date.split("T")[0];
       item.end_date = item.end_date.split("T")[0];
     });
   } catch (error) {
+    loadingForShareList.value = false
     console.error(error.message);
     hasShareSchedules.value = false;
   }
 };
-
 
 const openDeleteModal = (id) => {
   deletedId.value = id;
@@ -84,7 +91,6 @@ const openDeleteModal = (id) => {
 const openLeaveModal = (id) => {
   leavedId.value = id;
 };
-
 
 // 行程分享、共編彈窗
 const activeStatus = ref(null);
@@ -127,7 +133,6 @@ const openInviteModal = () => {
 const updateStatus = (status) => {
   activeStatus.value = status;
 };
-
 
 const login = () => {
   LoginStore.openModal();
@@ -176,6 +181,7 @@ const scheduleDuplicate = async (id) => {
       Authorization: token,
     },
   };
+  loadingForCopy.value = true
   try {
     const response = await axios.get(`${API_URL}/schedules/${id}`, config);
     scheduleName.value = response.data.title;
@@ -185,6 +191,7 @@ const scheduleDuplicate = async (id) => {
     endDate.value = response.data.end_date.split("T")[0];
     transportationWay.value = response.data.transportation_way;
     await copySchedule();
+    loadingForCopy.value = false
   } catch (error) {
     console.error(error.message);
   }
@@ -196,7 +203,7 @@ const copySchedule = async () => {
     },
   };
   const ScheduleData = {
-    title: scheduleName.value,
+    title: `${scheduleName.value} - 複製`,
     image_url: coverImage.value,
     schedule_note: scheduleNote.value,
     start_date: startDate.value,
@@ -281,9 +288,22 @@ onMounted(async () => {
           <div v-if="isLogin">
             <!-- 我的 -->
             <div v-if="checkedSchedule === 'mine'">
+              <!-- 載入中 -->
+              <div v-if="loadingForMineList" class="w-full text-center h-52 mt-7">
+                <img
+                  class="w-[180px] mx-auto"
+                  src="../assets/images/cat-7.png"
+                  alt=""
+                />
+                <div class="flex justify-center mb-6">
+                  <p class="mr-2">行程載入中
+                  </p>
+                  <span class="loading loading-dots loading-md"></span>
+                </div>
+              </div>
               <!-- 有行程 -->
               <div
-                v-if="hasSchedules"
+                v-else-if="!loadingForMineList && hasSchedules"
                 class="flex flex-wrap justify-center gap-4"
               >
                 <!-- 行程卡片 -->
@@ -293,7 +313,7 @@ onMounted(async () => {
                   class="card card-compact bg-base-100 sm:w-full md:w-[30%] lg:w-full h-[176px] lg:h-auto border-gray border mb-4 relative hover:cursor-pointer"
                 >
                   <figure
-                    @click="detailToggle(item.id)"
+                    @click="detailToggle(item.id),newClickHandler(item.id)"
                     class="w-full h-[150px] overflow-hidden"
                   >
                     <img
@@ -316,7 +336,8 @@ onMounted(async () => {
                         tabindex="0"
                         class="absolute right-0 w-32 bg-white border rounded dropdown-content border-gray top-10"
                       >
-                        <li @click="scheduleDuplicate(item.id)">
+                        <li v-if="!loadingForCopy"
+                        @click="scheduleDuplicate(item.id)">
                           <a
                             class="flex items-center gap-1 px-5 py-2 text-sm hover:bg-gray"
                             href="#"
@@ -325,6 +346,17 @@ onMounted(async () => {
                               ><DocumentDuplicateIcon
                             /></span>
                             <p>複製行程</p>
+                          </a>
+                        </li>
+                        <li v-else>
+                          <a
+                            class="flex items-center gap-1 px-5 py-2 text-sm hover:bg-gray"
+                            href="#"
+                          >
+                            <span class="inline-block w-6 h-6 mr-5"
+                              ><DocumentDuplicateIcon
+                            /></span>
+                            <span class="loading loading-dots loading-md"></span>
                           </a>
                         </li>
                         <li
@@ -401,9 +433,22 @@ onMounted(async () => {
             </div>
             <!-- 共編 -->
             <div v-else>
+              <!-- 載入中 -->
+              <div v-if="loadingForShareList" class="w-full text-center h-52 mt-7">
+                <img
+                  class="w-[180px] mx-auto"
+                  src="../assets/images/cat-7.png"
+                  alt=""
+                />
+                <div class="flex justify-center mb-6">
+                  <p class="mr-2">行程載入中
+                  </p>
+                  <span class="loading loading-dots loading-md"></span>
+                </div>
+              </div>
               <!-- 有行程 -->
               <div
-                v-if="hasShareSchedules"
+                v-else-if="!loadingForShareList && hasShareSchedules"
                 class="flex flex-wrap justify-center gap-4"
               >
                 <!-- 行程卡片 -->
@@ -481,7 +526,7 @@ onMounted(async () => {
                 </div>
               </div>
               <!-- 無行程 -->
-              <div v-else class="text-center -full h-52 mt-7">
+              <div v-else class="w-full text-center h-52 mt-7">
                 <img
                   class="w-[200px] mx-auto"
                   src="../assets/images/cat-3.png"

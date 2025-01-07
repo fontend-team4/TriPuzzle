@@ -5,6 +5,7 @@ import "../assets/fonts/NotoSansTC.js"
 import axios from "axios"
 import EmailScheduleSummary from "./EmailScheduleSummary.vue"
 import { DocumentArrowDownIcon } from "@heroicons/vue/24/outline"
+import { debounce } from 'lodash';
 
 const API_URL = process.env.VITE_HOST_URL
 const token = localStorage.getItem("token")
@@ -14,7 +15,7 @@ const scheduleName = ref("")
 const schedulePlaces = ref("")
 const groupedData = ref("")
 
-const getSchedule = async (id) => {
+const getSchedule = debounce(async (id) => {
   const config = {
     headers: {
       Authorization: token,
@@ -25,8 +26,6 @@ const getSchedule = async (id) => {
     schedulesData.value = response.data
     scheduleName.value = response.data.title
     schedulePlaces.value = response.data.schedule_places
-    console.log(schedulesData.value)
-
     const getAllDates = (startDate, endDate) => {
       const dates = []
       let currentDate = new Date(startDate)
@@ -76,10 +75,12 @@ const getSchedule = async (id) => {
   } catch (error) {
     console.error(error)
   }
-}
+}, 3000)
 
+const loadingForBtn = ref(false)
 const scheduleSummary = ref(null)
 const generatePDF = () => {
+  loadingForBtn.value = true
   const doc = new jsPDF()
   doc.setFont("NotoSansTC-VariableFont_wght", "normal")
   doc.setFontSize(12)
@@ -91,16 +92,17 @@ const generatePDF = () => {
     doc.text(line, 10, 10 + i * 5) // 設定文字位置
   })
 
-  doc.save("schedule_summary.pdf")
+  doc.save("行程摘要_Tripuzzle.pdf")
+  loadingForBtn.value = false
 }
 
 const scheduleSummaryText = ref("")
-// watch(schedulesData, () => {
-//   getSchedule(scheduleId.value)
-//   if (scheduleSummary.value) {
-//     scheduleSummaryText.value = scheduleSummary.value.innerText.split("\n")
-//   }
-// })
+watch(schedulesData, (newVal, oldVal) => {
+  if (newVal !== oldVal && scheduleSummary.value) {
+    getSchedule(scheduleId.value)
+    scheduleSummaryText.value = scheduleSummary.value.innerText.split("\n")
+  }
+})
 
 onMounted(() => {
   getSchedule(scheduleId.value)
@@ -138,11 +140,18 @@ onMounted(() => {
         >
           <EmailScheduleSummary :scheduleSummaryText="scheduleSummaryText" />
           <button
+            v-if="!loadingForBtn"
             @click="generatePDF"
             class="w-full h-12 px-5 py-3 font-medium text-center text-white bg-primary-600 hover:bg-primary-700 rounded-3xl"
           >
             <DocumentArrowDownIcon class="inline-block w-7 h-7 pe-2" />
             <span>匯出 PDF</span>
+          </button>
+          <button
+            v-else
+            class="w-full h-12 px-5 py-3 font-medium text-center text-white bg-primary-600 hover:bg-primary-700 rounded-3xl"
+          >
+            <span class="loading loading-dots loading-md"></span>
           </button>
         </div>
       </form>
