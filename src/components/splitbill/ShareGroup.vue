@@ -17,9 +17,8 @@ onMounted(async () => {
 <template>
   <div class="p-4 bg-white shadow-md rounded-lg">
     <h2 class="text-xl font-bold text-primary-500 mb-2">
-      【{{ groupMembers.title }}】群組成員
+      群組成員 :【{{ groupMembers.title }}】
     </h2>
-    <p class="text-gray-800 mb-4"></p>
     <ul class="">
       <span class="font-bold">主辦人</span>
       <li class="py-2 text-gray-800 flex flex-row items-center">
