@@ -134,7 +134,7 @@ onMounted(() => {
       location: place.location,
       city: place.location,
       country: 'Taiwan',
-      image_url: place.url,
+      image_url: place.photos,
       google_map_url: place.mapUrl,
       summary: place.summary,
       opening_hours: place.opening_hours,
@@ -775,7 +775,7 @@ const tab2Cls = computed(() => {
                     </div>
                   </div>
                 </div>
-                <button
+                <!-- <button
                   class="btn p-0 border-white bg-white flex mt-[1rem] shadow-none hover:bg-white hover:border-white group items-center"
                   onclick="NewSchedule.showModal()"
                 >
@@ -785,7 +785,7 @@ const tab2Cls = computed(() => {
                   >
                     建立新行程
                   </p>
-                </button>
+                </button> -->
               </div>
             </div>
             <!-- Tab Two -->
