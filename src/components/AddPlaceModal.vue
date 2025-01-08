@@ -222,12 +222,14 @@ onMounted(async () => {
       await optimizeTrail(schedules.value[0]);
     }
   } catch (error) {
+    loadingStore.hideLoading();
     console.error('Error fetching schedules:', error);
   }
   try {
     const res = await axios.get(`${URL}/usersschedules`, {
       headers: { Authorization: token }
     });
+    loadingStore.hideLoading();
     coSchedules.value = res.data.map((schedule) => ({
       ...schedule,
       dates: calculateDateRange(schedule.start_date, schedule.end_date),
@@ -241,6 +243,7 @@ onMounted(async () => {
     }
     console.log("coSchedules.value",coSchedules.value)
   } catch (error) {
+    loadingStore.hideLoading();
     console.error('Error fetching coSchedules:', error);
   }
 });
@@ -695,7 +698,7 @@ const hasCoSchedules = computed(() => {
       >
         <div class="hidden md:block md:w-2/3 md:bg-[#f4f4f4]">
           <div class="flex h-full">
-            <img src="/images/cat-1.png" class="m-auto h-full" />
+            <img src="/images/cat-1.png" class="w-full" />
           </div>
         </div>
         <div
@@ -823,9 +826,9 @@ const hasCoSchedules = computed(() => {
                     </div>
                   </div>
                 </div>
-                <div  v-else class="flex flex-col items-center justify-center h-full ">
+                <div  v-else class="flex flex-col items-center h-full ">
                   <div class="w-72">
-                    <img src="../assets/images/cat-3.png" alt="">
+                    <img class="w-40 mx-auto mb-5" src="../assets/images/cat-6.png" alt="">
                   </div>
                   <div class="mb-20">目前還沒有行程喔！</div>
                 </div>
@@ -920,9 +923,9 @@ const hasCoSchedules = computed(() => {
                     </div>
                   </div>
                 </div>
-                <div  v-else class="flex flex-col items-center justify-center h-full ">
+                <div  v-else class="flex flex-col items-center h-full ">
                   <div class="w-72">
-                    <img src="../assets/images/cat-3.png" alt="">
+                    <img class="w-44 mx-auto" src="../assets/images/cat-3.png" alt="">
                   </div>
                   <div class="mb-20">目前還沒有共編行程喔！</div>
                 </div>
