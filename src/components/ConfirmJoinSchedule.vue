@@ -2,73 +2,28 @@
 import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import axios from "axios";
+import { MessageModalStore } from '@/stores/MessageModal'
 
+const messageStore = MessageModalStore()
 const API_URL = process.env.VITE_HOST_URL
-
 const route = useRoute();
 const router = useRouter();
 const shareToken = ref(route.params.shareToken);
-
 const loading = ref(true);
 const scheduleTitle = ref("");
 const scheduleImg = ref("");
 const scheduleDate = ref("");
-
 const token = localStorage.getItem("token");
-
 const loadingForBtn = ref(false)
-
-function showMessage({ title = "訊息", message, status }) {
-  const typeClasses = {
-    success: "bg-green-500 hover:bg-green-700",
-    error: "bg-primary-600 hover:bg-primary-700",
-  }
-  const buttonClass = typeClasses[status]
-  if (document.querySelector("#custom_modal")) {
-    document.querySelector("#modal_title").textContent = title
-    document.querySelector("#modal_message").textContent = message
-    document
-      .querySelector("#modal_button")
-      .classList.remove(
-        "bg-green-500",
-        "hover:bg-green-700",
-        "bg-primary-600",
-        "hover:bg-primary-700"
-      )
-    document
-      .querySelector("#modal_button")
-      .classList.add(...buttonClass.split(" "))
-    document.querySelector("#custom_modal").showModal()
-    return
-  }
-
-  const modalHTML = `
-    <dialog id="custom_modal" class="modal">
-      <div class="modal-box text-center w-[450px] h-[250px]">
-        <h3 id="modal_title" class="mb-4 text-xl font-bold">${title}</h3>
-        <p id="modal_message" class="py-4">${message}</p>
-        <div class="justify-center modal-action">
-          <button id="modal_button" class="btn ${buttonClass} w-[80%] text-white py-3 rounded-full font-medium  mt-4" onclick="document.querySelector('#custom_modal').close()">確定</button>
-        </div>
-      </div>
-    </dialog>
-  `
-  // 動態插入 Modal 到 body
-  document.body.insertAdjacentHTML("beforeend", modalHTML)
-
-  // 顯示 Modal
-  document.querySelector("#custom_modal").showModal()
-}
 
 onMounted(async () => {
   const token = localStorage.getItem("token");
 
   if (!token) {
-    showMessage({
-      title: "小提醒",
-      message: "登入後才能加入共編喔！",
+    messageStore.messageModal({
+      message: '登入後才能加入共編喔！',
       status: "error",
-    });
+    })
     router.push("/planner");
     return; 
   }
@@ -98,17 +53,15 @@ onMounted(async () => {
     const errorMessage = err.response?.data?.error || "發生未知錯誤";
 
     if (status === 401) {
-      showMessage({
-        title: "小提醒",
-        message: "登入後才能加入共編喔！",
+      messageStore.messageModal({
+        message: '登入後才能加入共編喔！',
         status: "error",
-      });
+      })
     } else {
-      showMessage({
-        title: "小提醒",
+      messageStore.messageModal({
         message: errorMessage,
         status: "error",
-      });
+      })
     }
     router.push("/planner");
   } finally {
@@ -130,21 +83,19 @@ const joinSchedule = async () => {
       config
     );
   loadingForBtn.value = false
-    showMessage({
-      title: "成功",
-      message: "您已成功加入行程！",
+    messageStore.messageModal({
+      message: '您已成功加入行程',
       status: "success",
-    });
+    })
     router.push("/planner");
   } catch (err) {
     console.error("Error joining schedule:", err.message);
     loadingForBtn.value = false
     const errorMessage = err.response?.data?.error || "發生未知錯誤";
-    showMessage({
-      title: "小提醒",
+    messageStore.messageModal({
       message: errorMessage,
       status: "error",
-    });
+    })
   }
 };
 
