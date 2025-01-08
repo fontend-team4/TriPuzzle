@@ -9,7 +9,11 @@ import {
   PencilIcon,
   ArrowUpTrayIcon,
 } from "@heroicons/vue/24/solid"
-import { CalendarCheck, MapXmark } from "@iconoir/vue"
+import { useLoadingStore } from "@/stores/loading"
+import { MessageModalStore } from '@/stores/MessageModal'
+
+const messageStore = MessageModalStore()
+const loadingStore = useLoadingStore()
 
 const transprotations = ref([
   {
@@ -25,12 +29,18 @@ const transprotations = ref([
   {
     id: 3,
     item: "大眾運輸",
-    value: "PUBLIC_TRANSPORT",
+    value: "transit",
   },
   {
     id: 4,
+    item: "腳踏車",
+    value: "bicycling",
+
+  },
+  {
+    id: 5,
     item: "走路",
-    value: "WALK",
+    value: "walking",
   },
 ])
 
@@ -95,8 +105,6 @@ const uploadImg = async () => {
   }
 }
 
-const addSuccess = ref(null)
-const addFailed = ref(null)
 const token = localStorage.getItem("token")
 const addSchedule = async () => {
   const config = {
@@ -115,19 +123,22 @@ const addSchedule = async () => {
     end_date: endDate.value,
     transportation_way: transportationWay.value,
   }
+  loadingStore.showLoading()
   try {
     await axios.post(`${API_URL}/schedules`, ScheduleData, config)
-    addSuccess.value.showModal()
-    setTimeout(() => {
-      addSuccess.value.close()
-    }, 1000)
+    loadingStore.hideLoading()
+    messageStore.messageModal({
+      message: "行程建立成功",
+      status: "success",
+    })
     props.savetoSchedules()
   } catch (err) {
+    loadingStore.hideLoading()
     console.error(err.message)
-    addFailed.value.showModal()
-    setTimeout(() => {
-      addFailed.value.close()
-    }, 1500)
+    messageStore.messageModal({
+      message: "行程建立失敗",
+      status: "error",
+    })
   }
   coverImage.value = defaultCoverImage
   ScheduleName.value = ""
@@ -142,17 +153,18 @@ onMounted(() => {
 </script>
 
 <template>
+  <LoadingOverlay :active="loadingStore.isLoading">
+    <div class="loadingio-spinner-ellipsis-nq4q5u6dq7r"><div class="ldio-x2uulkbinbj">
+    <div></div><div></div><div></div><div></div><div></div>
+    </div></div>
+  </LoadingOverlay>
   <dialog id="newSchedule" class="modal">
     <div
-      class="modal-box p-0 w-full md:max-w-[480px] sm:max-w-[100%] sm:max-h-[100%] max-md:rounded-none"
-    >
+      class="modal-box p-0 w-full md:max-w-[480px] sm:max-w-[100%] h-full sm:max-h-[100%] md:max-h-[724.75px] max-md:rounded-none">
       <div
-        class="max-w-[480px] md:max-w-[480px] sm:max-w-[100%] h-[60px] px-[15px] py-[8px] sticky top-0 bg-white"
-      >
+        class="max-w-[480px] md:max-w-[480px] sm:max-w-[100%] h-[60px] px-[15px] py-[8px] sticky top-0 bg-white z-20">
         <form method="dialog">
-          <button
-            class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-          >
+          <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
             <XMarkIcon class="w-6 h-6" />
           </button>
         </form>
@@ -160,16 +172,13 @@ onMounted(() => {
 
       <div>
         <header>
-          <span class="text-2xl font-bold flex items-center justify-center"
-            >行程設定</span
-          >
+          <span class="text-2xl font-bold flex items-center justify-center">行程設定</span>
         </header>
       </div>
 
       <!-- 主內容區塊 -->
       <div
-        class="pt-0 px-[20px] pb-[50px] max-w-[480px] md:max-w-[480px] sm:max-w-[100%] md:max-h-[552.75px] sm:max-h-[100%] flex flex-col gap-[20px] relative"
-      >
+        class="pt-0 px-[20px] pb-[50px] max-w-[480px] md:max-w-[480px] sm:max-w-[100%] md:max-h-[552.75px] sm:max-h-[100%] flex flex-col gap-[20px] relative">
         <!-- 封面照片 -->
         <div class="relative">
           <p class="font-bold mb-[5px]">封面照片</p>
@@ -177,10 +186,8 @@ onMounted(() => {
           <input type="checkbox" id="dropdown-toggle" class="hidden peer" />
 
           <!-- 使用 Label 包裹按鈕 -->
-          <label
-            for="dropdown-toggle"
-            class="w-[85px] h-[32px] absolute right-[20px] bottom-[16px] z-10 flex items-center justify-center gap-2 border-[1px] border-white rounded-3xl py-[4px] px-[12px] cursor-pointer"
-          >
+          <label for="dropdown-toggle"
+            class="w-[85px] h-[32px] absolute right-[20px] bottom-[16px] z-10 flex items-center justify-center gap-2 border-[1px] border-white rounded-3xl py-[4px] px-[12px] cursor-pointer">
             <PencilIcon class="size-5 font-bold text-white" />
             <p class="font-bold text-sm text-white">更換</p>
           </label>
@@ -188,54 +195,31 @@ onMounted(() => {
           <!-- 下拉選單(插入更換圖片modal) -->
           <ul
             class="font-bold replace-img-btn absolute right-0 top-full mt-2 w-[153px] h-[80px] bg-white rounded-lg shadow-lg transition-all duration-300 ease-in-out max-h-0 overflow-hidden opacity-0 peer-checked:max-h-[150px] peer-checked:opacity-100 z-10"
-            @click="replaceImgLabelClick"
-          >
-            <li
-              class="h-[50%] px-[20px] py-[8px] hover:bg-gray-100 cursor-pointer flex items-center"
-            >
+            @click="replaceImgLabelClick">
+            <li class="h-[50%] px-[20px] py-[8px] hover:bg-gray-100 cursor-pointer flex items-center">
               <ScheduleCoverImgModal @selectedImg="getCoverImg" />
             </li>
 
-            <label
-              for="file-upload"
-              class="cursor-pointer w-full"
-              @change="handleImgUpload"
-            >
+            <label for="file-upload" class="cursor-pointer w-full" @change="handleImgUpload">
               <li
-                class="h-[50%] px-[20px] py-[8px] hover:bg-gray-100 cursor-pointer flex items-center border-t-[1px] border-slate-200"
-              >
+                class="h-[50%] px-[20px] py-[8px] hover:bg-gray-100 cursor-pointer flex items-center border-t-[1px] border-slate-200">
                 <ArrowUpTrayIcon class="w-[24px] h-[24px]" />
                 <span class="pl-[5px] text-[14px]">上傳照片</span>
-                <input
-                  id="file-upload"
-                  type="file"
-                  accept="image/*"
-                  class="hidden"
-                />
+                <input id="file-upload" type="file" accept="image/*" class="hidden" />
               </li>
             </label>
           </ul>
 
           <div class="relative w-full h-[220px] rounded-xl overflow-hidden">
-            <img
-              :src="coverImage"
-              alt="封面照片"
-              class="w-full h-full object-cover"
-            />
-            <div
-              class="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent"
-            ></div>
+            <img :src="coverImage" alt="封面照片" class="w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent"></div>
           </div>
         </div>
         <!-- 行程名稱 -->
         <div>
           <p class="mb-2 font-bold">行程名稱</p>
-          <input
-            type="text"
-            placeholder="幫行程取個名字吧"
-            v-model="ScheduleName"
-            class="border-solid border border-[#EEEEEE] rounded-lg w-[100%] h-[40px] py-2 px-5"
-          />
+          <input type="text" placeholder="幫行程取個名字吧" v-model="ScheduleName"
+            class="border-solid border border-[#EEEEEE] rounded-lg w-[100%] h-[40px] py-2 px-5" />
         </div>
 
         <!-- 行程日期 -->
@@ -244,57 +228,36 @@ onMounted(() => {
             <p class="mb-2 font-bold">行程日期</p>
           </div>
           <div class="flex flex-erap gap-3 justify-between items-center">
-            <input
-              type="date"
-              placeholder="出發日"
-              v-model="startDate"
-              class="border-solid border border-[#EEEEEE] rounded-lg w-[calc(50%-20px)] h-[40px] py-2 px-5"
-            />
+            <input type="date" placeholder="出發日" v-model="startDate"
+              class="border-solid border border-[#EEEEEE] rounded-lg w-[calc(50%-20px)] h-[40px] py-2 px-5" />
             <span>
               <ArrowLongRightIcon class="size-5 text-stone-400" />
             </span>
-            <input
-              type="date"
-              placeholder="結束日"
-              v-model="endDate"
-              class="border-solid border border-[#EEEEEE] rounded-lg w-[calc(50%-20px)] h-[40px] py-2 px-5"
-            />
+            <input type="date" placeholder="結束日" v-model="endDate"
+              class="border-solid border border-[#EEEEEE] rounded-lg w-[calc(50%-20px)] h-[40px] py-2 px-5" />
           </div>
         </div>
-
         <!-- 主要交通方式 -->
         <div>
           <p class="mb-2 font-bold">主要交通方式</p>
-          <select
-            class="select select-bordered w-full"
-            v-model="transportationWay"
-          >
+          <select class="select select-bordered w-full" v-model="transportationWay">
             <option selected value="CUSTOM">自訂</option>
-            <option
-              v-for="way in transprotations"
-              :key="way.id"
-              :value="way.value"
-            >
+            <option v-for="way in transprotations" :key="way.id" :value="way.value">
               {{ way.item }}
             </option>
           </select>
         </div>
       </div>
-
       <!-- footer -->
-      <div
-        class="w-[100%] h-[80px] bottom-0 sticky border-t-[1px] border-slate-200 py-[16px] px-[24px] z-20"
-      >
+      <div class="w-[100%] h-[80px] bottom-0 sticky border-t-[1px] border-slate-200 py-[16px] px-[24px] bg-white z-20">
         <form method="dialog" class="flex gap-[12px]">
           <button
-            class="w-[50%] h-[48px] border-[1px] border-primary-600 rounded-3xl text-primary-600 font-bold text-sm justify-center items-center px-[12px] py-[8px] hover:bg-primary-100"
-          >
+            class="w-[50%] h-[48px] border-[1px] border-primary-600 rounded-3xl text-primary-600 font-bold text-sm justify-center items-center px-[12px] py-[8px] hover:bg-primary-100">
             取消
           </button>
           <button
             class="w-[50%] h-[48px] bg-primary-600 rounded-3xl text-white font-bold text-sm justify-center items-center px-[12px] py-[8px] hover:bg-primary-700"
-            @click="addSchedule"
-          >
+            @click="addSchedule">
             完成
           </button>
         </form>
@@ -303,23 +266,6 @@ onMounted(() => {
     <form method="dialog" class="modal-backdrop">
       <button>close</button>
     </form>
-  </dialog>
-  <!-- add schedule success 的 Modal -->
-  <dialog ref="addSuccess" class="modal w-[384px] mx-auto">
-    <div class="modal-box">
-      <form method="dialog"></form>
-      <CalendarCheck class="mx-auto w-14 h-14 text-primary-600 mb-3" />
-      <h3 class="text-xl font-bold text-center">行程建立成功！</h3>
-    </div>
-  </dialog>
-  <!-- add schedule failed 的 Modal -->
-  <dialog ref="addFailed" class="modal w-[384px] mx-auto">
-    <div class="modal-box">
-      <form method="dialog"></form>
-      <MapXmark class="mx-auto w-14 h-14 text-primary-600 mb-3" />
-      <h3 class="text-xl font-bold text-center">行程建立失敗！</h3>
-      <p class="text-center mt-3">請確認所有欄位皆已填寫。</p>
-    </div>
   </dialog>
 </template>
 
@@ -342,7 +288,7 @@ onMounted(() => {
 }
 
 /* 圖標旋轉 */
-#toggle-transportation:checked + label svg {
+#toggle-transportation:checked+label svg {
   transform: rotate(180deg);
 }
 
@@ -350,6 +296,7 @@ onMounted(() => {
 .replace-img-btn li:hover {
   background-color: #eeeeee;
 }
+
 input {
   border: 2px solid transparent;
   border-radius: 4px;
@@ -360,15 +307,21 @@ input {
 input:focus {
   border-color: #d23430;
   box-shadow: 0 0 4px rgba(210, 52, 48, 0.5),
-    /* 內層的陰影 */ 0 0 8px rgba(210, 52, 48, 0.3),
-    /* 中間的陰影 */ 0 0 16px rgba(210, 52, 48, 0.1); /* 外層的陰影 */
+    /* 內層的陰影 */
+    0 0 8px rgba(210, 52, 48, 0.3),
+    /* 中間的陰影 */
+    0 0 16px rgba(210, 52, 48, 0.1);
+  /* 外層的陰影 */
 }
 
 .red-frame {
   border-color: #d23430;
   box-shadow: 0 0 4px rgba(210, 52, 48, 0.5),
-    /* 內層的陰影 */ 0 0 8px rgba(210, 52, 48, 0.3),
-    /* 中間的陰影 */ 0 0 16px rgba(210, 52, 48, 0.1); /* 外層的陰影 */
+    /* 內層的陰影 */
+    0 0 8px rgba(210, 52, 48, 0.3),
+    /* 中間的陰影 */
+    0 0 16px rgba(210, 52, 48, 0.1);
+  /* 外層的陰影 */
   transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
 </style>

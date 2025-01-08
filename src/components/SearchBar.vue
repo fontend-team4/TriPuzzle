@@ -56,6 +56,7 @@ const switchToCategoryMode = () => {
 const searchStore = useSearchStore()
 const inputKeyword = () => {
   searchStore.textSearch()
+  searchStore.placeGeometry = searchStore.searchData[0].geometry
 }
 
 // 監聽 CategoryFilter 的 update-categories 事件
@@ -63,6 +64,12 @@ const updateCategories = (newCategories) => {
   categories.value = newCategories
   activeCategory.value = newCategories[0]
 }
+
+const updateMdCategories = (newCategories) => {
+  Mdcategories.value = newCategories
+  activeMdCategory.value = newCategories[0]
+}
+
 onMounted(() => {
   searchStore.selectedTab = activeCategory.value.params
 })
@@ -75,7 +82,7 @@ onMounted(() => {
       class="flex w-full border-none rounded-none bg-white shadow-md lg:rounded-full lg:border lg:border-gray-200"
     >
       <!-- 顯示分類模式或關鍵字模式 -->
-      <div class="relative flex justify-center items-center h-10 w-full pr-2">
+      <div class="relative flex justify-center items-center h-10 w-full md:pl-2 pr-2">
         <template v-if="isCategoryMode">
           <!-- 分類模式 -->
           <SearchArea />
@@ -90,7 +97,9 @@ onMounted(() => {
             >
           </div>
           <div
-            class="relative overflow-hidden item-center justify-center scrollbar-none p-2 md:p-3 whitespace-nowrap"
+            class="relative w-60 md:w-full overflow-x-auto item-center justify-center scrollbar-none p-2 md:p-3 whitespace-nowrap"
+            style="-ms-overflow-style: none; scrollbar-width: none;"
+            @scroll="event => event.target.style.scrollbarWidth = 'none'"
           >
             <ul class="flex gap-4">
               <!-- 電腦版 -->
@@ -123,7 +132,8 @@ onMounted(() => {
               </li>
             </ul>
           </div>
-          <CategoryFilter @update-categories="updateCategories" />
+          <CategoryFilter @update-categories="updateCategories"
+        @update-md-categories="updateMdCategories" />
         </template>
 
         <template v-else>
@@ -150,5 +160,4 @@ onMounted(() => {
       </div>
     </div>
   </div>
-  
 </template>

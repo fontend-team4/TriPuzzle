@@ -1,2 +1,2 @@
-const loadPNG = (name) => `/images/${name}.png`
-export { loadPNG }
+const loadJpg = (name) => `/images/${name}.jpg`
+export { loadJpg }

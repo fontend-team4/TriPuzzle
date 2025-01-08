@@ -1,6 +1,10 @@
 <script setup>
-import { defineProps } from 'vue'
-import axios from 'axios'
+import '@/assets/loading.css'
+import { defineProps } from "vue"
+import axios from "axios"
+import { useLoadingStore } from "@/stores/loading"
+
+const loadingStore = useLoadingStore()
 const props = defineProps({
   scheduleId: {
     type: [Number, String],
@@ -17,7 +21,7 @@ const props = defineProps({
 })
 
 const API_URL = process.env.VITE_HOST_URL
-const token = localStorage.getItem('token')
+const token = localStorage.getItem("token")
 // 刪除行程
 const deleteSchedule = async (id) => {
   const config = {
@@ -25,10 +29,11 @@ const deleteSchedule = async (id) => {
       Authorization: token,
     },
   }
+  loadingStore.showLoading()
   try {
-    const response = await axios.delete(`${API_URL}/schedules/${id}`, config)
-    console.log(response)
+    await axios.delete(`${API_URL}/schedules/${id}`, config)
     props.updateList()
+    loadingStore.hideLoading()
   } catch (error) {
     console.error(error.message)
   }
@@ -36,6 +41,11 @@ const deleteSchedule = async (id) => {
 </script>
 
 <template>
+  <LoadingOverlay :active="loadingStore.isLoading">
+    <div class="loadingio-spinner-ellipsis-nq4q5u6dq7r"><div class="ldio-x2uulkbinbj">
+    <div></div><div></div><div></div><div></div><div></div>
+    </div></div>
+  </LoadingOverlay>
   <dialog id="deleteSchedule" class="modal">
     <div class="modal-box w-[384px] p-0">
       <form method="dialog">
@@ -45,8 +55,8 @@ const deleteSchedule = async (id) => {
       </form>
       <div class="py-6 px-5 object-cover">
         <img
-          class="w-72 h-36 mx-auto"
-          src="https://web.chictrip.com.tw/assets/master-img-warn.198cfcdc.png"
+          class="w-48 h-48 mx-auto"
+          src="../assets/images/cat-4.png"
           alt=""
         />
       </div>

@@ -6,17 +6,26 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "node --max-old-space-size=4096 server.js"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
+    "@googlemaps/js-api-loader": "^1.16.8",
     "@heroicons/vue": "^2.1.5",
     "@iconoir/vue": "^7.10.1",
+    "@vuepic/vue-datepicker": "^10.0.0",
     "axios": "^1.7.9",
+    "jspdf": "^2.5.2",
+    "lodash": "^4.17.21",
     "pinia": "^2.2.6",
     "pinia-plugin-persistedstate": "^4.2.0",
+    "qrcode": "^1.5.4",
+    "qrcode.vue": "^3.6.0",
     "sortablejs": "^1.15.6",
     "vue": "^3.5.12",
     "vue-router": "^4.4.5",
+    "vue3-loading-overlay": "^0.0.0",
     "vuedraggable": "^4.1.0"
   },
   "devDependencies": {

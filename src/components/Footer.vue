@@ -10,22 +10,9 @@
           class="text-lg font-bold text-neutral-800 text-left sm:text-xl md:text-3xl md:mb-10 md:text-center"
         >
           <span class="text-primary-800">旅圖</span>
-          ，旅程從這裡開始<br />讓我們一起拚湊出你的旅途
+          ，旅程從這裡開始<br />讓我們一起拼湊出你的旅途
         </h1>
       </div>
-      <form
-        action="get"
-        class="mb-7 flex justify-center items-center gap-5 md:mb-14"
-      >
-        <input
-          type="email"
-          name="mail"
-          id="mail"
-          placeholder="請輸入信箱"
-          class="emailInput"
-        />
-        <RouterLink to="/member" class="emailBtn">旅圖啟程</RouterLink>
-      </form>
       <div class="py-4 border-t-2 border-neutral-200 md:py-7">
         <p class="text-primary-800 text-[9px] text-center font-bold md:text-sm">
           ©2024 旅圖 TriPuzzle, all rights reserved. Powered by NO.4
