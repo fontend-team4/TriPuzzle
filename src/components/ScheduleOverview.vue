@@ -1,180 +1,189 @@
 <script setup>
-import { ref, inject, onMounted } from "vue"
-import axios from "axios"
-import ScheduleCoverImgModal from "./ScheduleCoverImgModal.vue"
-import ScheduleSummaryModal from "./ScheduleSummaryModal.vue"
-import defaultCoverImage from "../assets/images/coverimage-1.jpg"
-import { EditPencil } from "@iconoir/vue"
+import { ref, inject, onMounted } from 'vue';
+import axios from 'axios';
+import ScheduleCoverImgModal from './ScheduleCoverImgModal.vue';
+import ScheduleSummaryModal from './ScheduleSummaryModal.vue';
+import defaultCoverImage from '../assets/images/coverimage-1.jpg';
+import { EditPencil } from '@iconoir/vue';
 import {
   XMarkIcon,
   ArrowLongRightIcon,
   UsersIcon,
-  ArrowUpTrayIcon,
-} from "@heroicons/vue/24/outline"
-import router from "@/router"
-import '@/assets/loading.css'
-import { useLoadingStore } from "@/stores/loading"
-import { MessageModalStore } from '@/stores/MessageModal'
+  ArrowUpTrayIcon
+} from '@heroicons/vue/24/outline';
+import router from '@/router';
+import '@/assets/loading.css';
+import { useLoadingStore } from '@/stores/loading';
+import { MessageModalStore } from '@/stores/MessageModal';
 
-const messageStore = MessageModalStore()
-const loadingStore = useLoadingStore()
+const messageStore = MessageModalStore();
+const loadingStore = useLoadingStore();
 
 const transprotations = ref([
   {
     id: 1,
-    item: "汽車",
-    value: "CAR",
+    item: '汽車',
+    value: 'CAR'
   },
   {
     id: 2,
-    item: "機車",
-    value: "MOTORBIKE",
+    item: '機車',
+    value: 'MOTORBIKE'
   },
   {
     id: 3,
-    item: "大眾運輸",
-    value: "PUBLIC_TRANSPORT",
+    item: '大眾運輸',
+    value: 'PUBLIC_TRANSPORT'
   },
   {
     id: 4,
-    item: "走路",
-    value: "WALK",
-  },
-])
+    item: '走路',
+    value: 'WALK'
+  }
+]);
 
-const API_URL = import.meta.env.VITE_HOST_URL
-const token = localStorage.getItem("token")
-const scheduleId = inject("scheduleId")
+const API_URL = import.meta.env.VITE_HOST_URL;
+const token = localStorage.getItem('token');
+const scheduleId = inject('scheduleId');
 
-const coverImage = ref(null)
-const noteDialog = ref(null)
-const scheduleNote = ref(null)
-const scheduleName = ref("")
-const startDate = ref("")
-const endDate = ref("")
-const transportationWay = ref("CUSTOM")
+const coverImage = ref(null);
+const noteDialog = ref(null);
+const scheduleNote = ref(null);
+const scheduleName = ref('');
+const startDate = ref('');
+const endDate = ref('');
+const transportationWay = ref('CUSTOM');
 
 const replaceImgLabelClick = () => {
   // 點擊收回下拉式選單(再點擊一次)
-  document.getElementById("changeImg-toggle").click()
-}
+  document.getElementById('changeImg-toggle').click();
+};
 
 const getCoverImg = (img) => {
-  coverImage.value = img
-}
+  coverImage.value = img;
+};
 
-const imgFile = ref(null)
-const selectedImg = ref(null)
+const imgFile = ref(null);
+const selectedImg = ref(null);
 const handleImgUpload = async (event) => {
-  document.getElementById("changeImg-toggle").click()
-  imgFile.value = event.target.files[0]
-  selectedImg.value = URL.createObjectURL(imgFile.value)
-  coverImage.value = selectedImg.value
-  await uploadImg()
-}
+  document.getElementById('changeImg-toggle').click();
+  imgFile.value = event.target.files[0];
+  selectedImg.value = URL.createObjectURL(imgFile.value);
+  coverImage.value = selectedImg.value;
+  await uploadImg();
+};
 
 const uploadImg = async () => {
-  const formData = new FormData()
-  formData.append("image", imgFile.value)
+  const formData = new FormData();
+  formData.append('image', imgFile.value);
   try {
     const response = await axios.post(
       `${API_URL}/api/upload/coverImg`,
       formData
-    )
-    coverImage.value = response.data.url
+    );
+    coverImage.value = response.data.url;
   } catch (error) {
-    console.error(error.message)
+    console.error(error.message);
   }
-}
+};
 
-const editSchedule = ref(null)
+const editSchedule = ref(null);
 const openEditSchedule = () => {
-  editSchedule.value.showModal()
-}
+  editSchedule.value.showModal();
+};
 
 const getSchedule = async (id) => {
   const config = {
     headers: {
-      Authorization: token,
-    },
-  }
+      Authorization: token
+    }
+  };
+  loadingStore.showLoading();
   try {
-    const response = await axios.get(`${API_URL}/schedules/${id}`, config)
-    scheduleName.value = response.data.title
-    scheduleNote.value = response.data.schedule_note
-    coverImage.value = response.data.image_url
-    startDate.value = response.data.start_date.split("T")[0]
-    endDate.value = response.data.end_date.split("T")[0]
-    transportationWay.value = response.data.transportation_way
+    const response = await axios.get(`${API_URL}/schedules/${id}`, config);
+    scheduleName.value = response.data.title;
+    scheduleNote.value = response.data.schedule_note;
+    coverImage.value = response.data.image_url;
+    startDate.value = response.data.start_date.split('T')[0];
+    endDate.value = response.data.end_date.split('T')[0];
+    transportationWay.value = response.data.transportation_way;
+    loadingStore.hideLoading();
   } catch (error) {
-    console.error(error.message)
+    loadingStore.hideLoading();
+    console.error(error.message);
   }
-}
+};
 
 const upateSchedule = async (id) => {
   const config = {
     headers: {
-      Authorization: token,
-    },
-  }
+      Authorization: token
+    }
+  };
   const data = {
     title: scheduleName.value,
     schedule_note: scheduleNote.value,
     image_url: coverImage.value,
     start_date: startDate.value,
     end_date: endDate.value,
-    transportation_way: transportationWay.value,
-  }
-  loadingStore.showLoading()
+    transportation_way: transportationWay.value
+  };
+  loadingStore.showLoading();
   try {
     const response = await axios.patch(
       `${API_URL}/schedules/${id}`,
       data,
       config
-    )
-    loadingStore.hideLoading()
-    scheduleNote.value = await response.data.updatedSchedule.schedule_note
-    scheduleName.value = await response.data.updatedSchedule.title
-    coverImage.value = await response.data.updatedSchedule.image_url
+    );
+    loadingStore.hideLoading();
+    scheduleNote.value = await response.data.updatedSchedule.schedule_note;
+    scheduleName.value = await response.data.updatedSchedule.title;
+    coverImage.value = await response.data.updatedSchedule.image_url;
     startDate.value = await response.data.updatedSchedule.start_date.split(
-      "T"
-    )[0]
-    endDate.value = await response.data.updatedSchedule.end_date.split("T")[0]
+      'T'
+    )[0];
+    endDate.value = await response.data.updatedSchedule.end_date.split('T')[0];
     transportationWay.value = await response.data.updatedSchedule
-      .transportation_way
-    noteDialog.value.close()
+      .transportation_way;
+    noteDialog.value.close();
     messageStore.messageModal({
-    message: "行程已更新",
-    status: "success",
-  })
+      message: '行程已更新',
+      status: 'success'
+    });
   } catch (error) {
-    console.error(error.message)
+    console.error(error.message);
   }
-}
+};
 
 const goToMemberView = () => {
-  router.push("/member")
-}
+  router.push('/member');
+};
 
 const goToGroupView = () => {
   router.replace({
     name: 'GroupView', // 使用命名路由，確保與 `groups.js` 名稱一致
-    params: { scheduleId: scheduleId.value },
+    params: { scheduleId: scheduleId.value }
   });
-  console.log('scheduleId:', scheduleId.value)
+  console.log('scheduleId:', scheduleId.value);
 };
 
 onMounted(() => {
-  coverImage.value = defaultCoverImage
-  getSchedule(scheduleId.value)
-})
+  coverImage.value = defaultCoverImage;
+  getSchedule(scheduleId.value);
+});
 </script>
 
 <template>
   <LoadingOverlay :active="loadingStore.isLoading">
-    <div class="loadingio-spinner-ellipsis-nq4q5u6dq7r"><div class="ldio-x2uulkbinbj">
-    <div></div><div></div><div></div><div></div><div></div>
-    </div></div>
+    <div class="loadingio-spinner-ellipsis-nq4q5u6dq7r">
+      <div class="ldio-x2uulkbinbj">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
   </LoadingOverlay>
   <!-- schedule title -->
   <div class="w-full pt-5 px-6 pb-8">
@@ -197,8 +206,9 @@ onMounted(() => {
     <span
       class="text-sm text-primary-600 font-medium hover:cursor-pointer"
       @click="noteDialog.showModal()"
-      >編輯筆記</span
     >
+      編輯筆記
+    </span>
     <!-- schedule note -->
     <dialog ref="noteDialog" class="modal">
       <div class="modal-box w-screen md:w-[480px]">
@@ -273,13 +283,13 @@ onMounted(() => {
       <li
         class="w-[100px] pt-4 px-2.5 pb-2.5 bg-gray rounded-xl hover:cursor-pointer hover:bg-primary-100 hover:text-primary-600"
         @click="goToGroupView"
-        >
-          <img
-            src="https://web.chictrip.com.tw/assets/img-exportbook.a62ae1d0.svg"
-            class="mx-auto"
-            alt=""
-          />
-          <p class="text-center font-medium mt-2">分帳</p>
+      >
+        <img
+          src="https://web.chictrip.com.tw/assets/img-exportbook.a62ae1d0.svg"
+          class="mx-auto"
+          alt=""
+        />
+        <p class="text-center font-medium mt-2">分帳</p>
       </li>
     </ul>
   </div>
@@ -302,9 +312,9 @@ onMounted(() => {
 
       <div>
         <header>
-          <span class="text-2xl font-bold flex items-center justify-center"
-            >編輯行程</span
-          >
+          <span class="text-2xl font-bold flex items-center justify-center">
+            編輯行程
+          </span>
         </header>
       </div>
 

@@ -105,7 +105,7 @@ const registerSubmit = async () => {
         },
       }
     )
-    if (res.data.message === 'Registration successful') {
+    if (res.data.status === 201) {
       loadingForBtn.value = false
       name.value = ''
       email.value = ''

@@ -1,296 +1,302 @@
 <script setup>
-import '@/assets/loading.css'
-import { ref, onMounted, computed } from "vue"
-import { useRouter, useRoute } from "vue-router"
-import axios from "axios"
-import SideBar from "@/components/SideBar.vue"
+import '@/assets/loading.css';
+import { ref, onMounted, computed } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import axios from 'axios';
+import SideBar from '@/components/SideBar.vue';
 import {
   HeartIcon,
   PencilIcon,
   ArrowRightStartOnRectangleIcon,
   ChevronRightIcon,
   XMarkIcon,
-  PencilSquareIcon,
-} from "@heroicons/vue/24/outline"
-import { MoneySquare } from "@iconoir/vue"
-import FavoritesList from "@/components/FavoritesList.vue"
-import DetailModal from "@/components/DetailModal.vue"
-import { usePlacesStore } from "@/stores/fetchPlaces"
-import defaultUserImage from "/images/cat-2.png"
-import '@/assets/loading.css'
-import { useLoadingStore } from "@/stores/loading"
+  PencilSquareIcon
+} from '@heroicons/vue/24/outline';
+import { MoneySquare } from '@iconoir/vue';
+import FavoritesList from '@/components/FavoritesList.vue';
+import DetailModal from '@/components/DetailModal.vue';
+import { usePlacesStore } from '@/stores/fetchPlaces';
+import defaultUserImage from '/images/cat-2.png';
+import { MessageModalStore } from '@/stores/MessageModal';
+import { useLoadingStore } from '@/stores/loading';
 
-const loadingStore = useLoadingStore()
-const loadingForBtn = ref(false)
-const placesStore = usePlacesStore()
-const places = ref([])
-const route = useRoute()
-const router = useRouter()
-const API_URL = process.env.VITE_HOST_URL
-const token = localStorage.getItem("token")
-const userId = localStorage.getItem("userId")
-import { MessageModalStore } from '@/stores/MessageModal'
-const messageStore = MessageModalStore()
-
+const loadingStore = useLoadingStore();
+const loadingForBtn = ref(false);
+const placesStore = usePlacesStore();
+const places = ref([]);
+const route = useRoute();
+const router = useRouter();
+const API_URL = process.env.VITE_HOST_URL;
+const token = localStorage.getItem('token');
+const userId = localStorage.getItem('userId');
+const messageStore = MessageModalStore();
 
 // GET User Profile
-const user = ref("")
-const userName = ref("")
-const userEmail = ref("")
-const userGender = ref("")
-const userBirthday = ref("")
-const userDescription = ref("")
-const userLoginWay = ref("")
-const userImg = ref(defaultUserImage)
-const memberLevel = ref('小拼圖')
+const user = ref('');
+const userName = ref('');
+const userEmail = ref('');
+const userGender = ref('');
+const userBirthday = ref('');
+const userDescription = ref('');
+const userLoginWay = ref('');
+const userImg = ref(defaultUserImage);
+const memberLevel = ref('小拼圖');
 
 const getUser = async () => {
   try {
     const config = {
       headers: {
-        Authorization: token,
-      },
-    }
+        Authorization: token
+      }
+    };
     const response = await axios.get(
       `${API_URL}/users/profile/${userId}`,
       config
-    )
-    user.value = response.data.data
-    userName.value = user.value.name
-    userEmail.value = user.value.email
-    userGender.value = user.value.gender
-    userBirthday.value = user.value.birthday // 2000-12-12T00:00:00.000Z
-    userDescription.value = user.value.description
-    userLoginWay.value = user.value.login_way
-    memberLevel.value = user.value.level
+    );
+    user.value = response.data.data;
+    userName.value = user.value.name;
+    userEmail.value = user.value.email;
+    userGender.value = user.value.gender;
+    userBirthday.value = user.value.birthday; // 2000-12-12T00:00:00.000Z
+    userDescription.value = user.value.description;
+    userLoginWay.value = user.value.login_way;
+    memberLevel.value = user.value.level;
     if (user.value.profile_pic_url !== null) {
-      userImg.value = user.value.profile_pic_url
-      return
+      userImg.value = user.value.profile_pic_url;
+      return;
     }
   } catch (error) {
-    console.error(error.message)
-    localStorage.removeItem("token")
-    localStorage.removeItem("userId")
-    router.push("/")
+    console.error(error.message);
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    router.push('/');
   }
-}
+};
 // User Logout
 const logout = () => {
-  loadingStore.showLoading()
-  localStorage.removeItem("token")
-  localStorage.removeItem("userId")
+  loadingStore.showLoading();
+  localStorage.removeItem('token');
+  localStorage.removeItem('userId');
   messageStore.messageModal({
-    message: "登出成功",
-    status: "success",
-  })
-  loadingStore.hideLoading()
+    message: '登出成功',
+    status: 'success'
+  });
+  loadingStore.hideLoading();
   setTimeout(() => {
-    router.push("/planner")
-  }, 1000)
-}
+    router.push('/planner');
+  }, 1000);
+};
 
 // 因應 input:date 的格式做調整
 const formattedBirthday = computed(() => {
-  const dateString = userBirthday.value
-  const date = new Date(dateString)
-  const year = date.getFullYear()
+  const dateString = userBirthday.value;
+  const date = new Date(dateString);
+  const year = date.getFullYear();
   // date.getMonth() 返回的月份是 0 到 11,而不是 1 到 12,所以需要手動加 1
   // .padStart(2, '0') 確保字串有兩個字元，不足要補 0
-  const month = String(date.getMonth() + 1).padStart(2, "0")
-  const day = String(date.getDate()).padStart(2, "0")
-  return `${year}-${month}-${day}`
-})
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+});
 const userBirthdayInput = computed({
   get: () => formattedBirthday.value,
   set: (value) => {
-    const [year, month, day] = value.split("-")
+    const [year, month, day] = value.split('-');
     userBirthday.value = new Date(
       `${year}-${month}-${day}T00:00:00.000Z`
-    ).toISOString()
-  },
-})
+    ).toISOString();
+  }
+});
 
 // Update User Profile
-const errorMsg = ref("")
+const errorMsg = ref('');
 const updateUser = async () => {
   const config = {
     headers: {
-      Authorization: token,
-    },
-  }
+      Authorization: token
+    }
+  };
   const updatedUserData = {
     name: userName.value,
     email: userEmail.value,
     profile_pic_url: userImg.value,
     gender: userGender.value,
     birthday: userBirthday.value,
-    description: userDescription.value,
-  }
-  loadingForBtn.value = true
+    description: userDescription.value
+  };
+  loadingForBtn.value = true;
   try {
     const response = await axios.patch(
       `${API_URL}/users/profile/${userId}`,
       updatedUserData,
       config
-    )
-    loadingForBtn.value = false
-    closeNickNameModal()
-    closeProfileModal()
-    closePersonalInformationModal()
-    if (response.data.message === "User update successful") {
+    );
+    loadingForBtn.value = false;
+    closeNickNameModal();
+    closeProfileModal();
+    closePersonalInformationModal();
+    if (response.data.message === 'User update successful') {
       messageStore.messageModal({
-        message: "用戶資料更新成功",
-        status: "success",
-      })
-    } 
-    user.value = response.data.updatedData // 更新後的資料
-    await getUser()
+        message: '用戶資料更新成功',
+        status: 'success'
+      });
+    }
+    user.value = response.data.updatedData; // 更新後的資料
+    await getUser();
   } catch (error) {
-    loadingForBtn.value = false
-    errorMsg.value = error.message
+    loadingForBtn.value = false;
+    errorMsg.value = error.message;
     messageStore.messageModal({
-      message: "用戶資料更新失敗",
-      status: "success",
-    })
+      message: '用戶資料更新失敗',
+      status: 'success'
+    });
   }
-}
+};
 
 // DELETE User Profile
-const DeleteUser = ref(null)
+const DeleteUser = ref(null);
 const deleteComfire = () => {
-  DeleteUser.value.showModal()
-}
+  DeleteUser.value.showModal();
+};
 const deleteUser = async () => {
   const config = {
     headers: {
-      Authorization: token,
-    },
-  }
-  loadingForBtn.value = true
+      Authorization: token
+    }
+  };
+  loadingForBtn.value = true;
   try {
     const response = await axios.delete(
       `${API_URL}/users/profile/${userId}`,
       config
-    )
-    loadingForBtn.value = false
+    );
+    loadingForBtn.value = false;
     if (response.data.message === `成功刪除 ID:${userId} 使用者`) {
-      user.value = ""
-      localStorage.removeItem("token")
-      localStorage.removeItem("userId")
+      user.value = '';
+      localStorage.removeItem('token');
+      localStorage.removeItem('userId');
       messageStore.messageModal({
-        message: "用戶已刪除",
-        status: "success",
-      })
+        message: '用戶已刪除',
+        status: 'success'
+      });
       setTimeout(() => {
-        router.push("/planner")
-      }, 1000)
+        router.push('/planner');
+      }, 1000);
     }
   } catch (error) {
-    loadingForBtn.value = false
-    console.error(error.message)
+    loadingForBtn.value = false;
+    console.error(error.message);
   }
-}
+};
 
-const goPremium =()=>{
-  router.push("/premium");
-}
+const goPremium = () => {
+  router.push('/premium');
+};
 
 // Upload Profile Image
-const imgFile = ref(null)
-const selectedImg = ref(null)
+const imgFile = ref(null);
+const selectedImg = ref(null);
 
 const handleImgUpload = (event) => {
-  imgFile.value = event.target.files[0]
-  selectedImg.value = URL.createObjectURL(imgFile.value)
-  userImg.value = selectedImg.value
-  uploadImg()
-}
+  imgFile.value = event.target.files[0];
+  selectedImg.value = URL.createObjectURL(imgFile.value);
+  userImg.value = selectedImg.value;
+  uploadImg();
+};
 
 const uploadImg = async () => {
-  const formData = new FormData()
-  formData.append("image", imgFile.value)
+  const formData = new FormData();
+  formData.append('image', imgFile.value);
 
   try {
     const response = await axios.post(
       `${API_URL}/api/upload/profileImg`,
       formData
-    )
-    userImg.value = response.data.url
-    updateUser()
+    );
+    userImg.value = response.data.url;
+    updateUser();
   } catch (error) {
-    console.error(error.message)
+    console.error(error.message);
   }
-}
+};
 
-const Editmodal = ref(null)
+const Editmodal = ref(null);
 const closeEditmodal = () => {
-  Editmodal.value.close()
-}
+  Editmodal.value.close();
+};
 
-const NickNameModal = ref(null)
+const NickNameModal = ref(null);
 const closeNickNameModal = () => {
-  NickNameModal.value.close()
-}
+  NickNameModal.value.close();
+};
 
-const ProfileModal = ref(null)
+const ProfileModal = ref(null);
 const closeProfileModal = () => {
-  ProfileModal.value.close()
-}
-const PersonalInformationModal = ref(null)
+  ProfileModal.value.close();
+};
+const PersonalInformationModal = ref(null);
 const closePersonalInformationModal = () => {
-  PersonalInformationModal.value.close()
-}
+  PersonalInformationModal.value.close();
+};
 
-const isModalOpen = computed(() => route.query.action === "placeInfo")
-const currentPlaceId = computed(() => route.query.placeId)
+const isModalOpen = computed(() => route.query.action === 'placeInfo');
+const currentPlaceId = computed(() => route.query.placeId);
 const handleOpenDetailModal = (detailId) => {
   if (!detailId) {
-    console.error("Invalid detailId passed:", detailId)
-    return
+    console.error('Invalid detailId passed:', detailId);
+    return;
   }
 
   router.push({
-    path: "/member",
-    query: { action: "placeInfo", placeId: detailId },
-  })
-}
+    path: '/member',
+    query: { action: 'placeInfo', placeId: detailId }
+  });
+};
 
 const currentPlace = computed(() => {
-  if (!currentPlaceId.value || !places.value.length) return null // 確保資料存在
-  return places.value.find((places) => places.place_id === currentPlaceId.value)
-})
+  if (!currentPlaceId.value || !places.value.length) return null; // 確保資料存在
+  return places.value.find(
+    (places) => places.place_id === currentPlaceId.value
+  );
+});
 
 const closeDetailModal = () => {
-  router.push({ path: "/member" })
-}
+  router.push({ path: '/member' });
+};
 
-const paymentSuccess = ref(null)
+const paymentSuccess = ref(null);
 
 onMounted(async () => {
-  loadingStore.showLoading()
+  loadingStore.showLoading();
   try {
-    await getUser()
-    loadingStore.hideLoading()
-    console.log("places:", places.value)
+    await getUser();
+    loadingStore.hideLoading();
+    console.log('places:', places.value);
   } catch (error) {
-    console.error("Failed to fetch places:", error)
-    places.value = [] // 防止錯誤導致的 undefined
+    console.error('Failed to fetch places:', error);
+    places.value = []; // 防止錯誤導致的 undefined
   }
-  const { order } = route.query
-  if(order) {
-    await paymentSuccess.value.showModal()
+  const { order } = route.query;
+  if (order) {
+    await paymentSuccess.value.showModal();
     setTimeout(() => {
-      paymentSuccess.value.close()
-    }, 2000)
+      paymentSuccess.value.close();
+    }, 2000);
   }
-})
+});
 </script>
 
 <template>
   <LoadingOverlay :active="loadingStore.isLoading">
-    <div class="loadingio-spinner-ellipsis-nq4q5u6dq7r"><div class="ldio-x2uulkbinbj">
-    <div></div><div></div><div></div><div></div><div></div>
-    </div></div>
+    <div class="loadingio-spinner-ellipsis-nq4q5u6dq7r">
+      <div class="ldio-x2uulkbinbj">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
   </LoadingOverlay>
   <SideBar />
   <div
@@ -317,8 +323,20 @@ onMounted(async () => {
             <div class="sm:mr-0">
               <div class="block pl-4 mt-2 md:mr-20 sm:mr-0">
                 <span class="mt-4 text-xl font-semibold">{{ userName }}</span>
-                <span v-if="memberLevel === '大拼圖'" class="px-3 py-1 mx-3 text-sm text-white rounded-full bg-primary-200" :class="level">大拼圖</span>
-                <span v-if="memberLevel === 'VIP拼圖達人'" class="px-3 py-1 mx-3 text-sm text-white rounded-full bg-primary-200" :class="level">VIP 拼圖達人</span>
+                <span
+                  v-if="memberLevel === '大拼圖'"
+                  class="px-3 py-1 mx-3 text-sm text-white rounded-full bg-primary-200"
+                  :class="level"
+                >
+                  大拼圖
+                </span>
+                <span
+                  v-if="memberLevel === 'VIP拼圖達人'"
+                  class="px-3 py-1 mx-3 text-sm text-white rounded-full bg-primary-200"
+                  :class="level"
+                >
+                  VIP 拼圖達人
+                </span>
                 <p class="mt-2">{{ userEmail }}</p>
                 <div class="flex items-center gap-3 mt-4">
                   <button
@@ -348,14 +366,16 @@ onMounted(async () => {
             <p class="mb-2 text-sm">快速登入 / 註冊旅圖會員</p>
           </div>
           <button
-            class="px-6 py-2 mr-4 text-white transition rounded-full bg-secondary-500" @click="goPremium"
+            class="px-6 py-2 mr-4 text-white transition rounded-full bg-secondary-500"
+            @click="goPremium"
           >
             立即升級
           </button>
         </div>
         <div class="p-8">
           <h2 class="flex text-lg font-semibold">
-            <HeartIcon class="w-6 h-6 me-1" />收藏
+            <HeartIcon class="w-6 h-6 me-1" />
+            收藏
           </h2>
           <hr class="border-slate-300" />
         </div>
@@ -409,7 +429,7 @@ onMounted(async () => {
           <button
             class="flex justify-between w-full p-2"
             @click="NickNameModal.showModal()"
-            >
+          >
             <div class="flex flex-col items-start p-2">
               <span class="text-xs text-slate-400">暱稱</span>
               <p class="font-bold">{{ userName }}</p>
@@ -574,8 +594,7 @@ onMounted(async () => {
               class="w-full px-4 py-2 pr-10 rounded-lg focus:outline-primary-600"
               placeholder="有趣的介紹可以吸引更多人追蹤喔！"
               v-model="userDescription"
-            >
-            </textarea>
+            ></textarea>
           </div>
           <div class="flex justify-around pt-6 mt-4 space-x-4">
             <button
@@ -596,8 +615,8 @@ onMounted(async () => {
               v-else
               class="w-full p-3 text-white rounded-full bg-primary-600 hover:bg-primary-800"
             >
-            <span class="loading loading-dots loading-md"></span>
-          </button>
+              <span class="loading loading-dots loading-md"></span>
+            </button>
           </div>
         </div>
       </div>
@@ -718,9 +737,9 @@ onMounted(async () => {
             儲存
           </button>
           <button
-              v-else
-              class="w-full p-3 text-white rounded-full bg-primary-600 hover:bg-primary-800"
-            >
+            v-else
+            class="w-full p-3 text-white rounded-full bg-primary-600 hover:bg-primary-800"
+          >
             <span class="loading loading-dots loading-md"></span>
           </button>
         </div>
@@ -787,7 +806,11 @@ onMounted(async () => {
     <dialog ref="paymentSuccess" class="modal w-[384px] mx-auto">
       <div class="modal-box">
         <form method="dialog">
-          <button class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2">✕</button>
+          <button
+            class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2"
+          >
+            ✕
+          </button>
         </form>
         <div class="text-center">
           <MoneySquare class="mx-auto mb-3 w-14 h-14 text-primary-600" />
@@ -796,7 +819,9 @@ onMounted(async () => {
         </div>
       </div>
       <form method="dialog" class="modal-backdrop">
-        <button class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2">✕</button>
+        <button class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2">
+          ✕
+        </button>
         <button>close</button>
       </form>
     </dialog>
