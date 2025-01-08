@@ -143,7 +143,8 @@ import { GlobeAltIcon } from '@heroicons/vue/24/outline';
           />
           <h3 class="text-2xl text-zinc-800">黃慧汶</h3>
           <span class="flex flex-col items-center text-zinc-500">
-            <p>AWS 圖片上傳、LinePay 串接</p>
+            <p>AWS 圖片上傳</p>
+            <p>LinePay 串接</p>
             <p>會員 & 行程前後端API串接</p>
             <p>專案 & 後端資料庫規劃管理</p>
           </span>
@@ -248,7 +249,7 @@ import { GlobeAltIcon } from '@heroicons/vue/24/outline';
           />
           <h3 class="text-2xl text-zinc-800">宋柏叡</h3>
           <span class="flex flex-col items-center text-zinc-500">
-            <p>Line、Google 第三方登入串接</p>
+            <p>Line、Google 第三方登入</p>
             <p>前端定位功能</p>
             <p>新增單一行程功能</p>
           </span>

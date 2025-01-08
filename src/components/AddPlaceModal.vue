@@ -23,6 +23,10 @@ import { PlaceModalStore } from '@/stores/PlaceModal';
 import { useUserStore } from '@/stores/userStore';
 import axios from 'axios';
 import { MessageModalStore } from '@/stores/MessageModal';
+import '@/assets/loading.css';
+import { useLoadingStore } from '@/stores/loading';
+
+const loadingStore = useLoadingStore();
 
 //抓user資料
 const userStore = useUserStore();
@@ -155,6 +159,7 @@ onMounted(() => {
 
 const URL = import.meta.env.VITE_HOST_URL;
 const schedules = ref([]);
+const coSchedules = ref([]);
 
 function calculateDateRange(startDate, endDate) {
   const start = new Date(startDate);
@@ -199,6 +204,7 @@ function groupPlacesByDate(schedulePlaces, dates) {
 
 // 抓取行程資料，重構schedule中的key，新增dates跟groupedPlaces
 onMounted(async () => {
+  loadingStore.showLoading();
   try {
     const res = await axios.get(`${URL}/schedules`, {
       headers: { Authorization: token }
@@ -211,12 +217,34 @@ onMounted(async () => {
         calculateDateRange(schedule.start_date, schedule.end_date)
       )
     }));
+    loadingStore.hideLoading();
     if (schedules.value.length > 0) {
       await optimizeTrail(schedules.value[0]);
     }
-    // console.log(schedules.value)
   } catch (error) {
+    loadingStore.hideLoading();
     console.error('Error fetching schedules:', error);
+  }
+  try {
+    const res = await axios.get(`${URL}/usersschedules`, {
+      headers: { Authorization: token }
+    });
+    loadingStore.hideLoading();
+    coSchedules.value = res.data.map((schedule) => ({
+      ...schedule,
+      dates: calculateDateRange(schedule.start_date, schedule.end_date),
+      groupedPlaces: groupPlacesByDate(
+        schedule.schedule_places,
+        calculateDateRange(schedule.start_date, schedule.end_date)
+      )
+    }));
+    if (coSchedules.value.length > 0) {
+      await optimizeTrail(coSchedules.value[0]);
+    }
+    console.log("coSchedules.value",coSchedules.value)
+  } catch (error) {
+    loadingStore.hideLoading();
+    console.error('Error fetching coSchedules:', error);
   }
 });
 
@@ -235,6 +263,7 @@ const fetchPlacesForDate = async (date) => {
 const selectedSchedule = ref(null);
 const selectedDate = ref(null);
 const addPlaceToSchedule = async () => {
+  loadingStore.showLoading();
   if (!selectedCardInfo.value) {
     console.error('未選擇插入位置');
     return;
@@ -269,6 +298,7 @@ const addPlaceToSchedule = async () => {
         }
       }
     );
+    loadingStore.hideLoading();
     // 新增成功後重新獲取該日期的景點列表
     const updatedPlaces = await fetchPlacesForDate(selectedDate.value);
     updateCards(updatedPlaces);
@@ -629,9 +659,29 @@ const tab2Cls = computed(() => {
     ? ['opacity-100', 'relative', 'z-10']
     : ['opacity-0', 'absolute', 'z-0'];
 });
+
+
+const hasSchedules = computed(() => {  
+  return schedules.value.length>0
+});
+
+const hasCoSchedules = computed(() => {
+  return coSchedules.value.length>0
+});
 </script>
 
 <template>
+  <LoadingOverlay :active="loadingStore.isLoading">
+    <div class="loadingio-spinner-ellipsis-nq4q5u6dq7r">
+      <div class="ldio-x2uulkbinbj">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+  </LoadingOverlay>
   <div
     class="fixed top-0 z-50 flex items-center justify-center w-screen h-screen bg-black bg-opacity-25"
     @click="closeAddPlaceModal"
@@ -648,7 +698,7 @@ const tab2Cls = computed(() => {
       >
         <div class="hidden md:block md:w-2/3 md:bg-[#f4f4f4]">
           <div class="flex h-full">
-            <img src="/public/images/1.png" class="m-auto h-full" />
+            <img src="/images/cat-1.png" class="w-full" />
           </div>
         </div>
         <div
@@ -686,11 +736,11 @@ const tab2Cls = computed(() => {
           </div>
 
           <!-- Tab One -->
-          <div class="relative h-full mt-8 flex flex-col">
+          <div class="relative flex flex-col h-full mt-8">
             <div
               role="tabpanel"
               id="panel-1"
-              class="transition duration-300 tab-panel flex-1 overflow-y-auto"
+              class="flex-1 overflow-y-auto transition duration-300 tab-panel"
               :class="tab1Cls"
             >
               <!-- 行程一 -->
@@ -698,6 +748,7 @@ const tab2Cls = computed(() => {
               <!--打開的時候會變成 <ChevronUpIcon class="size-3" /> -->
               <div class="h-[calc(100vh-350px)] overflow-y-auto pr-2">
                 <div
+                v-if="hasSchedules"
                   v-for="(schedule, index) in schedules"
                   :key="schedule.id"
                   class="collapse ml-[-0.5rem] mr-[0.5rem] transition-opacity"
@@ -775,27 +826,110 @@ const tab2Cls = computed(() => {
                     </div>
                   </div>
                 </div>
-                <button
-                  class="btn p-0 border-white bg-white flex mt-[1rem] shadow-none hover:bg-white hover:border-white group items-center"
-                  onclick="NewSchedule.showModal()"
-                >
-                  <PlusCircleIcon class="size-5 fill-primary-600 mr-[0.5rem]" />
-                  <p
-                    class="font-bold text-black group-hover:text-primary-500 text-md"
-                  >
-                    建立新行程
-                  </p>
-                </button>
+                <div  v-else class="flex flex-col items-center h-full ">
+                  <div class="w-72">
+                    <img class="w-40 mx-auto mb-5" src="../assets/images/cat-6.png" alt="">
+                  </div>
+                  <div class="mb-20">目前還沒有行程喔！</div>
+                </div>
               </div>
             </div>
             <!-- Tab Two -->
             <div
               role="tabpanel"
               id="panel-2"
-              class="absolute top-0 flex justify-center p-6 transition duration-300 opacity-0 tab-panel"
+              class="flex-1 overflow-y-auto transition duration-300 tab-panel"
               :class="tab2Cls"
             >
-              <img src="/public/images/7.png" alt="" />
+              <!-- 行程一 -->
+              <!-- 行程一二只能擇一打開 -->
+              <!--打開的時候會變成 <ChevronUpIcon class="size-3" /> -->
+              <div class="h-[calc(100vh-350px)] overflow-y-auto pr-2">
+                <div v-if="hasCoSchedules"
+                  v-for="(schedule, index) in coSchedules"
+                  :key="schedule.id"
+                  class="collapse ml-[-0.5rem] mr-[0.5rem] transition-opacity"
+                >
+                  <input
+                    type="checkbox"
+                    :checked="openedCollapse === `journey${schedule.id}`"
+                    @change="toggleCollapse(`journey${schedule.id}`)"
+                  />
+                  <div
+                    class="collapse-title flex justify-between items-center p-0 pl-[1rem]"
+                  >
+                    <div class="cursor-pointer hover:bg-primary-100 group">
+                      <h2
+                        class="text-xl font-bold group-hover:text-primary-600 text-stone-950"
+                      >
+                        {{ schedule.title }}
+                      </h2>
+                      <p
+                        class="text-sm text-gray-600 group-hover:text-primary-600"
+                      >
+                        {{ formatYear(schedule.start_date) }}
+                      </p>
+                    </div>
+                    <ChevronDownIcon
+                      v-if="openedCollapse !== `journey${schedule.id}`"
+                      class="text-black size-3"
+                    />
+                    <ChevronUpIcon v-else class="text-black size-3" />
+                  </div>
+                  <div class="collapse-content p-0 pl-[1rem]">
+                    <div
+                      v-for="(date, index) in schedule.dates"
+                      :key="index"
+                      @click="
+                        () => {
+                          selectedSchedule = schedule;
+                          selectedDate = date.toISOString().split('T')[0];
+                          currentSchedule = schedule;
+                          switchToPage('DayCard', `day${index + 1}`, schedule);
+                          updateCards(
+                            schedule.groupedPlaces[
+                              date.toISOString().split('T')[0]
+                            ]
+                          );
+                          initMap();
+                          getAllMarker(selectedDate, schedule.groupedPlaces);
+                        }
+                      "
+                      class="relative p-2 my-[0.5rem] bg-[#f4f4f4] rounded-xl cursor-pointer hover:bg-primary-100 box-border overflow-hidden"
+                    >
+                      <label
+                        for=""
+                        v-if="
+                          new Date(date).toISOString().split('T')[0] ===
+                          new Date(bestDay).toISOString().split('T')[0]
+                        "
+                        class="absolute top-0 right-0 bg-secondary-500 text-white flex items-center gap-1 p-[0.25rem] rounded-bl-xl text-xs"
+                      >
+                        <HandThumbUpIcon class="size-3 ml-[0.25rem]" />
+                        加在這天最順
+                      </label>
+                      <h3 class="text-black text-semibold">
+                        第{{ index + 1 }}天
+                      </h3>
+                      <!-- 景點數量要跟我的行程連動 -->
+                      <p>
+                        {{ formatDate(date) }}　{{
+                          schedule.groupedPlaces[
+                            date.toISOString().split('T')[0]
+                          ]?.length || 0
+                        }}
+                        個景點
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div  v-else class="flex flex-col items-center h-full ">
+                  <div class="w-72">
+                    <img class="w-44 mx-auto" src="../assets/images/cat-3.png" alt="">
+                  </div>
+                  <div class="mb-20">目前還沒有共編行程喔！</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -824,7 +958,7 @@ const tab2Cls = computed(() => {
 
         <!-- 左邊 -->
         <div
-          class="h-screen md:w-2/3 bg-gray google-map min-w-screen"
+          class="hidden md:block h-screen md:w-2/3 bg-gray google-map min-w-screen"
           id="map2"
         ></div>
         <!-- 右邊 -->
@@ -906,7 +1040,7 @@ const tab2Cls = computed(() => {
           <!-- 卡片內容區域 -->
 
           <div
-            class="p-4 bg-primary-200 h-[calc(100vh-400px)] overflow-auto flex flex-col"
+            class="p-4 pb-32 bg-primary-200 h-[calc(100vh-50px)] md:h-[calc(100vh-400px)] overflow-y-scroll flex flex-col"
           >
             <div
               v-for="(card, index) in cards"
@@ -971,7 +1105,7 @@ const tab2Cls = computed(() => {
 
           <!-- 確認新增並關閉視窗 -->
           <div
-            class="h-[4rem] absolute bottom-0 right-0 left-0 bg-white px-4 pt-2"
+            class="h-[4rem] fixed md:absolute bottom-0 right-0 left-0 bg-white px-4 pt-2 z-50"
           >
             <div
               class="w-full text-white border-none rounded-full btn bg-primary-600 hover:bg-primary-200 hover:text-primary-600"
