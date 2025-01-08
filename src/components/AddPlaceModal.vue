@@ -222,14 +222,12 @@ onMounted(async () => {
       await optimizeTrail(schedules.value[0]);
     }
   } catch (error) {
-    loadingStore.hideLoading();
     console.error('Error fetching schedules:', error);
   }
   try {
     const res = await axios.get(`${URL}/usersschedules`, {
       headers: { Authorization: token }
     });
-    loadingStore.hideLoading();
     coSchedules.value = res.data.map((schedule) => ({
       ...schedule,
       dates: calculateDateRange(schedule.start_date, schedule.end_date),
@@ -241,9 +239,8 @@ onMounted(async () => {
     if (coSchedules.value.length > 0) {
       await optimizeTrail(coSchedules.value[0]);
     }
-    console.log("coSchedules.value",coSchedules.value)
+    console.log('coSchedules.value', coSchedules.value);
   } catch (error) {
-    loadingStore.hideLoading();
     console.error('Error fetching coSchedules:', error);
   }
 });
@@ -661,13 +658,12 @@ const tab2Cls = computed(() => {
     : ['opacity-0', 'absolute', 'z-0'];
 });
 
-
-const hasSchedules = computed(() => {  
-  return schedules.value.length>0
+const hasSchedules = computed(() => {
+  return schedules.value.length > 0;
 });
 
 const hasCoSchedules = computed(() => {
-  return coSchedules.value.length>0
+  return coSchedules.value.length > 0;
 });
 </script>
 
@@ -699,7 +695,7 @@ const hasCoSchedules = computed(() => {
       >
         <div class="hidden md:block md:w-2/3 md:bg-[#f4f4f4]">
           <div class="flex h-full">
-            <img src="/images/cat-1.png" class="w-full" />
+            <img src="/images/cat-1.png" class="m-auto h-full" />
           </div>
         </div>
         <div
@@ -749,7 +745,7 @@ const hasCoSchedules = computed(() => {
               <!--打開的時候會變成 <ChevronUpIcon class="size-3" /> -->
               <div class="h-[calc(100vh-350px)] overflow-y-auto pr-2">
                 <div
-                v-if="hasSchedules"
+                  v-if="hasSchedules"
                   v-for="(schedule, index) in schedules"
                   :key="schedule.id"
                   class="collapse ml-[-0.5rem] mr-[0.5rem] transition-opacity"
@@ -827,9 +823,9 @@ const hasCoSchedules = computed(() => {
                     </div>
                   </div>
                 </div>
-                <div  v-else class="flex flex-col items-center h-full ">
+                <div v-else class="flex flex-col items-center h-full">
                   <div class="w-72">
-                    <img class="w-40 mx-auto mb-5" src="../assets/images/cat-6.png" alt="">
+                    <img src="../assets/images/cat-3.png" alt="" />
                   </div>
                   <div class="mb-20">目前還沒有行程喔！</div>
                 </div>
@@ -846,7 +842,8 @@ const hasCoSchedules = computed(() => {
               <!-- 行程一二只能擇一打開 -->
               <!--打開的時候會變成 <ChevronUpIcon class="size-3" /> -->
               <div class="h-[calc(100vh-350px)] overflow-y-auto pr-2">
-                <div v-if="hasCoSchedules"
+                <div
+                  v-if="hasCoSchedules"
                   v-for="(schedule, index) in coSchedules"
                   :key="schedule.id"
                   class="collapse ml-[-0.5rem] mr-[0.5rem] transition-opacity"
@@ -924,9 +921,9 @@ const hasCoSchedules = computed(() => {
                     </div>
                   </div>
                 </div>
-                <div  v-else class="flex flex-col items-center h-full ">
+                <div v-else class="flex flex-col items-center h-full">
                   <div class="w-72">
-                    <img class="w-44 mx-auto" src="../assets/images/cat-3.png" alt="">
+                    <img src="../assets/images/cat-3.png" alt="" />
                   </div>
                   <div class="mb-20">目前還沒有共編行程喔！</div>
                 </div>

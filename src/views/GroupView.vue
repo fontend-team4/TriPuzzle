@@ -6,6 +6,8 @@ import backIcon from '/images/solid-1.png';
 import axios from 'axios';
 import '@/assets/loading.css';
 import { useLoadingStore } from '@/stores/loading';
+import { MessageModalStore } from '@/stores/MessageModal';
+
 
 const loadingStore = useLoadingStore();
 
@@ -23,6 +25,7 @@ const groupMembers = ref([]);
 const accounts = ref([]);
 const token = localStorage.getItem('token');
 const API_URL = process.env.VITE_HOST_URL;
+const messageStore = MessageModalStore();
 
 const schedules = ref([]);
 
@@ -113,7 +116,10 @@ const getAccount = async () => {
     console.log('帳目列表：', accounts.value);
   } catch (error) {
     console.error('獲取帳目資料失敗：', error);
-    alert('無法獲取帳目資料，請稍後重試。');
+    messageStore.messageModal({
+      message: '無法獲取帳目資料，請稍後重試。',
+      status: 'error'
+    });
   }
 };
 
@@ -134,36 +140,36 @@ onMounted(async () => {
 
 <template>
   <LoadingOverlay :active="loadingStore.isLoading">
-  <div class="loadingio-spinner-ellipsis-nq4q5u6dq7r">
-    <div class="ldio-x2uulkbinbj">
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
+    <div class="loadingio-spinner-ellipsis-nq4q5u6dq7r">
+      <div class="ldio-x2uulkbinbj">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
     </div>
-  </div>
   </LoadingOverlay>
   <div
-    class="bg-primary-700 md:h-[100vh] flex justify-center items-center md:overflow-y-auto"
+    class="bg-primary-700 h-[100vh] w-full flex justify-center items-center overflow-y-auto overflow-x-hidden"
   >
     <div
-      class="border-round bg-primary-700 md:w-20px w-[52rem] mx-auto h-[100vh] items-center justify-center"
+      class="border-round bg-primary-700 md:w-20px w-[52rem] mx-auto h-full items-center justify-center"
     >
-      <button
-        class="btn-primary absolute left-0 top-8 md:left-4 md:top-0 p-0 justify-center"
-      >
-        <router-link to="/planner">
-          <div class="flex flex-row items-center justify-center mx-2">
-            <ArrowLeftIcon class="w-6 my-2 text-white md:hidden" />
-            <img :src="backIcon" class="w-20 mt-2 hidden md:block" />
-          </div>
-        </router-link>
-      </button>
       <div class="title">
         <div
           class="flex flex-row w-full text-center justify-center items-center relative p-2"
         >
+          <button
+            class="btn-primary absolute left-4 top-2 md:left-4 md:top-0 p-0 justify-center"
+          >
+            <router-link to="/planner">
+              <div class="flex flex-row items-center justify-center mx-2">
+                <ArrowLeftIcon class="w-6 my-2 text-white md:hidden" />
+                <img :src="backIcon" class="w-20 mt-2 hidden md:block" />
+              </div>
+            </router-link>
+          </button>
           <img
             src="../assets/svg/logo-light.svg"
             alt="Logo"
@@ -178,7 +184,7 @@ onMounted(async () => {
         <h2 class="text-[40px] font-bold text-center text-primary-50">
           {{ groupMembers.title }}
         </h2>
-        <p class="text-l text-white text-center">
+        <p class="text-l text-white text-center mb-8">
           {{ schedules.start_date }} ~ {{ schedules.end_date }}
         </p>
       </div>

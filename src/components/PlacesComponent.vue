@@ -1,5 +1,5 @@
 <script setup>
-import { StarIcon, MapPinIcon, HeartIcon } from "@heroicons/vue/24/solid"
+import { StarIcon, MapPinIcon, HeartIcon } from '@heroicons/vue/24/solid';
 import {
   ref,
   onMounted,
@@ -7,45 +7,45 @@ import {
   nextTick,
   defineEmits,
   onUnmounted,
-  computed,
-} from "vue"
-import { HeartIcon as OutlineHeartIcon } from "@heroicons/vue/24/outline"
-import AddPlaceBtn from "./AddPlaceBtn.vue"
-import { usePlacesStore } from "@/stores/fetchPlaces"
-import { useSearchStore } from "@/stores/searchPlaces"
-import { PlaceModalStore } from "@/stores/PlaceModal"
+  computed
+} from 'vue';
+import { HeartIcon as OutlineHeartIcon } from '@heroicons/vue/24/outline';
+import AddPlaceBtn from './AddPlaceBtn.vue';
+import { usePlacesStore } from '@/stores/fetchPlaces';
+import { useSearchStore } from '@/stores/searchPlaces';
+import { PlaceModalStore } from '@/stores/PlaceModal';
 import {
   favorites,
   loadFavorites,
   toggleFavoriteStatus
-} from "@/stores/favorites.js"
-import axios from "axios"
-import { useRoute, useRouter } from "vue-router"
-import { addPlace } from "@/stores/addPlaces"
+} from '@/stores/favorites.js';
+import axios from 'axios';
+import { useRoute, useRouter } from 'vue-router';
+import { addPlace } from '@/stores/addPlaces';
 
-const placesStore = usePlacesStore()
-const searchStore = useSearchStore()
-const modalStore = PlaceModalStore()
-const router = useRouter()
-const route = useRoute()
+const placesStore = usePlacesStore();
+const searchStore = useSearchStore();
+const modalStore = PlaceModalStore();
+const router = useRouter();
+const route = useRoute();
 
-const columns = ref([]) // 每欄
-const numCols = ref(2) // 預設為兩欄
-const isLogin = ref(false)
-const token = localStorage.getItem("token")
-const userId = ref(localStorage.getItem("userId"))
+const columns = ref([]); // 每欄
+const numCols = ref(2); // 預設為兩欄
+const isLogin = ref(false);
+const token = localStorage.getItem('token');
+const userId = ref(localStorage.getItem('userId'));
 
+const place = ref(null);
+const loading = ref(true);
 
-const place = ref(null)
-const loading = ref(true)
+const API_URL = import.meta.env.VITE_HOST_URL;
 
-const API_URL = import.meta.env.VITE_HOST_URL
+const emit = defineEmits(['open-detail-modal', 'updateIsPlacesComponent']);
 
-const emit = defineEmits(["open-detail-modal", "updateIsPlacesComponent"])
-
-
-const items = ref(JSON.parse(localStorage.getItem("items") || "[]"));
-const localFavorites = ref(JSON.parse(localStorage.getItem("favorites") || "[]"));
+const items = ref(JSON.parse(localStorage.getItem('items') || '[]'));
+const localFavorites = ref(
+  JSON.parse(localStorage.getItem('favorites') || '[]')
+);
 // 切換收藏狀態的按鈕事件處理
 const handleToggleFavorite = async (item) => {
   const formattedItem = { ...item, place_id: item.id }; // 確保格式一致
@@ -63,7 +63,7 @@ const syncFavoritesWithItems = () => {
   const favoriteSet = new Set(favorites.value.map((fav) => fav.place_id)); // 儲存收藏的 place_id
   items.value = items.value.map((item) => ({
     ...item,
-    isFavorited: favoriteSet.has(item.id), // 如果 favorites 列表包含 item.id，標記為已收藏
+    isFavorited: favoriteSet.has(item.id) // 如果 favorites 列表包含 item.id，標記為已收藏
   }));
 };
 
@@ -77,15 +77,15 @@ onMounted(async () => {
 
 // 瀑布流計算
 const calculateColumns = async () => {
-  columns.value = Array.from({ length: numCols.value }, () => [])
-  const heights = Array(numCols.value).fill(0)
+  columns.value = Array.from({ length: numCols.value }, () => []);
+  const heights = Array(numCols.value).fill(0);
 
   for (const item of placesStore.items) {
-    const shortestCol = heights.indexOf(Math.min(...heights))
-    columns.value[shortestCol].push(item)
+    const shortestCol = heights.indexOf(Math.min(...heights));
+    columns.value[shortestCol].push(item);
 
-    await nextTick()
-    const img = document.getElementById(`img-${item.id}`)
+    await nextTick();
+    const img = document.getElementById(`img-${item.id}`);
 
     if (img) {
       heights[shortestCol] += img.offsetHeight + 16;
@@ -95,25 +95,21 @@ const calculateColumns = async () => {
 
 // 監聽螢幕大小調整欄位數量
 const handleResize = () => {
-  if (window.innerWidth >= 1024) numCols.value = 4
-  else if (window.innerWidth >= 768) numCols.value = 3
-  else numCols.value = 2
-  calculateColumns()
-}
+  if (window.innerWidth >= 1024) numCols.value = 4;
+  else if (window.innerWidth >= 768) numCols.value = 3;
+  else numCols.value = 2;
+  calculateColumns();
+};
 
 const openDetailModal = (detailId) => {
-  emit("open-detail-modal", detailId) // 傳遞地點的 ID
-  router.replace({ query: { action: "placeInfo", placeId: detailId } }) // 更新URL
-}
-
-
+  emit('open-detail-modal', detailId); // 傳遞地點的 ID
+  router.replace({ query: { action: 'placeInfo', placeId: detailId } }); // 更新URL
+};
 
 const updateMapCenter = (item) => {
   searchStore.placeGeometry = item.geometry;
-  emit("updateIsPlacesComponent", false);
+  emit('updateIsPlacesComponent', false);
 };
-
-
 
 onMounted(async () => {
   const placeId = route.query.placeId; // URL中的placeId
@@ -123,27 +119,29 @@ onMounted(async () => {
 
   await calculateColumns(); // 初始計算瀑布流
   handleResize(); // 初始化欄數
-  window.addEventListener("resize", handleResize);
+  window.addEventListener('resize', handleResize);
 });
 
 // 根據 place_id 載入地點詳細資訊
 const fetchPlaceById = async (placeId) => {
   try {
-    const response = await axios.get(`${API_URL}/places/${placeId}`)
-    place.value = response.data
-    console.log("在資料庫中找到:", place.value)
+    const response = await axios.get(`${API_URL}/places/${placeId}`);
+    place.value = response.data;
+    console.log('在資料庫中找到:', place.value);
   } catch (error) {
-    console.error("載入詳情失敗:", error)
-    alert("載入地點失敗")
+    console.error('載入詳情失敗:', error);
+    messageStore.messageModal({
+      message: '載入地點失敗',
+      status: 'error'
+    });
   } finally {
-    loading.value = false
+    loading.value = false;
   }
-}
-
+};
 
 // 移除事件監聽器
 onUnmounted(() => {
-  window.removeEventListener("resize", handleResize);
+  window.removeEventListener('resize', handleResize);
 });
 
 // 監聽 items 的變化並重新計算瀑布流
@@ -208,9 +206,7 @@ watch(
                 >
                   <component
                     :is="item.isFavorited ? HeartIcon : OutlineHeartIcon"
-                    :class="
-                      item.isFavorited ? 'text-red-500' : 'text-gray-500'
-                    "
+                    :class="item.isFavorited ? 'text-red-500' : 'text-gray-500'"
                     class="size-6"
                   />
                 </button>
@@ -239,10 +235,9 @@ watch(
               </h3>
               <div class="flex justify-between">
                 <div class="flex text-slate-500 text-[12px] md:text-base gap-1">
-                  <StarIcon class="text-yellow-500 md:size-6 size-4" /><span>{{
-                    item.rating
-                  }}</span
-                  ><span>{{ item.location }}</span>
+                  <StarIcon class="text-yellow-500 md:size-6 size-4" />
+                  <span>{{ item.rating }}</span>
+                  <span>{{ item.location }}</span>
                 </div>
                 <button
                   target="_blank"

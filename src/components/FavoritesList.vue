@@ -1,9 +1,9 @@
 <script setup>
-import { StarIcon, MapPinIcon, HeartIcon } from "@heroicons/vue/24/solid"
-import AddPlaceBtn from "./AddPlaceBtn.vue"
-import { HeartIcon as OutlineHeartIcon } from "@heroicons/vue/24/outline"
-import DetailModal from "@/components/DetailModal.vue"
-import { PlaceModalStore } from "@/stores/PlaceModal"
+import { StarIcon, MapPinIcon, HeartIcon } from '@heroicons/vue/24/solid';
+import AddPlaceBtn from './AddPlaceBtn.vue';
+import { HeartIcon as OutlineHeartIcon } from '@heroicons/vue/24/outline';
+import DetailModal from '@/components/DetailModal.vue';
+import { PlaceModalStore } from '@/stores/PlaceModal';
 
 import {
   ref,
@@ -12,32 +12,33 @@ import {
   nextTick,
   defineEmits,
   onUnmounted,
-  computed,
-} from "vue"
-import axios from "axios"
+  computed
+} from 'vue';
+import axios from 'axios';
 import {
   favorites,
   loadFavorites,
   toggleFavoriteStatus,
   generateImageUrl
-} from "@/stores/favorites"
+} from '@/stores/favorites';
+import { MessageModalStore } from '@/stores/MessageModal';
 
 // 定義狀態
-const places = ref([])
-const userId = ref(localStorage.getItem("userId"))
-const token = localStorage.getItem("token")
+const places = ref([]);
+const userId = ref(localStorage.getItem('userId'));
+const token = localStorage.getItem('token');
 
-const API_URL = import.meta.env.VITE_HOST_URL
+const API_URL = import.meta.env.VITE_HOST_URL;
 
-const modalStore = PlaceModalStore()
-
+const modalStore = PlaceModalStore();
+const messageStore = MessageModalStore();
 // 獲取收藏景點資料
 const fetchPlaces = async () => {
   try {
     const res = await axios.get(`${API_URL}/favorites/${userId.value}`, {
       headers: {
-        Authorization: token,
-      },
+        Authorization: token
+      }
     });
 
     // 加載收藏的地點並更新收藏狀態
@@ -47,21 +48,23 @@ const fetchPlaces = async () => {
       return place;
     });
 
-    localStorage.setItem("favorites", JSON.stringify(places.value));
+    localStorage.setItem('favorites', JSON.stringify(places.value));
   } catch (err) {
-    alert("無法獲取景點資料", err);
+    messageStore.messageModal({
+      message: '無法獲取收藏景點',
+      status: 'error'
+    });
   }
 };
 
-const emit = defineEmits(["open-detail-modal"])
+const emit = defineEmits(['open-detail-modal']);
 
 const openDetailModal = (place) => {
-  emit("open-detail-modal", place.place_id) // 傳遞地點的 ID
-}
+  emit('open-detail-modal', place.place_id); // 傳遞地點的 ID
+};
 
 // 載入收藏景點
-onMounted(fetchPlaces)
-
+onMounted(fetchPlaces);
 </script>
 
 <template>
@@ -104,16 +107,16 @@ onMounted(fetchPlaces)
               class="absolute bottom-0 flex items-center justify-between w-full p-4 transition-opacity opacity-0 z-2 group-hover:opacity-100"
             >
               <button
-        class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer bg-gray hover:bg-opacity-75 tooltip"
-        :data-tip="place.isFavorited ? '移除收藏' : '加入收藏'"
-        @click.prevent.stop="toggleFavoriteStatus (place)"
-      >
-        <component
-          :is="place.isFavorited ? HeartIcon : OutlineHeartIcon"
-          :class="place.isFavorited ? 'text-red-500' : 'text-gray-500'"
-          class="size-6"
-        />
-      </button>
+                class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer bg-gray hover:bg-opacity-75 tooltip"
+                :data-tip="place.isFavorited ? '移除收藏' : '加入收藏'"
+                @click.prevent.stop="toggleFavoriteStatus(place)"
+              >
+                <component
+                  :is="place.isFavorited ? HeartIcon : OutlineHeartIcon"
+                  :class="place.isFavorited ? 'text-red-500' : 'text-gray-500'"
+                  class="size-6"
+                />
+              </button>
             </div>
             <!-- 圖片 -->
             <img
