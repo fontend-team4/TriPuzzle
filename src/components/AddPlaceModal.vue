@@ -307,11 +307,12 @@ const addPlaceToSchedule = async () => {
       status: 'success'
     });
   } catch (error) {
-    console.error('新增失敗：', error.response?.data || error.message);
+    loadingStore.hideLoading();
     messageStore.messageModal({
       message: error.data.message || '未知錯誤',
       status: 'error'
     });
+    console.error('新增失敗：', error.response?.data || error.message);
   }
 };
 
