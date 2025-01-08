@@ -134,31 +134,27 @@ onMounted(async () => {
     <div
       class="border-round bg-primary-700 md:w-20px w-[52rem] mx-auto h-[100vh] items-center justify-center"
     >
+      <button
+        class="btn-primary absolute left-0 top-8 md:left-4 md:top-0 p-0 justify-center"
+      >
+        <router-link to="/planner">
+          <div class="flex flex-row items-center justify-center mx-2">
+            <ArrowLeftIcon class="w-6 my-2 text-white md:hidden" />
+            <img :src="backIcon" class="w-20 mt-2 hidden md:block" />
+          </div>
+        </router-link>
+      </button>
       <div class="title">
         <div
           class="flex flex-row w-full text-center justify-center items-center relative p-2"
         >
-          <button
-            class="btn-primary btn-sm absolute left-2 top-4 md:left-4 md:top-0 p-0 justify-center hover:bg-primary-500 rounded-full"
-          >
-            <router-link to="/planner">
-              <div class="flex flex-row items-center justify-center mx-2">
-                <ArrowLeftIcon class="w-6 my-2 text-white md:hidden" />
-                <img :src="backIcon" class="w-6 mr-1 pb-1 hidden md:block" />
-                <span class="text-white hidden md:block md:text-[12px]">
-                  返回旅圖
-                </span>
-              </div>
-            </router-link>
-          </button>
-
           <img
             src="../assets/svg/logo-light.svg"
             alt="Logo"
-            class="w-10 h-8 mr-1"
+            class="w-10 mr-1"
           />
           <h1
-            class="text-[24px] md:text-[36px] text-center font-bold text-primary-100 my-2"
+            class="text-[24px] md:text-[36px] text-center font-bold text-white my-2"
           >
             TriAccount 旅費分帳
           </h1>
@@ -174,13 +170,13 @@ onMounted(async () => {
       <nav
         class="flex justify-center space-x-4 flex-row bg-primary-700 w-full px-4"
       >
-        <ul class="flex flex-row text-primary-100 gap-1 md:gap-20">
+        <ul class="flex flex-row text-white gap-1 md:gap-20">
           <li
             :class="{
               'text-primary-700 bg-white rounded-t-lg':
                 $route.name === 'AccountForm'
             }"
-            class="hover:text-primary-300"
+            class="md:hover:text-primary-100 md:hover:bg-primary-600 rounded-t-lg"
           >
             <router-link
               :to="{ name: 'AccountForm', params: { scheduleId: scheduleId } }"
@@ -194,7 +190,7 @@ onMounted(async () => {
               'text-primary-700 bg-white rounded-t-lg':
                 $route.name === 'AccountList'
             }"
-            class="hover:text-primary-300"
+            class="md:hover:text-primary-100 md:hover:bg-primary-600 rounded-t-lg"
           >
             <router-link
               :to="{ name: 'AccountList', params: { scheduleId: scheduleId } }"
@@ -208,7 +204,7 @@ onMounted(async () => {
               'text-primary-700 bg-white rounded-t-lg':
                 $route.name === 'BalanceSummary'
             }"
-            class="hover:text-primary-300"
+            class="md:hover:text-primary-100 md:hover:bg-primary-600 rounded-t-lg"
           >
             <router-link
               :to="{
@@ -225,7 +221,7 @@ onMounted(async () => {
               'text-primary-700 bg-white rounded-t-lg':
                 $route.name === 'ShareGroup'
             }"
-            class="hover:text-primary-300"
+            class="md:hover:text-primary-100 md:hover:bg-primary-600 rounded-t-lg"
           >
             <router-link
               :to="{ name: 'ShareGroup', params: { scheduleId: scheduleId } }"

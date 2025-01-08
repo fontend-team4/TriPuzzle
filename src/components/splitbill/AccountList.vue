@@ -35,7 +35,7 @@ const categoryClass = (category) => {
     case '票卷':
       return 'bg-blue-500';
     default:
-      return 'bg-gray-300'; // 默認顏色
+      return 'bg-slate-400'; // 默認顏色
   }
 };
 
@@ -45,7 +45,7 @@ const categoryIcon = (category) => {
     case '餐飲':
       return CakeIcon; // 食物圖示
     case '交通':
-      return; // 飛機圖示
+      return TicketIcon; // 飛機圖示
     case '住宿':
       return HomeIcon; // 房屋圖示
     case '購物':
