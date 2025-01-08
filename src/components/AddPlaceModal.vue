@@ -43,8 +43,10 @@ onMounted(async () => {
 });
 
 // 地圖區
-async function initMap(center) {
+async function initMap() {
   const { Map } = await google.maps.importLibrary('maps');
+  const { DirectionsService, DirectionsRenderer } =
+    await google.maps.importLibrary('routes');
   const newMap = new Map(document.getElementById('map2'), {
     center: place.geometry || { lat: 25.0341222, lng: 121.5640212 },
     zoom: 13,
@@ -55,6 +57,94 @@ async function initMap(center) {
     mapId: '83af7188f1a0650d'
   });
   map.value = newMap;
+
+  if (currentSchedule.value && currentSchedule.value.groupedPlaces) {
+    const selectedDatePlaces =
+      currentSchedule.value.groupedPlaces[selectedDate.value];
+
+    if (selectedDatePlaces && selectedDatePlaces.length > 1) {
+      // 按照 order 排序景點
+      const sortedPlaces = selectedDatePlaces.sort((a, b) => a.order - b.order);
+
+      const directionsRenderers = [];
+      const directionsService = new DirectionsService();
+
+      const planRoutes = (places) => {
+        places.forEach((place, index) => {
+          if (index === 0 || index === places.length - 1) return;
+
+          const origin = places[index - 1].places.geometry;
+          const destination = places[index].places.geometry;
+
+          const directionsRenderer = new DirectionsRenderer({
+            map: newMap,
+            suppressMarkers: true,
+            polylineOptions: {
+              strokeColor: '#1E90FF',
+              strokeOpacity: 0.8,
+              strokeWeight: 5
+            }
+          });
+          directionsRenderers.push(directionsRenderer);
+
+          directionsService.route(
+            {
+              origin: origin,
+              destination: destination,
+              travelMode:
+                google.maps.TravelMode[
+                  currentSchedule.value.transportation_way
+                ] || google.maps.TravelMode.DRIVING
+            },
+            (response, status) => {
+              if (status === 'OK') {
+                directionsRenderer.setDirections(response);
+              } else {
+                console.error('Direction request failed:', status);
+              }
+            }
+          );
+        });
+      };
+
+      // 將新景點插入到陣列最後面
+      const newPlaceWrapper = {
+        places: place
+      };
+      const modifiedSortedPlaces = [...sortedPlaces, newPlaceWrapper];
+
+      planRoutes(modifiedSortedPlaces);
+
+      modifiedSortedPlaces.forEach((place, index) => {
+        const { AdvancedMarkerElement, PinElement } = google.maps.marker;
+
+        const pinOptions =
+          index === modifiedSortedPlaces.length - 1
+            ? { background: '#FFD700', glyph: '+', glyphColor: 'white' }
+            : {
+                background: '#D23430',
+                borderColor: '#D23430',
+                glyphColor: 'white',
+                glyph: `${index + 1}`
+              };
+
+        const pinElement = new PinElement(pinOptions);
+
+        new AdvancedMarkerElement({
+          map: newMap,
+          position: place.places.geometry,
+          content: pinElement.element
+        });
+      });
+
+      // 調整地圖視角以顯示所有景點
+      const bounds = new google.maps.LatLngBounds();
+      sortedPlaces.forEach((place) => {
+        bounds.extend(place.places.geometry);
+      });
+      newMap.fitBounds(bounds);
+    }
+  }
 }
 
 const allMarkers = ref([]);
@@ -88,10 +178,10 @@ async function updateMarkers() {
       index === 0
         ? { background: '#FFD700', glyph: '+', glyphColor: 'white' }
         : {
-            background: '#5B5B5B',
-            borderColor: '#5B5B5B',
+            background: 'transparent',
+            borderColor: 'transparent',
             glyphColor: 'white',
-            glyph: `${index}`
+            glyph: ''
           };
 
     const pinElement = new PinElement(pinOptions);
@@ -217,6 +307,7 @@ onMounted(async () => {
         calculateDateRange(schedule.start_date, schedule.end_date)
       )
     }));
+    console.log(schedules.value);
     loadingStore.hideLoading();
     if (schedules.value.length > 0) {
       await optimizeTrail(schedules.value[0]);
@@ -225,6 +316,10 @@ onMounted(async () => {
     loadingStore.hideLoading();
     console.error('Error fetching schedules:', error);
   }
+});
+
+onMounted(async () => {
+  loadingStore.showLoading();
   try {
     const res = await axios.get(`${URL}/usersschedules`, {
       headers: { Authorization: token }
@@ -402,7 +497,7 @@ const switchToPage = (page, tab, schedule = null) => {
 
 watch(
   () => selectedTab.value, // 監聽 selectedTab 的變化
-  (newTab) => {
+  async (newTab) => {
     // console.log("觸發watch");
 
     if (!newTab || !currentSchedule.value) return;
@@ -1052,6 +1147,7 @@ const hasCoSchedules = computed(() => {
                             currentSchedule.groupedPlaces[selectedDate]
                           );
                         }
+                        initMap();
                       }
                     "
                     class="flex-shrink-0 pb-[4px] px-[16px] text-base cursor-pointer rounded-t-lg transition-colors duration-200 ease-in-out text-center"
