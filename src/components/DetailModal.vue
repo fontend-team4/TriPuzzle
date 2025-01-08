@@ -31,9 +31,11 @@ import {
   toggleFavoriteStatus,
   generateImageUrl
 } from '@/stores/favorites';
+import { MessageModalStore } from '@/stores/MessageModal';
 
 const API_URL = process.env.VITE_HOST_URL;
 const token = localStorage.getItem('token');
+const messageStore = MessageModalStore();
 
 // 控制modal、照片顯示等狀態
 const qrcodeCanvas = ref(null);
@@ -96,7 +98,10 @@ const createQRCode = async (placeId) => {
 
 const downloadQRCode = () => {
   if (!qrCodeDataUrl.value) {
-    alert('QR Code 尚未生成！');
+    messageStore.messageModal({
+      message: 'QR Code 生成失敗，請再試一次。',
+      status: 'error'
+    });
     return;
   }
   const blob = dataURLToBlob(qrCodeDataUrl.value);
@@ -156,7 +161,10 @@ const overflowStatus = computed(() =>
 const copyPlaceUrl = () => {
   const placeId = currentPlaceId.value || place.value?.id;
   if (!placeId) {
-    alert('無法獲取地點 ID！');
+    messageStore.messageModal({
+      message: '無法獲取地點 ID！',
+      status: 'error'
+    });
     return;
   }
   copyToClipboard(placeId);
@@ -192,10 +200,16 @@ const fetchPlaceDetails = async () => {
     }
     // 若所有途徑都無法獲取地點詳情
     if (!Object.keys(place.value).length) {
-      alert(Error('無法加載景點資訊，請再試一次。'));
+      messageStore.messageModal({
+        message: '無法加載景點資訊，請再試一次。',
+        status: 'error'
+      });
     }
   } catch (error) {
-    alert(Error('無法加載景點資訊，請再試一次。'));
+    messageStore.messageModal({
+      message: '無法加載景點資訊，請再試一次。',
+      status: 'error'
+    });
     console.error('無法加載地點詳情:', error);
   }
 };
