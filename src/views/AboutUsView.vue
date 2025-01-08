@@ -284,9 +284,9 @@ import { GlobeAltIcon } from '@heroicons/vue/24/outline';
           />
           <h3 class="text-2xl text-zinc-800">張銘原</h3>
           <span class="flex flex-col items-center text-zinc-500">
-            <p>拖曳物件、分類搜尋功能</p>
-            <p>景點收藏功能</p>
-            <p>分享 QRcode 功能</p>
+            <p>分類搜尋功能</p>
+            <p>景點收藏 & 分享 QRcode 功能</p>
+            <p>分帳攤銷功能</p>
           </span>
           <div class="flex">
             <a href="" class="text-zinc-800 hover:text-zinc-500">
