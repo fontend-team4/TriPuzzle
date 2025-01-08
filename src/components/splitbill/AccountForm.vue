@@ -7,10 +7,11 @@ import '@vuepic/vue-datepicker/dist/main.css';
 import '@/assets/loading.css';
 import { useLoadingStore } from '@/stores/loading';
 import { MessageModalStore } from '@/stores/MessageModal';
+import defaultUserImage from '/images/cat-2.png';
 
 const messageStore = MessageModalStore();
 const loadingStore = useLoadingStore();
-const loadingForBtn = ref(false)
+const loadingForBtn = ref(false);
 const route = useRoute();
 const scheduleId = route.params.scheduleId; // 從路由取得行程 ID
 const token = localStorage.getItem('token');
@@ -45,7 +46,7 @@ const openDatePicker = () => {
 
 // 提交帳目至後端
 const submitAccount = async () => {
-  loadingForBtn.value = true
+  loadingForBtn.value = true;
   try {
     console.log('代墊人 ID 列表', payfirst_id.groupUsers);
     const selectedUser = payfirst_id.groupUsers.find(
@@ -53,7 +54,7 @@ const submitAccount = async () => {
     );
 
     if (!selectedUser) {
-    loadingForBtn.value = false
+      loadingForBtn.value = false;
       messageStore.messageModal({
         message: '請選擇代墊人',
         status: 'error'
@@ -62,7 +63,7 @@ const submitAccount = async () => {
     }
 
     if (splitAmong.value.length === 0) {
-    loadingForBtn.value = false
+      loadingForBtn.value = false;
       messageStore.messageModal({
         message: '請選擇參與分攤者',
         status: 'error'
@@ -91,14 +92,14 @@ const submitAccount = async () => {
         }
       }
     );
-    loadingForBtn.value = false
+    loadingForBtn.value = false;
     messageStore.messageModal({
       message: '新增帳目成功',
       status: 'success'
     });
     resetForm(); // 只在成功提交後重置表單
   } catch (error) {
-    loadingForBtn.value = false
+    loadingForBtn.value = false;
     console.error('新增帳目失敗：', error);
 
     // 提示具體的錯誤訊息
@@ -137,15 +138,15 @@ onMounted(async () => {
 
 <template>
   <LoadingOverlay :active="loadingStore.isLoading">
-  <div class="loadingio-spinner-ellipsis-nq4q5u6dq7r">
-    <div class="ldio-x2uulkbinbj">
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
+    <div class="loadingio-spinner-ellipsis-nq4q5u6dq7r">
+      <div class="ldio-x2uulkbinbj">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
     </div>
-  </div>
   </LoadingOverlay>
   <form
     @submit.prevent="submitAccount"
@@ -220,23 +221,36 @@ onMounted(async () => {
     <!-- 參與分攤者 -->
     <div>
       <label class="block text-sm font-medium text-gray-700">參與分攤者</label>
-      <div class="flex flex-wrap gap-2 mt-2">
+      <div class="flex flex-col items-start md:flex-wrap gap-2 mt-2">
         <!-- 使用 groupUsers 作為多選選項 -->
         <div
           v-for="user in payfirst_id.groupUsers"
           :key="user.id"
-          class="flex items-center justify-center space-x-1"
+          class="flex flex-row items-center justify-between space-x-1 w-full"
         >
-          <input
-            type="checkbox"
-            :value="user"
-            v-model="splitAmong"
-            class="rounded border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
-            :id="`user-${user.id}`"
-          />
-          <label :for="`user-${user.id}`">
-            {{ user.name }} - {{ user.email }}
+          <label
+            class="cursor-pointer label flex-row items-between"
+            :for="`user-${user.id}`"
+          >
+            <input
+              type="checkbox"
+              :value="user"
+              v-model="splitAmong"
+              class="checkbox md:checkbox-md mr-2 checkbox-error md:mr-4 rounded shadow-sm [--chkfg:white] focus:border-primary-500 focus:ring-primary-500"
+              :id="`user-${user.id}`"
+            />
+            <img
+              :src="user.profile_pic_url || defaultUserImage"
+              alt="User avatar"
+              class="w-10 h-10 ml-2 md:ml-0 mr-2 object-cover rounded-full"
+            />
+            <span class="label-text text-lg mr-2">
+              {{ user.name }}
+            </span>
           </label>
+          <span class="label-text text-lg mr-2 hidden md:block">
+            {{ user.email }}
+          </span>
         </div>
       </div>
     </div>
@@ -283,6 +297,5 @@ onMounted(async () => {
     >
       <span class="loading loading-dots loading-md"></span>
     </button>
-
   </form>
 </template>

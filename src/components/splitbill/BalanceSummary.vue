@@ -10,13 +10,12 @@ const loadingStore = useLoadingStore();
 const route = useRoute();
 const API_URL = process.env.VITE_HOST_URL;
 const token = localStorage.getItem('token');
-const balances = ref([]); // 成員攤銷金額列表
+
 const scheduleId = inject('scheduleId');
 const accounts = inject('accounts');
+
+const balances = ref([]); // 成員攤銷金額列表
 const bills = ref([]); // 帳目列表
-// const shouldPay = ref(0);
-// const paid = ref(0);
-// const balance = ref(0);
 
 // 獲取帳目資料
 const fetchBills = async () => {
@@ -35,6 +34,8 @@ const fetchBills = async () => {
       ? response.data
       : [response.data]; // 確保 bills 是陣列
     balances.value = calculateBalances(bills.value);
+    console.log('成員攤銷金額列表', balances.value);
+    console.log('帳目列表', bills.value);
   } catch (err) {
     console.error('獲取帳目失敗', err);
   }
@@ -51,6 +52,7 @@ const calculateBalances = (bills) => {
 
       if (!balanceMap[userId]) {
         balanceMap[userId] = {
+          profile_pic_url: userBill.users.profile_pic_url, // 成員頭像
           name: userName,
           shouldPay: 0,
           paid: 0,
@@ -66,7 +68,9 @@ const calculateBalances = (bills) => {
 
   return Object.values(balanceMap).map((member) => ({
     ...member,
-    balance: member.paid - member.shouldPay // 差額計算
+    shouldPay: parseFloat(member.shouldPay.toFixed(1)), // 限制小數點後一位
+    paid: parseFloat(member.paid.toFixed(1)), // 限制小數點後一位
+    balance: parseFloat((member.paid - member.shouldPay).toFixed(1)) // 差額計算並限制小數點後一位
   }));
 };
 
@@ -78,18 +82,17 @@ onMounted(() => {
   fetchBills(); // 組件掛載時發送 API 請求
 });
 </script>
-
 <template>
   <LoadingOverlay :active="loadingStore.isLoading">
-  <div class="loadingio-spinner-ellipsis-nq4q5u6dq7r">
-    <div class="ldio-x2uulkbinbj">
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
+    <div class="loadingio-spinner-ellipsis-nq4q5u6dq7r">
+      <div class="ldio-x2uulkbinbj">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
     </div>
-  </div>
   </LoadingOverlay>
   <div class="p-4 bg-white shadow-md rounded-lg">
     <h2 class="text-xl font-bold text-primary-500 mb-4">攤銷金額</h2>
@@ -103,7 +106,7 @@ onMounted(() => {
           <img
             :src="member.profile_pic_url || defaultUserImage"
             alt="Logo"
-            class="w-6 mr-2 rounded-full"
+            class="w-10 h-10 object-cover rounded-full mr-2"
           />
           {{ member.name }}
         </div>
