@@ -1,6 +1,8 @@
 <script setup>
 import { ref, onMounted, defineProps, provide } from 'vue';
 import { RouterView, useRouter, useRoute } from 'vue-router';
+import { ArrowLeftIcon } from '@heroicons/vue/24/solid';
+
 import axios from 'axios';
 
 // 引入子組件
@@ -132,22 +134,35 @@ onMounted(async () => {
       class="border-round bg-primary-700 md:w-20px w-[52rem] mx-auto h-[100vh] items-center justify-center"
     >
       <div class="title">
-        <div class="flex text-center justify-center items-center pt-4">
+        <div
+          class="flex flex-row w-full text-center justify-center items-center relative p-2"
+        >
+          <button
+            class="btn-primary absolute left-0 top-0 p-2 hover:bg-primary-400 rounded-full"
+          >
+            <router-link to="/planner">
+              <div class="flex flex-row items-center justify-center">
+                <ArrowLeftIcon class="w-6 h-10 mr-1 md:hidden" />
+                <span class="text-white hidden md:block md:text-[16px]">
+                  返回旅圖
+                </span>
+                <img
+                  src="../assets/images/cat-7.png"
+                  class="w-6 h-8 hidden md:block"
+                />
+              </div>
+            </router-link>
+          </button>
           <img
             src="../assets/svg/logo-light.svg"
             alt="Logo"
-            class="w-12 mr-2"
+            class="w-10 h-8 mr-1"
           />
-          <h1 class="text-[36px] text-center font-bold text-primary-100 my-2">
+          <h1
+            class="text-[24px] md:text-[36px] text-center font-bold text-primary-100 my-2"
+          >
             TriAccount 旅費分帳
           </h1>
-          <router-link to="/planner">
-            <button
-              class="btn absolute top-8 right-10 bg-primary-100 border-round text-primary-700"
-            >
-              回到行程
-            </button>
-          </router-link>
         </div>
         <h2 class="text-[48px] font-bold text-center text-primary-50">
           {{ groupMembers.title }}
@@ -158,7 +173,7 @@ onMounted(async () => {
       </div>
 
       <nav class="flex justify-center space-x-4 flex-row bg-primary-700 p-4">
-        <ul class="flex flex-row text-primary-100 gap-20">
+        <ul class="flex flex-row text-primary-100 gap-6 md:gap-20">
           <li class="hover:text-primary-300">
             <router-link
               :to="{ name: 'AccountForm', params: { scheduleId: scheduleId } }"
