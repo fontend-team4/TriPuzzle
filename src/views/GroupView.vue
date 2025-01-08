@@ -3,8 +3,11 @@ import { ref, onMounted, defineProps, provide } from 'vue';
 import { RouterView, useRouter, useRoute } from 'vue-router';
 import { ArrowLeftIcon } from '@heroicons/vue/24/solid';
 import backIcon from '/images/solid-1.png';
-
 import axios from 'axios';
+import '@/assets/loading.css';
+import { useLoadingStore } from '@/stores/loading';
+
+const loadingStore = useLoadingStore();
 
 // 引入子組件
 import ShareGroup from '@/components/splitbill/ShareGroup.vue';
@@ -120,14 +123,27 @@ provide('accounts', accounts);
 provide('scheduleId', scheduleId); // 提供 scheduleId 給子組件使用
 
 onMounted(async () => {
+  loadingStore.showLoading();
   await getGroupData(); // 組件掛載時請求成員資料
   await getAccount(); // 組件掛載時請求帳目資料
   await getSchedules();
   router.push(`/groups/${scheduleId}/account-form`);
+  loadingStore.hideLoading();
 });
 </script>
 
 <template>
+  <LoadingOverlay :active="loadingStore.isLoading">
+  <div class="loadingio-spinner-ellipsis-nq4q5u6dq7r">
+    <div class="ldio-x2uulkbinbj">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+  </LoadingOverlay>
   <div
     class="bg-primary-700 md:h-[100vh] flex justify-center items-center md:overflow-y-auto"
   >

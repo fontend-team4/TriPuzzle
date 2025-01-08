@@ -3,7 +3,10 @@ import { ref, onMounted, inject } from 'vue';
 import axios from 'axios';
 import { useRoute } from 'vue-router';
 import defaultUserImage from '/images/cat-2.png';
+import '@/assets/loading.css';
+import { useLoadingStore } from '@/stores/loading';
 
+const loadingStore = useLoadingStore();
 const route = useRoute();
 const API_URL = process.env.VITE_HOST_URL;
 const token = localStorage.getItem('token');
@@ -68,11 +71,26 @@ const calculateBalances = (bills) => {
 };
 
 onMounted(() => {
+  loadingStore.showLoading();
+  setTimeout(() => {
+    loadingStore.hideLoading();
+  }, 1000);
   fetchBills(); // 組件掛載時發送 API 請求
 });
 </script>
 
 <template>
+  <LoadingOverlay :active="loadingStore.isLoading">
+  <div class="loadingio-spinner-ellipsis-nq4q5u6dq7r">
+    <div class="ldio-x2uulkbinbj">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+  </LoadingOverlay>
   <div class="p-4 bg-white shadow-md rounded-lg">
     <h2 class="text-xl font-bold text-primary-500 mb-4">攤銷金額</h2>
     <ul class="divide-y divide-gray-200">

@@ -1,10 +1,15 @@
 <script setup>
-import { ref, inject } from 'vue';
+import { ref, inject, onMounted } from 'vue';
 import axios from 'axios';
 import { useRoute } from 'vue-router';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
+import '@/assets/loading.css';
+import { useLoadingStore } from '@/stores/loading';
+import { MessageModalStore } from '@/stores/MessageModal';
 
+const messageStore = MessageModalStore();
+const loadingStore = useLoadingStore();
 const route = useRoute();
 const scheduleId = route.params.scheduleId; // 從路由取得行程 ID
 const token = localStorage.getItem('token');
@@ -46,12 +51,18 @@ const submitAccount = async () => {
     );
 
     if (!selectedUser) {
-      alert('請選擇代墊人');
+      messageStore.messageModal({
+        message: '請選擇代墊人',
+        status: 'error'
+      });
       return;
     }
 
     if (splitAmong.value.length === 0) {
-      alert('請選擇參與分攤者');
+      messageStore.messageModal({
+        message: '請選擇參與分攤者',
+        status: 'error'
+      });
       return;
     }
 
@@ -76,17 +87,25 @@ const submitAccount = async () => {
         }
       }
     );
-
-    alert('新增帳目成功');
+    messageStore.messageModal({
+      message: '新增帳目成功',
+      status: 'success'
+    });
     resetForm(); // 只在成功提交後重置表單
   } catch (error) {
     console.error('新增帳目失敗：', error);
 
     // 提示具體的錯誤訊息
     if (error.response && error.response.data && error.response.data.error) {
-      alert(`錯誤: ${error.response.data.error}`);
+      messageStore.messageModal({
+        message: `錯誤: ${error.response.data.error}`,
+        status: 'error'
+      });
     } else {
-      alert('新增帳目時發生未知錯誤，請稍後重試。');
+      messageStore.messageModal({
+        message: '新增帳目時發生未知錯誤，請稍後重試。',
+        status: 'error'
+      });
     }
   }
 };
@@ -101,9 +120,27 @@ const resetForm = () => {
   date.value = '';
   splitAmong.value = [];
 };
+
+onMounted(async () => {
+  loadingStore.showLoading();
+  setTimeout(() => {
+    loadingStore.hideLoading();
+  }, 1000);
+});
 </script>
 
 <template>
+  <LoadingOverlay :active="loadingStore.isLoading">
+  <div class="loadingio-spinner-ellipsis-nq4q5u6dq7r">
+    <div class="ldio-x2uulkbinbj">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+  </LoadingOverlay>
   <form
     @submit.prevent="submitAccount"
     class="p-4 bg-white shadow-md md:rounded-lg rounded-b-lg rounded-r-lg space-y-4"

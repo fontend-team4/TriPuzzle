@@ -11,7 +11,12 @@ import {
 } from '@heroicons/vue/24/outline';
 import axios from 'axios';
 import { useRoute } from 'vue-router';
+import '@/assets/loading.css';
+import { useLoadingStore } from '@/stores/loading';
+import { MessageModalStore } from '@/stores/MessageModal';
 
+const messageStore = MessageModalStore();
+const loadingStore = useLoadingStore();
 const route = useRoute();
 const scheduleId = inject('scheduleId');
 const accounts = inject('accounts');
@@ -145,19 +150,30 @@ const removeAccount = async (accountId) => {
       (account) => account.id !== accountId
     ); // 從列表中移除
     showDropdown.value = null;
-    alert('帳目已刪除');
+    messageStore.messageModal({
+      message: '帳目已刪除',
+      status: 'success'
+    });
   } catch (error) {
+    messageStore.messageModal({
+      message: '刪除帳目時發生錯誤，請稍後重試。',
+      status: 'error'
+    });
     console.error('刪除帳目失敗：', error);
-    alert('刪除帳目時發生錯誤，請稍後重試。');
   }
 };
 
 // 添加/移除事件監聽
 onMounted(() => {
+  loadingStore.showLoading();
+  setTimeout(() => {
+    loadingStore.hideLoading();
+  }, 1000);
   document.addEventListener('click', onClickOutside);
   fetchAccounts();
   console.log('accounts', accounts.value[0].id);
 });
+
 
 onUnmounted(() => {
   document.removeEventListener('click', onClickOutside);
@@ -165,6 +181,17 @@ onUnmounted(() => {
 </script>
 
 <template>
+  <LoadingOverlay :active="loadingStore.isLoading">
+  <div class="loadingio-spinner-ellipsis-nq4q5u6dq7r">
+    <div class="ldio-x2uulkbinbj">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+  </LoadingOverlay>
   <div class="p-4 bg-white shadow-md rounded-lg">
     <h2 class="text-xl font-bold text-primary-500">帳目清單</h2>
     <ul class="divide-y divide-gray-200">

@@ -17,6 +17,7 @@ import FavoritesList from '@/components/FavoritesList.vue';
 import DetailModal from '@/components/DetailModal.vue';
 import { usePlacesStore } from '@/stores/fetchPlaces';
 import defaultUserImage from '/images/cat-2.png';
+import { MessageModalStore } from '@/stores/MessageModal';
 import { useLoadingStore } from '@/stores/loading';
 
 const loadingStore = useLoadingStore();
@@ -28,7 +29,6 @@ const router = useRouter();
 const API_URL = process.env.VITE_HOST_URL;
 const token = localStorage.getItem('token');
 const userId = localStorage.getItem('userId');
-import { MessageModalStore } from '@/stores/MessageModal';
 const messageStore = MessageModalStore();
 
 // GET User Profile
