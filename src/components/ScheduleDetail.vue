@@ -4,11 +4,7 @@ import axios from "axios"
 import {
   XMarkIcon,
   ChevronLeftIcon,
-  ArrowUpTrayIcon,
-  PencilIcon,
   TrashIcon,
-  MagnifyingGlassIcon,
-  BookmarkIcon,
   CalendarIcon,
   DocumentDuplicateIcon,
   PlusCircleIcon,
@@ -116,12 +112,20 @@ watch(
 )
 
 // 拖曳狀態
-const drag = ref(false)
+const drag = ref(false);
+
+const updateOrder = (items) => {
+  items.forEach((item, index) => {
+    item.order = index;
+  });
+};
 </script>
 
 <template>
   <div class="w-full h-screen transition-all bg-white shadow-xl lg:w-96">
+  <div class="w-full h-screen transition-all bg-white shadow-xl lg:w-96">
     <!-- header -->
+    <div class="relative py-5 bg-primary-600 ps-4 pe-14">
     <div class="relative py-5 bg-primary-600 ps-4 pe-14">
       <div class="flex items-center justify-between gap-0.5">
         <div
@@ -145,6 +149,7 @@ const drag = ref(false)
     <!-- date tab -->
     <div class="flex border-b border-gray">
       <div class="flex w-full h-12 pt-2 overflow-x-scroll ps-8 pe-3">
+      <div class="flex w-full h-12 pt-2 overflow-x-scroll ps-8 pe-3">
         <ul class="flex gap-4">
           <li class="whitespace-nowrap">
             <a
@@ -152,6 +157,8 @@ const drag = ref(false)
               class="pb-2 text-sm font-medium hover:text-primary-600"
               >總覽頁</a
             >
+              總覽頁
+            </a>
           </li>
           <li
             v-for="(places ,date, index) in groupedPlaces"
@@ -171,6 +178,7 @@ const drag = ref(false)
         /></span>
       </div>
     </div>
+    <ScheduleOverview v-if="activeTab === -1" />
     <ScheduleOverview v-if="activeTab === -1" />
     <!-- everyday schedule -->
     <div v-for="(places, date, index) in groupedPlaces" :key="date">
