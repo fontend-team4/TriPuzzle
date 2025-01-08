@@ -180,6 +180,7 @@ onMounted(() => {
   document.addEventListener('click', onClickOutside);
   fetchAccounts();
 });
+
 onUnmounted(() => {
   document.removeEventListener('click', onClickOutside);
 });
