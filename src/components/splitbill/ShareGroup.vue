@@ -15,7 +15,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="p-4 bg-white shadow-md rounded-lg">
+  <div class="p-4 bg-white shadow-md rounded-b-lg rounded-l-lg md:rounded-lg">
     <h2 class="text-xl font-bold text-primary-500 mb-2">
       群組成員 :【{{ groupMembers.title }}】
     </h2>

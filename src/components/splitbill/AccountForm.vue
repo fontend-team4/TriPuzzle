@@ -106,7 +106,7 @@ const resetForm = () => {
 <template>
   <form
     @submit.prevent="submitAccount"
-    class="p-4 bg-white shadow-md rounded-lg space-y-4"
+    class="p-4 bg-white shadow-md md:rounded-lg rounded-b-lg rounded-r-lg space-y-4"
   >
     <h2 class="text-xl font-bold text-primary-500 mb-4 pl-1">新增花費</h2>
     <div>

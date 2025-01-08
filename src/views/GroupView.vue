@@ -2,6 +2,7 @@
 import { ref, onMounted, defineProps, provide } from 'vue';
 import { RouterView, useRouter, useRoute } from 'vue-router';
 import { ArrowLeftIcon } from '@heroicons/vue/24/solid';
+import backIcon from '/images/solid-1.png';
 
 import axios from 'axios';
 
@@ -138,21 +139,19 @@ onMounted(async () => {
           class="flex flex-row w-full text-center justify-center items-center relative p-2"
         >
           <button
-            class="btn-primary absolute left-0 top-0 p-2 hover:bg-primary-400 rounded-full"
+            class="btn-primary btn-sm absolute left-2 top-4 md:left-4 md:top-0 p-0 justify-center hover:bg-primary-500 rounded-full"
           >
             <router-link to="/planner">
-              <div class="flex flex-row items-center justify-center">
-                <ArrowLeftIcon class="w-6 h-10 mr-1 md:hidden" />
-                <span class="text-white hidden md:block md:text-[16px]">
+              <div class="flex flex-row items-center justify-center mx-2">
+                <ArrowLeftIcon class="w-6 my-2 text-white md:hidden" />
+                <img :src="backIcon" class="w-6 mr-1 pb-1 hidden md:block" />
+                <span class="text-white hidden md:block md:text-[12px]">
                   返回旅圖
                 </span>
-                <img
-                  src="../assets/images/cat-7.png"
-                  class="w-6 h-8 hidden md:block"
-                />
               </div>
             </router-link>
           </button>
+
           <img
             src="../assets/svg/logo-light.svg"
             alt="Logo"
@@ -164,17 +163,25 @@ onMounted(async () => {
             TriAccount 旅費分帳
           </h1>
         </div>
-        <h2 class="text-[48px] font-bold text-center text-primary-50">
+        <h2 class="text-[40px] font-bold text-center text-primary-50">
           {{ groupMembers.title }}
         </h2>
-        <p class="text-xl text-white text-center">
+        <p class="text-l text-white text-center">
           {{ schedules.start_date }} ~ {{ schedules.end_date }}
         </p>
       </div>
 
-      <nav class="flex justify-center space-x-4 flex-row bg-primary-700 p-4">
-        <ul class="flex flex-row text-primary-100 gap-6 md:gap-20">
-          <li class="hover:text-primary-300">
+      <nav
+        class="flex justify-center space-x-4 flex-row bg-primary-700 w-full px-4"
+      >
+        <ul class="flex flex-row text-primary-100 gap-1 md:gap-20">
+          <li
+            :class="{
+              'text-primary-700 bg-white rounded-t-lg':
+                $route.name === 'AccountForm'
+            }"
+            class="hover:text-primary-300"
+          >
             <router-link
               :to="{ name: 'AccountForm', params: { scheduleId: scheduleId } }"
               class="nav-link"
@@ -182,7 +189,13 @@ onMounted(async () => {
               新增花費
             </router-link>
           </li>
-          <li class="hover:text-primary-300">
+          <li
+            :class="{
+              'text-primary-700 bg-white rounded-t-lg':
+                $route.name === 'AccountList'
+            }"
+            class="hover:text-primary-300"
+          >
             <router-link
               :to="{ name: 'AccountList', params: { scheduleId: scheduleId } }"
               class="nav-link"
@@ -190,7 +203,13 @@ onMounted(async () => {
               花費列表
             </router-link>
           </li>
-          <li class="hover:text-primary-300">
+          <li
+            :class="{
+              'text-primary-700 bg-white rounded-t-lg':
+                $route.name === 'BalanceSummary'
+            }"
+            class="hover:text-primary-300"
+          >
             <router-link
               :to="{
                 name: 'BalanceSummary',
@@ -201,7 +220,13 @@ onMounted(async () => {
               分帳狀態
             </router-link>
           </li>
-          <li class="hover:text-primary-300">
+          <li
+            :class="{
+              'text-primary-700 bg-white rounded-t-lg':
+                $route.name === 'ShareGroup'
+            }"
+            class="hover:text-primary-300"
+          >
             <router-link
               :to="{ name: 'ShareGroup', params: { scheduleId: scheduleId } }"
               class="nav-link"
@@ -212,7 +237,7 @@ onMounted(async () => {
         </ul>
       </nav>
 
-      <main>
+      <main class="px-4 w-full bg-primary-700 border-none">
         <router-view />
       </main>
     </div>
@@ -224,13 +249,23 @@ onMounted(async () => {
   text-align: center;
   justify-items: center;
   margin-top: 5px;
-  margin-bottom: 1px;
+  margin-bottom: 10px;
   color: rgb(162, 157, 157);
 }
 
 .nav-link {
   text-decoration: none;
-  padding: 5px 10px;
-  border-radius: 5px;
+  padding: 10px 10px;
+  width: 96px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+.nav-linkActive {
+  background-color: white;
+  border: none;
+  color: #1f2937;
+  border-radius: 5px 5px 0px 0px;
 }
 </style>
