@@ -10,6 +10,7 @@ import { MessageModalStore } from '@/stores/MessageModal';
 
 const messageStore = MessageModalStore();
 const loadingStore = useLoadingStore();
+const loadingForBtn = ref(false)
 const route = useRoute();
 const scheduleId = route.params.scheduleId; // 從路由取得行程 ID
 const token = localStorage.getItem('token');
@@ -44,6 +45,7 @@ const openDatePicker = () => {
 
 // 提交帳目至後端
 const submitAccount = async () => {
+  loadingForBtn.value = true
   try {
     console.log('代墊人 ID 列表', payfirst_id.groupUsers);
     const selectedUser = payfirst_id.groupUsers.find(
@@ -51,6 +53,7 @@ const submitAccount = async () => {
     );
 
     if (!selectedUser) {
+    loadingForBtn.value = false
       messageStore.messageModal({
         message: '請選擇代墊人',
         status: 'error'
@@ -59,6 +62,7 @@ const submitAccount = async () => {
     }
 
     if (splitAmong.value.length === 0) {
+    loadingForBtn.value = false
       messageStore.messageModal({
         message: '請選擇參與分攤者',
         status: 'error'
@@ -87,12 +91,14 @@ const submitAccount = async () => {
         }
       }
     );
+    loadingForBtn.value = false
     messageStore.messageModal({
       message: '新增帳目成功',
       status: 'success'
     });
     resetForm(); // 只在成功提交後重置表單
   } catch (error) {
+    loadingForBtn.value = false
     console.error('新增帳目失敗：', error);
 
     // 提示具體的錯誤訊息
@@ -265,10 +271,18 @@ onMounted(async () => {
       ></VueDatePicker>
     </div>
     <button
+      v-if="!loadingForBtn"
       type="submit"
       class="w-full py-2 px-4 bg-primary-500 text-white font-medium rounded-md hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
     >
       提交
     </button>
+    <button
+      v-else
+      class="w-full py-2 px-4 bg-primary-500 text-white font-medium rounded-md hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+    >
+      <span class="loading loading-dots loading-md"></span>
+    </button>
+
   </form>
 </template>
