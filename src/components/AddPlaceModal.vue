@@ -82,7 +82,7 @@ async function initMap() {
             polylineOptions: {
               strokeColor: '#1E90FF',
               strokeOpacity: 0.8,
-              strokeWeight: 5
+              strokeWeight: 6
             }
           });
           directionsRenderers.push(directionsRenderer);
@@ -123,7 +123,7 @@ async function initMap() {
             ? { background: '#FFD700', glyph: '+', glyphColor: 'white' }
             : {
                 background: '#D23430',
-                borderColor: '#D23430',
+                borderColor: '#982623',
                 glyphColor: 'white',
                 glyph: `${index + 1}`
               };
