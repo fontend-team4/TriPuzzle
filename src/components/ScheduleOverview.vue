@@ -22,25 +22,31 @@ const loadingStore = useLoadingStore();
 const transprotations = ref([
   {
     id: 1,
-    item: '汽車',
-    value: 'CAR'
+    item: "汽車",
+    value: "CAR",
   },
   {
     id: 2,
-    item: '機車',
-    value: 'MOTORBIKE'
+    item: "機車",
+    value: "MOTORBIKE",
   },
   {
     id: 3,
-    item: '大眾運輸',
-    value: 'PUBLIC_TRANSPORT'
+    item: "大眾運輸",
+    value: "transit",
   },
   {
     id: 4,
-    item: '走路',
-    value: 'WALK'
-  }
-]);
+    item: "腳踏車",
+    value: "bicycling",
+
+  },
+  {
+    id: 5,
+    item: "走路",
+    value: "walking",
+  },
+])
 
 const API_URL = import.meta.env.VITE_HOST_URL;
 const token = localStorage.getItem('token');
