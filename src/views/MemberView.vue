@@ -66,7 +66,11 @@ const getUser = async () => {
       return;
     }
   } catch (error) {
-    console.error(error.message);
+    console.log(error);
+    messageStore.messageModal({
+      message: '用戶資料有誤',
+      status: 'error'
+    });
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
     router.push('/');
@@ -273,6 +277,7 @@ onMounted(async () => {
     loadingStore.hideLoading();
     console.log('places:', places.value);
   } catch (error) {
+    loadingStore.hideLoading();
     console.error('Failed to fetch places:', error);
     places.value = []; // 防止錯誤導致的 undefined
   }
