@@ -1,52 +1,52 @@
 <script setup>
-import { defineProps, defineEmits, ref, watch, computed, onMounted } from 'vue'
-import { LinkIcon, ArrowDownTrayIcon } from '@heroicons/vue/24/outline'
-import ExitCoEditModal from './ExitCoEditModal.vue'
-import axios from 'axios'
-import '@/assets/loading.css'
-import { useLoadingStore } from "@/stores/loading"
-import { generateShareQRCode } from "@/utils/QRcode"
-import { MessageModalStore } from '@/stores/MessageModal'
+import { defineProps, defineEmits, ref, watch, computed, onMounted } from 'vue';
+import { LinkIcon, ArrowDownTrayIcon } from '@heroicons/vue/24/outline';
+import ExitCoEditModal from './ExitCoEditModal.vue';
+import axios from 'axios';
+import '@/assets/loading.css';
+import { useLoadingStore } from '@/stores/loading';
+import { generateShareQRCode } from '@/utils/QRcode';
+import { MessageModalStore } from '@/stores/MessageModal';
 
-const messageStore = MessageModalStore()
-const loadingStore = useLoadingStore()
-const API_URL = process.env.VITE_HOST_URL
+const messageStore = MessageModalStore();
+const loadingStore = useLoadingStore();
+const API_URL = process.env.VITE_HOST_URL;
 const defaultProfilePicUrl = '/images/cat-2.png';
 const shareSchedules = ref([]);
 const hasShareSchedules = ref(false);
-const token = localStorage.getItem("token");
+const token = localStorage.getItem('token');
 const leavedId = ref(null);
-const leavedUserId = ref(null)
-const total_users = ref(1)
-const shareMembers = ref([])
+const leavedUserId = ref(null);
+const total_users = ref(1);
+const shareMembers = ref([]);
 const creator = ref({
-id: 3,
-name: "PuzzleCat",
-email: "PuzzleCat@gmail.com",
-profile_pic_url: defaultProfilePicUrl
-})
+  id: 3,
+  name: 'PuzzleCat',
+  email: 'PuzzleCat@gmail.com',
+  profile_pic_url: defaultProfilePicUrl
+});
 const props = defineProps({
   activeTab: {
     type: String,
-    required: true,
+    required: true
   },
   shareLink: {
     type: String,
-    required: false, 
+    required: false
   },
   sharePeople: {
     type: Object,
-    required: false, 
+    required: false
   }
-})
-const emit = defineEmits(['updateStatus'])
+});
+const emit = defineEmits(['updateStatus']);
 
-const scheduleUpdate = async()=>{
+const scheduleUpdate = async () => {
   emit('scheduleUpdate');
   const config = {
     headers: {
-      Authorization: token,
-    },
+      Authorization: token
+    }
   };
 
   // 更新shareMembers
@@ -59,13 +59,13 @@ const scheduleUpdate = async()=>{
   } catch (err) {
     console.error(err.message);
   }
-}
+};
 
 const getShareSchedules = async () => {
   const config = {
     headers: {
-      Authorization: token,
-    },
+      Authorization: token
+    }
   };
   try {
     const response = await axios.get(`${API_URL}/usersSchedules`, config);
@@ -74,8 +74,8 @@ const getShareSchedules = async () => {
     }
     shareSchedules.value = response.data;
     shareSchedules.value.forEach((item) => {
-      item.start_date = item.start_date.split("T")[0];
-      item.end_date = item.end_date.split("T")[0];
+      item.start_date = item.start_date.split('T')[0];
+      item.end_date = item.end_date.split('T')[0];
     });
   } catch (error) {
     console.error(error.message);
@@ -84,7 +84,7 @@ const getShareSchedules = async () => {
 };
 
 const openExitModal = (scheduleId, userId) => {
-  leavedUserId.value = userId; 
+  leavedUserId.value = userId;
 };
 
 const copyShareLink = async () => {
@@ -96,24 +96,29 @@ const copyShareLink = async () => {
     await navigator.clipboard.writeText(props.shareLink);
     messageStore.messageModal({
       message: '複製成功',
-      status: "success",
-    })
+      status: 'success'
+    });
   } catch (err) {
     console.error('複製失敗', err);
   }
 };
 
 const updateActiveTab = (status) => {
-  emit("updateStatus", status)
-}
+  emit('updateStatus', status);
+};
 
-const isCreator =  computed(()=>{
-  return creator.value.id == localStorage.getItem("userId")
-})
+const isCreator = computed(() => {
+  return creator.value.id == localStorage.getItem('userId');
+});
 
 watch(props, ({ sharePeople }) => {
-  loadingStore.showLoading()
-  const { sharedUsers = [], schedule_id = 0, creator: newCreator = {}, totalUsers } = sharePeople || {};
+  loadingStore.showLoading();
+  const {
+    sharedUsers = [],
+    schedule_id = 0,
+    creator: newCreator = {},
+    totalUsers
+  } = sharePeople || {};
   shareMembers.value = sharedUsers;
   leavedId.value = schedule_id;
   total_users.value = totalUsers;
@@ -121,29 +126,29 @@ watch(props, ({ sharePeople }) => {
     id: newCreator.id || creator.value.id,
     name: newCreator.name || creator.value.name,
     email: newCreator.email || creator.value.email,
-    profile_pic_url: newCreator.profile_pic_url || defaultProfilePicUrl,
+    profile_pic_url: newCreator.profile_pic_url || defaultProfilePicUrl
   };
   setTimeout(() => {
-    loadingStore.hideLoading()
+    loadingStore.hideLoading();
   }, 5000);
-})
+});
 
 const qrcodeCanvas = ref(null); //綁定canvas
-const qrCodeDataUrl = ref(""); //生成的 QR Code Base64 URL
+const qrCodeDataUrl = ref(''); //生成的 QR Code Base64 URL
 
 // 生成並渲染 QR Code
 const generateAndRenderQRCode = async (link) => {
   if (!link) {
-    console.warn("無法生成 QR Code：分享連結為空");
+    console.warn('無法生成 QR Code：分享連結為空');
     return;
   }
 
   try {
     const dataUrl = await generateShareQRCode(link);
-    qrCodeDataUrl.value = dataUrl; 
+    qrCodeDataUrl.value = dataUrl;
     renderQRCodeOnCanvas(dataUrl);
   } catch (error) {
-    console.error("生成 QR Code 出錯：", error);
+    console.error('生成 QR Code 出錯：', error);
   }
 };
 
@@ -152,7 +157,7 @@ const renderQRCodeOnCanvas = (dataUrl) => {
   const canvas = qrcodeCanvas.value;
   if (!canvas) return;
 
-  const ctx = canvas.getContext("2d");
+  const ctx = canvas.getContext('2d');
   const image = new Image();
   image.onload = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -162,38 +167,54 @@ const renderQRCodeOnCanvas = (dataUrl) => {
 };
 
 // 將 Base64 Data URL 轉換為 Blob
-const dataURLToBlob = (dataURL) => 
-  new Blob([Uint8Array.from(atob(dataURL.split(",")[1]), (c) => c.charCodeAt(0))], {
-    type: dataURL.match(/:(.*?);/)[1],
-  });
-
+const dataURLToBlob = (dataURL) =>
+  new Blob(
+    [Uint8Array.from(atob(dataURL.split(',')[1]), (c) => c.charCodeAt(0))],
+    {
+      type: dataURL.match(/:(.*?);/)[1]
+    }
+  );
 
 // 下載 QR Code 圖片
 const downloadQRCode = () => {
   if (!qrCodeDataUrl.value) {
-    alert("QR Code 尚未生成！");
+    messageStore.messageModal({
+      message: 'QR Code 尚未生成！',
+      status: 'error'
+    });
     return;
   }
   const blob = dataURLToBlob(qrCodeDataUrl.value);
   const blobUrl = URL.createObjectURL(blob);
-  const link = document.createElement("a");
+  const link = document.createElement('a');
   link.href = blobUrl;
   link.download = `一起參與【${creator.value.name}】的行程吧!_QRCode.png`; // 文件名稱
-  link.click(); 
-  URL.revokeObjectURL(blobUrl);L
+  link.click();
+  URL.revokeObjectURL(blobUrl);
+  L;
 };
 
 // 監聽 shareLink 的變化
-watch(() => props.shareLink, (newLink) => {
-  generateAndRenderQRCode(newLink); // 當 shareLink 改變時自動生成 QR Code
-}, { immediate: true });
+watch(
+  () => props.shareLink,
+  (newLink) => {
+    generateAndRenderQRCode(newLink); // 當 shareLink 改變時自動生成 QR Code
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
   <LoadingOverlay :active="loadingStore.isLoading">
-    <div class="loadingio-spinner-ellipsis-nq4q5u6dq7r"><div class="ldio-x2uulkbinbj">
-    <div></div><div></div><div></div><div></div><div></div>
-    </div></div>
+    <div class="loadingio-spinner-ellipsis-nq4q5u6dq7r">
+      <div class="ldio-x2uulkbinbj">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
   </LoadingOverlay>
   <dialog id="shareSchedule" class="modal">
     <div class="modal-box min-w-full md:min-w-[480px] bg-gray relative">
@@ -219,28 +240,25 @@ watch(() => props.shareLink, (newLink) => {
         <label
           for="invite"
           class="w-full px-2 py-1 text-center text-white rounded-lg invite-toggle bg-primary-600"
-          >邀請共編</label
         >
+          邀請共編
+        </label>
       </div>
       <!-- share detail -->
       <div
         v-if="props.activeTab === 'share'"
         class="w-full px-5 pt-10 pb-6 bg-white share-detail rounded-xl"
       >
-        <div>
-        </div>
+        <div></div>
       </div>
       <!-- invite detail -->
       <div
         v-else
         class="w-full px-5 pt-3 pb-6 bg-white invite-detail rounded-xl"
       >
-
         <div class="text-center">
           <!-- 邀請者視角 -->
-          <div class="dropdown">
-
-          </div>
+          <div class="dropdown"></div>
           <!-- Qrcode -->
           <div class="flex flex-col items-center w-full bg-white rounded-xl">
             <canvas ref="qrcodeCanvas" class="block w-48 h-48"></canvas>
@@ -252,14 +270,15 @@ watch(() => props.shareLink, (newLink) => {
               @click="downloadQRCode"
             >
               <ArrowDownTrayIcon class="mr-1 size-6" />
-              <span>下載 QR Code </span>
+              <span>下載 QR Code</span>
             </button>
-            <button @click="copyShareLink"
-            class="inline-flex justify-center w-full px-4 py-[11px] text-white border rounded-full bg-primary-600 border-primary-600 hover:bg-primary-700"
-          >
-            <span class="inline-block w-6 h-6 me-1"><LinkIcon /></span>
-            <p class="text-sm">複製連結</p>
-          </button>
+            <button
+              @click="copyShareLink"
+              class="inline-flex justify-center w-full px-4 py-[11px] text-white border rounded-full bg-primary-600 border-primary-600 hover:bg-primary-700"
+            >
+              <span class="inline-block w-6 h-6 me-1"><LinkIcon /></span>
+              <p class="text-sm">複製連結</p>
+            </button>
           </div>
         </div>
       </div>
@@ -271,19 +290,16 @@ watch(() => props.shareLink, (newLink) => {
             class="flex gap-4 pb-3 mb-3 border-b-2 border-dashed border-slate-300"
           >
             <div class="overflow-hidden rounded-full w-11 h-11">
-              <img
-                class="w-11 h-11"
-                :src="creator.profile_pic_url"
-                alt=""
-              />
+              <img class="w-11 h-11" :src="creator.profile_pic_url" alt="" />
             </div>
             <div>
               <div class="flex items-center mb-2">
                 <span
                   class="inline-block px-2 me-1 text-orange-400 bg-orange-200 rounded-md text-[14px]"
-                  >主揪</span
                 >
-                
+                  主揪
+                </span>
+
                 <p>{{ creator.name }}</p>
               </div>
               <p class="text-gray-400">{{ creator.email }}</p>
@@ -291,11 +307,12 @@ watch(() => props.shareLink, (newLink) => {
           </li>
           <li
             class="flex gap-4 pb-3 mb-3 border-b-2 border-dashed border-slate-300"
-            v-for="member in shareMembers" v-if="shareMembers != []"
+            v-for="member in shareMembers"
+            v-if="shareMembers != []"
           >
             <img
               class="w-12 rounded-full h-11"
-              :src="member.profile_pic_url||`src/assets/images/cat-2.png`"
+              :src="member.profile_pic_url || `/images/cat-2.png`"
               alt=""
             />
             <div class="flex items-center justify-between w-full">
@@ -304,10 +321,13 @@ watch(() => props.shareLink, (newLink) => {
                 <p class="text-gray-400">{{ member.email }}</p>
               </div>
               <div class="dropdown dropdown-top dropdown-end">
-                <button v-if="isCreator"
+                <button
+                  v-if="isCreator"
                   tabindex="0"
                   role="button"
-                  class="py-2 text-slate-400 hover:cursor-pointer" onclick="exitToggle.showModal()" @click="openExitModal(leavedId, member.id)" 
+                  class="py-2 text-slate-400 hover:cursor-pointer"
+                  onclick="exitToggle.showModal()"
+                  @click="openExitModal(leavedId, member.id)"
                 >
                   退出共編
                 </button>
@@ -318,11 +338,11 @@ watch(() => props.shareLink, (newLink) => {
       </div>
     </div>
     <ExitCoEditModal
-  :toBeLeavedId="leavedId"
-  :toBeLeavedUserId="leavedUserId"
-  :updateList="getShareSchedules"
-  @scheduleUpdate="scheduleUpdate"
-/>
+      :toBeLeavedId="leavedId"
+      :toBeLeavedUserId="leavedUserId"
+      :updateList="getShareSchedules"
+      @scheduleUpdate="scheduleUpdate"
+    />
     <form method="dialog" class="modal-backdrop">
       <button class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2">
         ✕

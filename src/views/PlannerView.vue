@@ -3,11 +3,13 @@ import SideBar from '@/components/SideBar.vue';
 import MapComponent from '@/components/MapComponent.vue';
 import MainComponent from '@/components/MainComponent.vue';
 import { onMounted } from "vue";
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useLoadingStore } from "@/stores/loading"
 
 const loadingStore = useLoadingStore()
 const route = useRoute();
+const router = useRouter();
+
 
 const getGoogleToken = () => {
   const token = route.query.token;
@@ -15,6 +17,8 @@ const getGoogleToken = () => {
   if (token) {
     localStorage.setItem('token', `Bearer ${token}`);
     localStorage.setItem('userId', userId);
+    window.location.href = '/planner';
+    return
   }
 };
 
@@ -24,6 +28,8 @@ const getLineToken = () => {
   if (token) {
     localStorage.setItem('token', `Bearer ${token}`);
     localStorage.setItem('userId', userId);
+    window.location.href = '/planner';
+    return
   }
 };
 

@@ -25,6 +25,7 @@ const showDropdown = ref(null); // 控制下拉選單的顯示
 const dropdownRefs = ref([]); // 儲存每個下拉選單元素
 const token = localStorage.getItem('token');
 const API_URL = process.env.VITE_HOST_URL;
+const loadingForBtn = ref(false)
 
 // 根據分類設置顏色類別
 const categoryClass = (category) => {
@@ -79,46 +80,52 @@ const onClickOutside = (event) => {
   }
 };
 
-const showEditModal = ref(null); // 控制 Modal 顯示狀態
-const selectedAccount = ref(null); // 儲存當前選擇的帳目
+const selectedAccount = ref([]); // 儲存當前選擇的帳目
+const isEditModalVisible = ref(false);
 
-// 點擊外框關閉
+const openEditModal = (account) => {
+  selectedAccount.value = { ...account };
+  isEditModalVisible.value = true;
+  console.log(
+    '選擇的帳目及名稱日期:',
+    selectedAccount.value.id,
+    selectedAccount.value.title,
+    selectedAccount.value.date
+  ); // 確認選擇的帳目
+};
 const closeModal = () => {
-  const dialog = document.getElementById('edit_modal');
-  dialog?.close();
+  isEditModalVisible.value = false;
 };
 
 // 提交修改
 const submitEdit = async () => {
-  const selected = accounts.value[0].id;
+  loadingForBtn.value = true
+  const selected = selectedAccount.value.id;
+  console.log('選擇的帳目 ID:', selectedAccount.value.id, selected);
   try {
     const config = {
       headers: { Authorization: token }
     };
-    // 發送 PUT 請求
+    // 發送 PATCH 請求
     const response = await axios.patch(
       `${API_URL}/groups/${scheduleId}/bills/${selected}`,
-      {
-        title: selectedAccount.title,
-        price: selectedAccount.price,
-        category: selectedAccount.category,
-        date: selectedAccount.date,
-        created_by: selectedAccount.created_by,
-        split_among: selectedAccount.split_among,
-        is_personal: selectedAccount.is_personal,
-        remarks: selectedAccount.remarks
-      },
+      selectedAccount.value,
       config
     );
-
-    alert('帳目已更新成功');
-    console.log('更新結果:', response.data);
-
-    // 關閉 Modal 並清空選擇
-    closeModal();
+    loadingForBtn.value = false
+    messageStore.messageModal({
+      message: '帳目已更新成功',
+      status: 'success'
+    });
+    fetchAccounts();
+    closeModal(); // 關閉 Modal 並清空選擇
   } catch (error) {
+    loadingForBtn.value = false
     console.error('更新帳目失敗', error);
-    alert('更新帳目失敗，請稍後重試');
+    messageStore.messageModal({
+      message: '更新帳目失敗，請稍後重試',
+      status: 'error'
+    });
   }
 };
 
@@ -134,18 +141,25 @@ const fetchAccounts = async () => {
     console.log('帳目列表：', accounts.value);
   } catch (error) {
     console.error('獲取帳目資料失敗：', error);
-    alert('無法獲取帳目資料，請稍後重試。');
+    messageStore.messageModal({
+      message: '無法獲取帳目資料，請稍後重試。',
+      status: 'error'
+    });
   }
 };
 
 // 刪除帳目
 const removeAccount = async (accountId) => {
+  loadingStore.showLoading()
+  loadingForBtn.value = true
   try {
     await axios.delete(`${API_URL}/groups/${scheduleId}/bills/${accountId}`, {
       headers: {
         Authorization: token
       }
     });
+    loadingForBtn.value = false
+    loadingStore.hideLoading()
     accounts.value = accounts.value.filter(
       (account) => account.id !== accountId
     ); // 從列表中移除
@@ -155,6 +169,8 @@ const removeAccount = async (accountId) => {
       status: 'success'
     });
   } catch (error) {
+    loadingForBtn.value = false
+    loadingStore.hideLoading()
     messageStore.messageModal({
       message: '刪除帳目時發生錯誤，請稍後重試。',
       status: 'error'
@@ -171,7 +187,6 @@ onMounted(() => {
   }, 1000);
   document.addEventListener('click', onClickOutside);
   fetchAccounts();
-  console.log('accounts', accounts.value[0].id);
 });
 
 
@@ -182,15 +197,15 @@ onUnmounted(() => {
 
 <template>
   <LoadingOverlay :active="loadingStore.isLoading">
-  <div class="loadingio-spinner-ellipsis-nq4q5u6dq7r">
-    <div class="ldio-x2uulkbinbj">
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
+    <div class="loadingio-spinner-ellipsis-nq4q5u6dq7r">
+      <div class="ldio-x2uulkbinbj">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
     </div>
-  </div>
   </LoadingOverlay>
   <div class="p-4 bg-white shadow-md rounded-lg">
     <h2 class="text-xl font-bold text-primary-500">帳目清單</h2>
@@ -240,38 +255,47 @@ onUnmounted(() => {
           </button>
           <div
             v-if="showDropdown === index"
-            class="absolute right-0 mt-2 w-32 bg-white border border-gray-300 rounded shadow-lg z-10"
+            class="absolute -right-[10px] top-4 mt-2 w-28 text-center bg-white border border-slate-300 rounded shadow-lg z-10"
           >
             <ul>
               <li
-                onclick="edit_modal.showModal()"
-                @click="toggleDropdown(index)"
+                @click="
+                  () => {
+                    openEditModal(accounts[index]);
+                    toggleDropdown(index);
+                  }
+                "
                 class="px-4 py-2 text-gray-700 hover:bg-gray cursor-pointer"
               >
                 修改帳目
               </li>
               <li
+                v-if="!loadingForBtn"
                 @click="removeAccount(account.id)"
                 class="px-4 py-2 text-red-600 hover:bg-red-100 cursor-pointer"
               >
                 刪除帳目
               </li>
+              <li
+                v-else
+                class="px-4 py-2 text-red-600 hover:bg-red-100 cursor-pointer"
+              >
+                <span class="loading loading-dots loading-md"></span>
+              </li>
             </ul>
           </div>
         </div>
         <!-- 修改帳目 Modal  -->
-        <dialog
-          id="edit_modal"
-          class="modal fixed inset-0 flex items-center justify-center bg-black/30"
-          @click.self="closeModal"
+        <div
+          v-show="isEditModalVisible"
+          class="fixed inset-0 bg-black/30 flex items-center justify-center"
         >
-          <form method="dialog">
-            <button
-              class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-            >
-              <XMarkIcon class="w-6 h-6" />
-            </button>
-          </form>
+          <button
+            @click="closeModal"
+            class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+          >
+            <XMarkIcon class="w-6 h-6" />
+          </button>
           <div
             class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md relative"
           >
@@ -279,20 +303,20 @@ onUnmounted(() => {
             <label class="block mb-2 text-sm font-medium">標題</label>
             <input
               type="text"
-              v-model="title"
+              v-model="selectedAccount.title"
               class="border border-gray-300 rounded w-full px-4 py-2"
             />
 
             <label class="block mt-4 mb-2 text-sm font-medium">金額</label>
             <input
               type="number"
-              v-model="price"
+              v-model="selectedAccount.price"
               class="border border-gray-300 rounded w-full px-4 py-2"
             />
 
             <label class="block mt-4 mb-2 text-sm font-medium">分類</label>
             <select
-              v-model="category"
+              v-model="selectedAccount.category"
               class="border border-gray-300 rounded w-full px-4 py-2"
             >
               <option value="餐飲">餐飲</option>
@@ -300,30 +324,41 @@ onUnmounted(() => {
               <option value="住宿">住宿</option>
               <option value="購物">購物</option>
               <option value="票卷">票卷</option>
+              <option value="其他">其他</option>
             </select>
 
             <label class="block mt-4 mb-2 text-sm font-medium">日期</label>
             <input
               type="date"
-              v-model="date"
+              v-model="selectedAccount.date"
               class="border border-gray-300 rounded w-full px-4 py-2"
             />
 
             <label class="block mt-4 mb-2 text-sm font-medium">備註</label>
             <textarea
-              v-model="remarks"
+              v-model="selectedAccount.remarks"
               class="border border-gray-300 rounded w-full px-4 py-2"
             ></textarea>
 
             <div class="flex justify-end gap-4 mt-6">
-              <button @click="closeModal" class="bg-gray-200 px-4 py-2 rounded">
+              <button
+                @click="closeModal"
+                class="btn bg-gray px-4 py-2 rounded-full hover:bg-gray-300"
+              >
                 取消
               </button>
               <button
+                v-if="!loadingForBtn"
                 @click="submitEdit"
-                class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                class="btn w-26 bg-primary-700 text-white px-4 py-2 rounded-full hover:bg-primary-600"
               >
                 確認修改
+              </button>
+              <button
+                v-else
+                class="w-[90px] bg-primary-700 text-white px-8 py-2 rounded-full hover:bg-primary-600"
+              >
+                <span class="loading loading-dots loading-md"></span>
               </button>
             </div>
           </div>
@@ -334,7 +369,7 @@ onUnmounted(() => {
               close
             </button>
           </form>
-        </dialog>
+        </div>
       </li>
     </ul>
   </div>

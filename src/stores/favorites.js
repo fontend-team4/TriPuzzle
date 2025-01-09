@@ -31,7 +31,6 @@ const loadFavorites = async () => {
       ...favorite.places,
       isFavorited: true, // 收藏地點默認為已收藏
     }));
-    console.log("收藏列表已更新:", favorites.value);
   } catch (error) {
     console.error("無法加載收藏資料:", error);
   }

@@ -43,8 +43,10 @@ onMounted(async () => {
 });
 
 // 地圖區
-async function initMap(center) {
+async function initMap() {
   const { Map } = await google.maps.importLibrary('maps');
+  const { DirectionsService, DirectionsRenderer } =
+    await google.maps.importLibrary('routes');
   const newMap = new Map(document.getElementById('map2'), {
     center: place.geometry || { lat: 25.0341222, lng: 121.5640212 },
     zoom: 13,
@@ -55,6 +57,94 @@ async function initMap(center) {
     mapId: '83af7188f1a0650d'
   });
   map.value = newMap;
+
+  if (currentSchedule.value && currentSchedule.value.groupedPlaces) {
+    const selectedDatePlaces =
+      currentSchedule.value.groupedPlaces[selectedDate.value];
+
+    if (selectedDatePlaces && selectedDatePlaces.length > 1) {
+      // 按照 order 排序景點
+      const sortedPlaces = selectedDatePlaces.sort((a, b) => a.order - b.order);
+
+      const directionsRenderers = [];
+      const directionsService = new DirectionsService();
+
+      const planRoutes = (places) => {
+        places.forEach((place, index) => {
+          if (index === 0 || index === places.length - 1) return;
+
+          const origin = places[index - 1].places.geometry;
+          const destination = places[index].places.geometry;
+
+          const directionsRenderer = new DirectionsRenderer({
+            map: newMap,
+            suppressMarkers: true,
+            polylineOptions: {
+              strokeColor: '#1E90FF',
+              strokeOpacity: 0.8,
+              strokeWeight: 6
+            }
+          });
+          directionsRenderers.push(directionsRenderer);
+
+          directionsService.route(
+            {
+              origin: origin,
+              destination: destination,
+              travelMode:
+                google.maps.TravelMode[
+                  currentSchedule.value.transportation_way
+                ] || google.maps.TravelMode.DRIVING
+            },
+            (response, status) => {
+              if (status === 'OK') {
+                directionsRenderer.setDirections(response);
+              } else {
+                console.error('Direction request failed:', status);
+              }
+            }
+          );
+        });
+      };
+
+      // 將新景點插入到陣列最後面
+      const newPlaceWrapper = {
+        places: place
+      };
+      const modifiedSortedPlaces = [...sortedPlaces, newPlaceWrapper];
+
+      planRoutes(modifiedSortedPlaces);
+
+      modifiedSortedPlaces.forEach((place, index) => {
+        const { AdvancedMarkerElement, PinElement } = google.maps.marker;
+
+        const pinOptions =
+          index === modifiedSortedPlaces.length - 1
+            ? { background: '#FFD700', glyph: '+', glyphColor: 'white' }
+            : {
+                background: '#D23430',
+                borderColor: '#982623',
+                glyphColor: 'white',
+                glyph: `${index + 1}`
+              };
+
+        const pinElement = new PinElement(pinOptions);
+
+        new AdvancedMarkerElement({
+          map: newMap,
+          position: place.places.geometry,
+          content: pinElement.element
+        });
+      });
+
+      // 調整地圖視角以顯示所有景點
+      const bounds = new google.maps.LatLngBounds();
+      sortedPlaces.forEach((place) => {
+        bounds.extend(place.places.geometry);
+      });
+      newMap.fitBounds(bounds);
+    }
+  }
 }
 
 const allMarkers = ref([]);
@@ -88,10 +178,10 @@ async function updateMarkers() {
       index === 0
         ? { background: '#FFD700', glyph: '+', glyphColor: 'white' }
         : {
-            background: '#5B5B5B',
-            borderColor: '#5B5B5B',
+            background: 'transparent',
+            borderColor: 'transparent',
             glyphColor: 'white',
-            glyph: `${index}`
+            glyph: ''
           };
 
     const pinElement = new PinElement(pinOptions);
@@ -138,7 +228,7 @@ onMounted(() => {
       location: place.location,
       city: place.location,
       country: 'Taiwan',
-      image_url: place.url,
+      image_url: place.photos,
       google_map_url: place.mapUrl,
       summary: place.summary,
       opening_hours: place.opening_hours,
@@ -217,6 +307,7 @@ onMounted(async () => {
         calculateDateRange(schedule.start_date, schedule.end_date)
       )
     }));
+    console.log(schedules.value);
     loadingStore.hideLoading();
     if (schedules.value.length > 0) {
       await optimizeTrail(schedules.value[0]);
@@ -224,6 +315,10 @@ onMounted(async () => {
   } catch (error) {
     console.error('Error fetching schedules:', error);
   }
+});
+
+onMounted(async () => {
+  loadingStore.showLoading();
   try {
     const res = await axios.get(`${URL}/usersschedules`, {
       headers: { Authorization: token }
@@ -236,6 +331,7 @@ onMounted(async () => {
         calculateDateRange(schedule.start_date, schedule.end_date)
       )
     }));
+    loadingStore.hideLoading();
     if (coSchedules.value.length > 0) {
       await optimizeTrail(coSchedules.value[0]);
     }
@@ -304,11 +400,12 @@ const addPlaceToSchedule = async () => {
       status: 'success'
     });
   } catch (error) {
-    console.error('新增失敗：', error.response?.data || error.message);
+    loadingStore.hideLoading();
     messageStore.messageModal({
       message: error.data.message || '未知錯誤',
       status: 'error'
     });
+    console.error('新增失敗：', error.response?.data || error.message);
   }
 };
 
@@ -399,7 +496,7 @@ const switchToPage = (page, tab, schedule = null) => {
 
 watch(
   () => selectedTab.value, // 監聽 selectedTab 的變化
-  (newTab) => {
+  async (newTab) => {
     // console.log("觸發watch");
 
     if (!newTab || !currentSchedule.value) return;
@@ -515,12 +612,10 @@ const optimizeTrail = async (schedule) => {
         new Date(place.which_date).toISOString().split('T')[0] ===
         new Date(bestDay.value).toISOString().split('T')[0]
     );
-
     //按照先後排序(可用時間或order排序)
     const sortedSameDayPlaces = Array.from(sameDayPlaces).sort(
-      (a, b) => new Date(a.which_date) - new Date(b.which_date)
+      (a, b) => a.order - b.order
     );
-
     const closestPlaceOfDayIndex = sortedSameDayPlaces.findIndex(
       (place) => place.id === closestPlace.id
     );
@@ -550,7 +645,25 @@ const optimizeTrail = async (schedule) => {
     } else {
       // 如果是第一個或最後一個景點，特別處理
       if (closestPlaceOfDayIndex === 0) {
-        bestPosition.value = 1;
+        const [currentDistance, newSpotToNextSpotDistance] = await Promise.all([
+          calculateDistance(
+            sortedSameDayPlaces[closestPlaceOfDayIndex].places.place_id,
+            sortedSameDayPlaces[closestPlaceOfDayIndex + 1].places.place_id,
+            schedule.transportation_way
+          ),
+          calculateDistance(
+            place.id,
+            sortedSameDayPlaces[closestPlaceOfDayIndex + 1].places.place_id,
+            schedule.transportation_way
+          )
+        ]);
+        if (
+          currentDistance[0].distance < newSpotToNextSpotDistance[0].distance
+        ) {
+          bestPosition.value = 0;
+        } else {
+          bestPosition.value = 1;
+        }
         //若為最後一個景點
       } else if (closestPlaceOfDayIndex === sortedSameDayPlaces.length - 1) {
         const [currentDistance, preSpotToNewSpotDistance] = await Promise.all([
@@ -574,23 +687,45 @@ const optimizeTrail = async (schedule) => {
         }
         return;
       } else {
-        const [previousDistance, nextDistance] = await Promise.all([
-          calculateDistance(
-            place.id,
-            sortedSameDayPlaces[closestPlaceOfDayIndex - 1].places.place_id,
-            schedule.transportation_way
-          ),
-          calculateDistance(
-            place.id,
-            sortedSameDayPlaces[closestPlaceOfDayIndex + 1].places.place_id,
-            schedule.transportation_way
-          )
-        ]);
-        // 比較距離決定擺放位置
-        if (previousDistance[0].distance < nextDistance[0].distance) {
-          bestPosition.value = closestPlaceOfDayIndex;
-        } else {
-          bestPosition.value = closestPlaceOfDayIndex + 1;
+        let minDistance = Infinity;
+        const threeAdjacentSpots = [
+          allPlaces[closestPlaceOfDayIndex - 1],
+          allPlaces[closestPlaceOfDayIndex],
+          allPlaces[closestPlaceOfDayIndex + 1]
+        ];
+
+        for (let i = 0; i < threeAdjacentSpots.length - 1; i++) {
+          const [currentDistance, newDistanceA, newDistanceB] =
+            await Promise.all([
+              calculateDistance(
+                threeAdjacentSpots[i].places.place_id,
+                threeAdjacentSpots[i + 1].places.place_id,
+                schedule.transportation_way
+              ),
+              calculateDistance(
+                threeAdjacentSpots[i].places.place_id,
+                place.id,
+                schedule.transportation_way
+              ),
+              calculateDistance(
+                place.id,
+                threeAdjacentSpots[i + 1].places.place_id,
+                schedule.transportation_way
+              )
+            ]);
+          const additionalDistance =
+            newDistanceA[0].distance +
+            newDistanceB[0].distance -
+            currentDistance[0].distance;
+          //偵錯用，計算距離
+          console.log(
+            `Position ${i + 1} additional distance:`,
+            additionalDistance
+          );
+          if (additionalDistance < minDistance) {
+            minDistance = additionalDistance;
+            bestPosition.value = i + 1;
+          }
         }
       }
     }
@@ -824,7 +959,11 @@ const hasCoSchedules = computed(() => {
                 </div>
                 <div v-else class="flex flex-col items-center h-full">
                   <div class="w-72">
-                    <img src="../assets/images/cat-3.png" alt="" />
+                    <img
+                      class="w-40 mx-auto mb-5"
+                      src="../assets/images/cat-6.png"
+                      alt=""
+                    />
                   </div>
                   <div class="mb-20">目前還沒有行程喔！</div>
                 </div>
@@ -922,7 +1061,11 @@ const hasCoSchedules = computed(() => {
                 </div>
                 <div v-else class="flex flex-col items-center h-full">
                   <div class="w-72">
-                    <img src="../assets/images/cat-3.png" alt="" />
+                    <img
+                      class="w-44 mx-auto"
+                      src="../assets/images/cat-3.png"
+                      alt=""
+                    />
                   </div>
                   <div class="mb-20">目前還沒有共編行程喔！</div>
                 </div>
@@ -1003,6 +1146,7 @@ const hasCoSchedules = computed(() => {
                             currentSchedule.groupedPlaces[selectedDate]
                           );
                         }
+                        initMap();
                       }
                     "
                     class="flex-shrink-0 pb-[4px] px-[16px] text-base cursor-pointer rounded-t-lg transition-colors duration-200 ease-in-out text-center"
