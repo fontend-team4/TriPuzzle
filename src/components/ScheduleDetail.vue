@@ -116,7 +116,7 @@ const fetchData = async () => {
     });
     place.value = response.data;
     place.value.forEach((item) => {
-      // item.places.image_url = generateImageUrl(item.places.image_url);
+      item.places.image_url = generateImageUrl(item.places.image_url);
       item.transportation_way = formatMode(item.transportation_way);
     });
     groupedPlaces.value = await groupByDate(place.value);
