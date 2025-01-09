@@ -1,32 +1,34 @@
 <script setup>
-import Footer from '@/components/Footer.vue';
 import { EnvelopeIcon } from '@heroicons/vue/20/solid';
-import { GlobeAltIcon } from '@heroicons/vue/24/outline';
+import { PuzzlePieceIcon } from '@heroicons/vue/24/solid';
 </script>
 
 <template>
-  <router-link to="/">
-    <nav class="hidden md:block lg:block z-10 fixed top-4 left-6 group">
+  <nav
+    class="border-b-2 border-neutral-200 bg-white z-10 sticky top-0  md:block"
+  >
+    <div
+      class="w-screen py-4 mx-auto flex justify-between items-center"
+    >
+    <router-link to="/">
       <img
-        src="../assets/svg/logo-dark.svg"
-        class="opacity-50 group-hover:hidden w-12"
+        src="@/assets/svg/Logo.svg"
+        class="flex-none cursor-pointer ml-8"
+        @click="clickTab('top')"
       />
-      <img
-        src="../assets/svg/logo-light.svg"
-        class="w-12 hidden group-hover:block"
-      />
-    </nav>
-    <nav class="md:hidden lg:hidden z-10 fixed top-4 right-6 group">
-      <img
-        src="../assets/svg/logo-dark.svg"
-        class="opacity-50 group-hover:hidden w-7"
-      />
-      <img
-        src="../assets/svg/logo-light.svg"
-        class="hidden group-hover:block w-7"
-      />
-    </nav>
-  </router-link>
+    </router-link>
+    <router-link to="/planner">
+      <button
+        class="flex mr-8 gap-1 items-center bg-primary-800 px-5 py-2 ml-4 text-base text-neutral-50 rounded-full hover:bg-primary-600"
+      >
+        <PuzzlePieceIcon class="w-5 h-5 text-neutral-50" />
+        拼湊旅圖
+      </button>
+    </router-link>
+    </div>
+  </nav>
+
+
   <div class="bg-primary-200">
     <img src="@/assets/images/aboutus_WB.png" class="hidden lg:block" />
     <img
@@ -82,7 +84,7 @@ import { GlobeAltIcon } from '@heroicons/vue/24/outline';
     </div>
 
     <div
-      class="hidden md:block lg:block bg-primary-200 w-screen md:h-[5vh] lg:h-[15vh]"
+      class="h-[5vh] bg-primary-200 w-screen md:h-[5vh] lg:h-[15vh]"
     ></div>
     <h2
       class="lg:hidden text-primary-700 text-4xl font-bold h-[12vh] flex items-center justify-center pt-6 w-screen"
@@ -103,14 +105,10 @@ import { GlobeAltIcon } from '@heroicons/vue/24/outline';
             <p>前後端登入註冊功能與串接</p>
             <p>JWT 認證、後端部署</p>
             <p>前端加入景點至行程功能</p>
+            <p>Distance Matrix API 計算最短路徑邏輯判斷</p>
+            <p>Direction API 繪製行程路線</p>
           </span>
           <div class="flex">
-            <a
-              href="mailto:a1295649555@gmail.com"
-              class="text-zinc-800 hover:text-zinc-500"
-            >
-              <GlobeAltIcon class="size-6" />
-            </a>
             <a href="https://github.com/jack8512" class="group">
               <img
                 src="@/assets/images/github.png"
@@ -149,10 +147,6 @@ import { GlobeAltIcon } from '@heroicons/vue/24/outline';
             <p>專案 & 後端資料庫規劃管理</p>
           </span>
           <div class="flex">
-            <a href="" class="text-zinc-800 hover:text-zinc-500">
-              <GlobeAltIcon class="size-6" />
-            </a>
-            <a href="https://github.com/Huiwen-Huang" class="group">
               <img
                 src="@/assets/images/github.png"
                 class="w-[28px] group-hover:hidden"
@@ -161,7 +155,6 @@ import { GlobeAltIcon } from '@heroicons/vue/24/outline';
                 src="@/assets/images/github_grey.png"
                 class="w-[28px] hidden group-hover:block"
               />
-            </a>
             <a
               href="mailto:huiwenhuang1998@gmail.com"
               class="text-zinc-800 hover:text-zinc-500"
@@ -184,10 +177,6 @@ import { GlobeAltIcon } from '@heroicons/vue/24/outline';
             <p>景點詳細資料渲染</p>
           </span>
           <div class="flex">
-            <a href="" class="text-zinc-800 hover:text-zinc-500">
-              <GlobeAltIcon class="size-6" />
-            </a>
-            <a href="https://github.com/kmexin" class="group">
               <img
                 src="@/assets/images/github.png"
                 class="w-[28px] group-hover:hidden"
@@ -196,8 +185,7 @@ import { GlobeAltIcon } from '@heroicons/vue/24/outline';
                 src="@/assets/images/github_grey.png"
                 class="w-[28px] hidden group-hover:block"
               />
-            </a>
-            <a
+              <a
               href="mailto:lemonmaggiex@gmail.com"
               class="text-zinc-800 hover:text-zinc-500"
             >
@@ -219,10 +207,6 @@ import { GlobeAltIcon } from '@heroicons/vue/24/outline';
             <p>首頁製作</p>
           </span>
           <div class="flex">
-            <a href="" class="text-zinc-800 hover:text-zinc-500">
-              <GlobeAltIcon class="size-6" />
-            </a>
-            <a href="https://github.com/Timothy9am" class="group">
               <img
                 src="@/assets/images/github.png"
                 class="w-[28px] group-hover:hidden"
@@ -231,7 +215,6 @@ import { GlobeAltIcon } from '@heroicons/vue/24/outline';
                 src="@/assets/images/github_grey.png"
                 class="w-[28px] hidden group-hover:block"
               />
-            </a>
             <a
               href="mailto:timothy9am@gmail.com"
               class="text-zinc-800 hover:text-zinc-500"
@@ -254,9 +237,6 @@ import { GlobeAltIcon } from '@heroicons/vue/24/outline';
             <p>新增單一行程功能</p>
           </span>
           <div class="flex">
-            <a href="" class="text-zinc-800 hover:text-zinc-500">
-              <GlobeAltIcon class="size-6" />
-            </a>
             <a href="https://github.com/bo-ruei" class="group">
               <img
                 src="@/assets/images/github.png"
@@ -289,9 +269,6 @@ import { GlobeAltIcon } from '@heroicons/vue/24/outline';
             <p>分帳攤銷功能</p>
           </span>
           <div class="flex">
-            <a href="" class="text-zinc-800 hover:text-zinc-500">
-              <GlobeAltIcon class="size-6" />
-            </a>
             <a href="https://github.com/rodchang12" class="group">
               <img
                 src="@/assets/images/github.png"
@@ -324,9 +301,6 @@ import { GlobeAltIcon } from '@heroicons/vue/24/outline';
             <p>簡報、圖示製作與報告</p>
           </span>
           <div class="flex">
-            <a href="" class="text-zinc-800 hover:text-zinc-500">
-              <GlobeAltIcon class="size-6" />
-            </a>
             <a href="https://github.com/LindseyL222" class="group">
               <img
                 src="@/assets/images/github.png"
@@ -347,7 +321,34 @@ import { GlobeAltIcon } from '@heroicons/vue/24/outline';
         </div>
       </section>
     </div>
-
-    <Footer />
+    <div
+      class="h-[5vh] md:block lg:block bg-primary-200 w-screen md:h-[5vh] lg:h-[15vh]"
+    ></div>
+    <footer class="bg-gradient-to-t from-primary-50 pt-5 md:pt-10">
+    <div class="w-full px-4 mx-auto relative md:w-9/12 md:max-w-7xl md:px-0">
+      <div class="flex justify-center items-center gap-3 mb-5 md:flex-col">
+        <h1
+          class="text-lg font-bold text-neutral-800 sm:text-xl md:text-3xl md:mb-10 text-center"
+        >
+          <span class="text-primary-800">旅圖</span>
+          ，旅程從這裡開始<br />讓我們一起拼湊出你的旅途
+        </h1>
+      </div>
+      <div class="py-4 border-t-2 border-neutral-200 md:py-7">
+        <p class="text-primary-800 text-[9px] text-center font-bold md:text-sm">
+          ©2024 旅圖 TriPuzzle, all rights reserved. Powered by NO.4
+          Corporation.
+        </p>
+      </div>
+      <img
+        src="@/assets/svg/FooterIllustration1.svg"
+        class="scale-75 absolute top-32 -left-[150px] hidden lg:block xl:scale-100 xl:top-[100px] xl:-left-32"
+      />
+      <img
+        src="@/assets/svg/FooterIllustration2.svg"
+        class="scale-75 absolute top-14 -right-[150px] hidden lg:block xl:scale-100 xl:top-5 xl:-right-[120px]"
+      />
+    </div>
+  </footer>
   </div>
 </template>
