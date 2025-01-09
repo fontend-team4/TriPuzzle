@@ -4,13 +4,10 @@ import axios from 'axios';
 import {
   XMarkIcon,
   ChevronLeftIcon,
-  TrashIcon,
-  CalendarIcon,
-  DocumentDuplicateIcon
+  TrashIcon
 } from '@heroicons/vue/24/outline';
 import { EllipsisHorizontalIcon, MapPinIcon } from '@heroicons/vue/24/solid';
 import DeletePerDayModal from './DeletePerDayModal.vue';
-import MoveToOtherDateModal from './MoveToOtherDateModal.vue';
 import DeletePerPlaceModal from './DeletePerPlaceModal.vue';
 import ScheduleOverview from './ScheduleOverview.vue';
 import draggable from 'vuedraggable';
@@ -67,11 +64,11 @@ const fetchData = async () => {
     if (!userId.value || !token) {
       return;
     }
-    const response = await axios.get(`${API_URL}/schedulePlaces`, {
+    const { data } = await axios.get(`${API_URL}/schedulePlaces`, {
       params: { schedule_id: scheduleId.value },
       headers: { Authorization: `${token}` }
     });
-    place.value = response.data;
+    place.value = data;
     groupedPlaces.value = groupByDate(place.value);
     return groupedPlaces.value;
   } catch (error) {
@@ -79,13 +76,6 @@ const fetchData = async () => {
   }
 };
 
-// const sortedDataByDate = computed(() => {
-//   const sorted = {};
-//   for (const item in places) {
-//     sorted[item.which_date] = [...groupedPlaces[item.which_date]].sort((a, b) => a.order - b.order);
-//   }
-//   return sorted;
-// });
 const groupByDate = (places) => {
   const grouped = {};
   const sortedGrouped = {};
@@ -107,6 +97,32 @@ const groupByDate = (places) => {
   return sortedGrouped;
 };
 
+// const updateData = async (place) => {
+//   try {
+//     const response = await axios.post(
+//       `${API_URL}/schedulePlaces`,
+//       {
+//         place_id: place.places.id,
+//         schedule_id: scheduleId.value,
+//         which_date: place.which_date,
+//         transportationway: place.transportationway,
+//         order: place.order
+//       },
+//       {
+//         headers: {
+//           Authorization: token,
+//           'Content-Type': 'application/json'
+//         }
+//       }
+//     );
+//     place.value = response.data;
+//     groupedPlaces.value = groupByDate(place.value);
+//     return groupedPlaces.value;
+//   } catch (error) {
+//     return null;
+//   }
+// };
+
 onMounted(() => {
   fetchData();
 });
@@ -126,12 +142,22 @@ watch(
   { immediate: true }
 );
 
-// 拖曳狀態
 const drag = ref(false);
+
+const removeDate = async (schedule_id, which_date) => {
+  await axios.delete(`${API_URL}/schedulePlaces/${schedule_id}/${which_date}`);
+  await fetchData();
+};
+
+const removePlace = async (id) => {
+  await axios.delete(`${API_URL}/schedulePlaces/${id}`);
+  await fetchData();
+};
 
 const updateOrder = (items) => {
   items.forEach((item, index) => {
     item.order = index;
+    // updateData(item);
   });
 };
 </script>
@@ -167,6 +193,7 @@ const updateOrder = (items) => {
             <a
               @click.prevent="setActiveTab(-1)"
               class="pb-2 text-sm font-medium hover:text-primary-600"
+              :class="activeTab === -1 ? 'text-primary-600' : ''"
             >
               總覽頁
             </a>
@@ -179,6 +206,7 @@ const updateOrder = (items) => {
             <a
               @click="setActiveTab(index)"
               class="pb-2 text-sm font-medium hover:text-primary-600"
+              :class="activeTab === index ? 'text-primary-600' : ''"
             >
               第{{ index + 1 }}天
             </a>
@@ -192,7 +220,7 @@ const updateOrder = (items) => {
       <div v-if="activeTab === index">
         <!-- date -->
         <div class="px-5 pt-5 mb-3">
-          <div class="flex gap-1 cursor-pointer date w-36">
+          <div class="flex gap-1 cursor-pointer date">
             <p class="font-medium">
               {{ formatDateWithoutTime(date) }}週{{ getDayInChinese(date) }}
             </p>
@@ -208,7 +236,7 @@ const updateOrder = (items) => {
               >
                 <span class="w-6 h-6"><TrashIcon /></span>
                 <p>刪除這天</p>
-                <DeletePerDayModal />
+                <DeletePerDayModal :date="date" @delete="removeDate" />
               </div>
             </div>
           </div>
@@ -228,7 +256,7 @@ const updateOrder = (items) => {
             <template #item="{ element }">
               <div class="container place-transportation">
                 <p
-                  v-if="element.order !== 0"
+                  v-if="element.order !== 0 && groupedPlaces[date].length > 1"
                   class="w-full py-4 ml-3 border-l border-dashed ps-3 border-gray"
                 >
                   {{ `開車需要 ${formatDuration(element.duration)} ` }}
@@ -261,61 +289,13 @@ const updateOrder = (items) => {
                         >
                           <MapPinIcon class="size-5" />
                         </button>
-                        <div class="p-1 dropdown">
-                          <button
-                            role="button"
-                            class="relative w-5 h-5 text-white bg-gray-300 rounded-full hover:bg-gray-400"
-                          >
-                            <EllipsisHorizontalIcon class="text-black" />
-                          </button>
-                          <!-- dropdown 控制開關 -->
-                          <ul
-                            tabindex="0"
-                            class="dropdown-content w-32 bg-white rounded border absolute right-[-12px] top-8 shadow-xl"
-                          >
-                            <li @click="moveDate.showModal()">
-                              <a
-                                class="flex items-center gap-1 px-5 py-2 text-sm hover:bg-gray"
-                                href="#"
-                              >
-                                <span class="inline-block w-6 h-6">
-                                  <CalendarIcon />
-                                </span>
-                                <p>移到別天</p>
-                              </a>
-                            </li>
-                            <MoveToOtherDateModal />
-                            <li>
-                              <a
-                                class="flex items-center gap-1 px-5 py-2 text-sm hover:bg-gray"
-                                href="#"
-                              >
-                                <span class="inline-block w-6 h-6">
-                                  <DocumentDuplicateIcon />
-                                </span>
-                                <p>複製</p>
-                              </a>
-                            </li>
-                            <li
-                              class="border-t"
-                              @click="delete_place.showModal()"
-                            >
-                              <a
-                                class="flex items-center gap-1 px-5 py-2 text-sm hover:bg-gray"
-                                href="#"
-                              >
-                                <span class="inline-block w-6 h-6">
-                                  <TrashIcon />
-                                </span>
-                                <p>刪除</p>
-                              </a>
-                            </li>
-                            <DeletePerPlaceModal />
-                          </ul>
-                        </div>
+                        <TrashIcon
+                          @click="removePlace(element.id)"
+                          class="m-1 w-6 h-6 hover:text-primary-600 cursor-pointer"
+                        />
+                        <!-- <DeletePerPlaceModal /> -->
                       </div>
                     </div>
-                    <!-- hover:relative feature -->
                   </div>
                 </div>
               </div>
