@@ -313,6 +313,7 @@ onMounted(async () => {
       await optimizeTrail(schedules.value[0]);
     }
   } catch (error) {
+    loadingStore.hideLoading();
     console.error('Error fetching schedules:', error);
   }
 });
@@ -331,11 +332,13 @@ onMounted(async () => {
         calculateDateRange(schedule.start_date, schedule.end_date)
       )
     }));
+    loadingStore.hideLoading();
     if (coSchedules.value.length > 0) {
       await optimizeTrail(coSchedules.value[0]);
     }
     console.log('coSchedules.value', coSchedules.value);
   } catch (error) {
+    loadingStore.hideLoading();
     console.error('Error fetching coSchedules:', error);
   }
 });
