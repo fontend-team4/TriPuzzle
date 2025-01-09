@@ -15,8 +15,8 @@ export const MessageModalStore = defineStore('MessageModal', () => {
 
     const modalHTML = `
 
-    <dialog id="message_modal" class="modal">
-      <div class="modal-box w-full md:w-[450px] h-[200px]">
+    <dialog id="message_modal" class="modal overflow-y-hidden">
+      <div class="modal-box w-full md:w-[450px] flex flex-col items-center justify-center h-[33%] text-center ">
         <img class="w-28 h-28 mx-auto" src="${showImage}">
         <p id="modal_message" class="py-4 text-center">${message}</p>
       </div>

@@ -313,7 +313,6 @@ onMounted(async () => {
       await optimizeTrail(schedules.value[0]);
     }
   } catch (error) {
-    loadingStore.hideLoading();
     console.error('Error fetching schedules:', error);
   }
 });
@@ -324,7 +323,6 @@ onMounted(async () => {
     const res = await axios.get(`${URL}/usersschedules`, {
       headers: { Authorization: token }
     });
-    loadingStore.hideLoading();
     coSchedules.value = res.data.map((schedule) => ({
       ...schedule,
       dates: calculateDateRange(schedule.start_date, schedule.end_date),
@@ -338,7 +336,6 @@ onMounted(async () => {
     }
     console.log('coSchedules.value', coSchedules.value);
   } catch (error) {
-    loadingStore.hideLoading();
     console.error('Error fetching coSchedules:', error);
   }
 });
@@ -402,11 +399,12 @@ const addPlaceToSchedule = async () => {
       status: 'success'
     });
   } catch (error) {
-    console.error('新增失敗：', error.response?.data || error.message);
+    loadingStore.hideLoading();
     messageStore.messageModal({
       message: error.data.message || '未知錯誤',
       status: 'error'
     });
+    console.error('新增失敗：', error.response?.data || error.message);
   }
 };
 
@@ -830,7 +828,7 @@ const hasCoSchedules = computed(() => {
       >
         <div class="hidden md:block md:w-2/3 md:bg-[#f4f4f4]">
           <div class="flex h-full">
-            <img src="/images/cat-1.png" class="w-full" />
+            <img src="/images/cat-1.png" class="m-auto h-full" />
           </div>
         </div>
         <div
