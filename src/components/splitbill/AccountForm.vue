@@ -11,8 +11,7 @@ import defaultUserImage from '/images/cat-2.png';
 
 const messageStore = MessageModalStore();
 const loadingStore = useLoadingStore();
-const loadingForBtn = ref(false);
-
+const loadingForBtn = ref(false)
 const route = useRoute();
 const scheduleId = route.params.scheduleId; // 從路由取得行程 ID
 const token = localStorage.getItem('token');

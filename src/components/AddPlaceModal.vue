@@ -313,7 +313,6 @@ onMounted(async () => {
       await optimizeTrail(schedules.value[0]);
     }
   } catch (error) {
-    loadingStore.hideLoading();
     console.error('Error fetching schedules:', error);
   }
 });
@@ -338,7 +337,6 @@ onMounted(async () => {
     }
     console.log('coSchedules.value', coSchedules.value);
   } catch (error) {
-    loadingStore.hideLoading();
     console.error('Error fetching coSchedules:', error);
   }
 });

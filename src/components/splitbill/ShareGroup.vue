@@ -30,7 +30,6 @@ onMounted(async () => {
         <div></div>
       </div>
     </div>
-
   </LoadingOverlay>
   <div class="p-4 bg-white shadow-md rounded-b-lg rounded-l-lg md:rounded-lg">
     <h2 class="text-xl font-bold text-primary-500 mb-2">

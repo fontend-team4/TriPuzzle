@@ -189,6 +189,7 @@ onMounted(() => {
   fetchAccounts();
 });
 
+
 onUnmounted(() => {
   document.removeEventListener('click', onClickOutside);
 });
