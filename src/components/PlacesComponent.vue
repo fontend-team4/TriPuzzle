@@ -17,8 +17,9 @@ import { PlaceModalStore } from '@/stores/PlaceModal';
 import {
   favorites,
   loadFavorites,
-  toggleFavoriteStatus
-} from '@/stores/favorites.js';
+  toggleFavoriteStatus,
+  addToQueue
+} from '@/stores/favorites';
 import axios from 'axios';
 import { useRoute, useRouter } from 'vue-router';
 import { addPlace } from '@/stores/addPlaces';
@@ -48,6 +49,7 @@ const localFavorites = ref(
 );
 // 切換收藏狀態的按鈕事件處理
 const handleToggleFavorite = async (item) => {
+  const wasFavorited = item.isFavorited; // 紀錄原本的收藏狀態
   const formattedItem = { ...item, place_id: item.id }; // 確保格式一致
 
   // 執行收藏切換操作
@@ -56,6 +58,8 @@ const handleToggleFavorite = async (item) => {
   // 更新當前 `item` 的 `isFavorited` 狀態
   item.isFavorited = formattedItem.isFavorited; // 根據 toggleFavoriteStatus 的結果更新
   localFavorites.isFavorited = formattedItem.isFavorited; // 更新本地收藏狀態
+  // 加入批量更新操作
+  addToQueue(item, wasFavorited ? 'remove' : 'add');
 };
 
 // 初始化頁面時，同步收藏狀態

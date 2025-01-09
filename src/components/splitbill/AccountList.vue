@@ -9,6 +9,7 @@ import {
   ShoppingBagIcon,
   XMarkIcon
 } from '@heroicons/vue/24/outline';
+import { Airplane } from '@iconoir/vue';
 import axios from 'axios';
 import { useRoute } from 'vue-router';
 import '@/assets/loading.css';
@@ -50,7 +51,7 @@ const categoryIcon = (category) => {
     case '餐飲':
       return CakeIcon; // 食物圖示
     case '交通':
-      return TicketIcon; // 飛機圖示
+      return Airplane; // 飛機圖示
     case '住宿':
       return HomeIcon; // 房屋圖示
     case '購物':
