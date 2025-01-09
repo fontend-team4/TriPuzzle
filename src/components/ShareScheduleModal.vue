@@ -312,7 +312,7 @@ watch(
           >
             <img
               class="w-12 rounded-full h-11"
-              :src="member.profile_pic_url || `src/assets/images/cat-2.png`"
+              :src="member.profile_pic_url || `/images/cat-2.png`"
               alt=""
             />
             <div class="flex items-center justify-between w-full">

@@ -255,7 +255,7 @@ onMounted(async () => {
         </ul>
       </nav>
 
-      <main class="px-4 w-full bg-primary-700 border-none">
+      <main class="px-4 pb-6 w-full bg-primary-700 border-none">
         <router-view />
       </main>
     </div>

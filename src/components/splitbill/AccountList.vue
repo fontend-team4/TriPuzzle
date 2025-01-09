@@ -25,6 +25,7 @@ const showDropdown = ref(null); // 控制下拉選單的顯示
 const dropdownRefs = ref([]); // 儲存每個下拉選單元素
 const token = localStorage.getItem('token');
 const API_URL = process.env.VITE_HOST_URL;
+const loadingForBtn = ref(false)
 
 // 根據分類設置顏色類別
 const categoryClass = (category) => {
@@ -98,6 +99,7 @@ const closeModal = () => {
 
 // 提交修改
 const submitEdit = async () => {
+  loadingForBtn.value = true
   const selected = selectedAccount.value.id;
   console.log('選擇的帳目 ID:', selectedAccount.value.id, selected);
   try {
@@ -110,15 +112,15 @@ const submitEdit = async () => {
       selectedAccount.value,
       config
     );
-
+    loadingForBtn.value = false
     messageStore.messageModal({
       message: '帳目已更新成功',
       status: 'success'
     });
     fetchAccounts();
-
     closeModal(); // 關閉 Modal 並清空選擇
   } catch (error) {
+    loadingForBtn.value = false
     console.error('更新帳目失敗', error);
     messageStore.messageModal({
       message: '更新帳目失敗，請稍後重試',
@@ -148,12 +150,16 @@ const fetchAccounts = async () => {
 
 // 刪除帳目
 const removeAccount = async (accountId) => {
+  loadingStore.showLoading()
+  loadingForBtn.value = true
   try {
     await axios.delete(`${API_URL}/groups/${scheduleId}/bills/${accountId}`, {
       headers: {
         Authorization: token
       }
     });
+    loadingForBtn.value = false
+    loadingStore.hideLoading()
     accounts.value = accounts.value.filter(
       (account) => account.id !== accountId
     ); // 從列表中移除
@@ -163,6 +169,8 @@ const removeAccount = async (accountId) => {
       status: 'success'
     });
   } catch (error) {
+    loadingForBtn.value = false
+    loadingStore.hideLoading()
     messageStore.messageModal({
       message: '刪除帳目時發生錯誤，請稍後重試。',
       status: 'error'
@@ -246,7 +254,7 @@ onUnmounted(() => {
           </button>
           <div
             v-if="showDropdown === index"
-            class="absolute right-0 mt-2 w-32 bg-white border border-gray-300 rounded shadow-lg z-10"
+            class="absolute -right-[10px] top-4 mt-2 w-28 text-center bg-white border border-slate-300 rounded shadow-lg z-10"
           >
             <ul>
               <li
@@ -261,10 +269,17 @@ onUnmounted(() => {
                 修改帳目
               </li>
               <li
+                v-if="!loadingForBtn"
                 @click="removeAccount(account.id)"
                 class="px-4 py-2 text-red-600 hover:bg-red-100 cursor-pointer"
               >
                 刪除帳目
+              </li>
+              <li
+                v-else
+                class="px-4 py-2 text-red-600 hover:bg-red-100 cursor-pointer"
+              >
+                <span class="loading loading-dots loading-md"></span>
               </li>
             </ul>
           </div>
@@ -332,10 +347,17 @@ onUnmounted(() => {
                 取消
               </button>
               <button
+                v-if="!loadingForBtn"
                 @click="submitEdit"
-                class="btn bg-primary-700 text-white px-4 py-2 rounded-full hover:bg-primary-600"
+                class="btn w-26 bg-primary-700 text-white px-4 py-2 rounded-full hover:bg-primary-600"
               >
                 確認修改
+              </button>
+              <button
+                v-else
+                class="w-[90px] bg-primary-700 text-white px-8 py-2 rounded-full hover:bg-primary-600"
+              >
+                <span class="loading loading-dots loading-md"></span>
               </button>
             </div>
           </div>
