@@ -3,10 +3,12 @@ import axios from "axios";
 import { LoginModalStore } from '@/stores/LoginModal.js'
 import { Phone } from "@iconoir/vue";
 import { useRouter } from "vue-router";
+import { head, set } from "lodash";
 
 
 const API_URL = process.env.VITE_HOST_URL
 const favorites = ref([]); 
+const setFavorites = ref([]);
 const userId = ref(localStorage.getItem("userId"));
 const token = localStorage.getItem("token"); 
 
@@ -33,6 +35,9 @@ const loadFavorites = async () => {
       ...favorite.places,
       isFavorited: true, // 收藏地點默認為已收藏
     }));
+
+    // 將收藏資料存入 localStorage
+    localStorage.setItem("favorites", JSON.stringify(favorites.value));
   } catch (error) {
     console.error("無法加載收藏資料:", error);
   }
@@ -41,7 +46,6 @@ const loadFavorites = async () => {
 // 將收藏操作加入批量更新隊列
 const addToQueue = (place, action) => {
   updateQueue.push({ place_id: place.place_id || place.id, action, place });
-  console.log("加入更新隊列:", updateQueue);
 };
 
 // 批量發送更新請求
@@ -58,8 +62,6 @@ const processBatchUpdates = async () => {
     }, {
       headers: { Authorization: token },
     });
-
-    console.log("批量更新成功:", batchUpdates.length, "筆操作");
 
     // 更新 favorites 列表
     batchUpdates.forEach((update) => {
@@ -94,14 +96,13 @@ const setupRouteWatcher = () => {
 
   router.afterEach(() => {
     if (updateQueue.length > 0) {
-      console.log("路徑變更，發送批量更新請求");
       processBatchUpdates();
     }
   });
 };
 
 const updateLocalStorage = () => {
-  localStorage.setItem("favorites", JSON.stringify(favorites.value));
+  localStorage.setItem("setFavorites", JSON.stringify(favorites.value));
 };
 
 
@@ -114,7 +115,6 @@ const favoriteResponse = async (favoriteData, headers) =>{
         ...favoriteResponse.data,
       })
       await loadFavorites(); // 重新載入收藏列表
-      console.log("新增收藏成功:", favoriteData);
     } catch (error) {
       handleError(error, "新增收藏失敗");
   }
@@ -171,7 +171,6 @@ const removeFavorite = async (placeId, headers) => {
       favorite_user: Number(userId.value),
       favorite_places: placeId,
     });
-    console.log("使用的 headers:", headers);
 
     await axios.delete(`${API_URL}/favorites`, {
       data: {
@@ -181,7 +180,6 @@ const removeFavorite = async (placeId, headers) => {
       headers,
     });
     await loadFavorites(); // 重新載入收藏列表
-    console.log("移除地點成功:", placeId);
 
     favorites.value = favorites.value.filter(
       (fav) => fav.favorite_places !== placeId
