@@ -100,8 +100,8 @@ import { PuzzlePieceIcon } from '@heroicons/vue/24/solid';
             <p>前後端登入註冊功能與串接</p>
             <p>JWT 認證、後端部署</p>
             <p>前端加入景點至行程功能</p>
-            <p>Distance Matrix API 計算最短路徑邏輯判斷</p>
-            <p>Direction API 繪製行程路線</p>
+            <p>計算最短路徑邏輯判斷</p>
+            <p>繪製行程路線</p>
           </span>
           <div class="flex">
             <a href="https://github.com/jack8512" class="group">
