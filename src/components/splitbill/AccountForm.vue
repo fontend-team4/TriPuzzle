@@ -11,7 +11,7 @@ import defaultUserImage from '/images/cat-2.png';
 
 const messageStore = MessageModalStore();
 const loadingStore = useLoadingStore();
-const loadingForBtn = ref(false)
+const loadingForBtn = ref(false);
 const route = useRoute();
 const scheduleId = route.params.scheduleId; // 從路由取得行程 ID
 const token = localStorage.getItem('token');
@@ -138,15 +138,15 @@ onMounted(async () => {
 
 <template>
   <LoadingOverlay :active="loadingStore.isLoading">
-  <div class="loadingio-spinner-ellipsis-nq4q5u6dq7r">
-    <div class="ldio-x2uulkbinbj">
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
+    <div class="loadingio-spinner-ellipsis-nq4q5u6dq7r">
+      <div class="ldio-x2uulkbinbj">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
     </div>
-  </div>
   </LoadingOverlay>
   <form
     @submit.prevent="submitAccount"
@@ -260,7 +260,7 @@ onMounted(async () => {
         for="description"
         class="block pl-1 text-sm font-medium text-gray-700"
       >
-        描述
+        備註
       </label>
       <input
         id="description"
