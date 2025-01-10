@@ -377,13 +377,7 @@ onMounted(async () => {
             立即升級
           </button>
         </div>
-        <div class="p-8">
-          <h2 class="flex text-lg font-semibold">
-            <HeartIcon class="w-6 h-6 me-1" />
-            收藏
-          </h2>
-          <hr class="border-slate-300" />
-        </div>
+
         <FavoritesList @open-detail-modal="handleOpenDetailModal" />
         <DetailModal
           class="fixed top-0 left-0 z-40 flex-auto"

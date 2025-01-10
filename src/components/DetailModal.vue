@@ -423,7 +423,7 @@ onMounted(fetchPlaceDetails);
           <div
             class="tooltip"
             data-tip="導航"
-            @click="openGoogleMap(placeData.mapUrl)"
+            @click="openGoogleMap(placeData.mapUrl || placeData.google_map_url)"
           >
             <PaperAirplaneIcon class="cursor-pointer size-6" />
           </div>

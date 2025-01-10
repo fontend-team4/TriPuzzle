@@ -7,7 +7,8 @@ import {
   nextTick,
   defineEmits,
   onUnmounted,
-  computed
+  computed,
+  onUpdated
 } from 'vue';
 import { HeartIcon as OutlineHeartIcon } from '@heroicons/vue/24/outline';
 import AddPlaceBtn from './AddPlaceBtn.vue';
@@ -17,8 +18,9 @@ import { PlaceModalStore } from '@/stores/PlaceModal';
 import {
   favorites,
   loadFavorites,
-  toggleFavoriteStatus
-} from '@/stores/favorites.js';
+  toggleFavoriteStatus,
+  addToQueue
+} from '@/stores/favorites';
 import axios from 'axios';
 import { useRoute, useRouter } from 'vue-router';
 import { addPlace } from '@/stores/addPlaces';
@@ -48,6 +50,7 @@ const localFavorites = ref(
 );
 // 切換收藏狀態的按鈕事件處理
 const handleToggleFavorite = async (item) => {
+  const wasFavorited = item.isFavorited; // 紀錄原本的收藏狀態
   const formattedItem = { ...item, place_id: item.id }; // 確保格式一致
 
   // 執行收藏切換操作
@@ -56,23 +59,42 @@ const handleToggleFavorite = async (item) => {
   // 更新當前 `item` 的 `isFavorited` 狀態
   item.isFavorited = formattedItem.isFavorited; // 根據 toggleFavoriteStatus 的結果更新
   localFavorites.isFavorited = formattedItem.isFavorited; // 更新本地收藏狀態
+  // 加入批量更新操作
+  addToQueue(item, wasFavorited ? 'remove' : 'add');
 };
 
 // 初始化頁面時，同步收藏狀態
-const syncFavoritesWithItems = () => {
-  const favoriteSet = new Set(favorites.value.map((fav) => fav.place_id)); // 儲存收藏的 place_id
-  items.value = items.value.map((item) => ({
-    ...item,
-    isFavorited: favoriteSet.has(item.id) // 如果 favorites 列表包含 item.id，標記為已收藏
-  }));
+const syncFavoritesWithItems = async () => {
+  try {
+    const res = await axios.get(`${API_URL}/favorites/${userId.value}`, {
+      headers: { Authorization: token }
+    });
+    console.log('從後端獲取收藏列表:', res.data);
+    const favoriteSet = new Set(res.data.map((fav) => fav.favorite_places)); // 收藏項目的 place_id 集合
+
+    // 更新 items 列表中的 isFavorited 狀態
+    items.value = items.value.map((item) => ({
+      ...item,
+      isFavorited: favoriteSet.has(item.id) // 若在 favorites 中，標記為已收藏
+    }));
+  } catch (err) {
+    messageStore.messageModal({
+      message: '無法獲取收藏景點',
+      status: 'error'
+    });
+  }
 };
 
 onMounted(async () => {
   isLogin.value = Boolean(token && userId.value);
   if (isLogin.value) {
-    await loadFavorites(); // 從後端 API 載入收藏列表
+    await syncFavoritesWithItems();
   }
-  syncFavoritesWithItems(); // 同步收藏狀態
+});
+
+onUpdated(async () => {
+  if (isLogin.value) {
+  } // 同步收藏狀態
 });
 
 // 瀑布流計算

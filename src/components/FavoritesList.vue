@@ -11,6 +11,7 @@ import {
   watch,
   nextTick,
   defineEmits,
+  onBeforeUnmount,
   onUnmounted,
   computed
 } from 'vue';
@@ -19,7 +20,9 @@ import {
   favorites,
   loadFavorites,
   toggleFavoriteStatus,
-  generateImageUrl
+  generateImageUrl,
+  addToQueue,
+  processBatchUpdates
 } from '@/stores/favorites';
 import { MessageModalStore } from '@/stores/MessageModal';
 
@@ -27,7 +30,7 @@ import { MessageModalStore } from '@/stores/MessageModal';
 const places = ref([]);
 const userId = ref(localStorage.getItem('userId'));
 const token = localStorage.getItem('token');
-
+const updateQueue = ref([]);
 const API_URL = import.meta.env.VITE_HOST_URL;
 
 const modalStore = PlaceModalStore();
@@ -47,7 +50,6 @@ const fetchPlaces = async () => {
       place.isFavorited = true; // 初始化收藏狀態
       return place;
     });
-
     localStorage.setItem('favorites', JSON.stringify(places.value));
   } catch (err) {
     messageStore.messageModal({
@@ -57,18 +59,64 @@ const fetchPlaces = async () => {
   }
 };
 
+const localFavorites = ref(
+  JSON.parse(localStorage.getItem('favorites') || '[]')
+);
+
+// 切換收藏狀態的按鈕事件處理
+const handleToggleFavorite = async (place) => {
+  const wasFavorited = place.isFavorited; // 紀錄原本的收藏狀態
+  const formattedItem = { ...place, place_id: place.id }; // 確保格式一致
+
+  // 執行收藏切換操作
+  await toggleFavoriteStatus(formattedItem);
+
+  // 更新當前 `item` 的 `isFavorited` 狀態
+  place.isFavorited = formattedItem.isFavorited; // 根據 toggleFavoriteStatus 的結果更新
+  localFavorites.isFavorited = formattedItem.isFavorited; // 更新本地收藏狀態
+  // 加入批量更新操作
+  addToQueue(place, wasFavorited ? 'remove' : 'add');
+};
+
 const emit = defineEmits(['open-detail-modal']);
 
 const openDetailModal = (place) => {
   emit('open-detail-modal', place.place_id); // 傳遞地點的 ID
+  router.replace({ query: { action: 'placeInfo', placeId: detailId } }); // 更新URL
 };
 
-// 載入收藏景點
-onMounted(fetchPlaces);
+const handleReload = async () => {
+  try {
+    await processBatchUpdates();
+    await fetchPlaces();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+onMounted(() => {
+  fetchPlaces();
+});
+
 </script>
 
 <template>
   <div class="favorites">
+    <div
+      class="flex justify-between items-center mb-8 pb-2 border-b border-gray-200"
+    >
+      <h2 class="flex text-lg py-4 font-semibold">
+        <HeartIcon class="w-6 h-6 me-1" />
+        收藏
+      </h2>
+      <button
+        @click="handleReload"
+        class="btn text-sm font-semibold text-slate-500"
+      >
+        重新整理收藏
+      </button>
+    </div>
+
     <!-- 沒有收藏景點 -->
     <div v-if="places.length === 0" class="text-center p-6 rounded-lg">
       <img
@@ -109,7 +157,7 @@ onMounted(fetchPlaces);
               <button
                 class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer bg-gray hover:bg-opacity-75 tooltip"
                 :data-tip="place.isFavorited ? '移除收藏' : '加入收藏'"
-                @click.prevent.stop="toggleFavoriteStatus(place)"
+                @click.prevent.stop="handleToggleFavorite(place)"
               >
                 <component
                   :is="place.isFavorited ? HeartIcon : OutlineHeartIcon"
@@ -146,12 +194,12 @@ onMounted(fetchPlaces);
       </div>
     </div>
   </div>
-  <DetailModal
+  <!-- <DetailModal
     class="fixed top-0 left-0 z-40 flex-auto"
     v-if="isModalOpen"
     :place="currentPlace"
     @close="closeDetailModal"
-  />
+  /> -->
 </template>
 
 <style scoped>

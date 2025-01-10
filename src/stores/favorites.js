@@ -2,15 +2,19 @@ import { ref } from "vue";
 import axios from "axios";
 import { LoginModalStore } from '@/stores/LoginModal.js'
 import { Phone } from "@iconoir/vue";
+import { useRouter } from "vue-router";
+import { head, set } from "lodash";
 
 
 const API_URL = process.env.VITE_HOST_URL
 const favorites = ref([]); 
+const setFavorites = ref([]);
 const userId = ref(localStorage.getItem("userId"));
 const token = localStorage.getItem("token"); 
 
 const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
-
+let updateQueue = []; // 批量更新操作隊列
+let isProcessing = false;
 
 const handleError = (error, message = "操作失敗，請稍後再試") => {
   console.error(message, error);
@@ -31,50 +35,74 @@ const loadFavorites = async () => {
       ...favorite.places,
       isFavorited: true, // 收藏地點默認為已收藏
     }));
+
+    // 將收藏資料存入 localStorage
+    localStorage.setItem("favorites", JSON.stringify(favorites.value));
   } catch (error) {
     console.error("無法加載收藏資料:", error);
   }
 };
 
+// 將收藏操作加入批量更新隊列
+const addToQueue = (place, action) => {
+  updateQueue.push({ place_id: place.place_id || place.id, action, place });
+};
 
-const toggleFavoriteStatus = async (place) => {
-  const headers = { Authorization: token };
-  if (!userId.value || !token) {
-    const LoginStore = LoginModalStore();
-    LoginStore.openModal();
-    return;
-  }
+// 批量發送更新請求
+const processBatchUpdates = async () => {
+  if (isProcessing || updateQueue.length === 0) return;
+  isProcessing = true;
+
+  const batchUpdates = [...updateQueue];
+  updateQueue = []; // 清空隊列
 
   try {
-    const wasFavorited = place.isFavorited;
-    place.isFavorited = !wasFavorited;
-    if (!wasFavorited) {
-      console.log("嘗試新增收藏:", place.place_id);
-      await axios.post(`${API_URL}/favorites`, {
-        favorite_user: Number(userId.value),
-        favorite_places: place.place_id,
-      }, { headers });
-      favorites.value.push(place);
-    } else {
-      await axios.delete(`${API_URL}/favorites`, {
-        data: {
-          favorite_user: Number(userId.value),
-          favorite_places: place.place_id,
-        },
-        headers,
-      });
-      favorites.value = favorites.value.filter((fav) => fav.favorite_places !== place.place_id);
-    }
+    await axios.post(`${API_URL}/favorites/batchUpdate`, {
+      updates: batchUpdates,
+    }, {
+      headers: { Authorization: token },
+    });
 
-    updateLocalStorage(); // 同步 localStorage
-    console.log(`收藏狀態已更新: ${place.name} => ${place.isFavorited ? "已收藏" : "未收藏"}`);
+    // 更新 favorites 列表
+    batchUpdates.forEach((update) => {
+      if (update.action === "add") {
+        favorites.value.push(update.place);
+      } else if (update.action === "remove") {
+        favorites.value = favorites.value.filter((fav) => fav.place_id !== update.place_id);
+      }
+    });
+
+    updateLocalStorage();
   } catch (error) {
-    handleError(error, "切換收藏狀態失敗");
+    console.error("批量更新失敗:", error);
+    updateQueue = [...batchUpdates, ...updateQueue]; // 失敗時將操作重新加入隊列
+  } finally {
+    isProcessing = false;
   }
 };
 
+// 收藏按鈕切換
+const toggleFavoriteStatus = (place) => {
+  const wasFavorited = place.isFavorited;
+  place.isFavorited = !wasFavorited;
+
+  addToQueue(place, wasFavorited ? "remove" : "add");
+  updateLocalStorage(); // 更新 localStorage，但請求等路徑變更時再發送
+};
+
+// 路徑變更時發送批量請求
+const setupRouteWatcher = () => {
+  const router = useRouter();
+
+  router.afterEach(() => {
+    if (updateQueue.length > 0) {
+      processBatchUpdates();
+    }
+  });
+};
+
 const updateLocalStorage = () => {
-  localStorage.setItem("favorites", JSON.stringify(favorites.value));
+  localStorage.setItem("setFavorites", JSON.stringify(favorites.value));
 };
 
 
@@ -87,7 +115,6 @@ const favoriteResponse = async (favoriteData, headers) =>{
         ...favoriteResponse.data,
       })
       await loadFavorites(); // 重新載入收藏列表
-      console.log("新增收藏成功:", favoriteData);
     } catch (error) {
       handleError(error, "新增收藏失敗");
   }
@@ -144,7 +171,6 @@ const removeFavorite = async (placeId, headers) => {
       favorite_user: Number(userId.value),
       favorite_places: placeId,
     });
-    console.log("使用的 headers:", headers);
 
     await axios.delete(`${API_URL}/favorites`, {
       data: {
@@ -154,7 +180,6 @@ const removeFavorite = async (placeId, headers) => {
       headers,
     });
     await loadFavorites(); // 重新載入收藏列表
-    console.log("移除地點成功:", placeId);
 
     favorites.value = favorites.value.filter(
       (fav) => fav.favorite_places !== placeId
@@ -174,7 +199,6 @@ const generateImageUrl = (photoReference) => {
 };
 
 
-export { favorites, loadFavorites,toggleFavoriteStatus , generateImageUrl };
-
+export { loadFavorites, toggleFavoriteStatus, setupRouteWatcher, favorites,generateImageUrl,addToQueue,processBatchUpdates  };
 
 
