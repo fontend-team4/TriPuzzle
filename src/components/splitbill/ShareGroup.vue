@@ -15,7 +15,7 @@ onMounted(async () => {
   loadingStore.showLoading();
   setTimeout(() => {
     loadingStore.hideLoading();
-  }, 3000);
+  }, 2000);
 });
 </script>
 
@@ -30,7 +30,6 @@ onMounted(async () => {
         <div></div>
       </div>
     </div>
-
   </LoadingOverlay>
   <div class="p-4 bg-white shadow-md rounded-b-lg rounded-l-lg md:rounded-lg">
     <h2 class="text-xl font-bold text-primary-500 mb-2">
@@ -39,7 +38,7 @@ onMounted(async () => {
     <ul class="">
       <span class="font-bold">主辦人</span>
       <li
-        class="py-2 text-gray-800 flex flex-row items-center flex justify-between"
+        class="py-2 text-gray-800 flex-row items-center flex justify-between"
       >
         <span class="text-gray-500 flex flex-row items-center">
           <img

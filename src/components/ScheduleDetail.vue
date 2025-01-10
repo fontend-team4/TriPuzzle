@@ -4,18 +4,16 @@ import axios from 'axios';
 import {
   XMarkIcon,
   ChevronLeftIcon,
-  TrashIcon,
-  CalendarIcon,
-  DocumentDuplicateIcon
+  TrashIcon
 } from '@heroicons/vue/24/outline';
 import { EllipsisHorizontalIcon, MapPinIcon } from '@heroicons/vue/24/solid';
 import DeletePerDayModal from './DeletePerDayModal.vue';
-import MoveToOtherDateModal from './MoveToOtherDateModal.vue';
 import DeletePerPlaceModal from './DeletePerPlaceModal.vue';
 import ScheduleOverview from './ScheduleOverview.vue';
 import draggable from 'vuedraggable';
 import { useSearchStore } from '@/stores/searchPlaces';
 import { usePlacesStore } from '@/stores/fetchPlaces';
+import { generateImageUrl } from '@/stores/favorites';
 
 const placesStore = usePlacesStore();
 const searchStore = useSearchStore();
@@ -62,6 +60,51 @@ const formatDuration = (durationString) => {
   return `${hours} 小時 ${minutes} 分鐘`;
 };
 
+const formatMode = (mode) => {
+  switch (mode) {
+    case 'CAR':
+      return '開車';
+    case 'MOTOBIKE':
+      return '騎機車';
+    case 'transit':
+      return '搭乘大眾運輸';
+    case 'bicycling':
+      return '騎腳踏車';
+    case 'walking':
+      return '步行';
+    default:
+      return '未知';
+  }
+};
+
+const fetchDate = async () => {
+  try {
+    if (!userId.value || !token) {
+      return;
+    }
+    const { data } = await axios.get(`${API_URL}/schedulePlaces/dates`, {
+      params: { schedule_id: scheduleId.value },
+      headers: { Authorization: `${token}` }
+    });
+    const { start_date, end_date } = data;
+    const start = new Date(start_date);
+    const end = new Date(end_date);
+    const dateArray = [];
+    while (start <= end) {
+      dateArray.push(new Date(start));
+      start.setDate(start.getDate() + 1);
+    }
+    const dateMap = {};
+    dateArray.forEach((date) => {
+      const formattedDate = date.toISOString().split('T')[0];
+      dateMap[formattedDate] = [];
+    });
+    return dateMap;
+  } catch (error) {
+    return null;
+  }
+};
+
 const fetchData = async () => {
   try {
     if (!userId.value || !token) {
@@ -72,39 +115,26 @@ const fetchData = async () => {
       headers: { Authorization: `${token}` }
     });
     place.value = response.data;
-    groupedPlaces.value = groupByDate(place.value);
+    place.value.forEach((item) => {
+      item.places.image_url = generateImageUrl(item.places.image_url);
+      item.transportation_way = formatMode(item.transportation_way);
+    });
+    groupedPlaces.value = await groupByDate(place.value);
     return groupedPlaces.value;
   } catch (error) {
     return null;
   }
 };
 
-// const sortedDataByDate = computed(() => {
-//   const sorted = {};
-//   for (const item in places) {
-//     sorted[item.which_date] = [...groupedPlaces[item.which_date]].sort((a, b) => a.order - b.order);
-//   }
-//   return sorted;
-// });
-const groupByDate = (places) => {
-  const grouped = {};
-  const sortedGrouped = {};
-
+const groupByDate = async (places) => {
+  const dateObjct = await fetchDate();
   places.forEach((item) => {
-    const date = item.which_date;
-    if (!grouped[date]) {
-      grouped[date] = [];
+    const date = item.which_date.split('T')[0];
+    if (dateObjct[date]) {
+      dateObjct[date].push(item);
     }
-    grouped[date].push(item);
   });
-
-  Object.keys(grouped)
-    .sort((a, b) => new Date(a) - new Date(b))
-    .forEach((date) => {
-      sortedGrouped[date] = grouped[date].sort((a, b) => a.order - b.order);
-    });
-
-  return sortedGrouped;
+  return dateObjct;
 };
 
 onMounted(() => {
@@ -126,8 +156,21 @@ watch(
   { immediate: true }
 );
 
-// 拖曳狀態
 const drag = ref(false);
+
+const removeDate = async (schedule_id, which_date) => {
+  await axios.delete(`${API_URL}/schedulePlaces/${schedule_id}/${which_date}`);
+  await fetchData();
+};
+
+const removePlace = (e, n) => {
+  e.splice(n, 1);
+  console.log(e);
+  updateOrder(e);
+  console.log(e[1].order);
+  // await axios.delete(`${API_URL}/schedulePlaces/${id}`);
+  // await fetchData();
+};
 
 const updateOrder = (items) => {
   items.forEach((item, index) => {
@@ -167,6 +210,7 @@ const updateOrder = (items) => {
             <a
               @click.prevent="setActiveTab(-1)"
               class="pb-2 text-sm font-medium hover:text-primary-600"
+              :class="activeTab === -1 ? 'text-primary-600' : ''"
             >
               總覽頁
             </a>
@@ -179,6 +223,7 @@ const updateOrder = (items) => {
             <a
               @click="setActiveTab(index)"
               class="pb-2 text-sm font-medium hover:text-primary-600"
+              :class="activeTab === index ? 'text-primary-600' : ''"
             >
               第{{ index + 1 }}天
             </a>
@@ -192,31 +237,22 @@ const updateOrder = (items) => {
       <div v-if="activeTab === index">
         <!-- date -->
         <div class="px-5 pt-5 mb-3">
-          <div class="flex gap-1 cursor-pointer date w-36">
+          <div class="flex gap-1 date">
             <p class="font-medium">
               {{ formatDateWithoutTime(date) }}週{{ getDayInChinese(date) }}
             </p>
-            <div class="dropdown lg:hidden">
-              <div class="w-6 h-6" tabindex="0" role="button">
-                <EllipsisHorizontalIcon />
-              </div>
-              <!-- delete dropdown -->
-              <div
-                tabindex="0"
-                class="dropdown-content flex gap-2 bg-base-100 rounded z-[1] w-32 p-2 shadow hover:bg-gray"
-                onclick="delete_date.showModal()"
-              >
-                <span class="w-6 h-6"><TrashIcon /></span>
-                <p>刪除這天</p>
-                <DeletePerDayModal />
-              </div>
-            </div>
           </div>
         </div>
         <!-- place & transportation -->
         <div
           class="overflow-y-scroll overflow-x-hidden mb-4 h-[76vh] md:h-[76vh]"
         >
+          <div
+            class="w-11/12 mt-4 mx-auto h-28 border place bg-gray rounded-xl border-gray flex items-center justify-center"
+            v-if="groupedPlaces[date].length === 0"
+          >
+            <p class="inline-block text-lg">今天還沒有行程呦!</p>
+          </div>
           <draggable
             v-model="groupedPlaces[date]"
             :animation="250"
@@ -228,10 +264,14 @@ const updateOrder = (items) => {
             <template #item="{ element }">
               <div class="container place-transportation">
                 <p
-                  v-if="element.order !== 0"
+                  v-if="element.order !== 0 && groupedPlaces[date].length > 1"
                   class="w-full py-4 ml-3 border-l border-dashed ps-3 border-gray"
                 >
-                  {{ `開車需要 ${formatDuration(element.duration)} ` }}
+                  {{
+                    `${element.transportation_way} 需要 ${formatDuration(
+                      element.duration
+                    )} `
+                  }}
                 </p>
                 <div
                   class="px-5 pt-2 pb-1 overflow-x-hidden overflow-y-hidden bg-white"
@@ -261,61 +301,14 @@ const updateOrder = (items) => {
                         >
                           <MapPinIcon class="size-5" />
                         </button>
-                        <div class="p-1 dropdown">
-                          <button
-                            role="button"
-                            class="relative w-5 h-5 text-white bg-gray-300 rounded-full hover:bg-gray-400"
-                          >
-                            <EllipsisHorizontalIcon class="text-black" />
-                          </button>
-                          <!-- dropdown 控制開關 -->
-                          <ul
-                            tabindex="0"
-                            class="dropdown-content w-32 bg-white rounded border absolute right-[-12px] top-8 shadow-xl"
-                          >
-                            <li @click="moveDate.showModal()">
-                              <a
-                                class="flex items-center gap-1 px-5 py-2 text-sm hover:bg-gray"
-                                href="#"
-                              >
-                                <span class="inline-block w-6 h-6">
-                                  <CalendarIcon />
-                                </span>
-                                <p>移到別天</p>
-                              </a>
-                            </li>
-                            <MoveToOtherDateModal />
-                            <li>
-                              <a
-                                class="flex items-center gap-1 px-5 py-2 text-sm hover:bg-gray"
-                                href="#"
-                              >
-                                <span class="inline-block w-6 h-6">
-                                  <DocumentDuplicateIcon />
-                                </span>
-                                <p>複製</p>
-                              </a>
-                            </li>
-                            <li
-                              class="border-t"
-                              @click="delete_place.showModal()"
-                            >
-                              <a
-                                class="flex items-center gap-1 px-5 py-2 text-sm hover:bg-gray"
-                                href="#"
-                              >
-                                <span class="inline-block w-6 h-6">
-                                  <TrashIcon />
-                                </span>
-                                <p>刪除</p>
-                              </a>
-                            </li>
-                            <DeletePerPlaceModal />
-                          </ul>
-                        </div>
+                        <TrashIcon
+                          @click="
+                            removePlace(groupedPlaces[date], element.order)
+                          "
+                          class="m-1 w-6 h-6 hover:text-primary-600 cursor-pointer"
+                        />
                       </div>
                     </div>
-                    <!-- hover:relative feature -->
                   </div>
                 </div>
               </div>

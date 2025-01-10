@@ -331,6 +331,7 @@ onMounted(async () => {
         calculateDateRange(schedule.start_date, schedule.end_date)
       )
     }));
+    loadingStore.hideLoading();
     if (coSchedules.value.length > 0) {
       await optimizeTrail(coSchedules.value[0]);
     }
