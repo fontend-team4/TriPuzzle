@@ -97,6 +97,7 @@ const handleReload = async () => {
 onMounted(() => {
   fetchPlaces();
 });
+
 </script>
 
 <template>
