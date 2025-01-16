@@ -188,7 +188,7 @@ watch(
 
 <template>
   <div
-    class="absolute top-0 min-h-full pt-28 lg:ps-28 lg:pt-24 pb-14 bg-slate-100"
+    class="absolute top-0 min-w-full min-h-full pt-28 lg:ps-28 lg:pt-24 pb-14 bg-slate-100"
   >
     <!-- 瀑布流 -->
     <div
